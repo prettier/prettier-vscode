@@ -2,19 +2,17 @@
 
 VS Code package to format your Javascript using [Prettier](https://github.com/jlongster/prettier).
 
+### Installation
+
+Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
+
+(Visual Studio Code Market Place: Prettier - JavaScript formatter)[https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode]
+
 ### Usage
-
-#### Keybindings
-
-Use `ctrl-alt-f` to format the current Javascript file. If a text selection is made, only the selected text will be formatted.
 
 #### Format On Save
 
 Automatically format your Javascript file on save by enabling the *Format On Save* package setting.  This is off by default.
-
-#### Menu
-
-*Packages > standard-formatter > Format*
 
 ### Settings
 

@@ -5,7 +5,7 @@ const prettier = require('prettier')
 
 export function activate(context: ExtensionContext) {
 
-    let eventDisposable = workspace.onWillSaveTextDocument((e: workspace.TextDocumentWillSaveEvent) => {
+    const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
 
         if (!document.isDirty) {
@@ -13,10 +13,10 @@ export function activate(context: ExtensionContext) {
         }
 
         const config = workspace.getConfiguration('prettier');
-        const formatOnSave = config.formatOnSave;
+        const formatOnSave = (config as any).formatOnSave;
         if (!formatOnSave) {
             return;
-        }  
+        }
 
         e.waitUntil(new Promise(resolve => {
             const prettified = format(document, null);
@@ -25,10 +25,10 @@ export function activate(context: ExtensionContext) {
             const edit = TextEdit.replace(rangeObj, prettified);
 
             resolve([edit]);
-        })
-    })
+        }))
+    });
 
-    let disposable = commands.registerCommand('prettier.format', () => {
+    const disposable = commands.registerCommand('prettier.format', () => {
         let editor = window.activeTextEditor;
         if (!editor) {
             return;
