@@ -4,11 +4,25 @@
   "description": "VS Code plugin for jlongster/prettier",
   "version": "0.2.0",
   "publisher": "esbenp",
+  "author": "Esben Petersen <@esbenp>",
+  "galleryBanner": {
+    "color": "#ffe04b",
+    "theme": "dark"
+  },
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/esbenp/prettier-vscode.git"
+  },
+  "license": "MIT",
+  "bugs": {
+      "url": "https://github.com/esbenp/prettier-vscode/issues"
+  },
   "engines": {
     "vscode": "^1.5.0"
   },
   "categories": [
-    "Other"
+    "Formatters"
   ],
   "activationEvents": [
     "onLanguage:javascript",
