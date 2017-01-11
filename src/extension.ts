@@ -3,6 +3,16 @@
 import { commands, ExtensionContext, Range, Position, TextEdit, window, workspace } from 'vscode';
 const prettier = require('prettier')
 
+interface PrettierConfig {
+    printWidth: number,
+    tabWidth: number,
+    useFlowParser: boolean,
+    singleQuote: boolean,
+    trailingComma: boolean,
+    bracketSpacing: boolean,
+    formatOnSave: boolean
+}
+
 export function activate(context: ExtensionContext) {
     const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
@@ -11,7 +21,7 @@ export function activate(context: ExtensionContext) {
             return;
         }
 
-        const config = workspace.getConfiguration('prettier') as any;
+        const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
         const formatOnSave = config.formatOnSave;
         if (!formatOnSave) {
             return;
@@ -55,7 +65,7 @@ export function deactivate() {
 
 const format = (document, selection = null) => {
     const text = document.getText(selection)
-    const config = workspace.getConfiguration('prettier') as any;
+    const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
 
     try {
         var transformed = prettier.format(text, {
