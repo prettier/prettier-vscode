@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - JavaScript formatter",
   "description": "VS Code plugin for jlongster/prettier",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
