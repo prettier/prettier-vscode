@@ -1,2 +1,3 @@
 - [Cole Kennedy](https://github.com/colek42)
 - [Jon Wolfe](https://github.com/JonathanWolfe)
+- [Laurence Rowe](https://github.com/lrowe)
