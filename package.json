@@ -30,6 +30,36 @@
                 "type": "boolean",
                 "default": false,
                 "description": "Format on save"
+            },
+            "prettier.printWidth": {
+                "type": "integer",
+                "default": 80,
+                "description": "Fit code within this line limit"
+            },
+            "prettier.tabWidth": {
+                "type": "integer",
+                "default": 2,
+                "description": "Number of spaces it should use per tab"
+            },
+            "prettier.useFlowParser": {
+                "type": "boolean",
+                "default": false,
+                "description": "Use the flow parser instead of babylon"
+            },
+            "prettier.singleQuote": {
+                "type": "boolean",
+                "default": false,
+                "description": "If true, will use single instead of double quotes"
+            },
+            "prettier.trailingComma": {
+                "type": "boolean",
+                "default": false,
+                "description": "Controls the printing of trailing commas wherever possible"
+            },
+            "prettier.bracketSpacing": {
+                "type": "boolean",
+                "default": false,
+                "description": "Controls the printing of spaces inside array and objects"
             }
         }
     }

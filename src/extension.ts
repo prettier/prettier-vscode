@@ -13,6 +13,7 @@ export function activate(context: ExtensionContext) {
         }
 
         const config = workspace.getConfiguration('prettier');
+
         const formatOnSave = (config as any).formatOnSave;
         if (!formatOnSave) {
             return;
@@ -45,11 +46,11 @@ export function activate(context: ExtensionContext) {
                 selection.end.line,
                 selection.end.character
             );
-            
+
             editBuilder.replace(rangeObj, prettified);
         })
-        
-        
+
+
     });
 
     context.subscriptions.push(eventDisposable);
@@ -59,12 +60,27 @@ export function activate(context: ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
+const config = workspace.getConfiguration('prettier');
+
+const printWidth = (config as any).printWidth;
+const tabWidth = (config as any).tabWidth;
+const useFlowParser = (config as any).useFlowParser;
+const singleQuote = (config as any).singleQuote;
+const trailingComma = (config as any).trailingComma;
+const bracketSpacing = (config as any).bracketSpacing;
 
 const format = (document, selection = null) => {
     const text = document.getText(selection)
 
     try {
-        var transformed = prettier.format(text)
+        var transformed = prettier.format(text, {
+            printWidth: printWidth,
+            tabWidth: tabWidth,
+            useFlowParser: useFlowParser,
+            singleQuote: singleQuote,
+            trailingComma: trailingComma,
+            bracketSpacing: bracketSpacing
+        });
     } catch (e) {
         console.log("Error transforming using prettier:", e);
         transformed = text;
