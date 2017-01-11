@@ -3,6 +3,8 @@
 import { commands, ExtensionContext, Range, Position, TextEdit, window, workspace } from 'vscode';
 const prettier = require('prettier')
 
+console.log('test')
+
 export function activate(context: ExtensionContext) {
 
     console.log('activate vscode prettier');
