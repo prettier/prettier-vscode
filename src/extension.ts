@@ -5,6 +5,8 @@ const prettier = require('prettier')
 
 export function activate(context: ExtensionContext) {
 
+    console.log('activate vscode prettier');
+
     const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
 
