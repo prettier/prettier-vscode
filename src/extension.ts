@@ -4,7 +4,6 @@ import { commands, ExtensionContext, Range, Position, TextEdit, window, workspac
 const prettier = require('prettier')
 
 export function activate(context: ExtensionContext) {
-
     const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
 
@@ -13,7 +12,6 @@ export function activate(context: ExtensionContext) {
         }
 
         const config = workspace.getConfiguration('prettier');
-
         const formatOnSave = (config as any).formatOnSave;
         if (!formatOnSave) {
             return;
@@ -21,7 +19,6 @@ export function activate(context: ExtensionContext) {
 
         e.waitUntil(new Promise(resolve => {
             const prettified = format(document, null);
-
             const rangeObj = new Range(0, 0, document.lineCount, 0);
             const edit = TextEdit.replace(rangeObj, prettified);
 
@@ -36,7 +33,6 @@ export function activate(context: ExtensionContext) {
         }
 
         const selection = editor.selection;
-
         const prettified = format(editor.document, selection);
 
         editor.edit((editBuilder) => {
@@ -46,13 +42,9 @@ export function activate(context: ExtensionContext) {
                 selection.end.line,
                 selection.end.character
             );
-
             editBuilder.replace(rangeObj, prettified);
         })
-
-
     });
-
     context.subscriptions.push(eventDisposable);
     context.subscriptions.push(disposable);
 }
