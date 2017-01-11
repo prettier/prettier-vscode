@@ -33,6 +33,27 @@ Automatically format your Javascript file on save by enabling the *Format On Sav
 
 Format Javascript files when saving.
 
+#### printWidth (default: 80)
+
+Fit code within this line limit
+
+#### tabWidth (default: 2)
+
+Number of spaces it should use per tab
+
+#### useFlowParser (default: false)
+Use the flow parser instead of babylon
+
+#### singleQuote (default: false)
+If true, will use single instead of double quotes
+
+#### trailingComma (default: false)
+Controls the printing of trailing commas wherever possible
+
+#### bracketSpacing (default: true)
+Controls the printing of spaces inside array and objects
+
+
 ### Contribute
 
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
