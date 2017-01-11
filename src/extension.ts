@@ -13,6 +13,12 @@ interface PrettierConfig {
     formatOnSave: boolean
 }
 
+interface Rangeable {
+    end: Position,
+    isEmpty: boolean,
+    start: Position
+}
+
 export function activate(context: ExtensionContext) {
     const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
@@ -29,7 +35,7 @@ export function activate(context: ExtensionContext) {
 
         e.waitUntil(new Promise(resolve => {
             const prettified = format(document, null);
-            const rangeObj = new Range(0, 0, document.lineCount, 0);
+            const rangeObj = createFullDocumentRange(document)
             const edit = TextEdit.replace(rangeObj, prettified);
 
             resolve([edit]);
@@ -42,15 +48,21 @@ export function activate(context: ExtensionContext) {
             return;
         }
 
-        const selection = editor.selection;
-        const prettified = format(editor.document, selection);
+        const document = editor.document
+
+        let selectionOrRange : Rangeable = editor.selection;
+        if (selectionOrRange.isEmpty) {
+            selectionOrRange = createFullDocumentRange(document)
+        }
+
+        const prettified = format(document, selectionOrRange);
 
         editor.edit((editBuilder) => {
             const rangeObj = new Range(
-                selection.start.line,
-                selection.start.character,
-                selection.end.line,
-                selection.end.character
+                selectionOrRange.start.line,
+                selectionOrRange.start.character,
+                selectionOrRange.end.line,
+                selectionOrRange.end.character
             );
             editBuilder.replace(rangeObj, prettified);
         })
@@ -62,6 +74,8 @@ export function activate(context: ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
+
+const createFullDocumentRange = document => new Range(0, 0, document.lineCount, 0)
 
 const format = (document, selection = null) => {
     const text = document.getText(selection)
