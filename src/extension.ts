@@ -3,6 +3,16 @@
 import { commands, ExtensionContext, Range, Position, TextEdit, window, workspace } from 'vscode';
 const prettier = require('prettier')
 
+interface PrettierConfig {
+    printWidth: number,
+    tabWidth: number,
+    useFlowParser: boolean,
+    singleQuote: boolean,
+    trailingComma: boolean,
+    bracketSpacing: boolean,
+    formatOnSave: boolean
+}
+
 export function activate(context: ExtensionContext) {
     const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
         const document = e.document;
@@ -11,8 +21,8 @@ export function activate(context: ExtensionContext) {
             return;
         }
 
-        const config = workspace.getConfiguration('prettier');
-        const formatOnSave = (config as any).formatOnSave;
+        const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
+        const formatOnSave = config.formatOnSave;
         if (!formatOnSave) {
             return;
         }
@@ -52,26 +62,19 @@ export function activate(context: ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
-const config = workspace.getConfiguration('prettier');
-
-const printWidth = (config as any).printWidth;
-const tabWidth = (config as any).tabWidth;
-const useFlowParser = (config as any).useFlowParser;
-const singleQuote = (config as any).singleQuote;
-const trailingComma = (config as any).trailingComma;
-const bracketSpacing = (config as any).bracketSpacing;
 
 const format = (document, selection = null) => {
     const text = document.getText(selection)
+    const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
 
     try {
         var transformed = prettier.format(text, {
-            printWidth: printWidth,
-            tabWidth: tabWidth,
-            useFlowParser: useFlowParser,
-            singleQuote: singleQuote,
-            trailingComma: trailingComma,
-            bracketSpacing: bracketSpacing
+            printWidth: config.printWidth,
+            tabWidth: config.tabWidth,
+            useFlowParser: config.useFlowParser,
+            singleQuote: config.singleQuote,
+            trailingComma: config.trailingComma,
+            bracketSpacing: config.bracketSpacing
         });
     } catch (e) {
         console.log("Error transforming using prettier:", e);
