@@ -1,3 +1,4 @@
 - [Cole Kennedy](https://github.com/colek42)
+- [David Burrows](https://github.com/dburrows)
 - [Jon Wolfe](https://github.com/JonathanWolfe)
 - [Laurence Rowe](https://github.com/lrowe)
