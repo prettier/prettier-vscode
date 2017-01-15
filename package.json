@@ -26,6 +26,7 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
+    "onLanguage:javascriptreact",
     "onCommand:prettier.format"
   ],
   "main": "./out/src/extension",
