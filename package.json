@@ -92,6 +92,6 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "prettier": "0.0.7"
+    "prettier": "0.0.9"
   }
 }
