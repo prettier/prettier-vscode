@@ -36,6 +36,12 @@
         "title": "Prettier: Format Javascript"
       }
     ],
+    "keybindings": [{
+      "command": "prettier.format",
+      "key": "ctrl+p",
+      "mac": "cmd+p",
+      "when": "editorTextFocus"
+    }], 
     "configuration": {
         "type": "object",
         "title": "Prettier - JavaScript formatter configuration",
