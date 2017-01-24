@@ -72,7 +72,7 @@
             },
             "prettier.bracketSpacing": {
                 "type": "boolean",
-                "default": false,
+                "default": true,
                 "description": "Controls the printing of spaces inside array and objects"
             }
         }
