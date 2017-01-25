@@ -19,7 +19,7 @@
       "url": "https://github.com/esbenp/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.5.0"
+    "vscode": "^1.8.0"
   },
   "categories": [
     "Formatters"
