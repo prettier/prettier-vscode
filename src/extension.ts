@@ -20,12 +20,16 @@ interface Rangeable {
 }
 
 export function activate(context: ExtensionContext) {
-    const eventDisposable = (workspace as any).onWillSaveTextDocument(e => {
+    const eventDisposable = workspace.onWillSaveTextDocument(e => {
         const document = e.document;
 
         if (!document.isDirty) {
             return;
         }
+
+        if (document.languageId !== 'javascript') {
+            return;
+        };
 
         const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
         const formatOnSave = config.formatOnSave;
