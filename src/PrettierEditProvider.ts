@@ -49,4 +49,4 @@ class PrettierEditProvider implements DocumentRangeFormattingEditProvider {
 }
 
 export default PrettierEditProvider;
-export { PrettierConfig, format };
+export {PrettierConfig}

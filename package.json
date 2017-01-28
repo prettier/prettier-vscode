@@ -31,21 +31,10 @@
   ],
   "main": "./out/src/extension",
   "contributes": {
-    "commands": [
-      {
-        "command": "prettier.format",
-        "title": "Prettier: Format Javascript"
-      }
-    ],
     "configuration": {
         "type": "object",
         "title": "Prettier - JavaScript formatter configuration",
         "properties": {
-            "prettier.formatOnSave": {
-                "type": "boolean",
-                "default": false,
-                "description": "Format on save"
-            },
             "prettier.printWidth": {
                 "type": "integer",
                 "default": 80,
