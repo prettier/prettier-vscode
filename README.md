@@ -19,19 +19,17 @@ ext install prettier-vscode
 #### Using Command Palette (CMD + Shift + P)
 
 ```
+1. CMD + Shift + P -> Format Document
+OR
 1. Select the text you want to Prettify
-2. CMD + Shift + P -> Prettier
+2. CMD + Shift + P -> Format Selection
 ```
 
 #### Format On Save
 
-Automatically format your Javascript file on save by enabling the *Format On Save* package setting.  This is off by default.
+Respects `editor.formatOnSave` setting.
 
 ### Settings
-
-#### formatOnSave (default: false)
-
-Format Javascript files when saving.
 
 #### printWidth (default: 80)
 
@@ -42,7 +40,7 @@ Fit code within this line limit
 Number of spaces it should use per tab
 
 #### useFlowParser (default: false)
-Use the flow parser instead of babylon
+Use the flow parser instead of babylon. **Deprecated** use `parser: 'flow'` instead
 
 #### singleQuote (default: false)
 If true, will use single instead of double quotes
@@ -53,6 +51,8 @@ Controls the printing of trailing commas wherever possible
 #### bracketSpacing (default: true)
 Controls the printing of spaces inside array and objects
 
+#### parser (default: 'babylon')
+Which parser to use. Valid options are 'flow' and 'babylon'
 
 ### Contribute
 
