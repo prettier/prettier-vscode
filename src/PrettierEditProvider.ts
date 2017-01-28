@@ -13,15 +13,22 @@ const prettier = require('prettier');
 interface PrettierConfig {
     printWidth: number,
     tabWidth: number,
-    useFlowParser: boolean,
+    useFlowParser: boolean, // deprecated
     singleQuote: boolean,
     trailingComma: boolean,
     bracketSpacing: boolean,
-    formatOnSave: boolean
+    parser: string
 }
 
 function format(text: string): string {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
+    /*
+    handle deprecated parser option
+    */
+    let parser = config.parser;
+    if (!parser) { // unset config
+        parser = config.useFlowParser ? 'flow' : 'babylon';
+    }
     let transformed: string;
     try {
         return prettier.format(text, {
@@ -30,7 +37,8 @@ function format(text: string): string {
             useFlowParser: config.useFlowParser,
             singleQuote: config.singleQuote,
             trailingComma: config.trailingComma,
-            bracketSpacing: config.bracketSpacing
+            bracketSpacing: config.bracketSpacing,
+            parser: parser
         });
     } catch (e) {
         console.log("Error transforming using prettier:", e);
