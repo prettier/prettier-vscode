@@ -26,8 +26,7 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onCommand:prettier.format"
+    "onLanguage:javascriptreact"
   ],
   "main": "./out/src/extension",
   "contributes": {

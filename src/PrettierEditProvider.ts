@@ -34,7 +34,6 @@ function format(text: string): string {
         return prettier.format(text, {
             printWidth: config.printWidth,
             tabWidth: config.tabWidth,
-            useFlowParser: config.useFlowParser,
             singleQuote: config.singleQuote,
             trailingComma: config.trailingComma,
             bracketSpacing: config.bracketSpacing,
