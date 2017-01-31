@@ -1,6 +1,7 @@
 import {
     workspace,
     DocumentRangeFormattingEditProvider,
+    DocumentFormattingEditProvider,
     Range,
     TextDocument,
     FormattingOptions,
@@ -40,11 +41,19 @@ function format(text: string): string {
             parser: parser
         });
     } catch (e) {
-        console.log("Error transforming using prettier:", e);
+        console.log("Error transforming using prettier:", e.message);
         return text;
     }
 }
-class PrettierEditProvider implements DocumentRangeFormattingEditProvider {
+
+function fullDocumentRange(document: TextDocument): Range {
+    const lastLineId = document.lineCount - 1;
+    return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
+}
+
+class PrettierEditProvider implements
+    DocumentRangeFormattingEditProvider,
+    DocumentFormattingEditProvider {
     provideDocumentRangeFormattingEdits(
         document: TextDocument,
         range: Range,
@@ -53,7 +62,14 @@ class PrettierEditProvider implements DocumentRangeFormattingEditProvider {
     ): TextEdit[] {
         return [TextEdit.replace(range, format(document.getText(range)))];
     }
+    provideDocumentFormattingEdits(
+        document: TextDocument,
+        options: FormattingOptions,
+        token: CancellationToken
+    ): TextEdit[] {
+        return [TextEdit.replace(fullDocumentRange(document), format(document.getText()))];
+    }
 }
 
 export default PrettierEditProvider;
-export {PrettierConfig}
+export { PrettierConfig }
