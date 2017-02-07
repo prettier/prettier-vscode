@@ -49,7 +49,7 @@ If true, will use single instead of double quotes
 Controls the printing of trailing commas wherever possible
 
 #### bracketSpacing (default: true)
-Controls the printing of spaces inside array and objects
+Controls the printing of spaces inside object literals
 
 #### parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
