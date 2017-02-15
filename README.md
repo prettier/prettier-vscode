@@ -51,6 +51,9 @@ Controls the printing of trailing commas wherever possible
 #### bracketSpacing (default: true)
 Controls the printing of spaces inside object literals
 
+#### jsxBracketSameLine (default: false)
+If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
+
 #### parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
 

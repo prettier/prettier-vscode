@@ -18,6 +18,7 @@ interface PrettierConfig {
     singleQuote: boolean,
     trailingComma: boolean,
     bracketSpacing: boolean,
+    jsxBracketSameLine: boolean,
     parser: string
 }
 
@@ -38,6 +39,7 @@ function format(text: string): string {
             singleQuote: config.singleQuote,
             trailingComma: config.trailingComma,
             bracketSpacing: config.bracketSpacing,
+            jsxBracketSameLine: config.jsxBracketSameLine,
             parser: parser
         });
     } catch (e) {
