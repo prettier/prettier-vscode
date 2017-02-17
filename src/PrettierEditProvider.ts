@@ -11,27 +11,29 @@ import {
     Selection,
     Position
 } from 'vscode';
-
-const prettier = require('prettier');
+import requirePrettier from './requirePrettier';
 
 type ParserOption = 'babylon' | 'flow'
 type TrailingCommaOption = 'none' | 'es5' | 'all' | boolean /* deprecated boolean*/
 type ShowAction = "Show";
 interface PrettierConfig {
-    printWidth: number,
-    tabWidth: number,
-    useFlowParser: boolean, // deprecated
-    singleQuote: boolean,
-    trailingComma: TrailingCommaOption,
-    bracketSpacing: boolean,
-    jsxBracketSameLine: boolean,
-    parser: ParserOption
+    printWidth: number;
+    tabWidth: number;
+    useFlowParser: boolean; // deprecated
+    singleQuote: boolean;
+    trailingComma: TrailingCommaOption;
+    bracketSpacing: boolean;
+    jsxBracketSameLine: boolean;
+    parser: ParserOption;
 }
+
 /**
  * Format the given text with prettier with user's configuration.
  * @param text Text to format
+ * @param path formatting file's path
+ * @returns {string} formatted text 
  */
-function format(text: string): string {
+function format(text: string, path: string): string {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
     /*
     handle deprecated parser option
@@ -49,6 +51,8 @@ function format(text: string): string {
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
+    const prettier = requirePrettier(path);
+
     return prettier.format(text, {
         printWidth: config.printWidth,
         tabWidth: config.tabWidth,
@@ -75,7 +79,10 @@ class PrettierEditProvider implements
         token: CancellationToken
     ): TextEdit[] {
         try {
-            return [TextEdit.replace(range, format(document.getText(range)))];
+            return [TextEdit.replace(
+                range,
+                format(document.getText(range), document.fileName)
+            )];
         } catch (e) {
             let errorPosition
             if (e.loc) {
@@ -94,7 +101,10 @@ class PrettierEditProvider implements
         token: CancellationToken
     ): TextEdit[] {
         try {
-            return [TextEdit.replace(fullDocumentRange(document), format(document.getText()))];
+            return [TextEdit.replace(
+                fullDocumentRange(document),
+                format(document.getText(), document.fileName)
+            )];
         } catch (e) {
             let errorPosition;
             if (e.loc) {
