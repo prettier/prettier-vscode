@@ -27,7 +27,7 @@ OR
 
 #### Format On Save
 
-Respects `editor.formatOnSave` setting.
+Respects `editor.formatOnSave` setting. If you want to turn this on, but not to run in projects that do not have prettier installed, use `prettier.onlyFormatWhenInstalled: true`.
 
 ### Settings
 
