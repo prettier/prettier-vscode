@@ -1,6 +1,6 @@
 # Prettier formatter for Visual Studio Code
 
-VS Code package to format your Javascript using [Prettier](https://github.com/jlongster/prettier).
+VS Code package to format your Javascript using [Prettier](https://github.com/prettier/prettier).
 
 ### Installation
 
