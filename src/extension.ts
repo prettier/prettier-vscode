@@ -9,12 +9,19 @@ import EditProvider, { PrettierConfig } from './PrettierEditProvider';
 
 const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact'];
 
-export function activate(context: ExtensionContext) {
+function checkConfig() {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
-    const editProvider = new EditProvider()
     if (config.useFlowParser) {
-        window.showWarningMessage("Option 'useFlowParser' has been deprecated. Use 'parser: \"flow\"' instead.")
+        window.showWarningMessage("Option 'useFlowParser' has been deprecated. Use 'parser: \"flow\"' instead.");
     }
+    if (typeof config.trailingComma === 'boolean') {
+        window.showWarningMessage("Option 'trailingComma' as a boolean value has been deprecated. Use 'none', 'es5' or 'all' instead.");
+    }
+}
+export function activate(context: ExtensionContext) {
+    const editProvider = new EditProvider();
+    checkConfig();
+
     context.subscriptions.push(
         languages.registerDocumentRangeFormattingEditProvider(VALID_LANG, editProvider)
     );

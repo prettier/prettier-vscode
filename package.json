@@ -55,8 +55,13 @@
           "description": "If true, will use single instead of double quotes"
         },
         "prettier.trailingComma": {
-          "type": "boolean",
-          "default": false,
+          "type": "string",
+          "enum": [
+            "none",
+            "es5",
+            "all"
+          ],
+          "default": "none",
           "description": "Controls the printing of trailing commas wherever possible"
         },
         "prettier.bracketSpacing": {
