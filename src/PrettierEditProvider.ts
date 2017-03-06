@@ -11,14 +11,18 @@ import {
 
 const prettier = require('prettier');
 
+type ParserOption = 'babylon' | 'flow'
+type TrailingCommaOption = 'none' | 'es5' | 'all' | boolean /* deprecated boolean*/
+
 interface PrettierConfig {
     printWidth: number,
     tabWidth: number,
     useFlowParser: boolean, // deprecated
     singleQuote: boolean,
-    trailingComma: boolean,
+    trailingComma: TrailingCommaOption,
     bracketSpacing: boolean,
-    parser: string
+    jsxBracketSameLine: boolean,
+    parser: ParserOption
 }
 
 function format(text: string): string {
@@ -30,14 +34,24 @@ function format(text: string): string {
     if (!parser) { // unset config
         parser = config.useFlowParser ? 'flow' : 'babylon';
     }
+    /*
+    handle trailingComma changes boolean -> string
+    */
+    let trailingComma = config.trailingComma;
+    if (trailingComma === true) {
+        trailingComma = 'es5';
+    } else if (trailingComma === false) {
+        trailingComma = 'none';
+    }
     let transformed: string;
     try {
         return prettier.format(text, {
             printWidth: config.printWidth,
             tabWidth: config.tabWidth,
             singleQuote: config.singleQuote,
-            trailingComma: config.trailingComma,
+            trailingComma,
             bracketSpacing: config.bracketSpacing,
+            jsxBracketSameLine: config.jsxBracketSameLine,
             parser: parser
         });
     } catch (e) {
