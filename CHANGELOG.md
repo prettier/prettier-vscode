@@ -4,6 +4,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+
+## [0.10.0]
 - New setting `jsxBracketSameLine`. (prettier 0.17.0)
 - Changed `trailingComma` setting `['none', 'es5', 'all']` (prettier 0.19.0)
 
