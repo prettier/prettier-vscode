@@ -4,6 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+- Resolve 'prettier' against formatted file. Nearest upward *node_modules/prettier*
 
 ## [0.10.0]
 - New setting `jsxBracketSameLine`. (prettier 0.17.0)
