@@ -34,6 +34,11 @@
       "type": "object",
       "title": "Prettier - JavaScript formatter configuration",
       "properties": {
+        "prettier.onlyFormatWhenInstalled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only format when 'prettier' is included in the local package.json (for use with editor.formatOnSave)"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
