@@ -55,14 +55,24 @@
           "description": "If true, will use single instead of double quotes"
         },
         "prettier.trailingComma": {
-          "type": "boolean",
-          "default": true,
+          "type": "string",
+          "enum": [
+            "none",
+            "es5",
+            "all"
+          ],
+          "default": "es5",
           "description": "Controls the printing of trailing commas wherever possible"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "Controls the printing of spaces inside array and objects"
+          "description": "Controls the printing of spaces inside object literals"
+        },
+        "prettier.jsxBracketSameLine": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
         },
         "prettier.parser": {
           "type": "string",
@@ -95,6 +105,6 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "prettier": "0.17.0"
+    "prettier": "0.22.0"
   }
 }

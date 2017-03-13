@@ -46,11 +46,17 @@ Use the flow parser instead of babylon. **Deprecated** use `parser: 'flow'` inst
 #### singleQuote (default: true)
 If true, will use single instead of double quotes
 
-#### trailingComma (default: true)
-Controls the printing of trailing commas wherever possible
+#### trailingComma (default: 'es5')
+Controls the printing of trailing commas wherever possible. Valid options:
+ - "none" - No trailing commas
+ - "es5"  - Trailing commas where valid in ES5 (objects, arrays, etc)
+ - "all"  - Trailing commas wherever possible (function arguments)
 
 #### bracketSpacing (default: true)
 Controls the printing of spaces inside object literals
+
+#### jsxBracketSameLine (default: false)
+If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
 
 #### parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
