@@ -1,10 +1,10 @@
 {
-  "name": "prettier-vscode",
+  "name": "prettier-vscode-with-tabs",
   "displayName": "Prettier - JavaScript formatter",
-  "description": "VS Code plugin for jlongster/prettier",
-  "version": "0.9.0",
-  "publisher": "esbenp",
-  "author": "Esben Petersen <@esbenp>",
+  "description": "VS Code plugin for jlongster/prettier with tabs support",
+  "version": "1.0.3",
+  "publisher": "passionkind",
+  "author": "Bastian Kistner <@passionkind>",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
@@ -12,11 +12,11 @@
   "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/esbenp/prettier-vscode.git"
+    "url": "https://github.com/passionkind/prettier-vscode-with-tabs.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/esbenp/prettier-vscode/issues"
+    "url": "https://github.com/passionkind/prettier-vscode-with-tabs/issues"
   },
   "engines": {
     "vscode": "^1.5.0"
@@ -36,12 +36,12 @@
       "properties": {
         "prettier.printWidth": {
           "type": "integer",
-          "default": 80,
+          "default": 120,
           "description": "Fit code within this line limit"
         },
         "prettier.tabWidth": {
           "type": "integer",
-          "default": 2,
+          "default": 4,
           "description": "Number of spaces it should use per tab"
         },
         "prettier.useFlowParser": {
@@ -51,12 +51,12 @@
         },
         "prettier.singleQuote": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "If true, will use single instead of double quotes"
         },
         "prettier.trailingComma": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Controls the printing of trailing commas wherever possible"
         },
         "prettier.bracketSpacing": {
@@ -72,6 +72,11 @@
           ],
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
+        },
+        "prettier.useTabs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use tabs instead of spaces"
         }
       }
     }

@@ -9,7 +9,7 @@ import {
     TextEdit
 } from 'vscode';
 
-const prettier = require('prettier');
+const prettier = require('prettier-with-tabs');
 
 interface PrettierConfig {
     printWidth: number,
@@ -18,6 +18,7 @@ interface PrettierConfig {
     singleQuote: boolean,
     trailingComma: boolean,
     bracketSpacing: boolean,
+    useTabs: boolean,
     parser: string
 }
 
@@ -38,6 +39,7 @@ function format(text: string): string {
             singleQuote: config.singleQuote,
             trailingComma: config.trailingComma,
             bracketSpacing: config.bracketSpacing,
+            useTabs: config.useTabs,
             parser: parser
         });
     } catch (e) {
