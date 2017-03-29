@@ -26,7 +26,8 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:javascriptreact"
+    "onLanguage:javascriptreact",
+    "onLanguage:jsx"
   ],
   "main": "./out/src/extension",
   "contributes": {
