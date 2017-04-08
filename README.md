@@ -60,6 +60,9 @@ If true, puts the `>` of a multi-line jsx element at the end of the last line in
 #### parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
 
+### Prettier resolution
+This extension will use prettier from your project's local dependencies.
+
 ### Contribute
 
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
