@@ -30,7 +30,9 @@ function requirePrettier(fspath: string): Prettier {
     const prettierPath = readFromPkg(fspath);
     if (prettierPath !== void 0) {
         try {
-            return require(prettierPath);
+            const resolvedPrettier: Prettier = require(prettierPath);
+            console.log("Using prettier", resolvedPrettier.version, "from", prettierPath);
+            return resolvedPrettier;
         } catch (e) {
             console.error(e.message);
         }
