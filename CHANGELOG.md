@@ -2,8 +2,10 @@
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
+- Local prettier has to be *explicitely* installed (dependencies or devDependencies)
+
+## [0.11.0]
 - Resolve 'prettier' against formatted file. Nearest upward *node_modules/prettier*
 
 ## [0.10.0]
