@@ -83,6 +83,11 @@
           ],
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
+        },
+        "prettier.semi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to add a semicolon at the end of every line"
         }
       }
     }
