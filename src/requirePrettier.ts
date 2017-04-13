@@ -13,7 +13,10 @@ interface Prettier {
  */
 function readFromPkg(fspath: string): string | undefined {
     const res = readPkgUp.sync({ cwd: fspath })
-    if (res.pkg && (res.pkg.dependencies.prettier || res.pkg.devDependencies.prettier)) {
+    if (res.pkg && (
+        (res.pkg.dependencies && res.pkg.dependencies.prettier)
+        || (res.pkg.devDependencies && res.pkg.devDependencies.prettier)
+    )) {
         return path.resolve(res.path, '..', 'node_modules/prettier');
     } else if (res.path) {
         return readFromPkg(path.resolve(path.dirname(res.path), '..'));
