@@ -83,6 +83,16 @@
           ],
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
+        },
+        "prettier.semi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to add a semicolon at the end of every line"
+        },
+        "prettier.useTabs": {
+          "type": "boolean",
+          "default": false,
+          "description": "Indent lines with tabs instead of spaces"
         }
       }
     }
@@ -101,7 +111,7 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "prettier": "0.22.0",
+    "prettier": "1.1.0",
     "read-pkg-up": "2.0.0"
   }
 }

@@ -60,6 +60,12 @@ If true, puts the `>` of a multi-line jsx element at the end of the last line in
 #### prettier.parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
 
+#### prettier.semi (default: 'true')
+If false, does not print semicolons, except at the beginning of lines which may need them.
+
+#### prettier.useTabs (default: 'false')
+If true, indents lines with tabs instead of spaces.
+
 ### Prettier resolution
 This extension will use prettier from your project's local dependencies.
 
