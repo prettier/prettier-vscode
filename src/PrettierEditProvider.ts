@@ -25,6 +25,7 @@ interface PrettierConfig {
     bracketSpacing: boolean;
     jsxBracketSameLine: boolean;
     parser: ParserOption;
+    useTabs: boolean;
 }
 
 /**
@@ -60,7 +61,8 @@ function format(text: string, path: string): string {
         trailingComma,
         bracketSpacing: config.bracketSpacing,
         jsxBracketSameLine: config.jsxBracketSameLine,
-        parser: parser
+        parser: parser,
+        useTabs: config.useTabs,
     });
 }
 
