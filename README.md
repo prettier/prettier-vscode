@@ -60,6 +60,9 @@ If true, puts the `>` of a multi-line jsx element at the end of the last line in
 #### prettier.parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
 
+#### prettier.useTabs (default: false)
+If true, indent lines with tabs
+
 ### Prettier resolution
 This extension will use prettier from your project's local dependencies.
 

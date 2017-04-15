@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - JavaScript formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -88,6 +88,11 @@
           "type": "boolean",
           "default": true,
           "description": "Whether to add a semicolon at the end of every line"
+        },
+        "prettier.useTabs": {
+          "type": "boolean",
+          "default": false,
+          "description": "indent lines with tabs"
         }
       }
     }
@@ -106,7 +111,7 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "prettier": "0.22.0",
+    "prettier": "1.1.0",
     "read-pkg-up": "2.0.0"
   }
 }
