@@ -3,7 +3,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.14.0]
 - Bundled with prettier 1.1.0
 - New setting `useTabs`. (prettier 1.0)
 - New setting `semi`. (prettier 1.0)
