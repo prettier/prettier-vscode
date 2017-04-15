@@ -83,6 +83,11 @@
           ],
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
+        },
+        "prettier.useTabs": {
+          "type": "boolean",
+          "default": false,
+          "description": "indent lines with tabs"
         }
       }
     }
