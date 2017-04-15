@@ -92,7 +92,7 @@
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
-          "description": "indent lines with tabs"
+          "description": "Indent lines with tabs"
         }
       }
     }
