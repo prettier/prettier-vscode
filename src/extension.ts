@@ -7,7 +7,7 @@ import {
 } from 'vscode';
 import EditProvider, { PrettierConfig } from './PrettierEditProvider';
 
-const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact'];
+const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact', 'jsx'];
 
 function checkConfig() {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
