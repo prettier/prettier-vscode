@@ -60,7 +60,7 @@ If true, puts the `>` of a multi-line jsx element at the end of the last line in
 #### prettier.parser (default: 'babylon')
 Which parser to use. Valid options are 'flow' and 'babylon'
 
-#### prettier.semi (default: 'true)
+#### prettier.semi (default: true)
 Whether to add a semicolon at the end of every line (semi: true),
 or only at the beginning of lines that may introduce ASI failures (semi: false)
 
@@ -68,7 +68,7 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 If true, indent lines with tabs
 
 ### Prettier resolution
-This extension will use prettier from your project's local dependencies.
+This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 
 ### Contribute
 
