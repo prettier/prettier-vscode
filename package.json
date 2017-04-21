@@ -111,7 +111,7 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "prettier": "1.1.0",
+    "prettier": "1.2.2",
     "read-pkg-up": "2.0.0"
   }
 }
