@@ -12,7 +12,7 @@ interface Prettier {
  * @returns {string} resolved path to prettier
  */
 function readFromPkg(fspath: string): string | undefined {
-    const res = readPkgUp.sync({ cwd: fspath })
+    const res = readPkgUp.sync({ cwd: fspath, normalize: false });
     if (res.pkg && (
         (res.pkg.dependencies && res.pkg.dependencies.prettier)
         || (res.pkg.devDependencies && res.pkg.devDependencies.prettier)
