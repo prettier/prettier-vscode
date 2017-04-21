@@ -29,6 +29,7 @@
     "onLanguage:javascriptreact",
     "onLanguage:jsx"
   ],
+  "icon": "prettier-icon-dark.png",
   "main": "./out/src/extension",
   "contributes": {
     "configuration": {
