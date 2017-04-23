@@ -71,7 +71,7 @@ interface PrettierEslintOptions {
     /**
      * The level for the logs
      */
-    loglevel?: LogLevel;
+    logLevel?: LogLevel;
     /**
      * Run Prettier Last. Default false
      */
