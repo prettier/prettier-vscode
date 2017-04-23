@@ -58,7 +58,7 @@ function format(text: string, path: string): string {
         useTabs: config.useTabs,
     };
     if (config.eslintIntegration) {
-        const prettierEslint = requireLocalPkg(path, 'prettier-eslint') as PrettierEslintFormat;
+        const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
         return prettierEslint({
             text,
             filePath: path,
