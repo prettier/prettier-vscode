@@ -11,32 +11,25 @@ import {
     Selection,
     Position
 } from 'vscode';
-import requirePrettier from './requirePrettier';
+import { requireLocalPkg } from './requirePkg';
 
-type ParserOption = 'babylon' | 'flow'
-type TrailingCommaOption = 'none' | 'es5' | 'all' | boolean /* deprecated boolean*/
+import {
+    PrettierVSCodeConfig,
+    PrettierConfig,
+    Prettier,
+    PrettierEslintFormat
+} from './types.d';
 type ShowAction = "Show";
-interface PrettierConfig {
-    printWidth: number;
-    tabWidth: number;
-    useFlowParser: boolean; // deprecated
-    singleQuote: boolean;
-    trailingComma: TrailingCommaOption;
-    bracketSpacing: boolean;
-    jsxBracketSameLine: boolean;
-    parser: ParserOption;
-    semi: boolean;
-    useTabs: boolean;
-}
+
 
 /**
- * Format the given text with prettier with user's configuration.
+ * Format the given text with user's configuration.
  * @param text Text to format
  * @param path formatting file's path
  * @returns {string} formatted text 
  */
 function format(text: string, path: string): string {
-    const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
+    const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
     /*
     handle deprecated parser option
     */
@@ -53,9 +46,7 @@ function format(text: string, path: string): string {
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
-    const prettier = requirePrettier(path);
-
-    return prettier.format(text, {
+    const prettierOptions = {
         printWidth: config.printWidth,
         tabWidth: config.tabWidth,
         singleQuote: config.singleQuote,
@@ -65,7 +56,18 @@ function format(text: string, path: string): string {
         parser: parser,
         semi: config.semi,
         useTabs: config.useTabs,
-    });
+    };
+    if (config.eslintIntegration) {
+        const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+        return prettierEslint({
+            text,
+            filePath: path,
+            fallbackPrettierOptions: prettierOptions
+        });
+    }
+
+    const prettier = requireLocalPkg(path, 'prettier') as Prettier;
+    return prettier.format(text, prettierOptions);
 }
 
 function fullDocumentRange(document: TextDocument): Range {
@@ -88,7 +90,7 @@ class PrettierEditProvider implements
                 format(document.getText(range), document.fileName)
             )];
         } catch (e) {
-            let errorPosition
+            let errorPosition;
             if (e.loc) {
                 let charPos = e.loc.column;
                 if (e.loc.line === 1) { // start selection range
@@ -130,25 +132,25 @@ class PrettierEditProvider implements
  */
 function handleError(document: TextDocument, message: string, errorPosition: Position) {
     if (errorPosition) {
-        window.showErrorMessage(message, "Show").then(function onAction(action?: ShowAction) {
-            if (action === "Show") {
-                const rangeError = new Range(errorPosition, errorPosition);
-                /*
-                Show text document which has errored.
-                Format on save case. (save all)
-                */
-                window.showTextDocument(document).then(
-                    (editor) => {
-                        // move cursor to error position and show it.
-                        editor.selection = new Selection(rangeError.start, rangeError.end);
-                        editor.revealRange(rangeError);
-                    }
-                );
-            }
-        });
+        window.showErrorMessage(message, "Show")
+            .then(function onAction(action?: ShowAction) {
+                if (action === "Show") {
+                    const rangeError = new Range(errorPosition, errorPosition);
+                    /*
+                    Show text document which has errored.
+                    Format on save case. (save all)
+                    */
+                    window.showTextDocument(document).then(
+                        (editor) => {
+                            // move cursor to error position and show it.
+                            editor.selection = new Selection(rangeError.start, rangeError.end);
+                            editor.revealRange(rangeError);
+                        }
+                    );
+                }
+            });
     } else {
         window.showErrorMessage(message);
     }
 }
 export default PrettierEditProvider;
-export { PrettierConfig }

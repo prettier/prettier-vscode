@@ -35,6 +35,11 @@
       "type": "object",
       "title": "Prettier - JavaScript formatter configuration",
       "properties": {
+        "prettier.eslintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
@@ -112,6 +117,7 @@
   },
   "dependencies": {
     "prettier": "1.2.2",
+    "prettier-eslint": "6.1.0",
     "read-pkg-up": "2.0.0"
   }
 }
