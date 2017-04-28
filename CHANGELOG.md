@@ -2,6 +2,8 @@
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [0.16.0]
+- New setting eslintIntegration. Use `prettier-eslint` under the hood.
 
 ## [0.14.0]
 - Bundled with prettier 1.1.0
