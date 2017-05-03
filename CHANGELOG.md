@@ -2,6 +2,11 @@
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [0.17.0]
+ - Bump dependencies.
+ - `jsx` language support in addition to `javascript` and `javascriptreact`.
+
 ## [0.16.0]
 - New setting eslintIntegration. Use `prettier-eslint` under the hood.
 
