@@ -9,7 +9,7 @@ import EditProvider from './PrettierEditProvider';
 
 import { PrettierVSCodeConfig } from './types.d';
 
-const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact'];
+const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact', 'jsx'];
 
 function checkConfig() {
     const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
