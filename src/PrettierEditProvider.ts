@@ -107,9 +107,28 @@ class PrettierEditProvider implements
         token: CancellationToken
     ): TextEdit[] {
         try {
+            const text = document.getText();
+            
+            if (document.fileName.slice(0, -4) === '.vue') {
+                const start = text.indexOf('<script>');
+                if (start !== -1) {
+                    const end = text.indexOf('</script>');
+                    if (end !== -1) {
+                        const startPos = document.positionAt(start + 8); // 8 = length of '<script>'
+                        const endPos = document.positionAt(end - 1); // -1 = character before '</script>'
+                        const range = new Range(startPos, endPos);
+
+                        return [TextEdit.replace(
+                            range,
+                            format(document.getText(range), document.fileName)
+                        )];                        
+                    }
+                }
+            }
+            
             return [TextEdit.replace(
                 fullDocumentRange(document),
-                format(document.getText(), document.fileName)
+                format(text, document.fileName)
             )];
         } catch (e) {
             let errorPosition;
