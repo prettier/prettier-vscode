@@ -10,23 +10,25 @@ import {
     TextEdit,
     Selection,
     Position
-} from 'vscode';
-import { requireLocalPkg } from './requirePkg';
+} from "vscode";
+
+import { requireLocalPkg } from "./requirePkg";
 
 import {
     PrettierVSCodeConfig,
     PrettierConfig,
     Prettier,
     PrettierEslintFormat
-} from './types.d';
+} from "./types.d";
 type ShowAction = "Show";
 
+import { extname } from "path";
 
 /**
  * Format the given text with user's configuration.
  * @param text Text to format
  * @param path formatting file's path
- * @returns {string} formatted text 
+ * @returns {string} formatted text
  */
 function format(text: string, path: string, customOptions: object): string {
     const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
@@ -34,17 +36,21 @@ function format(text: string, path: string, customOptions: object): string {
     handle deprecated parser option
     */
     let parser = config.parser;
-    if (!parser) { // unset config
-        parser = config.useFlowParser ? 'flow' : 'babylon';
+    if (!parser) {
+        // unset config
+        parser = config.useFlowParser ? "flow" : "babylon";
+    }
+    if (extname(path).startsWith(".ts")) {
+        parser = "typescript";
     }
     /*
     handle trailingComma changes boolean -> string
     */
     let trailingComma = config.trailingComma;
     if (trailingComma === true) {
-        trailingComma = 'es5';
+        trailingComma = "es5";
     } else if (trailingComma === false) {
-        trailingComma = 'none';
+        trailingComma = "none";
     }
     const prettierOptions = Object.assign({
         printWidth: config.printWidth,
@@ -57,16 +63,16 @@ function format(text: string, path: string, customOptions: object): string {
         semi: config.semi,
         useTabs: config.useTabs,
     }, customOptions);
+
     if (config.eslintIntegration) {
-        const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+        const prettierEslint = require("prettier-eslint") as PrettierEslintFormat;
         return prettierEslint({
             text,
             filePath: path,
             fallbackPrettierOptions: prettierOptions
         });
     }
-
-    const prettier = requireLocalPkg(path, 'prettier') as Prettier;
+    const prettier = requireLocalPkg(path, "prettier") as Prettier;
     return prettier.format(text, prettierOptions);
 }
 
@@ -75,9 +81,8 @@ function fullDocumentRange(document: TextDocument): Range {
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
 }
 
-class PrettierEditProvider implements
-    DocumentRangeFormattingEditProvider,
-    DocumentFormattingEditProvider {
+class PrettierEditProvider
+    implements DocumentRangeFormattingEditProvider, DocumentFormattingEditProvider {
     provideDocumentRangeFormattingEdits(
         document: TextDocument,
         range: Range,
@@ -96,10 +101,14 @@ class PrettierEditProvider implements
             let errorPosition;
             if (e.loc) {
                 let charPos = e.loc.column;
-                if (e.loc.line === 1) { // start selection range
+                if (e.loc.line === 1) {
+                    // start selection range
                     charPos = range.start.character + e.loc.column;
                 }
-                errorPosition = new Position(e.loc.line - 1 + range.start.line, charPos);
+                errorPosition = new Position(
+                    e.loc.line - 1 + range.start.line,
+                    charPos
+                );
             }
             handleError(document, e.message, errorPosition);
         }
@@ -125,17 +134,22 @@ class PrettierEditProvider implements
 }
 /**
  * Handle errors for a given text document.
- * Steps: 
+ * Steps:
  *  - Show the error message.
  *  - Scroll to the error position in given document if asked for it.
- * 
+ *
  * @param document Document which raised the error
  * @param message Error message
  * @param errorPosition Position where the error occured. Relative to document.
  */
-function handleError(document: TextDocument, message: string, errorPosition: Position) {
+function handleError(
+    document: TextDocument,
+    message: string,
+    errorPosition: Position
+) {
     if (errorPosition) {
-        window.showErrorMessage(message, "Show")
+        window
+            .showErrorMessage(message, "Show")
             .then(function onAction(action?: ShowAction) {
                 if (action === "Show") {
                     const rangeError = new Range(errorPosition, errorPosition);
@@ -143,13 +157,14 @@ function handleError(document: TextDocument, message: string, errorPosition: Pos
                     Show text document which has errored.
                     Format on save case. (save all)
                     */
-                    window.showTextDocument(document).then(
-                        (editor) => {
-                            // move cursor to error position and show it.
-                            editor.selection = new Selection(rangeError.start, rangeError.end);
-                            editor.revealRange(rangeError);
-                        }
-                    );
+                    window.showTextDocument(document).then(editor => {
+                        // move cursor to error position and show it.
+                        editor.selection = new Selection(
+                            rangeError.start,
+                            rangeError.end
+                        );
+                        editor.revealRange(rangeError);
+                    });
                 }
             });
     } else {
