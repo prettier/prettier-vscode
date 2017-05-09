@@ -3,27 +3,28 @@ import {
     ExtensionContext,
     DocumentSelector,
     window,
-    workspace
-} from "vscode";
-import EditProvider from "./PrettierEditProvider";
+    workspace,
+} from 'vscode';
+import EditProvider from './PrettierEditProvider';
 
-import { PrettierVSCodeConfig } from "./types.d";
+import { PrettierVSCodeConfig } from './types.d';
 
-const VALID_JS_LANG = ["javascript", "javascriptreact", "jsx"];
-
-const VALID_TS_LANG = ["typescript", "typescriptreact"];
+const VALID_LANG = {
+    js: ['javascript', 'javascriptreact', 'jsx'],
+    ts: ['typescript', 'typescriptreact'],
+};
 
 function checkConfig(): PrettierVSCodeConfig {
     const config: PrettierVSCodeConfig = workspace.getConfiguration(
-        "prettier"
+        'prettier'
     ) as any;
     if (config.useFlowParser) {
         window.showWarningMessage(
             "Option 'useFlowParser' has been deprecated. " +
-                "Use 'parser: \"flow\"' instead."
+                'Use \'parser: "flow"\' instead.'
         );
     }
-    if (typeof config.trailingComma === "boolean") {
+    if (typeof config.trailingComma === 'boolean') {
         window.showWarningMessage(
             "Option 'trailingComma' as a boolean value has been deprecated. " +
                 "Use 'none', 'es5' or 'all' instead."
@@ -35,9 +36,9 @@ function checkConfig(): PrettierVSCodeConfig {
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
     const config = checkConfig();
-    const languageSelector = config.runOnTypeScript
-        ? [...VALID_JS_LANG, ...VALID_TS_LANG]
-        : VALID_JS_LANG;
+    const languageSelector = config && config.runOnTypeScript
+        ? [...VALID_LANG.js, ...VALID_LANG.ts]
+        : VALID_LANG.js;
 
     context.subscriptions.push(
         languages.registerDocumentRangeFormattingEditProvider(

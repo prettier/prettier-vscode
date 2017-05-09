@@ -9,20 +9,19 @@ import {
     CancellationToken,
     TextEdit,
     Selection,
-    Position
-} from "vscode";
+    Position,
+} from 'vscode';
 
-import { requireLocalPkg } from "./requirePkg";
+import { requireLocalPkg } from './requirePkg';
 
 import {
     PrettierVSCodeConfig,
     PrettierConfig,
     Prettier,
-    PrettierEslintFormat
-} from "./types.d";
-type ShowAction = "Show";
+    PrettierEslintFormat,
+} from './types.d';
 
-import { extname } from "path";
+type ShowAction = 'Show';
 
 /**
  * Format the given text with user's configuration.
@@ -30,7 +29,7 @@ import { extname } from "path";
  * @param path formatting file's path
  * @returns {string} formatted text
  */
-function format(text: string, path: string, customOptions: object): string {
+function format(text: string, { fileName, languageId}: TextDocument, customOptions: object): string {
     const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
     /*
     handle deprecated parser option
@@ -38,19 +37,19 @@ function format(text: string, path: string, customOptions: object): string {
     let parser = config.parser;
     if (!parser) {
         // unset config
-        parser = config.useFlowParser ? "flow" : "babylon";
+        parser = config.useFlowParser ? 'flow' : 'babylon';
     }
-    if (extname(path).startsWith(".ts")) {
-        parser = "typescript";
+    if (languageId === 'typescript' || languageId === 'typescriptreact') {
+        parser = 'typescript';
     }
     /*
     handle trailingComma changes boolean -> string
     */
     let trailingComma = config.trailingComma;
     if (trailingComma === true) {
-        trailingComma = "es5";
+        trailingComma = 'es5';
     } else if (trailingComma === false) {
-        trailingComma = "none";
+        trailingComma = 'none';
     }
     const prettierOptions = Object.assign({
         printWidth: config.printWidth,
@@ -65,14 +64,14 @@ function format(text: string, path: string, customOptions: object): string {
     }, customOptions);
 
     if (config.eslintIntegration) {
-        const prettierEslint = require("prettier-eslint") as PrettierEslintFormat;
+        const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
         return prettierEslint({
             text,
-            filePath: path,
-            fallbackPrettierOptions: prettierOptions
+            filePath: fileName,
+            fallbackPrettierOptions: prettierOptions,
         });
     }
-    const prettier = requireLocalPkg(path, "prettier") as Prettier;
+    const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
     return prettier.format(text, prettierOptions);
 }
 
@@ -92,7 +91,7 @@ class PrettierEditProvider
         try {
             return [TextEdit.replace(
                 fullDocumentRange(document),
-                format(document.getText(), document.fileName, {
+                format(document.getText(), document, {
                   rangeStart: document.offsetAt(range.start),
                   rangeEnd: document.offsetAt(range.end)
                 })
@@ -121,7 +120,7 @@ class PrettierEditProvider
         try {
             return [TextEdit.replace(
                 fullDocumentRange(document),
-                format(document.getText(), document.fileName, {})
+                format(document.getText(), document, {})
             )];
         } catch (e) {
             let errorPosition;
@@ -149,9 +148,9 @@ function handleError(
 ) {
     if (errorPosition) {
         window
-            .showErrorMessage(message, "Show")
+            .showErrorMessage(message, 'Show')
             .then(function onAction(action?: ShowAction) {
-                if (action === "Show") {
+                if (action === 'Show') {
                     const rangeError = new Range(errorPosition, errorPosition);
                     /*
                     Show text document which has errored.

@@ -1,9 +1,10 @@
-type ParserOption = "babylon" | "flow" | "typescript";
+type ParserOption = 'babylon' | 'flow' | 'typescript';
 type TrailingCommaOption =
-    | "none"
-    | "es5"
-    | "all"
+    | 'none'
+    | 'es5'
+    | 'all'
     | boolean; /* deprecated boolean*/
+
 /**
  * Prettier configuration
  */
@@ -34,6 +35,7 @@ interface ExtensionConfig {
      */
     runOnTypeScript: boolean;
 }
+
 /**
  * Configuration for prettier-vscode
  */
@@ -42,7 +44,7 @@ export interface Prettier {
     format: (string, PrettierConfig?) => string;
     readonly version: string;
 }
-type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
+type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
 interface PrettierEslintOptions {
     /**
      * The path of the file being formatted
@@ -86,6 +88,7 @@ interface PrettierEslintOptions {
      */
     prettierLast?: boolean;
 }
+
 /**
  * Format javascript code with prettier-eslint.
  *
