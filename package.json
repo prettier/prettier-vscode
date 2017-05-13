@@ -27,7 +27,8 @@
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
-    "onLanguage:jsx"
+    "onLanguage:jsx",
+    "onLanguage:vue"
   ],
   "main": "./out/src/extension",
   "contributes": {
