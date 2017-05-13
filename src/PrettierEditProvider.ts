@@ -78,9 +78,15 @@ function fullDocumentRange(document: TextDocument): Range {
         if (start !== -1) {
             const end = text.indexOf('</script>');
             if (end !== -1) {
-                const startPos = document.positionAt(start + 9); // 8 = length of '<script>'
-                const endPos = document.positionAt(end - 1); // -1 = character before '</script>'
-                return new Range(startPos, endPos);
+                if (document.eol === 1) {
+                    const startPos = document.positionAt(start + 9);
+                    const endPos = document.positionAt(end - 1);
+                    return new Range(startPos, endPos);
+                } else {
+                    const startPos = document.positionAt(start + 10);
+                    const endPos = document.positionAt(end - 2);
+                    return new Range(startPos, endPos);
+                }
             }
         }
     }
@@ -119,6 +125,7 @@ class PrettierEditProvider implements
         token: CancellationToken
     ): TextEdit[] {
         try {
+            console.log(fullDocumentRange(document));
             return [TextEdit.replace(
                 fullDocumentRange(document),
                 format(document.getText(fullDocumentRange(document)), document.fileName).trim()
