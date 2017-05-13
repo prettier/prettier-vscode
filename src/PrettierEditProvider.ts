@@ -93,6 +93,21 @@ function fullDocumentRange(document: TextDocument): Range {
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
 }
 
+function formateditcontent(document) {
+    try {
+        return {
+            range: fullDocumentRange(document),
+            content: format(document.getText(fullDocumentRange(document)), document.fileName).trim()
+        };
+    } catch (e) {
+        let errorPosition;
+        if (e.loc) {
+            errorPosition = new Position(fullDocumentRange(document).start.line + e.loc.line - 1, e.loc.column);
+        }
+        handleError(document, e.message, errorPosition);
+    }
+}
+
 class PrettierEditProvider implements
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider {
@@ -125,7 +140,6 @@ class PrettierEditProvider implements
         token: CancellationToken
     ): TextEdit[] {
         try {
-            console.log(fullDocumentRange(document));
             return [TextEdit.replace(
                 fullDocumentRange(document),
                 format(document.getText(fullDocumentRange(document)), document.fileName).trim()
@@ -172,4 +186,4 @@ function handleError(document: TextDocument, message: string, errorPosition: Pos
         window.showErrorMessage(message);
     }
 }
-export default PrettierEditProvider;
+export default formateditcontent;

@@ -3,13 +3,15 @@ import {
     ExtensionContext,
     DocumentSelector,
     window,
-    workspace
+    workspace,
+    commands
 } from 'vscode';
-import EditProvider from './PrettierEditProvider';
+import formateditcontent from './PrettierEditProvider';
 
 import { PrettierVSCodeConfig } from './types.d';
 
 const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact', 'jsx', 'vue'];
+const VALIDLANG: Array<string> = ['javascript', 'javascriptreact', 'jsx', 'vue'];
 
 function checkConfig() {
     const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
@@ -21,15 +23,24 @@ function checkConfig() {
     }
 }
 export function activate(context: ExtensionContext) {
-    const editProvider = new EditProvider();
+    // const editProvider = new EditProvider();
     checkConfig();
-
-    context.subscriptions.push(
-        languages.registerDocumentRangeFormattingEditProvider(VALID_LANG, editProvider)
-    );
-    context.subscriptions.push(
-        languages.registerDocumentFormattingEditProvider(VALID_LANG, editProvider)
-    );
+    commands.registerTextEditorCommand('prettier.format', editor => {
+        let doc = editor.document;
+        if (VALIDLANG.indexOf(doc.languageId) === -1) {
+            return;
+        }
+        editor.edit(editBuilder => {
+            const result = formateditcontent(doc);
+            editBuilder.replace(result.range, result.content);
+        })
+    })
+    // context.subscriptions.push(
+    //     languages.registerDocumentRangeFormattingEditProvider(VALID_LANG, editProvider)
+    // );
+    // context.subscriptions.push(
+    //     languages.registerDocumentFormattingEditProvider(VALID_LANG, editProvider)
+    // );
 }
 
 // this method is called when your extension is deactivated

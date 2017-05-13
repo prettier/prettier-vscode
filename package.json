@@ -25,13 +25,16 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onLanguage:jsx",
-    "onLanguage:vue"
+    "onCommand:prettier.format"
   ],
   "main": "./out/src/extension",
   "contributes": {
+    "commands": [
+      {
+        "command": "prettier.format",
+        "title": "prettier"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "Prettier - JavaScript formatter configuration",
