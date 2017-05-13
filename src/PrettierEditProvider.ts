@@ -95,10 +95,17 @@ function fullDocumentRange(document: TextDocument): Range {
 
 function formateditcontent(document) {
     try {
-        return {
-            range: fullDocumentRange(document),
-            content: format(document.getText(fullDocumentRange(document)), document.fileName).trim()
-        };
+        if (document.languageId === 'vue') {
+            return {
+                range: fullDocumentRange(document),
+                content: format(document.getText(fullDocumentRange(document)), document.fileName).trim()
+            };
+        } else {
+            return {
+                range: fullDocumentRange(document),
+                content: format(document.getText(fullDocumentRange(document)), document.fileName)
+            };
+        }
     } catch (e) {
         let errorPosition;
         if (e.loc) {
