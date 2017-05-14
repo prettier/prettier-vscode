@@ -25,7 +25,7 @@ function checkConfig() {
 export function activate(context: ExtensionContext) {
     // const editProvider = new EditProvider();
     checkConfig();
-    commands.registerTextEditorCommand('prettier.format', editor => {
+    let format = commands.registerTextEditorCommand('prettier.format', editor => {
         let doc = editor.document;
         if (VALIDLANG.indexOf(doc.languageId) === -1) {
             return;
@@ -35,6 +35,7 @@ export function activate(context: ExtensionContext) {
             editBuilder.replace(result.range, result.content);
         })
     })
+    context.subscriptions.push(format);
     // context.subscriptions.push(
     //     languages.registerDocumentRangeFormattingEditProvider(VALID_LANG, editProvider)
     // );
