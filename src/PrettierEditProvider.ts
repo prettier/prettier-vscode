@@ -72,7 +72,47 @@ function format(text: string, path: string): string {
 
 function fullDocumentRange(document: TextDocument): Range {
     const lastLineId = document.lineCount - 1;
+    const text = document.getText();
+    if (document.languageId === 'vue') {
+        const start = text.indexOf('<script>');
+        if (start !== -1) {
+            const end = text.indexOf('</script>');
+            if (end !== -1) {
+                if (document.eol === 1) {
+                    const startPos = document.positionAt(start + 9);
+                    const endPos = document.positionAt(end - 1);
+                    return new Range(startPos, endPos);
+                } else {
+                    const startPos = document.positionAt(start + 10);
+                    const endPos = document.positionAt(end - 2);
+                    return new Range(startPos, endPos);
+                }
+            }
+        }
+    }
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
+}
+
+function formateditcontent(document) {
+    try {
+        if (document.languageId === 'vue') {
+            return {
+                range: fullDocumentRange(document),
+                content: format(document.getText(fullDocumentRange(document)), document.fileName).trim()
+            };
+        } else {
+            return {
+                range: fullDocumentRange(document),
+                content: format(document.getText(fullDocumentRange(document)), document.fileName)
+            };
+        }
+    } catch (e) {
+        let errorPosition;
+        if (e.loc) {
+            errorPosition = new Position(fullDocumentRange(document).start.line + e.loc.line - 1, e.loc.column);
+        }
+        handleError(document, e.message, errorPosition);
+    }
 }
 
 class PrettierEditProvider implements
@@ -109,12 +149,12 @@ class PrettierEditProvider implements
         try {
             return [TextEdit.replace(
                 fullDocumentRange(document),
-                format(document.getText(), document.fileName)
+                format(document.getText(fullDocumentRange(document)), document.fileName).trim()
             )];
         } catch (e) {
             let errorPosition;
             if (e.loc) {
-                errorPosition = new Position(e.loc.line - 1, e.loc.column);
+                errorPosition = new Position(fullDocumentRange(document).start.line + e.loc.line - 1, e.loc.column);
             }
             handleError(document, e.message, errorPosition);
         }
@@ -153,4 +193,4 @@ function handleError(document: TextDocument, message: string, errorPosition: Pos
         window.showErrorMessage(message);
     }
 }
-export default PrettierEditProvider;
+export default formateditcontent;
