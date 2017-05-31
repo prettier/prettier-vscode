@@ -4,7 +4,6 @@ VS Code package to format your Javascript using [Prettier Miscellaneous](https:/
 Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Prettier Miscellaneous aka prettier-with-tabs is a fork of Prettier and allows more customization of the output.
-
 This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
 
 ### Installation
