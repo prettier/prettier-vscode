@@ -12,7 +12,7 @@ import {
     Position
 } from 'vscode';
 
-const prettier = require('prettier-with-tabs');
+const prettier = require('prettier-miscellaneous');
 
 type ParserOption = 'babylon' | 'flow'
 type TrailingCommaOption = 'none' | 'es5' | 'all' | boolean /* deprecated boolean*/
@@ -31,10 +31,9 @@ interface PrettierConfig {
     flattenTernaries: boolean,
     breakBeforeElse: boolean,
     jsxBracketSameLine: boolean,
-    groupFirstArg: boolean,
     noSpaceEmptyFn: boolean,
     parser: ParserOption,
-    useFlowParser: boolean, // deprecated
+    semi: boolean, // deprecated
 }
 /**
  * Format the given text with prettier with user's configuration.
@@ -42,13 +41,6 @@ interface PrettierConfig {
  */
 function format(text: string): string {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
-    /*
-    handle deprecated parser option
-    */
-    let parser = config.parser;
-    if (!parser) { // unset config
-        parser = config.useFlowParser ? 'flow' : 'babylon';
-    }
     /*
     handle trailingComma changes boolean -> string
     */
@@ -72,9 +64,9 @@ function format(text: string): string {
         flattenTernaries: config.flattenTernaries,
         breakBeforeElse: config.breakBeforeElse,
         jsxBracketSameLine: config.jsxBracketSameLine,
-        groupFirstArg: config.groupFirstArg,
         noSpaceEmptyFn: config.noSpaceEmptyFn,
-        parser: parser,
+        parser: config.parser,
+        semi: config.semi
     });
 }
 

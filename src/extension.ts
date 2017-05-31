@@ -11,9 +11,6 @@ const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact'];
 
 function checkConfig() {
     const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
-    if (config.useFlowParser) {
-        window.showWarningMessage("Option 'useFlowParser' has been deprecated. Use 'parser: \"flow\"' instead.");
-    }
     if (typeof config.trailingComma === 'boolean') {
         window.showWarningMessage("Option 'trailingComma' as a boolean value has been deprecated. Use 'none', 'es5' or 'all' instead.");
     }

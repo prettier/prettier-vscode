@@ -1,22 +1,21 @@
 {
-  "name": "prettier-vscode-with-tabs",
-  "displayName": "Prettier - JavaScript formatter",
-  "description": "VS Code plugin for jlongster/prettier with tabs support",
-  "version": "1.1.0",
-  "publisher": "passionkind",
-  "author": "Bastian Kistner <@passionkind>",
+  "name": "prettier-now",
+  "displayName": "Prettier Now",
+  "description": "VS Code plugin for jlongster/prettier with more options",
+  "version": "1.0.0",
+  "publisher": "remimarsal",
+  "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
     "color": "#ffe04b",
-    "theme": "light"
+    "theme": "dark"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/passionkind/prettier-vscode-with-tabs.git"
+    "url": "https://github.com/remimarsal/prettier-vscode-with-tabs.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/passionkind/prettier-vscode-with-tabs/issues"
+    "url": "https://github.com/remimarsal/prettier-vscode-with-tabs/issues"
   },
   "engines": {
     "vscode": "^1.5.0"
@@ -32,7 +31,7 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Prettier - JavaScript formatter configuration",
+      "title": "Prettier Now",
       "properties": {
         "prettier.printWidth": {
           "type": "integer",
@@ -81,7 +80,7 @@
         },
         "prettier.arrowParens": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Always put parentheses on arrow function arguments"
         },
         "prettier.arrayExpand": {
@@ -104,11 +103,6 @@
           "default": false,
           "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
         },
-        "prettier.groupFirstArg": {
-          "type": "boolean",
-          "default": false,
-          "description": "Print functions like setTimeout in a more compact form"
-        },
         "prettier.noSpaceEmptyFn": {
           "type": "boolean",
           "default": false,
@@ -123,10 +117,10 @@
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
         },
-        "prettier.useFlowParser": {
+        "prettier.semi": {
           "type": "boolean",
-          "default": false,
-          "description": "Use the flow parser instead of babylon (deprecated, use 'parser:\"babylon\"' instead)"
+          "default": true,
+          "description": "Print semicolons at the ends of statements"
         }
       }
     }
@@ -141,10 +135,10 @@
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
     "mocha": "^2.3.3",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0"
+    "typescript": "^2.3.4",
+    "vscode": "^1.1.0"
   },
   "dependencies": {
-    "prettier-with-tabs": "0.22.0"
+    "prettier-miscellaneous": "^1.3.1"
   }
 }
