@@ -1544,9 +1544,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@0.22.0:
+prettier-with-tabs@0.22.0:
   version "0.22.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-0.22.0.tgz#7b37c4480d0858180407e5a8e13f0f47da7385d2"
+  resolved "https://registry.yarnpkg.com/prettier-with-tabs/-/prettier-with-tabs-0.22.0.tgz#253c36438bb5ddcc2ab2fd3d3872c7bb616661e0"
   dependencies:
     ast-types "0.9.4"
     babel-code-frame "6.22.0"

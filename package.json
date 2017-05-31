@@ -44,10 +44,10 @@
           "default": 4,
           "description": "Number of spaces it should use per tab"
         },
-        "prettier.useFlowParser": {
+        "prettier.useTabs": {
           "type": "boolean",
-          "default": false,
-          "description": "Use the flow parser instead of babylon (deprecated, use 'parser:\"babylon\"' instead)"
+          "default": true,
+          "description": "Use tabs instead of spaces"
         },
         "prettier.singleQuote": {
           "type": "boolean",
@@ -67,12 +67,52 @@
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "Controls the printing of spaces inside object literals"
+          "description": "Print spaces between brackets in array literals"
+        },
+        "prettier.bracesSpacing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Print spaces between brackets in object literals"
+        },
+        "prettier.breakProperty": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow object properties to break lines between the property name and its value"
+        },
+        "prettier.arrowParens": {
+          "type": "boolean",
+          "default": false,
+          "description": "Always put parentheses on arrow function arguments"
+        },
+        "prettier.arrayExpand": {
+          "type": "boolean",
+          "default": false,
+          "description": "Expand arrays into one item per line"
+        },
+        "prettier.flattenTernaries": {
+          "type": "boolean",
+          "default": false,
+          "description": "Format ternaries in a flat style"
+        },
+        "prettier.breakBeforeElse": {
+          "type": "boolean",
+          "default": false,
+          "description": "Put else clause in a new line"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
           "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
+        },
+        "prettier.groupFirstArg": {
+          "type": "boolean",
+          "default": false,
+          "description": "Print functions like setTimeout in a more compact form"
+        },
+        "prettier.noSpaceEmptyFn": {
+          "type": "boolean",
+          "default": false,
+          "description": "Omit space before empty anonymous function body"
         },
         "prettier.parser": {
           "type": "string",
@@ -83,10 +123,10 @@
           "default": "babylon",
           "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
         },
-        "prettier.useTabs": {
+        "prettier.useFlowParser": {
           "type": "boolean",
-          "default": true,
-          "description": "Use tabs instead of spaces"
+          "default": false,
+          "description": "Use the flow parser instead of babylon (deprecated, use 'parser:\"babylon\"' instead)"
         }
       }
     }
@@ -98,11 +138,11 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "mocha": "^2.3.3",
+    "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
+    "mocha": "^2.3.3",
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0"
   },
   "dependencies": {
     "prettier-with-tabs": "0.22.0"

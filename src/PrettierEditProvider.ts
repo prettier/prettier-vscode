@@ -20,13 +20,21 @@ type ShowAction = "Show";
 interface PrettierConfig {
     printWidth: number,
     tabWidth: number,
-    useFlowParser: boolean, // deprecated
+    useTabs: boolean,
     singleQuote: boolean,
     trailingComma: TrailingCommaOption,
     bracketSpacing: boolean,
+    bracesSpacing: boolean,
+    breakProperty: boolean,
+    arrowParens: boolean,
+    arrayExpand: boolean,
+    flattenTernaries: boolean,
+    breakBeforeElse: boolean,
     jsxBracketSameLine: boolean,
-	useTabs: boolean,
-    parser: ParserOption
+    groupFirstArg: boolean,
+    noSpaceEmptyFn: boolean,
+    parser: ParserOption,
+    useFlowParser: boolean, // deprecated
 }
 /**
  * Format the given text with prettier with user's configuration.
@@ -53,12 +61,20 @@ function format(text: string): string {
     return prettier.format(text, {
         printWidth: config.printWidth,
         tabWidth: config.tabWidth,
+        useTabs: config.useTabs,
         singleQuote: config.singleQuote,
         trailingComma,
         bracketSpacing: config.bracketSpacing,
+        bracesSpacing: config.bracesSpacing,
+        breakProperty: config.breakProperty,
+        arrowParens: config.arrowParens,
+        arrayExpand: config.arrayExpand,
+        flattenTernaries: config.flattenTernaries,
+        breakBeforeElse: config.breakBeforeElse,
         jsxBracketSameLine: config.jsxBracketSameLine,
-		useTabs: config.useTabs,
-        parser: parser
+        groupFirstArg: config.groupFirstArg,
+        noSpaceEmptyFn: config.noSpaceEmptyFn,
+        parser: parser,
     });
 }
 

@@ -3,6 +3,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.10.1]
+- Added the missing options of Prettier Miscellaneous
+
 ## [Unreleased]
 
 ## [0.10.0]
