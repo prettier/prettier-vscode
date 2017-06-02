@@ -28,7 +28,7 @@ type ShowAction = "Show";
  * @param path formatting file's path
  * @returns {string} formatted text 
  */
-function format(text: string, path: string): string {
+function format(text: string, path: string, customOptions: object): string {
     const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
     /*
     handle deprecated parser option
@@ -46,7 +46,7 @@ function format(text: string, path: string): string {
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
-    const prettierOptions = {
+    const prettierOptions = Object.assign({
         printWidth: config.printWidth,
         tabWidth: config.tabWidth,
         singleQuote: config.singleQuote,
@@ -56,7 +56,7 @@ function format(text: string, path: string): string {
         parser: parser,
         semi: config.semi,
         useTabs: config.useTabs,
-    };
+    }, customOptions);
     if (config.eslintIntegration) {
         const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
         return prettierEslint({
@@ -86,8 +86,11 @@ class PrettierEditProvider implements
     ): TextEdit[] {
         try {
             return [TextEdit.replace(
-                range,
-                format(document.getText(range), document.fileName)
+                fullDocumentRange(document),
+                format(document.getText(), document.fileName, {
+                  rangeStart: document.offsetAt(range.start),
+                  rangeEnd: document.offsetAt(range.end)
+                })
             )];
         } catch (e) {
             let errorPosition;
@@ -109,7 +112,7 @@ class PrettierEditProvider implements
         try {
             return [TextEdit.replace(
                 fullDocumentRange(document),
-                format(document.getText(), document.fileName)
+                format(document.getText(), document.fileName, {})
             )];
         } catch (e) {
             let errorPosition;
