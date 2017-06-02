@@ -1,4 +1,4 @@
-type ParserOption = 'babylon' | 'flow' | 'typescript';
+type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript';
 type TrailingCommaOption =
     | 'none'
     | 'es5'
@@ -20,6 +20,7 @@ export interface PrettierConfig {
     semi?: boolean;
     useTabs?: boolean;
 }
+
 /**
  * prettier-vscode specific configuration
  */
@@ -29,11 +30,6 @@ interface ExtensionConfig {
      * Other settings will only be fallbacks in case they could not be inferred from eslint rules.
      */
     eslintIntegration: boolean;
-
-    /**
-     * Enable (experimental) TypeScript support.
-     */
-    runOnTypeScript: boolean;
 }
 
 /**

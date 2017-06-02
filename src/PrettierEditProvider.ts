@@ -13,6 +13,7 @@ import {
 } from 'vscode';
 
 import { requireLocalPkg } from './requirePkg';
+import * as semver from 'semver';
 
 import {
     PrettierVSCodeConfig,
@@ -35,13 +36,24 @@ function format(text: string, { fileName, languageId}: TextDocument, customOptio
     handle deprecated parser option
     */
     let parser = config.parser;
+    let isNonJsParser = false;
     if (!parser) {
         // unset config
         parser = config.useFlowParser ? 'flow' : 'babylon';
     }
     if (languageId === 'typescript' || languageId === 'typescriptreact') {
         parser = 'typescript';
+        isNonJsParser = true;
     }
+    if (
+        languageId === 'css' ||
+        languageId === 'less' ||
+        languageId === 'scss'
+    ) {
+        parser = 'postcss';
+        isNonJsParser = true;
+    }
+
     /*
     handle trailingComma changes boolean -> string
     */
@@ -64,6 +76,10 @@ function format(text: string, { fileName, languageId}: TextDocument, customOptio
     }, customOptions);
 
     if (config.eslintIntegration) {
+        if (isNonJsParser) {
+            // not supported yet
+            return text;
+        }
         const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
         return prettierEslint({
             text,
@@ -72,6 +88,10 @@ function format(text: string, { fileName, languageId}: TextDocument, customOptio
         });
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
+    if (isNonJsParser && semver.lt(prettier.version, '1.4.0-beta')) {
+        // not supported yet
+        return text;
+    }
     return prettier.format(text, prettierOptions);
 }
 
@@ -81,7 +101,8 @@ function fullDocumentRange(document: TextDocument): Range {
 }
 
 class PrettierEditProvider
-    implements DocumentRangeFormattingEditProvider, DocumentFormattingEditProvider {
+    implements DocumentRangeFormattingEditProvider,
+        DocumentFormattingEditProvider {
     provideDocumentRangeFormattingEdits(
         document: TextDocument,
         range: Range,
