@@ -47,15 +47,11 @@ function format(
         // unset config
         parser = config.useFlowParser ? 'flow' : 'babylon';
     }
-    if (languageId === 'typescript' || languageId === 'typescriptreact') {
+    if (config.typescriptEnable.includes(languageId)) {
         parser = 'typescript';
         isNonJsParser = true;
     }
-    if (
-        languageId === 'css' ||
-        languageId === 'less' ||
-        languageId === 'scss'
-    ) {
+    if (config.cssEnable.includes(languageId)) {
         parser = 'postcss';
         isNonJsParser = true;
     }
@@ -94,7 +90,7 @@ function format(
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
     if (isNonJsParser && semver.lt(prettier.version, '1.4.0-beta')) {
-        const bundledPrettier = require('prettier');
+        const bundledPrettier = require('prettier') as Prettier;
         window.showWarningMessage(
             `prettier@${prettier.version} doesn't suport ${languageId}. ` +
                 `Falling back to bundled prettier@${bundledPrettier.version}.`
