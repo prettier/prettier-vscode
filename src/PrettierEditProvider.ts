@@ -30,8 +30,14 @@ type ShowAction = 'Show';
  * @param path formatting file's path
  * @returns {string} formatted text
  */
-function format(text: string, { fileName, languageId}: TextDocument, customOptions: object): string {
-    const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
+function format(
+    text: string,
+    { fileName, languageId }: TextDocument,
+    customOptions: object
+): string {
+    const config: PrettierVSCodeConfig = workspace.getConfiguration(
+        'prettier'
+    ) as any;
     /*
     handle deprecated parser option
     */
@@ -63,23 +69,22 @@ function format(text: string, { fileName, languageId}: TextDocument, customOptio
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
-    const prettierOptions = Object.assign({
-        printWidth: config.printWidth,
-        tabWidth: config.tabWidth,
-        singleQuote: config.singleQuote,
-        trailingComma,
-        bracketSpacing: config.bracketSpacing,
-        jsxBracketSameLine: config.jsxBracketSameLine,
-        parser: parser,
-        semi: config.semi,
-        useTabs: config.useTabs,
-    }, customOptions);
+    const prettierOptions = Object.assign(
+        {
+            printWidth: config.printWidth,
+            tabWidth: config.tabWidth,
+            singleQuote: config.singleQuote,
+            trailingComma,
+            bracketSpacing: config.bracketSpacing,
+            jsxBracketSameLine: config.jsxBracketSameLine,
+            parser: parser,
+            semi: config.semi,
+            useTabs: config.useTabs,
+        },
+        customOptions
+    );
 
-    if (config.eslintIntegration) {
-        if (isNonJsParser) {
-            // not supported yet
-            return text;
-        }
+    if (config.eslintIntegration && !isNonJsParser) {
         const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
         return prettierEslint({
             text,
@@ -89,8 +94,12 @@ function format(text: string, { fileName, languageId}: TextDocument, customOptio
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
     if (isNonJsParser && semver.lt(prettier.version, '1.4.0-beta')) {
-        // not supported yet
-        return text;
+        const bundledPrettier = require('prettier');
+        window.showWarningMessage(
+            `prettier@${prettier.version} doesn't suport ${languageId}. ` +
+                `Falling back to bundled prettier@${bundledPrettier.version}.`
+        );
+        return bundledPrettier.format(text, prettierOptions);
     }
     return prettier.format(text, prettierOptions);
 }
@@ -110,13 +119,15 @@ class PrettierEditProvider
         token: CancellationToken
     ): TextEdit[] {
         try {
-            return [TextEdit.replace(
-                fullDocumentRange(document),
-                format(document.getText(), document, {
-                  rangeStart: document.offsetAt(range.start),
-                  rangeEnd: document.offsetAt(range.end)
-                })
-            )];
+            return [
+                TextEdit.replace(
+                    fullDocumentRange(document),
+                    format(document.getText(), document, {
+                        rangeStart: document.offsetAt(range.start),
+                        rangeEnd: document.offsetAt(range.end),
+                    })
+                ),
+            ];
         } catch (e) {
             let errorPosition;
             if (e.loc) {
@@ -139,10 +150,12 @@ class PrettierEditProvider
         token: CancellationToken
     ): TextEdit[] {
         try {
-            return [TextEdit.replace(
-                fullDocumentRange(document),
-                format(document.getText(), document, {})
-            )];
+            return [
+                TextEdit.replace(
+                    fullDocumentRange(document),
+                    format(document.getText(), document, {})
+                ),
+            ];
         } catch (e) {
             let errorPosition;
             if (e.loc) {
