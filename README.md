@@ -1,6 +1,6 @@
 # Prettier formatter for Visual Studio Code
 
-VS Code package to format your Javascript using [Prettier](https://github.com/prettier/prettier).
+VS Code package to format your Javascript / Typescript / CSS using [Prettier](https://github.com/prettier/prettier).
 
 ### Installation
 
@@ -30,7 +30,7 @@ OR
 Respects `editor.formatOnSave` setting.
 
 ### Settings
-#### prettier.eslintIntegration (default: false)
+#### prettier.eslintIntegration (default: false) - Javascript only
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
@@ -41,9 +41,6 @@ Fit code within this line limit
 #### prettier.tabWidth (default: 2)
 
 Number of spaces it should use per tab
-
-#### prettier.useFlowParser (default: false)
-Use the flow parser instead of babylon. **Deprecated** use `parser: 'flow'` instead
 
 #### prettier.singleQuote (default: false)
 If true, will use single instead of double quotes
@@ -60,8 +57,8 @@ Controls the printing of spaces inside object literals
 #### prettier.jsxBracketSameLine (default: false)
 If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
 
-#### prettier.parser (default: 'babylon')
-Which parser to use. Valid options are 'flow' and 'babylon'
+#### prettier.parser (default: 'babylon') - Javascript only
+Which parser to use. Valid options are 'flow' and 'babylon'.
 
 #### prettier.semi (default: true)
 Whether to add a semicolon at the end of every line (semi: true),

@@ -2,6 +2,10 @@
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [0.18.0]
+ - Prettier 1.4
+ - Now also formats CSS and Typescript
+ - Format Selection highly improved.
 
 ## [0.17.0]
  - Bump dependencies.
