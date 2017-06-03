@@ -30,45 +30,45 @@ OR
 Respects `editor.formatOnSave` setting.
 
 ### Settings
-#### prettier.eslintIntegration (default: false)
-Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
-Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
-#### prettier.printWidth (default: 80)
+    // Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
+    // Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+    "prettier.eslintIntegration": false,
 
-Fit code within this line limit
+    // Fit code within this line limit
+    "prettier.printWidth": 80,
 
-#### prettier.tabWidth (default: 2)
+    // Number of spaces it should use per tab
+    "prettier.tabWidth": 2,
 
-Number of spaces it should use per tab
+    // Use the flow parser instead of babylon. **Deprecated** use `parser: 'flow'` instead
+    "prettier.useFlowParser": false,
 
-#### prettier.useFlowParser (default: false)
-Use the flow parser instead of babylon. **Deprecated** use `parser: 'flow'` instead
+    // If true, will use single instead of double quotes
+    "prettier.singleQuote": false,
 
-#### prettier.singleQuote (default: false)
-If true, will use single instead of double quotes
+    // Controls the printing of trailing commas wherever possible. Valid options:
+    //  - "none" - No trailing commas
+    //  - "es5"  - Trailing commas where valid in ES5 (objects, arrays, etc)
+    //  - "all"  - Trailing commas wherever possible (function arguments)
+    "prettier.trailingComma": 'none',
 
-#### prettier.trailingComma (default: 'none')
-Controls the printing of trailing commas wherever possible. Valid options:
- - "none" - No trailing commas
- - "es5"  - Trailing commas where valid in ES5 (objects, arrays, etc)
- - "all"  - Trailing commas wherever possible (function arguments)
+    // Controls the printing of spaces inside object literals
+    "prettier.bracketSpacing": true,
 
-#### prettier.bracketSpacing (default: true)
-Controls the printing of spaces inside object literals
+    // If true, puts the `>` of a multi-line jsx element at the end of the last line
+    // instead of being alone on the next line
+    "prettier.jsxBracketSameLine": false,
 
-#### prettier.jsxBracketSameLine (default: false)
-If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
+    // Which parser to use. Valid options are 'flow' and 'babylon'
+    "prettier.parser": 'babylon',
 
-#### prettier.parser (default: 'babylon')
-Which parser to use. Valid options are 'flow' and 'babylon'
+    // Whether to add a semicolon at the end of every line (semi: true),
+    // or only at the beginning of lines that may introduce ASI failures (semi: false)
+    "prettier.semi": true,
 
-#### prettier.semi (default: true)
-Whether to add a semicolon at the end of every line (semi: true),
-or only at the beginning of lines that may introduce ASI failures (semi: false)
-
-#### prettier.useTabs (default: false)
-If true, indent lines with tabs
+    // If true, indent lines with tabs
+    "prettier.useTabs": false
 
 ### Prettier resolution
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
@@ -76,3 +76,4 @@ This extension will use prettier from your project's local dependencies. Should 
 ### Contribute
 
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
+/
