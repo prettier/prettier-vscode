@@ -27,7 +27,12 @@
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
-    "onLanguage:jsx"
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:jsx",
+    "onLanguage:css",
+    "onLanguage:less",
+    "onLanguage:scss"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -87,7 +92,7 @@
             "flow"
           ],
           "default": "babylon",
-          "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
+          "description": "Override the parser. You shouldn't have to change this setting."
         },
         "prettier.semi": {
           "type": "boolean",
@@ -109,15 +114,17 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "mocha": "^2.3.3",
+    "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
+    "@types/semver": "^5.3.31",
+    "mocha": "^2.3.3",
+    "typescript": "~2.3.2",
+    "vscode": "^1.0.0"
   },
   "dependencies": {
-    "prettier": "1.4.0",
+    "prettier": "1.4.1",
     "prettier-eslint": "6.2.3",
-    "read-pkg-up": "2.0.0"
+    "read-pkg-up": "2.0.0",
+    "semver": "^5.3.0"
   }
 }

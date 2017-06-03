@@ -1,5 +1,10 @@
-type ParserOption = 'babylon' | 'flow';
-type TrailingCommaOption = 'none' | 'es5' | 'all' | boolean; /* deprecated boolean*/
+type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript';
+type TrailingCommaOption =
+    | 'none'
+    | 'es5'
+    | 'all'
+    | boolean; /* deprecated boolean*/
+
 /**
  * Prettier configuration
  */
@@ -15,6 +20,7 @@ export interface PrettierConfig {
     semi?: boolean;
     useTabs?: boolean;
 }
+
 /**
  * prettier-vscode specific configuration
  */
@@ -25,6 +31,7 @@ interface ExtensionConfig {
      */
     eslintIntegration: boolean;
 }
+
 /**
  * Configuration for prettier-vscode
  */
@@ -33,9 +40,9 @@ export interface Prettier {
     format: (string, PrettierConfig?) => string;
     readonly version: string;
 }
-type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace'
+type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
 interface PrettierEslintOptions {
-    /** 
+    /**
      * The path of the file being formatted
      * can be used in lieu of `eslintConfig` (eslint will be used to find the
      * relevant config for the file). Will also be used to load the `text` if
@@ -77,9 +84,10 @@ interface PrettierEslintOptions {
      */
     prettierLast?: boolean;
 }
+
 /**
  * Format javascript code with prettier-eslint.
- * 
+ *
  * @param {PrettierEslintOptions} options - Option bag for prettier-eslint.
  * @returns {string} the formatted code.
  */
