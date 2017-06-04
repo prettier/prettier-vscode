@@ -20,7 +20,11 @@ export interface PrettierConfig {
     semi?: boolean;
     useTabs?: boolean;
 }
-
+interface Language {
+    javascript: ('javascript' | 'javascriptreact' | string)[];
+    typescript: ('typescript' | 'typescriptreact' | string)[];
+    css: ('css' | 'less' | 'sass' | string)[];
+}
 /**
  * prettier-vscode specific configuration
  */
@@ -30,6 +34,18 @@ interface ExtensionConfig {
      * Other settings will only be fallbacks in case they could not be inferred from eslint rules.
      */
     eslintIntegration: boolean;
+    /**
+     * Language ids to run javascript prettier on.
+     */
+    javascriptEnable: ('javascript' | 'javascriptreact' | string)[];
+    /**
+     * Language ids to run typescript prettier on.
+     */
+    typescriptEnable: ('typescript' | 'typescriptreact' | string)[];
+    /**
+     * Language ids to run postcss prettier on.
+     */
+    cssEnable: ('css' | 'less' | 'sass' | string)[];
 }
 
 /**

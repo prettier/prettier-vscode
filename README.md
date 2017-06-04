@@ -67,6 +67,21 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 #### prettier.useTabs (default: false)
 If true, indent lines with tabs
 
+#### prettier.javascriptEnable (default: ["javascript", "javascriptreact"])
+Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
+Use parser `babylon` or `flow` depending on `prettier.parser` for given language ids.
+Use with care.
+
+#### prettier.typescriptEnable (default: ["typescript", "typescriptreact"])
+Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
+Use parser `typescript` for given language ids.
+Use with care.
+
+#### prettier.cssEnable (default: ["css", "less", "sass"])
+Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
+Use parser `postcss` for given language ids.
+Use with care.
+
 ### Prettier resolution
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 

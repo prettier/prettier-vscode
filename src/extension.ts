@@ -9,12 +9,6 @@ import EditProvider from './PrettierEditProvider';
 
 import { PrettierVSCodeConfig } from './types.d';
 
-const VALID_LANG = {
-    js: ['javascript', 'javascriptreact', 'jsx'],
-    ts: ['typescript', 'typescriptreact'],
-    css: ['css', 'less', 'sass'],
-};
-
 function checkConfig(): PrettierVSCodeConfig {
     const config: PrettierVSCodeConfig = workspace.getConfiguration(
         'prettier'
@@ -38,9 +32,9 @@ export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
     const config = checkConfig();
     const languageSelector = [
-        ...VALID_LANG.js,
-        ...VALID_LANG.ts,
-        ...VALID_LANG.css,
+        ...config.javascriptEnable,
+        ...config.typescriptEnable,
+        ...config.cssEnable,
     ];
 
     context.subscriptions.push(
