@@ -82,7 +82,9 @@
           "type": "string",
           "enum": [
             "babylon",
-            "flow"
+            "flow",
+            "typescript",
+            "postcss"
           ],
           "default": "babylon",
           "description": "Override the parser. You shouldn't have to change this setting."
