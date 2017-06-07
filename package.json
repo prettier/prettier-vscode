@@ -151,7 +151,7 @@
                 "enum": [
                   "css",
                   "less",
-                  "sass"
+                  "scss"
                 ]
               }
             ]
@@ -159,7 +159,7 @@
           "default": [
             "css",
             "less",
-            "sass"
+            "scss"
           ]
         }
       }

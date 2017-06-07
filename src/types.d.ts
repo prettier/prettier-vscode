@@ -23,7 +23,7 @@ export interface PrettierConfig {
 interface Language {
     javascript: ('javascript' | 'javascriptreact' | string)[];
     typescript: ('typescript' | 'typescriptreact' | string)[];
-    css: ('css' | 'less' | 'sass' | string)[];
+    css: ('css' | 'less' | 'scss' | string)[];
 }
 /**
  * prettier-vscode specific configuration
@@ -45,7 +45,7 @@ interface ExtensionConfig {
     /**
      * Language ids to run postcss prettier on.
      */
-    cssEnable: ('css' | 'less' | 'sass' | string)[];
+    cssEnable: ('css' | 'less' | 'scss' | string)[];
 }
 
 /**
