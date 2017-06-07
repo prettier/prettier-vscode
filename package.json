@@ -28,6 +28,7 @@
     "*"
   ],
   "main": "./out/src/extension",
+  "icon": "prettier-logo.png",
   "contributes": {
     "configuration": {
       "type": "object",
