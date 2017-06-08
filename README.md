@@ -55,25 +55,25 @@ Controls the printing of trailing commas wherever possible. Valid options:
  - "es5"  - Trailing commas where valid in ES5 (objects, arrays, etc)
  - "all"  - Trailing commas wherever possible (function arguments)
 
- #### bracketSpacing (default: true)
+#### bracketSpacing (default: true)
 Print spaces between brackets in array literals
 
- #### bracesSpacing (default: true)
+#### bracesSpacing (default: true)
 Print spaces between brackets in object literals
 
- #### breakProperty (default: false)
+#### breakProperty (default: false)
 Allow object properties to break lines between the property name and its value
 
- #### arrowParens (default: false)
+#### arrowParens (default: false)
 Always put parentheses on arrow function arguments
 
- #### arrayExpand (default: false)
+#### arrayExpand (default: false)
 Expand arrays into one item per line
 
- #### flattenTernaries (default: false)
+#### flattenTernaries (default: false)
 Format ternaries in a flat style (UNSTABLE)
 
- #### breakBeforeElse (default: false)
+#### breakBeforeElse (default: false)
 Put else clause in a new line
 
 #### jsxBracketSameLine (default: false)
