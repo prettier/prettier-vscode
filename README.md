@@ -1,21 +1,21 @@
-# Prettier formatter for Visual Studio Code with tabs support
+# Prettier Now - Formatter for Visual Studio Code with tabs support
 
 VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous).
-Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs)
 
 Prettier Miscellaneous aka prettier-with-tabs is a fork of Prettier and allows more customization of the output.
 This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
 
 ### Installation
 
-Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
+Install through VS Code extensions. Search for `Prettier Now - JavaScript formatter`
 
-[Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs)
+[Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
 
 Can also be installed using 
 
 ```
-ext install prettier-vscode-with-tabs
+ext install prettier-now
 ```
 
 ### Usage
