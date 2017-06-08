@@ -2,7 +2,7 @@
   "name": "prettier-now",
   "displayName": "Prettier Now",
   "description": "VS Code plugin for Prettier Miscellaneous",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "remimarsal",
   "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
@@ -130,7 +130,8 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
+    "test": "node ./node_modules/vscode/bin/test",
+    "pkgvars": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
@@ -140,6 +141,6 @@
     "vscode": "^1.1.0"
   },
   "dependencies": {
-    "prettier-miscellaneous": "^1.4.2"
+    "prettier-miscellaneous": "1.3.1"
   }
 }
