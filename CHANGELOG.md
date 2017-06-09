@@ -1,7 +1,12 @@
 # Change Log
-All notable changes to the "prettier-vscode" extension will be documented in this file.
+All notable changes to the "prettier-now" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [1.0.3]
+- Better README for options
+- trailingComma to none by default
+- new option semi
 
 ## [0.10.1]
 - Added the missing options of Prettier Miscellaneous
