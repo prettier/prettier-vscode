@@ -5,25 +5,32 @@ import {
     window,
     workspace
 } from 'vscode';
-import EditProvider, { PrettierConfig } from './PrettierEditProvider';
-
-const VALID_LANG: DocumentSelector = ['javascript', 'javascriptreact'];
+import EditProvider from './PrettierEditProvider';
+import { PrettierVSCodeConfig } from './types.d';
 
 function checkConfig() {
-    const config: PrettierConfig = workspace.getConfiguration('prettier') as any;
+    const config: PrettierVSCodeConfig = workspace.getConfiguration('prettier') as any;
+
     if (typeof config.trailingComma === 'boolean') {
         window.showWarningMessage("Option 'trailingComma' as a boolean value has been deprecated. Use 'none', 'es5' or 'all' instead.");
     }
+
+    return config;
 }
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
-    checkConfig();
+    const config = checkConfig();
+    const languageSelector = [
+        ...config.javascriptEnable,
+        ...config.typescriptEnable,
+        ...config.cssEnable,
+    ];
 
     context.subscriptions.push(
-        languages.registerDocumentRangeFormattingEditProvider(VALID_LANG, editProvider)
+        languages.registerDocumentRangeFormattingEditProvider(languageSelector, editProvider)
     );
     context.subscriptions.push(
-        languages.registerDocumentFormattingEditProvider(VALID_LANG, editProvider)
+        languages.registerDocumentFormattingEditProvider(languageSelector, editProvider)
     );
 }
 

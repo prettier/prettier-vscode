@@ -25,8 +25,7 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact"
+    "*"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -122,6 +121,71 @@
           "type": "boolean",
           "default": true,
           "description": "Print semicolons at the ends of statements"
+        },
+        "prettier.javascriptEnable": {
+          "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "javascript",
+                  "javascriptreact"
+                ]
+              }
+            ]
+          },
+          "default": [
+            "javascript",
+            "javascriptreact"
+          ]
+        },
+        "prettier.typescriptEnable": {
+          "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "typescript",
+                  "typescriptreact"
+                ]
+              }
+            ]
+          },
+          "default": [
+            "typescript",
+            "typescriptreact"
+          ]
+        },
+        "prettier.cssEnable": {
+          "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "css",
+                  "less",
+                  "sass"
+                ]
+              }
+            ]
+          },
+          "default": [
+            "css",
+            "less",
+            "sass"
+          ]
         }
       }
     }
