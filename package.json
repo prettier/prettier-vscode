@@ -2,7 +2,7 @@
   "name": "prettier-now",
   "displayName": "Prettier Now",
   "description": "VS Code plugin for Prettier Miscellaneous",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "remimarsal",
   "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
@@ -12,11 +12,11 @@
   "icon": "prettier-logo.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/remimarsal/prettier-vscode-with-tabs.git"
+    "url": "https://github.com/remimarsal/prettier-now-vscode.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/remimarsal/prettier-vscode-with-tabs/issues"
+    "url": "https://github.com/remimarsal/prettier-now-vscode/issues"
   },
   "engines": {
     "vscode": "^1.5.0"
@@ -61,7 +61,7 @@
             "es5",
             "all"
           ],
-          "default": "es5",
+          "default": "none",
           "description": "Controls the printing of trailing commas wherever possible"
         },
         "prettier.bracketSpacing": {
