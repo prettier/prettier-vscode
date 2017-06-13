@@ -10,7 +10,7 @@ Prettier Miscellaneous aka prettier-with-tabs is a fork of Prettier and allows m
 This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
 
 #### *Update 1.1.0*
-Added support for TypeScript, CSS, LESS and SASS files.
+*Added support for TypeScript, CSS, LESS and SASS files.*
 <br/>
 
 ### Installation
@@ -29,7 +29,7 @@ ext install prettier-now
 
 #### Format On Save
 
-Set `editor.formatOnSave` to `true` in settings to automatically format JavaScript files on save.
+Set `editor.formatOnSave` to `true` in settings to automatically format files on save.
 
 #### Or using Command Palette (CMD + Shift + P)
 
