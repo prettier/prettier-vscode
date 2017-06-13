@@ -2,7 +2,7 @@
   "name": "prettier-now",
   "displayName": "Prettier Now",
   "description": "VS Code plugin for Prettier Miscellaneous",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "publisher": "remimarsal",
   "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
@@ -25,7 +25,13 @@
     "Formatters"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:css",
+    "onLanguage:less",
+    "onLanguage:scss"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -176,7 +182,7 @@
                 "enum": [
                   "css",
                   "less",
-                  "sass"
+                  "scss"
                 ]
               }
             ]
@@ -184,7 +190,7 @@
           "default": [
             "css",
             "less",
-            "sass"
+            "scss"
           ]
         }
       }
@@ -205,6 +211,6 @@
     "vscode": "^1.1.0"
   },
   "dependencies": {
-    "prettier-miscellaneous": "1.3.1"
+    "prettier-miscellaneous": "^1.4.4"
   }
 }

@@ -1,9 +1,5 @@
 type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript';
-type TrailingCommaOption =
-    | 'none'
-    | 'es5'
-    | 'all'
-    | boolean; /* deprecated boolean*/
+type TrailingCommaOption = 'none' | 'es5' | 'all';
 
 /**
  * Prettier configuration

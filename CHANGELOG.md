@@ -3,6 +3,9 @@ All notable changes to the "prettier-now" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0]
+- Support for Typescript, CSS, LESS, SASS
+
 ## [1.0.3]
 - Better README for options
 - trailingComma to none by default

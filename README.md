@@ -1,10 +1,17 @@
 # Prettier Now - Formatter for Visual Studio Code with tabs support
 
+[![](http://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
+[![](http://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
+
 VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous).
 Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).
 
 Prettier Miscellaneous aka prettier-with-tabs is a fork of Prettier and allows more customization of the output.
 This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
+
+#### *Update 1.1.0*
+Added support for TypeScript, CSS, LESS and SASS files.
+<br/>
 
 ### Installation
 
@@ -20,18 +27,16 @@ ext install prettier-now
 
 ### Usage
 
-#### Using Command Palette (CMD + Shift + P)
-
-```
-1. CMD + Shift + P -> Format Document
-OR
-1. Select the text you want to Prettify
-2. CMD + Shift + P -> Format Selection
-```
-
 #### Format On Save
 
-Respects `editor.formatOnSave` setting if you want to automatically format JavaScript files on save.
+Set `editor.formatOnSave` to `true` in settings to automatically format JavaScript files on save.
+
+#### Or using Command Palette (CMD + Shift + P)
+
+```
+CMD + Shift + P -> Format Document
+```
+
 
 ### Settings
 
@@ -50,10 +55,13 @@ Respects `editor.formatOnSave` setting if you want to automatically format JavaS
 |**flattenTernaries**|Format ternaries in a flat style (**UNSTABLE**)|`false`
 |**breakBeforeElse**|Put else clause in a new line|`false`
 |**semi**|Print semicolons at the ends of statements.|`true`
+|**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br />`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
+|**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br />`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
+|**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br />`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files|`["css","less","scss"]`
 |**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line|`false`
 |**groupFirstArg**|Print functions like setTimeout in a more compact form|`false`
 |**noSpaceEmptyFn**|Omit space before empty anonymous function body|`false`
-|**parser**|Which parser to use. Valid options are 'flow' and 'babylon'|`babylon`
+|**parser**|Which parser to use.<br /><br />Valid options:<br />`babylon` - Babylon parser<br/>`flow` - Flow parser|`babylon`
 
 
 ### Contribute
