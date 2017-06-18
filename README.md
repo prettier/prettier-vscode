@@ -77,7 +77,7 @@ Advanced feature. Use this to opt in / out prettier on various language ids. Res
 Use parser `typescript` for given language ids.
 Use with care.
 
-#### prettier.cssEnable (default: ["css", "less", "sass"])
+#### prettier.cssEnable (default: ["css", "less", "scss"])
 Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
 Use parser `postcss` for given language ids.
 Use with care.
