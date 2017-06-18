@@ -2,18 +2,24 @@
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [0.19.1]
+- Fix sass language id (sass -> scss)
+- Update prettier to 1.4.4
+- Update prettier-eslint to 6.3.0
+
 ## [0.19.0]
 - Option to select language ids prettier will run on.
 - Prettier 1.4.2
 
 ## [0.18.0]
- - Prettier 1.4
- - Now also formats CSS and Typescript
- - Format Selection highly improved.
+- Prettier 1.4
+- Now also formats CSS and Typescript
+- Format Selection highly improved.
 
 ## [0.17.0]
- - Bump dependencies.
- - `jsx` language support in addition to `javascript` and `javascriptreact`.
+- Bump dependencies.
+- `jsx` language support in addition to `javascript` and `javascriptreact`.
 
 ## [0.16.0]
 - New setting eslintIntegration. Use `prettier-eslint` under the hood.
