@@ -36,10 +36,15 @@ export function activate(context: ExtensionContext) {
         ...config.typescriptEnable,
         ...config.cssEnable,
     ];
+    // CSS doesn't work with range yet.
+    const rangeLanguageSelector = [
+        ...config.javascriptEnable,
+        ...config.typescriptEnable,
+    ];
 
     context.subscriptions.push(
         languages.registerDocumentRangeFormattingEditProvider(
-            languageSelector,
+            rangeLanguageSelector,
             editProvider
         ),
         languages.registerDocumentFormattingEditProvider(
