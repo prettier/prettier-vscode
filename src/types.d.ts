@@ -21,6 +21,7 @@ export interface PrettierConfig {
     noSpaceEmptyFn?: boolean;
     parser?: ParserOption;
     semi?: boolean;
+    spaceBeforeFunctionParen: boolean;
 }
 
 /**

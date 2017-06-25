@@ -192,6 +192,11 @@
             "less",
             "scss"
           ]
+        },
+        "prettier.spaceBeforeFunctionParen": {
+          "description": "Put a space before function parenthesis",
+          "type": "boolean",
+          "default": false
         }
       }
     }
