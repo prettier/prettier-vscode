@@ -18,6 +18,7 @@ export interface PrettierConfig {
     noSpaceEmptyFn?: boolean;
     parser?: 'babylon' | 'flow' | 'postcss' | 'typescript';
     semi?: boolean;
+    spaceBeforeFunctionParen?: boolean;
 }
 
 /**
