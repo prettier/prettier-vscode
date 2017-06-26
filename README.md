@@ -9,6 +9,9 @@ Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items
 Prettier Miscellaneous aka prettier-with-tabs is a fork of Prettier and allows more customization of the output.
 This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
 
+#### *Update 1.2.0*
+*New options jsxSingleQuote, spaceBeforeParen, alignObjectProperties. breakBeforeElse should now break properly.*
+<br/>
 #### *Update 1.1.0*
 *Added support for TypeScript, CSS, LESS and SASS files.*
 <br/>
