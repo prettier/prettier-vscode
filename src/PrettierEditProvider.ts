@@ -65,6 +65,7 @@ function format (
             noSpaceEmptyFn: config.noSpaceEmptyFn,
             parser: config.parser,
             semi: config.semi,
+            spaceBeforeFunctionParen: config.spaceBeforeFunctionParen,
             filepath: fileName
         },
         customOptions
