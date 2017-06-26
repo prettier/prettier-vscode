@@ -1,0 +1,56 @@
+{
+  "name": "prettier-miscellaneous",
+  "version": "1.4.4",
+  "description": "Prettier is an opinionated JavaScript formatter",
+  "bin": {
+    "prettier": "./bin/prettier.js"
+  },
+  "repository": "arijs/prettier-miscellaneous",
+  "author": "Rafael Hengles",
+  "license": "MIT",
+  "main": "./index.js",
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
+    "cross-spawn": "5.1.0",
+    "eslint": "3.19.0",
+    "eslint-friendly-formatter": "3.0.0",
+    "eslint-plugin-prettier": "2.1.1",
+    "jest": "20.0.0",
+    "mkdirp": "^0.5.1",
+    "prettier": "1.4.2",
+    "rimraf": "2.6.1",
+    "rollup": "0.41.1",
+    "rollup-plugin-commonjs": "7.0.0",
+    "rollup-plugin-json": "2.1.0",
+    "rollup-plugin-node-builtins": "2.0.0",
+    "rollup-plugin-node-globals": "1.1.0",
+    "rollup-plugin-node-resolve": "2.0.0",
+    "rollup-plugin-replace": "1.1.1",
+    "sw-toolbox": "3.6.0",
+    "uglify-es": "3.0.15",
+    "webpack": "2.6.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "posttest": "npm run test-tabs && npm run test-tabs-inv",
+    "test-tabs": "node ./bin/prettier.js --use-tabs --bracket-spacing --trailing-comma=array,object -- ./bin/prettier.js > ./bin/prettier-with-tabs.js",
+    "test-tabs-inv": "node ./bin/prettier-with-tabs.js -- ./bin/prettier-with-tabs.js > ./bin/prettier-spaces.js",
+    "test-integration": "jest tests_integration",
+    "lint": "EFF_NO_LINK_RULES=true eslint . --format 'node_modules/eslint-friendly-formatter'",
+    "build": "./scripts/build/build.sh"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/tests_config/run_spec.js"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/tests_config/raw-serializer.js"
+    ],
+    "testRegex": "jsfmt\\.spec\\.js$|__tests__/.*\\.js$",
+    "testPathIgnorePatterns": [
+      "tests/new_react",
+      "tests/more_react"
+    ]
+  }
+}
