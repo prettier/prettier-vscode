@@ -2,9 +2,11 @@
  * Prettier configuration
  */
 export interface PrettierConfig {
+    parser?: 'babylon' | 'flow' | 'postcss' | 'typescript';
     printWidth?: number;
     tabWidth?: number;
     useTabs?: boolean;
+    jsxSingleQuote?: boolean;
     singleQuote?: boolean;
     trailingComma?: 'none' | 'es5' | 'all';
     bracketSpacing?: boolean;
@@ -16,9 +18,9 @@ export interface PrettierConfig {
     breakBeforeElse?: boolean;
     jsxBracketSameLine?: boolean;
     noSpaceEmptyFn?: boolean;
-    parser?: 'babylon' | 'flow' | 'postcss' | 'typescript';
     semi?: boolean;
     spaceBeforeFunctionParen?: boolean;
+    alignObjectProperties?: boolean;
 }
 
 /**

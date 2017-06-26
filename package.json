@@ -2,7 +2,7 @@
   "name": "prettier-now",
   "displayName": "Prettier Now",
   "description": "VS Code plugin for Prettier Miscellaneous",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "remimarsal",
   "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
@@ -58,6 +58,11 @@
           "type": "boolean",
           "default": true,
           "description": "If true, will use single instead of double quotes"
+        },
+        "prettier.jsxSingleQuote": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, will use single instead of double quotes in JSX"
         },
         "prettier.trailingComma": {
           "type": "string",
@@ -128,6 +133,16 @@
           "default": true,
           "description": "Print semicolons at the ends of statements"
         },
+        "prettier.spaceBeforeFunctionParen": {
+          "description": "Put a space before function parenthesis",
+          "type": "boolean",
+          "default": false
+        },
+        "prettier.alignObjectProperties": {
+          "description": "Align colons in multiline object literals. Does nothing if object has computed property names.",
+          "type": "boolean",
+          "default": false
+        },
         "prettier.javascriptEnable": {
           "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
           "type": "array",
@@ -192,11 +207,6 @@
             "less",
             "scss"
           ]
-        },
-        "prettier.spaceBeforeFunctionParen": {
-          "description": "Put a space before function parenthesis",
-          "type": "boolean",
-          "default": false
         }
       }
     }

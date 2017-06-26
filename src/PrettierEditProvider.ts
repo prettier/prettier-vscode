@@ -53,6 +53,7 @@ function format (
             tabWidth: config.tabWidth,
             useTabs: config.useTabs,
             singleQuote: config.singleQuote,
+            jsxSingleQuote: config.jsxSingleQuote,
             trailingComma: config.trailingComma,
             bracketSpacing: config.bracketSpacing,
             bracesSpacing: config.bracesSpacing,
@@ -66,6 +67,7 @@ function format (
             parser: config.parser,
             semi: config.semi,
             spaceBeforeFunctionParen: config.spaceBeforeFunctionParen,
+            alignObjectProperties: config.alignObjectProperties,
             filepath: fileName
         },
         customOptions

@@ -3,6 +3,13 @@ All notable changes to the "prettier-now" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0]
+- New options:
+    * jsxSingleQuote
+    * spaceBeforeFunctionParen
+    * alignObjectProperties
+- Update logo
+
 ## [1.1.0]
 - Support for Typescript, CSS, LESS, SASS
 
