@@ -15,6 +15,7 @@
         ".vscode-test",
         "node_modules",
         "ext",
+        "test",
         "out"
     ]
 }
