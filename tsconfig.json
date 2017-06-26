@@ -3,6 +3,8 @@
         "module": "commonjs",
         "target": "es6",
         "outDir": "out",
+        "allowUnreachableCode": true,
+        "allowJs": true,
         "lib": [
             "es2016"
         ],
@@ -10,7 +12,9 @@
         "rootDir": "."
     },
     "exclude": [
+        ".vscode-test",
         "node_modules",
-        ".vscode-test"
+        "ext",
+        "out"
     ]
 }

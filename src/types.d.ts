@@ -1,6 +1,3 @@
-type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript';
-type TrailingCommaOption = 'none' | 'es5' | 'all';
-
 /**
  * Prettier configuration
  */
@@ -9,7 +6,7 @@ export interface PrettierConfig {
     tabWidth?: number;
     useTabs?: boolean;
     singleQuote?: boolean;
-    trailingComma?: TrailingCommaOption;
+    trailingComma?: 'none' | 'es5' | 'all';
     bracketSpacing?: boolean;
     bracesSpacing?: boolean;
     breakProperty?: boolean;
@@ -19,7 +16,7 @@ export interface PrettierConfig {
     breakBeforeElse?: boolean;
     jsxBracketSameLine?: boolean;
     noSpaceEmptyFn?: boolean;
-    parser?: ParserOption;
+    parser?: 'babylon' | 'flow' | 'postcss' | 'typescript';
     semi?: boolean;
 }
 
@@ -45,9 +42,5 @@ interface ExtensionConfig {
  * Configuration for prettier-vscode
  */
 export type PrettierVSCodeConfig = PrettierConfig & ExtensionConfig;
-export interface Prettier {
-    format: (string, PrettierConfig?) => string;
-    readonly version: string;
-}
 
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
