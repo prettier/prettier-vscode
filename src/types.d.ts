@@ -1,4 +1,4 @@
-type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript';
+type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript' | 'json' | 'graphql';
 type TrailingCommaOption =
     | 'none'
     | 'es5'
@@ -19,11 +19,6 @@ export interface PrettierConfig {
     parser?: ParserOption;
     semi?: boolean;
     useTabs?: boolean;
-}
-interface Language {
-    javascript: ('javascript' | 'javascriptreact' | string)[];
-    typescript: ('typescript' | 'typescriptreact' | string)[];
-    css: ('css' | 'less' | 'scss' | string)[];
 }
 /**
  * prettier-vscode specific configuration
@@ -46,6 +41,14 @@ interface ExtensionConfig {
      * Language ids to run postcss prettier on.
      */
     cssEnable: ('css' | 'less' | 'scss' | string)[];
+    /**
+     * Language ids to run json prettier on
+     */
+    jsonEnable: ('json' | string)[];
+    /**
+     * Language ids to run graphql prettier on
+     */
+    graphqlEnable: ('graphql' | string)[];
 }
 
 /**

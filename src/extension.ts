@@ -35,8 +35,10 @@ export function activate(context: ExtensionContext) {
         ...config.javascriptEnable,
         ...config.typescriptEnable,
         ...config.cssEnable,
+        ...config.jsonEnable,
+        ...config.graphqlEnable,
     ];
-    // CSS doesn't work with range yet.
+    // CSS/json/graphql doesn't work with range yet.
     const rangeLanguageSelector = [
         ...config.javascriptEnable,
         ...config.typescriptEnable,

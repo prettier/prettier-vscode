@@ -20,10 +20,30 @@ import {
     PrettierConfig,
     Prettier,
     PrettierEslintFormat,
+    ParserOption,
 } from './types.d';
 
 type ShowAction = 'Show';
-
+/**
+ * Various parser appearance
+ */
+const PARSER_SINCE = {
+    babylon: '0.0.0',
+    flow: '0.0.0',
+    typescript: '1.4.0-beta',
+    postcss: '1.4.0-beta',
+    json: '1.5.0',
+    graphql: '1.5.0',
+};
+/**
+ * Check if the given parser exists in a prettier module.
+ * @param parser parser to test
+ * @param prettier Prettier module to test against
+ * @returns {boolean} Does the parser exist
+ */
+function parserExists(parser: ParserOption, prettier: Prettier) {
+    return semver.gte(prettier.version, PARSER_SINCE[parser]);
+}
 /**
  * Format the given text with user's configuration.
  * @param text Text to format
@@ -53,6 +73,14 @@ function format(
     }
     if (config.cssEnable.includes(languageId)) {
         parser = 'postcss';
+        isNonJsParser = true;
+    }
+    if (config.jsonEnable.includes(languageId)) {
+        parser = 'json';
+        isNonJsParser = true;
+    }
+    if (config.graphqlEnable.includes(languageId)) {
+        parser = 'graphql';
         isNonJsParser = true;
     }
 
@@ -89,7 +117,7 @@ function format(
         });
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
-    if (isNonJsParser && semver.lt(prettier.version, '1.4.0-beta')) {
+    if (isNonJsParser && !parserExists(parser, prettier)) {
         const bundledPrettier = require('prettier') as Prettier;
         window.showWarningMessage(
             `prettier@${prettier.version} doesn't suport ${languageId}. ` +

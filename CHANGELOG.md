@@ -3,6 +3,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.20.0]
+- Prettier 1.5
+- Added JSON and GraphQL formatting (Range formatting disabled)
+- Disable range formatting with postcss parser (broken)
+
 ## [0.19.1]
 - Fix sass language id (sass -> scss)
 - Update prettier to 1.4.4
