@@ -59,6 +59,15 @@ function format(
         'prettier'
     ) as any;
     /*
+    handle trailingComma changes boolean -> string
+    */
+    let trailingComma = config.trailingComma;
+    if (trailingComma === true) {
+        trailingComma = 'es5';
+    } else if (trailingComma === false) {
+        trailingComma = 'none';
+    }
+    /*
     handle deprecated parser option
     */
     let parser = config.parser;
@@ -78,21 +87,13 @@ function format(
     if (config.jsonEnable.includes(languageId)) {
         parser = 'json';
         isNonJsParser = true;
+        trailingComma = 'none'; // Fix will land in prettier > 1.5.2
     }
     if (config.graphqlEnable.includes(languageId)) {
         parser = 'graphql';
         isNonJsParser = true;
     }
 
-    /*
-    handle trailingComma changes boolean -> string
-    */
-    let trailingComma = config.trailingComma;
-    if (trailingComma === true) {
-        trailingComma = 'es5';
-    } else if (trailingComma === false) {
-        trailingComma = 'none';
-    }
     const prettierOptions = Object.assign(
         {
             printWidth: config.printWidth,
