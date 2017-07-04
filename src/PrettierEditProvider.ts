@@ -121,7 +121,7 @@ function format(
     if (isNonJsParser && !parserExists(parser, prettier)) {
         const bundledPrettier = require('prettier') as Prettier;
         window.showWarningMessage(
-            `prettier@${prettier.version} doesn't suport ${languageId}. ` +
+            `prettier@${prettier.version} doesn't support ${languageId}. ` +
                 `Falling back to bundled prettier@${bundledPrettier.version}.`
         );
         return bundledPrettier.format(text, prettierOptions);
