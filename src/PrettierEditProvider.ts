@@ -110,7 +110,7 @@ function format(
     );
 
     if (config.eslintIntegration && !isNonJsParser) {
-        const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+        const prettierEslint = require(config.prettierEslint) as PrettierEslintFormat;
         return prettierEslint({
             text,
             filePath: fileName,
