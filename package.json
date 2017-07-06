@@ -39,6 +39,16 @@
           "default": false,
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
         },
+        "prettier.prettierEslint": {
+          "type": "string",
+          "enum": [
+            "prettier-eslint",
+            "prettier-semi",
+            "prettier-std"
+          ],
+          "default": "prettier-eslint",
+          "description": "Use supported modules instead of 'prettier-eslint'"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
@@ -221,6 +231,8 @@
   "dependencies": {
     "prettier": "1.5.2",
     "prettier-eslint": "^6.4.2",
+    "prettier-semi": "^1.0.1",
+    "prettier-std": "^1.0.1",
     "read-pkg-up": "2.0.0",
     "semver": "^5.3.0"
   }

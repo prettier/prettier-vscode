@@ -4,6 +4,7 @@ type TrailingCommaOption =
     | 'es5'
     | 'all'
     | boolean; /* deprecated boolean*/
+type PrettierEslintOption = 'prettier-eslint' | 'prettier-semi' | 'prettier-std';
 
 /**
  * Prettier configuration
@@ -29,6 +30,10 @@ interface ExtensionConfig {
      * Other settings will only be fallbacks in case they could not be inferred from eslint rules.
      */
     eslintIntegration: boolean;
+    /**
+     * Use supported modules instead of 'prettier-eslint'.
+     */
+    prettierEslint: PrettierEslintOption;
     /**
      * Language ids to run javascript prettier on.
      */

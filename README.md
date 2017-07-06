@@ -8,7 +8,7 @@ Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
 
 [Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-Can also be installed using 
+Can also be installed using
 
 ```
 ext install prettier-vscode
@@ -33,6 +33,12 @@ Respects `editor.formatOnSave` setting.
 #### prettier.eslintIntegration (default: false) - Javascript only
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+
+#### prettier.prettierEslint (default: 'prettier-eslint') - Javascript only
+Use supported 'prettier-eslint' compliant modules. Valid options:
+ - ["prettier-eslint"][prettier-eslint] - prettier + "eslint --fix"
+ - ["prettier-std"][prettier-std]    - prettier + "standard --fix"
+ - ["prettier-semi"][prettier-semi]   - prettier + "semistandard --fix"
 
 #### prettier.printWidth (default: 80)
 
@@ -83,7 +89,7 @@ Use parser `postcss` for given language ids.
 Use with care.
 
 ### Prettier resolution
-This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
+This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
 
 ### Contribute
 
