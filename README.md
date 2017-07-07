@@ -8,7 +8,7 @@ Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
 
 [Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-Can also be installed using 
+Can also be installed using
 
 ```
 ext install prettier-vscode
@@ -31,10 +31,14 @@ Respects `editor.formatOnSave` setting.
 
 ### Settings
 #### prettier.eslintIntegration (default: false) - Javascript only
-Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
+Use *[prettier-eslint][prettier-eslint]* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
-#### prettier.printWidth (default: 80)
+#### prettier.eslintEngine (default: 'eslint') - Javascript only
+With `eslintIntegration` enabled, choose between *prettier* **supported** eslint engines:
+ - ["eslint"][prettier-eslint] - default engine
+ - ["standard"][prettier-std] - integration with [standard][standard]
+ - ["semistandard"][prettier-semi] - integration with [semistandard][semistandard]
 
 Fit code within this line limit
 
@@ -83,8 +87,14 @@ Use parser `postcss` for given language ids.
 Use with care.
 
 ### Prettier resolution
-This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
+This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
 
 ### Contribute
 
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
+
+[prettier-eslint]: https://github.com/prettier/prettier-eslint
+[prettier-std]: https://github.com/bySabi/prettier-std
+[prettier-semi]: https://github.com/bySabi/prettier-semi
+[standard]: https://github.com/standard/standard
+[semistandard]: https://github.com/Flet/semistandard
