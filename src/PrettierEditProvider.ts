@@ -12,6 +12,8 @@ import {
     Position,
 } from 'vscode';
 
+import { safeExecution, addToOutput } from './errorHandler';
+import { onWorkspaceRootChange } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
 
@@ -23,7 +25,8 @@ import {
     ParserOption,
 } from './types.d';
 
-type ShowAction = 'Show';
+let errorShown: Boolean = false;
+
 /**
  * Various parser appearance
  */
@@ -35,6 +38,23 @@ const PARSER_SINCE = {
     json: '1.5.0',
     graphql: '1.5.0',
 };
+
+/**
+ *  Various eslint engine for prettier integration
+ */
+const PRETTIER_ESLINT_ENGINE = {
+    eslint: 'prettier-eslint',
+    standard: 'prettier-std',
+    semistandard: 'prettier-semi'
+};
+
+/**
+ * Mark the error as not show, when changing workspaces
+ */
+onWorkspaceRootChange(() => {
+    errorShown = false;
+});
+
 /**
  * Check if the given parser exists in a prettier module.
  * @param parser parser to test
@@ -44,6 +64,7 @@ const PARSER_SINCE = {
 function parserExists(parser: ParserOption, prettier: Prettier) {
     return semver.gte(prettier.version, PARSER_SINCE[parser]);
 }
+
 /**
  * Format the given text with user's configuration.
  * @param text Text to format
@@ -58,6 +79,7 @@ function format(
     const config: PrettierVSCodeConfig = workspace.getConfiguration(
         'prettier'
     ) as any;
+
     /*
     handle trailingComma changes boolean -> string
     */
@@ -108,25 +130,49 @@ function format(
         },
         customOptions
     );
-
     if (config.eslintIntegration && !isNonJsParser) {
-        const prettierEslint = require(config.prettierEslint) as PrettierEslintFormat;
-        return prettierEslint({
+        const eslintEngine = PRETTIER_ESLINT_ENGINE[config.eslintEngine];
+        return safeExecution(
+            () => {
+                const prettierEslint = require(eslintEngine) as PrettierEslintFormat;
+                return prettierEslint({
+                    text,
+                    filePath: fileName,
+                    fallbackPrettierOptions: prettierOptions,
+                });
+            },
             text,
-            filePath: fileName,
-            fallbackPrettierOptions: prettierOptions,
-        });
+            fileName
+        );
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
     if (isNonJsParser && !parserExists(parser, prettier)) {
-        const bundledPrettier = require('prettier') as Prettier;
-        window.showWarningMessage(
-            `prettier@${prettier.version} doesn't support ${languageId}. ` +
-                `Falling back to bundled prettier@${bundledPrettier.version}.`
+        return safeExecution(
+            () => {
+                const bundledPrettier = require('prettier') as Prettier;
+                const warningMessage =
+                    `prettier@${prettier.version} doesn't support ${languageId}. ` +
+                    `Falling back to bundled prettier@${bundledPrettier.version}.`;
+
+                addToOutput(warningMessage);
+
+                if (errorShown === false) {
+                    window.showWarningMessage(warningMessage);
+                    errorShown = true;
+                }
+
+                return bundledPrettier.format(text, prettierOptions);
+            },
+            text,
+            fileName
         );
-        return bundledPrettier.format(text, prettierOptions);
     }
-    return prettier.format(text, prettierOptions);
+
+    return safeExecution(
+        () => prettier.format(text, prettierOptions),
+        text,
+        fileName
+    );
 }
 
 function fullDocumentRange(document: TextDocument): Range {
@@ -143,90 +189,28 @@ class PrettierEditProvider
         options: FormattingOptions,
         token: CancellationToken
     ): TextEdit[] {
-        try {
-            return [
-                TextEdit.replace(
-                    fullDocumentRange(document),
-                    format(document.getText(), document, {
-                        rangeStart: document.offsetAt(range.start),
-                        rangeEnd: document.offsetAt(range.end),
-                    })
-                ),
-            ];
-        } catch (e) {
-            let errorPosition;
-            if (e.loc) {
-                let charPos = e.loc.column;
-                if (e.loc.line === 1) {
-                    // start selection range
-                    charPos = range.start.character + e.loc.column;
-                }
-                errorPosition = new Position(
-                    e.loc.line - 1 + range.start.line,
-                    charPos
-                );
-            }
-            handleError(document, e.message, errorPosition);
-        }
+        return [
+            TextEdit.replace(
+                fullDocumentRange(document),
+                format(document.getText(), document, {
+                    rangeStart: document.offsetAt(range.start),
+                    rangeEnd: document.offsetAt(range.end),
+                })
+            ),
+        ];
     }
     provideDocumentFormattingEdits(
         document: TextDocument,
         options: FormattingOptions,
         token: CancellationToken
     ): TextEdit[] {
-        try {
-            return [
-                TextEdit.replace(
-                    fullDocumentRange(document),
-                    format(document.getText(), document, {})
-                ),
-            ];
-        } catch (e) {
-            let errorPosition;
-            if (e.loc) {
-                errorPosition = new Position(e.loc.line - 1, e.loc.column);
-            }
-            handleError(document, e.message, errorPosition);
-        }
+        return [
+            TextEdit.replace(
+                fullDocumentRange(document),
+                format(document.getText(), document, {})
+            ),
+        ];
     }
 }
-/**
- * Handle errors for a given text document.
- * Steps:
- *  - Show the error message.
- *  - Scroll to the error position in given document if asked for it.
- *
- * @param document Document which raised the error
- * @param message Error message
- * @param errorPosition Position where the error occured. Relative to document.
- */
-function handleError(
-    document: TextDocument,
-    message: string,
-    errorPosition: Position
-) {
-    if (errorPosition) {
-        window
-            .showErrorMessage(message, 'Show')
-            .then(function onAction(action?: ShowAction) {
-                if (action === 'Show') {
-                    const rangeError = new Range(errorPosition, errorPosition);
-                    /*
-                    Show text document which has errored.
-                    Format on save case. (save all)
-                    */
-                    window.showTextDocument(document).then(editor => {
-                        // move cursor to error position and show it.
-                        editor.selection = new Selection(
-                            rangeError.start,
-                            rangeError.end
-                        );
-                        editor.revealRange(rangeError);
-                    });
-                }
-            });
-    } else {
-        window.showErrorMessage(message);
-    }
-}
+
 export default PrettierEditProvider;

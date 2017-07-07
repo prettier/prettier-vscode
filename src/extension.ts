@@ -6,7 +6,7 @@ import {
     workspace,
 } from 'vscode';
 import EditProvider from './PrettierEditProvider';
-
+import { setupErrorHandler } from './errorHandler';
 import { PrettierVSCodeConfig } from './types.d';
 
 function checkConfig(): PrettierVSCodeConfig {
@@ -52,7 +52,8 @@ export function activate(context: ExtensionContext) {
         languages.registerDocumentFormattingEditProvider(
             languageSelector,
             editProvider
-        )
+        ),
+        setupErrorHandler()
     );
 }
 

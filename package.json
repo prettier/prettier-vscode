@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - JavaScript formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "0.20.2",
+  "version": "0.21.0",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -39,15 +39,10 @@
           "default": false,
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
         },
-        "prettier.prettierEslint": {
+        "prettier.eslintEngine": {
           "type": "string",
-          "enum": [
-            "prettier-eslint",
-            "prettier-semi",
-            "prettier-std"
-          ],
-          "default": "prettier-eslint",
-          "description": "Use supported modules instead of 'prettier-eslint'"
+          "default": "eslint",
+          "description": "When eslintIntegration is enabled choose between 'prettier' supported eslint engines."
         },
         "prettier.printWidth": {
           "type": "integer",

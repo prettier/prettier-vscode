@@ -3,6 +3,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.21.0]
+- Reworked error messages. They are now in a dedicated output channel.
+
 ## [0.20.0]
 - Prettier 1.5
 - Added JSON and GraphQL formatting (Range formatting disabled)

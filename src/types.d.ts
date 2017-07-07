@@ -4,7 +4,7 @@ type TrailingCommaOption =
     | 'es5'
     | 'all'
     | boolean; /* deprecated boolean*/
-type PrettierEslintOption = 'prettier-eslint' | 'prettier-semi' | 'prettier-std';
+type PrettierEslintEngine = 'eslint' | 'standard' | 'semistandard';
 
 /**
  * Prettier configuration
@@ -21,6 +21,7 @@ export interface PrettierConfig {
     semi?: boolean;
     useTabs?: boolean;
 }
+
 /**
  * prettier-vscode specific configuration
  */
@@ -31,9 +32,9 @@ interface ExtensionConfig {
      */
     eslintIntegration: boolean;
     /**
-     * Use supported modules instead of 'prettier-eslint'.
+     * When eslintIntegration is enabled choose between 'prettier' supported eslint engines.
      */
-    prettierEslint: PrettierEslintOption;
+    eslintEngine: PrettierEslintEngine;
     /**
      * Language ids to run javascript prettier on.
      */
