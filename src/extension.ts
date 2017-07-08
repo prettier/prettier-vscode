@@ -31,7 +31,7 @@ function checkConfig(): PrettierVSCodeConfig {
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
     const config = checkConfig();
-    const languageSelector = [
+    const languageSelector: DocumentSelector = [
         ...config.javascriptEnable,
         ...config.typescriptEnable,
         ...config.cssEnable,
@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
         ...config.graphqlEnable,
     ];
     // CSS/json/graphql doesn't work with range yet.
-    const rangeLanguageSelector = [
+    const rangeLanguageSelector: DocumentSelector = [
         ...config.javascriptEnable,
         ...config.typescriptEnable,
     ];

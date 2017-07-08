@@ -1,4 +1,10 @@
-type ParserOption = 'babylon' | 'flow' | 'postcss' | 'typescript' | 'json' | 'graphql';
+type ParserOption =
+    | 'babylon'
+    | 'flow'
+    | 'postcss'
+    | 'typescript'
+    | 'json'
+    | 'graphql';
 type TrailingCommaOption =
     | 'none'
     | 'es5'
@@ -56,7 +62,7 @@ interface ExtensionConfig {
  */
 export type PrettierVSCodeConfig = ExtensionConfig & PrettierConfig;
 export interface Prettier {
-    format: (string, PrettierConfig?) => string;
+    format: (text: string, options?: PrettierConfig) => string;
     readonly version: string;
 }
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';

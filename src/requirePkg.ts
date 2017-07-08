@@ -1,4 +1,3 @@
-import { Prettier, PrettierEslintFormat } from './types.d';
 const path = require('path');
 const readPkgUp = require('read-pkg-up');
 

@@ -3,6 +3,10 @@
         "module": "commonjs",
         "target": "es6",
         "outDir": "out",
+        "strict": true,
+        "noUnusedLocals": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
         "lib": [
             "es2016"
         ],

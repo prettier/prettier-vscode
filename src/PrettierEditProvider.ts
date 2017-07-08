@@ -8,8 +8,6 @@ import {
     FormattingOptions,
     CancellationToken,
     TextEdit,
-    Selection,
-    Position,
 } from 'vscode';
 
 import { safeExecution, addToOutput } from './errorHandler';
@@ -19,7 +17,6 @@ import * as semver from 'semver';
 
 import {
     PrettierVSCodeConfig,
-    PrettierConfig,
     Prettier,
     PrettierEslintFormat,
     ParserOption,
