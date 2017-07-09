@@ -4,7 +4,7 @@
 [![](https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
 
 <p align="center">
-  <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now.gif" alt="Visual">
+  <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual">
 </p>
 
 VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*
