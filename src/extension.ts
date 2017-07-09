@@ -17,13 +17,16 @@ export function activate(context: ExtensionContext) {
         ...config.javascriptEnable,
         ...config.typescriptEnable,
         ...config.cssEnable,
+        ...config.graphqlEnable
     ];
 
     context.subscriptions.push(
-        languages.registerDocumentFormattingEditProvider(languageSelector, editProvider)
+        languages.registerDocumentFormattingEditProvider(
+            languageSelector,
+            editProvider
+        )
     );
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
-}
+export function deactivate() {}

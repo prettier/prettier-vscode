@@ -378,6 +378,11 @@ function locStart$1(node) {
 }
 
 function locEnd$1(node) {
+  const endNode = node.nodes && getLast(node.nodes);
+  if (endNode && node.source && !node.source.end) {
+    node = endNode;
+  }
+
   let loc;
   if (node.range) {
     loc = node.range[1];
@@ -457,6 +462,9 @@ function getPrecedence(op) {
 function startsWithNoLookaheadToken(node, forbidFunctionAndClass) {
   node = getLeftMost(node);
   switch (node.type) {
+    // Hack. Remove after https://github.com/eslint/typescript-eslint-parser/issues/331
+    case "ObjectPattern":
+      return !forbidFunctionAndClass;
     case "FunctionExpression":
     case "ClassExpression":
       return forbidFunctionAndClass;
@@ -1572,15 +1580,15 @@ var comments$1 = {
 };
 
 var name = "prettier-miscellaneous";
-var version$1 = "1.4.4";
+var version$1 = "1.5.2";
 var description = "Prettier is an opinionated JavaScript formatter";
 var bin = {"prettier":"./bin/prettier.js"};
 var repository = "arijs/prettier-miscellaneous";
 var author = "Rafael Hengles";
 var license = "MIT";
 var main = "./index.js";
-var dependencies = {"babel-code-frame":"7.0.0-alpha.12","babylon":"7.0.0-beta.14","chalk":"1.1.3","diff":"3.2.0","esutils":"2.0.2","flow-parser":"0.47.0","get-stream":"3.0.0","glob":"7.1.2","graphql":"0.10.1","jest-validate":"20.0.3","json-to-ast":"2.0.0-alpha1.2","minimist":"1.2.0","parse5":"3.0.2","postcss":"^6.0.1","postcss-less":"^1.0.0","postcss-media-query-parser":"0.2.3","postcss-scss":"1.0.0","postcss-selector-parser":"2.2.3","postcss-values-parser":"git://github.com/shellscape/postcss-values-parser.git#5e351360479116f3fe309602cdd15b0a233bc29f","typescript":"2.5.0-dev.20170617","typescript-eslint-parser":"git://github.com/eslint/typescript-eslint-parser.git#cfddbfe3ebf550530aef2f1c6c4ea1d9e738d9c1"};
-var devDependencies = {"babel-cli":"6.24.1","babel-preset-es2015":"6.24.1","cross-spawn":"5.1.0","eslint":"3.19.0","eslint-friendly-formatter":"3.0.0","eslint-plugin-prettier":"2.1.1","jest":"20.0.0","mkdirp":"^0.5.1","prettier":"1.4.2","rimraf":"2.6.1","rollup":"0.41.1","rollup-plugin-commonjs":"7.0.0","rollup-plugin-json":"2.1.0","rollup-plugin-node-builtins":"2.0.0","rollup-plugin-node-globals":"1.1.0","rollup-plugin-node-resolve":"2.0.0","rollup-plugin-replace":"1.1.1","sw-toolbox":"3.6.0","uglify-es":"3.0.15","webpack":"2.6.1"};
+var dependencies = {"babel-code-frame":"7.0.0-alpha.12","babylon":"7.0.0-beta.13","chalk":"1.1.3","diff":"3.2.0","esutils":"2.0.2","flow-parser":"0.47.0","get-stream":"3.0.0","glob":"7.1.2","graphql":"0.10.1","jest-validate":"20.0.3","json-to-ast":"2.0.0-alpha1.2","minimist":"1.2.0","parse5":"3.0.2","postcss":"^6.0.1","postcss-less":"^1.0.0","postcss-media-query-parser":"0.2.3","postcss-scss":"1.0.0","postcss-selector-parser":"2.2.3","postcss-values-parser":"git://github.com/shellscape/postcss-values-parser.git#5e351360479116f3fe309602cdd15b0a233bc29f","typescript":"2.5.0-dev.20170617","typescript-eslint-parser":"git://github.com/eslint/typescript-eslint-parser.git#cfddbfe3ebf550530aef2f1c6c4ea1d9e738d9c1"};
+var devDependencies = {"babel-cli":"6.24.1","babel-preset-es2015":"6.24.1","cross-spawn":"5.1.0","eslint":"3.19.0","eslint-friendly-formatter":"3.0.0","eslint-plugin-prettier":"2.1.1","jest":"20.0.0","mkdirp":"^0.5.1","prettier":"1.5.2","rimraf":"2.6.1","rollup":"0.41.1","rollup-plugin-commonjs":"7.0.0","rollup-plugin-json":"2.1.0","rollup-plugin-node-builtins":"2.0.0","rollup-plugin-node-globals":"1.1.0","rollup-plugin-node-resolve":"2.0.0","rollup-plugin-replace":"1.1.1","sw-toolbox":"3.6.0","uglify-es":"3.0.15","webpack":"2.6.1"};
 var scripts = {"test":"jest","posttest":"npm run test-tabs && npm run test-tabs-inv","test-tabs":"node ./bin/prettier.js --use-tabs --bracket-spacing --trailing-comma=array,object -- ./bin/prettier.js > ./bin/prettier-with-tabs.js","test-tabs-inv":"node ./bin/prettier-with-tabs.js -- ./bin/prettier-with-tabs.js > ./bin/prettier-spaces.js","test-integration":"jest tests_integration","lint":"EFF_NO_LINK_RULES=true eslint . --format 'node_modules/eslint-friendly-formatter'","build":"./scripts/build/build.sh"};
 var jest = {"setupFiles":["<rootDir>/tests_config/run_spec.js"],"snapshotSerializers":["<rootDir>/tests_config/raw-serializer.js"],"testRegex":"jsfmt\\.spec\\.js$|__tests__/.*\\.js$","testPathIgnorePatterns":["tests/new_react","tests/more_react"]};
 var _package = {
@@ -2426,6 +2434,10 @@ function removeLines(doc) {
   });
 }
 
+function rawText$1(node) {
+  return node.extra ? node.extra.raw : node.raw;
+}
+
 var docUtils$2 = {
   isEmpty: isEmpty$1,
   getFirstString,
@@ -2434,7 +2446,8 @@ var docUtils$2 = {
   traverseDoc,
   mapDoc,
   propagateBreaks,
-  removeLines
+  removeLines,
+  rawText: rawText$1
 };
 
 function createCommonjsModule(fn, module) {
@@ -3510,17 +3523,23 @@ var parser$1 = { parse };
 const util$6 = util$2;
 const docUtils$1 = docUtils$2;
 const docBuilders$4 = docBuilders$1;
+const comments$4 = comments$1;
 const indent$3 = docBuilders$4.indent;
 const hardline$3 = docBuilders$4.hardline;
 const softline$2 = docBuilders$4.softline;
 const concat$3 = docBuilders$4.concat;
 
-function printSubtree(subtreeParser, options, expressionDocs) {
+function printSubtree(subtreeParser, path$$1, print, options) {
   const next = Object.assign({}, { transformDoc: doc => doc }, subtreeParser);
-  next.options = Object.assign({}, options, next.options);
+  next.options = Object.assign({}, options, next.options, {
+    originalText: next.text
+  });
   const ast = parser$1.parse(next.text, next.options);
+  const astComments = ast.comments;
+  delete ast.comments;
+  comments$4.attach(astComments, ast, next.text, next.options);
   const nextDoc = printer.printAstToDoc(ast, next.options);
-  return next.transformDoc(nextDoc, expressionDocs);
+  return next.transformDoc(nextDoc, { path: path$$1, print });
 }
 
 /**
@@ -3581,7 +3600,10 @@ function fromBabylonFlowOrTypeScript(path$$1) {
         return {
           options: { parser: "graphql" },
           transformDoc: doc =>
-            concat$3([indent$3(concat$3([softline$2, doc])), softline$2]),
+            concat$3([
+              indent$3(concat$3([softline$2, stripTrailingHardline(doc)])),
+              softline$2
+            ]),
           text: parent.quasis[0].value.raw
         };
       }
@@ -3670,7 +3692,11 @@ function fromHtmlParser2(path$$1, options) {
   }
 }
 
-function transformCssDoc(quasisDoc, expressionDocs) {
+function transformCssDoc(quasisDoc, parent) {
+  const parentNode = parent.path.getValue();
+  const expressionDocs = parentNode.expressions
+    ? parent.path.map(parent.print, "expressions")
+    : [];
   const newDoc = replacePlaceholders(quasisDoc, expressionDocs);
   if (!newDoc) {
     throw new Error("Couldn't insert all the expressions");
@@ -3828,7 +3854,10 @@ function genericPrint$1(path$$1, options, print) {
 
   switch (n.kind) {
     case "Document": {
-      return join$3(concat$4([hardline$4, hardline$4]), path$$1.map(print, "definitions"));
+      return concat$4([
+        join$3(concat$4([hardline$4, hardline$4]), path$$1.map(print, "definitions")),
+        hardline$4
+      ]);
     }
     case "OperationDefinition": {
       return concat$4([
@@ -3842,7 +3871,7 @@ function genericPrint$1(path$$1, options, print) {
                   concat$4([
                     softline$3,
                     join$3(
-                      concat$4([",", ifBreak$2("", " "), softline$3]),
+                      concat$4([ifBreak$2("", ", "), softline$3]),
                       path$$1.map(print, "variableDefinitions")
                     )
                   ])
@@ -3891,7 +3920,7 @@ function genericPrint$1(path$$1, options, print) {
                     concat$4([
                       softline$3,
                       join$3(
-                        concat$4([",", ifBreak$2("", " "), softline$3]),
+                        concat$4([ifBreak$2("", ", "), softline$3]),
                         path$$1.map(print, "arguments")
                       )
                     ])
@@ -3935,7 +3964,7 @@ function genericPrint$1(path$$1, options, print) {
             concat$4([
               softline$3,
               join$3(
-                concat$4([",", ifBreak$2("", " "), softline$3]),
+                concat$4([ifBreak$2("", ", "), softline$3]),
                 path$$1.map(print, "values")
               )
             ])
@@ -3949,18 +3978,18 @@ function genericPrint$1(path$$1, options, print) {
       return group$2(
         concat$4([
           "{",
-          n.fields.length > 0 ? " " : "",
+          options.bracesSpacing && n.fields.length > 0 ? " " : "",
           indent$4(
             concat$4([
               softline$3,
               join$3(
-                concat$4([",", ifBreak$2("", " "), softline$3]),
+                concat$4([ifBreak$2("", ", "), softline$3]),
                 path$$1.map(print, "fields")
               )
             ])
           ),
           softline$3,
-          ifBreak$2("", n.fields.length > 0 ? " " : ""),
+          ifBreak$2("", options.bracesSpacing && n.fields.length > 0 ? " " : ""),
           "}"
         ])
       );
@@ -3986,7 +4015,7 @@ function genericPrint$1(path$$1, options, print) {
                   concat$4([
                     softline$3,
                     join$3(
-                      concat$4([",", ifBreak$2("", " "), softline$3]),
+                      concat$4([ifBreak$2("", ", "), softline$3]),
                       path$$1.map(print, "arguments")
                     )
                   ])
@@ -4009,6 +4038,174 @@ function genericPrint$1(path$$1, options, print) {
         ": ",
         path$$1.call(print, "type"),
         n.defaultValue ? concat$4([" = ", path$$1.call(print, "defaultValue")]) : ""
+      ]);
+    }
+
+    case "TypeExtensionDefinition": {
+      return concat$4(["extend ", path$$1.call(print, "definition")]);
+    }
+
+    case "ObjectTypeDefinition": {
+      return concat$4([
+        "type ",
+        path$$1.call(print, "name"),
+        n.interfaces.length > 0
+          ? concat$4([" implements ", join$3(", ", path$$1.map(print, "interfaces"))])
+          : "",
+        printDirectives(path$$1, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent$4(
+              concat$4([hardline$4, join$3(hardline$4, path$$1.map(print, "fields"))])
+            )
+          : "",
+        hardline$4,
+        "}"
+      ]);
+    }
+
+    case "FieldDefinition": {
+      return concat$4([
+        path$$1.call(print, "name"),
+        n.arguments.length > 0
+          ? group$2(
+              concat$4([
+                "(",
+                indent$4(
+                  concat$4([
+                    softline$3,
+                    join$3(
+                      concat$4([ifBreak$2("", ", "), softline$3]),
+                      path$$1.map(print, "arguments")
+                    )
+                  ])
+                ),
+                softline$3,
+                ")"
+              ])
+            )
+          : "",
+        ": ",
+        path$$1.call(print, "type"),
+        printDirectives(path$$1, print, n)
+      ]);
+    }
+
+    case "DirectiveDefinition": {
+      return concat$4([
+        "directive ",
+        "@",
+        path$$1.call(print, "name"),
+        n.arguments.length > 0
+          ? group$2(
+              concat$4([
+                "(",
+                indent$4(
+                  concat$4([
+                    softline$3,
+                    join$3(
+                      concat$4([ifBreak$2("", ", "), softline$3]),
+                      path$$1.map(print, "arguments")
+                    )
+                  ])
+                ),
+                softline$3,
+                ")"
+              ])
+            )
+          : "",
+        concat$4([" on ", join$3(" | ", path$$1.map(print, "locations"))])
+      ]);
+    }
+
+    case "EnumTypeDefinition": {
+      return concat$4([
+        "enum ",
+        path$$1.call(print, "name"),
+        printDirectives(path$$1, print, n),
+        " {",
+        n.values.length > 0
+          ? indent$4(
+              concat$4([hardline$4, join$3(hardline$4, path$$1.map(print, "values"))])
+            )
+          : "",
+        hardline$4,
+        "}"
+      ]);
+    }
+
+    case "EnumValueDefinition": {
+      return concat$4([
+        path$$1.call(print, "name"),
+        printDirectives(path$$1, print, n)
+      ]);
+    }
+
+    case "InputValueDefinition": {
+      return concat$4([
+        path$$1.call(print, "name"),
+        ": ",
+        path$$1.call(print, "type"),
+        n.defaultValue ? concat$4([" = ", path$$1.call(print, "defaultValue")]) : "",
+        printDirectives(path$$1, print, n)
+      ]);
+    }
+
+    case "InputObjectTypeDefinition": {
+      return concat$4([
+        "input ",
+        path$$1.call(print, "name"),
+        printDirectives(path$$1, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent$4(
+              concat$4([hardline$4, join$3(hardline$4, path$$1.map(print, "fields"))])
+            )
+          : "",
+        hardline$4,
+        "}"
+      ]);
+    }
+
+    case "SchemaDefinition": {
+      return concat$4([
+        "schema",
+        printDirectives(path$$1, print, n),
+        " {",
+        n.operationTypes.length > 0
+          ? indent$4(
+              concat$4([
+                hardline$4,
+                join$3(hardline$4, path$$1.map(print, "operationTypes"))
+              ])
+            )
+          : "",
+        hardline$4,
+        "}"
+      ]);
+    }
+
+    case "OperationTypeDefinition": {
+      return concat$4([
+        path$$1.call(print, "operation"),
+        ": ",
+        path$$1.call(print, "type")
+      ]);
+    }
+
+    case "InterfaceTypeDefinition": {
+      return concat$4([
+        "interface ",
+        path$$1.call(print, "name"),
+        printDirectives(path$$1, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent$4(
+              concat$4([hardline$4, join$3(hardline$4, path$$1.map(print, "fields"))])
+            )
+          : "",
+        hardline$4,
+        "}"
       ]);
     }
 
@@ -4047,6 +4244,14 @@ function genericPrint$1(path$$1, options, print) {
           )
         ])
       );
+    }
+
+    case "ScalarTypeDefinition": {
+      return concat$4([
+        "scalar ",
+        path$$1.call(print, "name"),
+        printDirectives(path$$1, print, n)
+      ]);
     }
 
     case "NonNullType": {
@@ -4208,6 +4413,7 @@ const line$4 = docBuilders$7.line;
 const hardline$6 = docBuilders$7.hardline;
 const softline$5 = docBuilders$7.softline;
 const group$4 = docBuilders$7.group;
+const fill$2 = docBuilders$7.fill;
 const indent$6 = docBuilders$7.indent;
 
 const docUtils$4 = docUtils$2;
@@ -4341,7 +4547,7 @@ function genericPrint$3(path$$1, options, print) {
         }
         parts.push(childPath.call(print));
       }, "nodes");
-      return join$5(", ", parts);
+      return group$4(indent$6(join$5(concat$6([",", line$4]), parts)));
     }
     case "media-query": {
       return join$5(" ", path$$1.map(print, "nodes"));
@@ -4455,7 +4661,7 @@ function genericPrint$3(path$$1, options, print) {
         }
       }
 
-      return group$4(indent$6(concat$6(parts)));
+      return group$4(indent$6(fill$2(parts)));
     }
     case "value-paren_group": {
       const parent = path$$1.getParentNode();
@@ -4479,9 +4685,16 @@ function genericPrint$3(path$$1, options, print) {
       }
 
       if (!n.open) {
-        return group$4(
-          indent$6(join$5(concat$6([",", line$4]), path$$1.map(print, "groups")))
-        );
+        const printed = path$$1.map(print, "groups");
+        const res = [];
+
+        for (let i = 0; i < printed.length; i++) {
+          if (i !== 0) {
+            res.push(concat$6([",", line$4]));
+          }
+          res.push(printed[i]);
+        }
+        return group$4(indent$6(fill$2(res)));
       }
 
       return group$4(
@@ -4625,6 +4838,7 @@ const docUtils = docUtils$2;
 const willBreak = docUtils.willBreak;
 const isLineNext = docUtils.isLineNext;
 const isEmpty = docUtils.isEmpty;
+const rawText = docUtils.rawText;
 
 function shouldPrintComma(options, level) {
   return options.trailingComma[level];
@@ -4663,10 +4877,7 @@ function genericPrint(path$$1, options, printPath, args) {
     const next = multiparser.getSubtreeParser(path$$1, options);
     if (next) {
       try {
-        const expressionDocs = node.expressions
-          ? path$$1.map(printPath, "expressions")
-          : [];
-        return multiparser.printSubtree(next, options, expressionDocs);
+        return multiparser.printSubtree(next, path$$1, printPath, options);
       } catch (error) {
         if (process.env.PRETTIER_DEBUG) {
           console.error(error);
@@ -4940,7 +5151,10 @@ function genericPrintNoParens(path$$1, options, print, args) {
         (parent.type === "JSXExpressionContainer" &&
           parentParent.type === "JSXAttribute") ||
         (n === parent.body && parent.type === "ArrowFunctionExpression") ||
-        (n !== parent.body && parent.type === "ForStatement")
+        (n !== parent.body && parent.type === "ForStatement") ||
+        parent.type === "ObjectProperty" ||
+        parent.type === "Property" ||
+        parent.type === "ConditionalExpression"
       ) {
         return group$1(concat$2(parts));
       }
@@ -5438,16 +5652,22 @@ function genericPrintNoParens(path$$1, options, print, args) {
       parts.push(semi);
 
       return concat$2(parts);
+    case "NewExpression":
     case "CallExpression": {
+      const isNew = n.type === "NewExpression";
       if (
         // We want to keep require calls as a unit
-        (n.callee.type === "Identifier" && n.callee.name === "require") ||
+        (!isNew &&
+          n.callee.type === "Identifier" &&
+          n.callee.name === "require") ||
+        n.callee.type === "Import" ||
         // Template literals as single arguments
         (n.arguments.length === 1 &&
           isTemplateOnItsOwnLine(n.arguments[0], options.originalText)) ||
         // Keep test declarations on a single line
         // e.g. `it('long name', () => {`
-        (n.callee.type === "Identifier" &&
+        (!isNew &&
+          n.callee.type === "Identifier" &&
           (n.callee.name === "it" ||
             n.callee.name === "test" ||
             n.callee.name === "describe") &&
@@ -5461,6 +5681,7 @@ function genericPrintNoParens(path$$1, options, print, args) {
           n.arguments[1].params.length <= 1)
       ) {
         return concat$2([
+          isNew ? "new " : "",
           path$$1.call(print, "callee"),
           path$$1.call(print, "typeParameters"),
           concat$2(["(", join$2(", ", path$$1.map(print, "arguments")), ")"])
@@ -5469,11 +5690,12 @@ function genericPrintNoParens(path$$1, options, print, args) {
 
       // We detect calls on member lookups and possibly print them in a
       // special chain format. See `printMemberChain` for more info.
-      if (n.callee.type === "MemberExpression") {
+      if (!isNew && n.callee.type === "MemberExpression") {
         return printMemberChain(path$$1, options, print);
       }
 
       return concat$2([
+        isNew ? "new " : "",
         path$$1.call(print, "callee"),
         printFunctionTypeParameters(path$$1, options, print),
         printArgumentsList(path$$1, options, print)
@@ -5897,18 +6119,6 @@ function genericPrintNoParens(path$$1, options, print, args) {
         ])
       );
     }
-    case "NewExpression":
-      parts.push(
-        "new ",
-        path$$1.call(print, "callee"),
-        printFunctionTypeParameters(path$$1, options, print)
-      );
-
-      if (n.arguments) {
-        parts.push(printArgumentsList(path$$1, options, print));
-      }
-
-      return concat$2(parts);
     case "VariableDeclaration": {
       const printed = path$$1.map(childPath => {
         return print(childPath);
@@ -6253,7 +6463,7 @@ function genericPrintNoParens(path$$1, options, print, args) {
       if (n.value) {
         let res;
         if (isStringLiteral(n.value)) {
-          const value = n.value.extra ? n.value.extra.raw : n.value.raw;
+          const value = rawText(n.value);
           if (options.jsxSingleQuote) {
             res = "'" + value.slice(1, -1).replace(/'/g, "&#39;") + "'";
           } else {
@@ -6417,10 +6627,6 @@ function genericPrintNoParens(path$$1, options, print, args) {
       return concat$2(parts);
     case "ClassProperty":
     case "TSAbstractClassProperty": {
-      const variance = getFlowVariance(n);
-      if (variance) {
-        parts.push(variance);
-      }
       if (n.accessibility) {
         parts.push(n.accessibility + " ");
       }
@@ -6432,6 +6638,10 @@ function genericPrintNoParens(path$$1, options, print, args) {
       }
       if (n.readonly) {
         parts.push("readonly ");
+      }
+      const variance = getFlowVariance(n);
+      if (variance) {
+        parts.push(variance);
       }
       if (n.computed) {
         parts.push("[", path$$1.call(print, "key"), "]");
@@ -7279,12 +7489,13 @@ function genericPrintNoParens(path$$1, options, print, args) {
         parts.push(printTypeScriptModifiers(path$$1, options, print));
 
         // Global declaration looks like this:
-        // declare global { ... }
+        // (declare)? global { ... }
         const isGlobalDeclaration =
           n.name.type === "Identifier" &&
           n.name.name === "global" &&
-          n.modifiers &&
-          n.modifiers.some(modifier => modifier.type === "TSDeclareKeyword");
+          !/namespace|module/.test(
+            options.originalText.slice(util$4.locStart(n), util$4.locStart(n.name))
+          );
 
         if (!isGlobalDeclaration) {
           parts.push(isExternalModule ? "module " : "namespace ");
@@ -7660,7 +7871,10 @@ function printFunctionParams(path$$1, print, options, expandArg, printTypeParams
   //     }                     b,
   //   })                    ) => {
   //                         })
-  if (expandArg) {
+  if (
+    expandArg &&
+    !(fun[paramsField] && fun[paramsField].some(n => n.comments))
+  ) {
     return group$1(
       concat$2([
         docUtils.removeLines(typeParams),
@@ -7744,7 +7958,7 @@ function canPrintParamsWithoutParens(node, options) {
     !node.rest &&
     node.params[0].type === "Identifier" &&
     !node.params[0].typeAnnotation &&
-    !util$4.hasBlockComments(node.params[0]) &&
+    !node.params[0].comments &&
     !node.params[0].optional &&
     !node.predicate &&
     !node.returnType &&
@@ -8118,7 +8332,10 @@ function printMemberChain(path$$1, options, print) {
 
   function rec(path$$1) {
     const node = path$$1.getValue();
-    if (node.type === "CallExpression") {
+    if (
+      node.type === "CallExpression" &&
+      node.callee.type === "MemberExpression"
+    ) {
       printedNodes.unshift({
         node: node,
         printed: comments$3.printComments(
@@ -8340,12 +8557,38 @@ function isEmptyJSXElement(node) {
     return false;
   }
 
-  // if there is one child but it's just a newline, treat as empty
-  const value = node.children[0].value;
-  if (!/\S/.test(value) && /\n/.test(value)) {
-    return true;
-  }
-  return false;
+  // if there is one text child and does not contain any meaningful text
+  // we can treat the element as empty.
+  const child = node.children[0];
+  return isLiteral(child) && !isMeaningfulJSXText(child);
+}
+
+// Only space, newline, carriage return, and tab are treated as whitespace
+// inside JSX.
+const jsxWhitespaceChars = " \n\r\t";
+const containsNonJsxWhitespaceRegex = new RegExp(
+  "[^" + jsxWhitespaceChars + "]"
+);
+const matchJsxWhitespaceRegex = new RegExp("([" + jsxWhitespaceChars + "]+)");
+
+// Meaningful if it contains non-whitespace characters,
+// or it contains whitespace without a new line.
+function isMeaningfulJSXText(node) {
+  return (
+    isLiteral(node) &&
+    (containsNonJsxWhitespaceRegex.test(rawText(node)) ||
+      !/\n/.test(rawText(node)))
+  );
+}
+
+// Detect an expression node representing `{" "}`
+function isJSXWhitespaceExpression(node) {
+  return (
+    node.type === "JSXExpressionContainer" &&
+    isLiteral(node.expression) &&
+    node.expression.value === " " &&
+    !node.expression.comments
+  );
 }
 
 // JSX Children are strange, mostly for two reasons:
@@ -8353,13 +8596,10 @@ function isEmptyJSXElement(node) {
 // 2. up to one whitespace between elements within a line is significant,
 //    but not between lines.
 //
-// So for one thing, '\n' needs to be parsed out of string literals
-// and turned into hardlines (with string boundaries otherwise using softline)
-//
-// For another, leading, trailing, and lone whitespace all need to
+// Leading, trailing, and lone whitespace all need to
 // turn themselves into the rather ugly `{' '}` when breaking.
 //
-// Finally we print JSX using the `fill` doc primitive.
+// We print JSX using the `fill` doc primitive.
 // This requires that we give it an array of alternating
 // content and whitespace elements.
 // To ensure this we add dummy `""` content elements as needed.
@@ -8370,101 +8610,88 @@ function printJSXChildren(path$$1, options, print, jsxWhitespace) {
   // using `map` instead of `each` because it provides `i`
   path$$1.map((childPath, i) => {
     const child = childPath.getValue();
-    if (isLiteral(child) && typeof child.value === "string") {
-      const value = child.raw || child.extra.raw;
+    if (isLiteral(child)) {
+      const text = rawText(child);
 
       // Contains a non-whitespace character
-      if (/[^ \n\r\t]/.test(value)) {
-        // treat each line of text as its own entity
-        value.split(/(\r?\n\s*)/).forEach(textLine => {
-          const newlines = textLine.match(/\n/g);
-          if (newlines) {
-            children.push("");
+      if (isMeaningfulJSXText(child)) {
+        const words = text.split(matchJsxWhitespaceRegex);
+
+        // Starts with whitespace
+        if (words[0] === "") {
+          children.push("");
+          words.shift();
+          if (/\n/.test(words[0])) {
             children.push(hardline$2);
-
-            // allow one extra newline
-            if (newlines.length > 1) {
-              children.push("");
-              children.push(hardline$2);
-            }
-            return;
-          }
-
-          if (textLine.length === 0) {
-            return;
-          }
-
-          const beginSpace = /^[ \n\r\t]+/.test(textLine);
-          if (beginSpace) {
-            children.push("");
-            children.push(jsxWhitespace);
-          }
-
-          const stripped = textLine.replace(/^[ \n\r\t]+|[ \n\r\t]+$/g, "");
-          // Split text into words separated by "line"s.
-          stripped.split(/([ \n\r\t]+)/).forEach(word => {
-            const space = /[ \n\r\t]+/.test(word);
-            if (space) {
-              children.push(line$1);
-            } else {
-              children.push(word);
-            }
-          });
-
-          const endSpace = /[ \n\r\t]+$/.test(textLine);
-          if (endSpace) {
-            children.push(jsxWhitespace);
           } else {
-            // Ideally this would be a `softline` to allow a break between
-            // tags and text.
-            // Unfortunately Facebook have a custom translation pipeline
-            // (https://github.com/prettier/prettier/issues/1581#issuecomment-300975032)
-            // that uses the JSX syntax, but does not follow the React whitespace
-            // rules.
-            // Ensuring that we never have a break between tags and text in JSX
-            // will allow Facebook to adopt Prettier without too much of an
-            // adverse effect on formatting algorithm.
-            children.push("");
+            children.push(jsxWhitespace);
+          }
+          words.shift();
+        }
+
+        let endWhitespace;
+        // Ends with whitespace
+        if (util$4.getLast(words) === "") {
+          words.pop();
+          endWhitespace = words.pop();
+        }
+
+        // This was whitespace only without a new line.
+        if (words.length === 0) {
+          return;
+        }
+
+        words.forEach((word, i) => {
+          if (i % 2 === 1) {
+            children.push(line$1);
+          } else {
+            children.push(word);
           }
         });
-      } else if (/\n/.test(value)) {
-        children.push("");
-        children.push(hardline$2);
 
-        // allow one extra newline
-        if (value.match(/\n/g).length > 1) {
+        if (endWhitespace !== undefined) {
+          if (/\n/.test(endWhitespace)) {
+            children.push(hardline$2);
+          } else {
+            children.push(jsxWhitespace);
+          }
+        } else {
+          // Ideally this would be a `hardline` to allow a break between
+          // tags and text.
+          // Unfortunately Facebook have a custom translation pipeline
+          // (https://github.com/prettier/prettier/issues/1581#issuecomment-300975032)
+          // that uses the JSX syntax, but does not follow the React whitespace
+          // rules.
+          // Ensuring that we never have a break between tags and text in JSX
+          // will allow Facebook to adopt Prettier without too much of an
+          // adverse effect on formatting algorithm.
+          children.push("");
+        }
+      } else if (/\n/.test(text)) {
+        // Keep (up to one) blank line between tags/expressions/text.
+        // Note: We don't keep blank lines between text elements.
+        if (text.match(/\n/g).length > 1) {
           children.push("");
           children.push(hardline$2);
         }
-      } else if (/[ \n\r\t]/.test(value)) {
-        // whitespace(s)-only without newlines,
-        // eg; one or more spaces separating two elements
-        for (let i = 0; i < value.length; ++i) {
-          // Because fill expects alternating content and whitespace parts
-          // we need to include an empty content part before each JSX
-          // whitespace.
-          children.push("");
-          children.push(jsxWhitespace);
-        }
+      } else {
+        children.push("");
+        children.push(jsxWhitespace);
       }
     } else {
-      children.push(print(childPath));
+      const printedChild = print(childPath);
+      children.push(printedChild);
 
       const next = n.children[i + 1];
-      const followedByJSXElement = next && !isLiteral(next);
-      const followedByJSXWhitespace =
-        next &&
-        next.type === "JSXExpressionContainer" &&
-        isLiteral(next.expression) &&
-        next.expression.value === " ";
-
-      if (followedByJSXElement && !followedByJSXWhitespace) {
-        children.push(softline$1);
-      } else {
-        // Ideally this would be a softline as well.
+      const directlyFollowedByMeaningfulText =
+        next && isMeaningfulJSXText(next) && !/^[ \n\r\t]/.test(rawText(next));
+      if (directlyFollowedByMeaningfulText) {
+        // Potentially this could be a hardline as well.
         // See the comment above about the Facebook translation pipeline as
         // to why this is an empty string.
         children.push("");
+      } else {
+        children.push(hardline$2);
       }
     }
   }, "children");
@@ -8517,71 +8744,113 @@ function printJSXElement(path$$1, options, print) {
     assert$1.ok(!n.closingElement);
     return openingLines;
   }
+
+  // Convert `{" "}` to text nodes containing a space.
+  // This makes it easy to turn them into `jsxWhitespace` which
+  // can then print as either a space or `{" "}` when breaking.
+  n.children = n.children.map(child => {
+    if (isJSXWhitespaceExpression(child)) {
+      return {
+        type: "JSXText",
+        value: " ",
+        raw: " "
+      };
+    }
+    return child;
+  });
+
+  const parent = path$$1.getParentNode();
+  const parentContainsText =
+    parent.type === "JSXElement" &&
+    parent.children.filter(child => isMeaningfulJSXText(child)).length > 0;
+
+  const containsTag =
+    n.children.filter(child => child.type === "JSXElement").length > 0;
+  const numExpressions = n.children.filter(
+    child => child.type === "JSXExpressionContainer"
+  ).length;
+  const containsMultipleAttributes = n.openingElement.attributes.length > 1;
+
   // Record any breaks. Should never go from true to false, only false to true.
-  let forcedBreak = willBreak(openingLines);
+  let forcedBreak =
+    willBreak(openingLines) ||
+    containsTag ||
+    containsMultipleAttributes ||
+    (parentContainsText ? numExpressions > 1 : numExpressions > 0);
 
   const rawJsxWhitespace = options.singleQuote ? "{' '}" : '{" "}';
   const jsxWhitespace = ifBreak$1(concat$2([rawJsxWhitespace, softline$1]), " ");
 
   const children = printJSXChildren(path$$1, options, print, jsxWhitespace);
 
-  // Remove multiple filler empty strings
-  // These can occur when a text element is followed by a newline.
+  const containsText =
+    n.children.filter(child => isMeaningfulJSXText(child)).length > 0;
+
+  // We can end up we multiple whitespace elements with empty string
+  // content between them.
+  // We need to remove empty whitespace and softlines before JSX whitespace
+  // to get the correct output.
   for (let i = children.length - 2; i >= 0; i--) {
-    if (children[i] === "" && children[i + 1] === "") {
+    const isPairOfEmptyStrings = children[i] === "" && children[i + 1] === "";
+    const isPairOfHardlines =
+      children[i] === hardline$2 &&
+      children[i + 1] === "" &&
+      children[i + 2] === hardline$2;
+    const isLineFollowedByJSXWhitespace =
+      (children[i] === softline$1 || children[i] === hardline$2) &&
+      children[i + 1] === "" &&
+      children[i + 2] === jsxWhitespace;
+    const isJSXWhitespaceFollowedByLine =
+      children[i] === jsxWhitespace &&
+      children[i + 1] === "" &&
+      (children[i + 2] === softline$1 || children[i + 2] === hardline$2);
+
+    if (
+      (isPairOfHardlines && containsText) ||
+      isPairOfEmptyStrings ||
+      isLineFollowedByJSXWhitespace
+    ) {
       children.splice(i, 2);
+    } else if (isJSXWhitespaceFollowedByLine) {
+      children.splice(i + 1, 2);
     }
   }
 
-  // Trim trailing lines (or empty strings), recording if there was a hardline
-  let numTrailingHard = 0;
+  // Trim trailing lines (or empty strings)
   while (
     children.length &&
     (isLineNext(util$4.getLast(children)) || isEmpty(util$4.getLast(children)))
   ) {
-    if (willBreak(util$4.getLast(children))) {
-      ++numTrailingHard;
-      forcedBreak = true;
-    }
     children.pop();
   }
-  // allow one extra newline
-  if (numTrailingHard > 1) {
-    children.push("");
-    children.push(hardline$2);
-  }
 
-  // Trim leading lines (or empty strings), recording if there was a hardline
-  let numLeadingHard = 0;
+  // Trim leading lines (or empty strings)
   while (
     children.length &&
     (isLineNext(children[0]) || isEmpty(children[0])) &&
     (isLineNext(children[1]) || isEmpty(children[1]))
   ) {
-    if (willBreak(children[0]) || willBreak(children[1])) {
-      ++numLeadingHard;
-      forcedBreak = true;
-    }
     children.shift();
     children.shift();
-  }
-  // allow one extra newline
-  if (numLeadingHard > 1) {
-    children.unshift(hardline$2);
-    children.unshift("");
   }
 
   // Tweak how we format children if outputting this element over multiple lines.
   // Also detect whether we will force this element to output over multiple lines.
   const multilineChildren = [];
   children.forEach((child, i) => {
-    // Ensure that we display leading, trailing, and solitary whitespace as
-    // `{" "}` when outputting this element over multiple lines.
+    // There are a number of situations where we need to ensure we display
+    // whitespace as `{" "}` when outputting this element over multiple lines.
     if (child === jsxWhitespace) {
       if (i === 1 && children[i - 1] === "") {
+        // Leading whitespace
         multilineChildren.push(rawJsxWhitespace);
         return;
       } else if (i === children.length - 1) {
+        // Trailing whitespace
+        multilineChildren.push(rawJsxWhitespace);
+        return;
+      } else if (children[i - 1] === "" && children[i - 2] === hardline$2) {
+        // Whitespace after line break
         multilineChildren.push(rawJsxWhitespace);
         return;
       }
@@ -8594,10 +8863,17 @@ function printJSXElement(path$$1, options, print) {
     }
   });
 
+  // If there is text we use `fill` to fit as much onto each line as possible.
+  // When there is no text (just tags and expressions) we use `group`
+  // to output each on a separate line.
+  const content = containsText
+    ? fill$1(multilineChildren)
+    : group$1(concat$2(multilineChildren), { shouldBreak: true });
+
   const multiLineElem = group$1(
     concat$2([
       openingLines,
-      indent$2(concat$2([hardline$2, fill$1(multilineChildren)])),
+      indent$2(concat$2([hardline$2, content])),
       hardline$2,
       closingLines
     ])
@@ -8608,7 +8884,7 @@ function printJSXElement(path$$1, options, print) {
   }
 
   return conditionalGroup$1([
-    group$1(concat$2([openingLines, fill$1(children), closingLines])),
+    group$1(concat$2([openingLines, concat$2(children), closingLines])),
     multiLineElem
   ]);
 }
@@ -8780,6 +9056,9 @@ function printAssignment(
   const canBreak =
     (options.breakProperty && type === "Property") ||
     (isBinaryish(rightNode) && !shouldInlineLogicalExpression(rightNode)) ||
+    (rightNode.type === "ConditionalExpression" &&
+      isBinaryish(rightNode.test) &&
+      !shouldInlineLogicalExpression(rightNode.test)) ||
     ((leftNode.type === "Identifier" ||
       isStringLiteral(leftNode) ||
       leftNode.type === "MemberExpression") &&
@@ -8808,7 +9087,7 @@ function adjustClause(node, clause, forceSpace) {
 }
 
 function nodeStr(node, options, isFlowOrTypeScriptDirectiveLiteral) {
-  const raw = node.extra ? node.extra.raw : node.raw;
+  const raw = rawText(node);
   // `rawContent` is the string exactly like it appeared in the input source
   // code, with its enclosing quote.
   const rawContent = raw.slice(1, -1);
@@ -9291,26 +9570,41 @@ function isObjectType(n) {
 function printAstToDoc$1(ast, options, addAlignmentSize) {
   addAlignmentSize = addAlignmentSize || 0;
 
+  const cache = new Map();
+
   function printGenerically(path$$1, args) {
     const node = path$$1.getValue();
+
+    const shouldCache = node && typeof node === "object" && args === undefined;
+    if (shouldCache && cache.has(node)) {
+      return cache.get(node);
+    }
+
     const parent = path$$1.getParentNode(0);
     // We let JSXElement print its comments itself because it adds () around
     // UnionTypeAnnotation has to align the child without the comments
+    let res;
     if (
       (node && node.type === "JSXElement") ||
       (parent &&
         (parent.type === "UnionTypeAnnotation" ||
           parent.type === "TSUnionType"))
     ) {
-      return genericPrint(path$$1, options, printGenerically, args);
+      res = genericPrint(path$$1, options, printGenerically, args);
+    } else {
+      res = comments$3.printComments(
+        path$$1,
+        p => genericPrint(p, options, printGenerically, args),
+        options,
+        args && args.needsSemi
+      );
     }
 
-    return comments$3.printComments(
-      path$$1,
-      p => genericPrint(p, options, printGenerically, args),
-      options,
-      args && args.needsSemi
-    );
+    if (shouldCache) {
+      cache.set(node, res);
+    }
+
+    return res;
   }
 
   let doc = printGenerically(new FastPath(ast));
@@ -9324,6 +9618,11 @@ function printAstToDoc$1(ast, options, addAlignmentSize) {
     );
   }
   docUtils.propagateBreaks(doc);
+
+  if (options.parser === "json") {
+    doc = concat$2([doc, hardline$2]);
+  }
+
   return doc;
 }
 
@@ -9331,7 +9630,7 @@ var printer = { printAstToDoc: printAstToDoc$1 };
 
 const docBuilders$8 = docBuilders$1;
 const concat$7 = docBuilders$8.concat;
-const fill$2 = docBuilders$8.fill;
+const fill$3 = docBuilders$8.fill;
 const cursor$2 = docBuilders$8.cursor;
 
 const MODE_BREAK = 1;
@@ -9629,7 +9928,7 @@ function printDocToString$1(doc, options) {
           }
 
           const remaining = parts.slice(2);
-          const remainingCmd = [ind, mode, fill$2(remaining)];
+          const remainingCmd = [ind, mode, fill$3(remaining)];
 
           const secondContent = parts[2];
           const firstAndSecondContentFlatCmd = [
@@ -13321,8 +13620,14 @@ function normalize(options) {
     normalized.parser = "parse5";
   } else if (/\.(ts|tsx)$/.test(filepath)) {
     normalized.parser = "typescript";
+  } else if (/\.graphql$/.test(filepath)) {
+    normalized.parser = "graphql";
   } else if (/\.json$/.test(filepath)) {
     normalized.parser = "json";
+  }
+
+  if (normalized.parser === "json") {
+    normalized.trailingComma = "none";
   }
 
   normalized.trailingComma = normalizeTrailingComma(normalized.trailingComma);
@@ -13513,10 +13818,10 @@ var docDebug = {
   }
 };
 
-var require$$1$13 = ( _package$1 && _package$1['default'] ) || _package$1;
+var require$$1$12 = ( _package$1 && _package$1['default'] ) || _package$1;
 
 const comments = comments$1;
-const version = require$$1$13.version;
+const version = require$$1$12.version;
 const printAstToDoc = printer.printAstToDoc;
 const util = util$2;
 const printDocToString = docPrinter.printDocToString;
@@ -13618,8 +13923,19 @@ function findSiblingAncestors(startNodeAndParents, endNodeAndParents) {
   let resultStartNode = startNodeAndParents.node;
   let resultEndNode = endNodeAndParents.node;
 
+  if (resultStartNode === resultEndNode) {
+    return {
+      startNode: resultStartNode,
+      endNode: resultEndNode
+    };
+  }
+
   for (const endParent of endNodeAndParents.parentNodes) {
-    if (util.locStart(endParent) >= util.locStart(startNodeAndParents.node)) {
+    if (
+      endParent.type !== "Program" &&
+      endParent.type !== "File" &&
+      util.locStart(endParent) >= util.locStart(startNodeAndParents.node)
+    ) {
       resultEndNode = endParent;
     } else {
       break;
@@ -13627,7 +13943,11 @@ function findSiblingAncestors(startNodeAndParents, endNodeAndParents) {
   }
 
   for (const startParent of startNodeAndParents.parentNodes) {
-    if (util.locEnd(startParent) <= util.locEnd(endNodeAndParents.node)) {
+    if (
+      startParent.type !== "Program" &&
+      startParent.type !== "File" &&
+      util.locEnd(startParent) <= util.locEnd(endNodeAndParents.node)
+    ) {
       resultStartNode = startParent;
     } else {
       break;
@@ -13668,11 +13988,19 @@ function findNodeAtOffset(node, offset, predicate, parentNodes) {
 }
 
 // See https://www.ecma-international.org/ecma-262/5.1/#sec-A.5
-function isSourceElement(node) {
+function isSourceElement(opts, node) {
   if (node == null) {
     return false;
   }
-  switch (node.type) {
+  switch (node.type || node.kind) {
+    case "ObjectExpression": // JSON
+    case "ArrayExpression": // JSON
+    case "StringLiteral": // JSON
+    case "NumericLiteral": // JSON
+    case "BooleanLiteral": // JSON
+    case "NullLiteral": // JSON
+    case "json-identifier": // JSON
+      return opts.parser === "json";
     case "FunctionDeclaration":
     case "BlockStatement":
     case "BreakStatement":
@@ -13692,6 +14020,32 @@ function isSourceElement(node) {
     case "VariableDeclaration":
     case "WhileStatement":
     case "WithStatement":
+    case "ClassDeclaration": // ES 2015
+    case "ImportDeclaration": // Module
+    case "ExportDefaultDeclaration": // Module
+    case "ExportNamedDeclaration": // Module
+    case "ExportAllDeclaration": // Module
+    case "TypeAlias": // Flow
+    case "InterfaceDeclaration": // Flow, Typescript
+    case "TypeAliasDeclaration": // Typescript
+    case "ExportAssignment": // Typescript
+    case "ExportDeclaration": // Typescript
+    case "OperationDefinition": // GraphQL
+    case "FragmentDefinition": // GraphQL
+    case "VariableDefinition": // GraphQL
+    case "TypeExtensionDefinition": // GraphQL
+    case "ObjectTypeDefinition": // GraphQL
+    case "FieldDefinition": // GraphQL
+    case "DirectiveDefinition": // GraphQL
+    case "EnumTypeDefinition": // GraphQL
+    case "EnumValueDefinition": // GraphQL
+    case "InputValueDefinition": // GraphQL
+    case "InputObjectTypeDefinition": // GraphQL
+    case "SchemaDefinition": // GraphQL
+    case "OperationTypeDefinition": // GraphQL
+    case "InterfaceTypeDefinition": // GraphQL
+    case "UnionTypeDefinition": // GraphQL
+    case "ScalarTypeDefinition": // GraphQL
       return true;
   }
   return false;
@@ -13716,16 +14070,20 @@ function calculateRange(text, opts, ast) {
     }
   }
 
-  const startNodeAndParents = findNodeAtOffset(
-    ast,
-    startNonWhitespace,
-    isSourceElement
+  const startNodeAndParents = findNodeAtOffset(ast, startNonWhitespace, node =>
+    isSourceElement(opts, node)
   );
-  const endNodeAndParents = findNodeAtOffset(
-    ast,
-    endNonWhitespace,
-    isSourceElement
+  const endNodeAndParents = findNodeAtOffset(ast, endNonWhitespace, node =>
+    isSourceElement(opts, node)
   );
+
+  if (!startNodeAndParents || !endNodeAndParents) {
+    return {
+      rangeStart: 0,
+      rangeEnd: 0
+    };
+  }
+
   const siblingAncestors = findSiblingAncestors(
     startNodeAndParents,
     endNodeAndParents

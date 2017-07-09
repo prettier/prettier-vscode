@@ -2,7 +2,7 @@
  * Prettier configuration
  */
 export interface PrettierConfig {
-    parser?: 'babylon' | 'flow' | 'postcss' | 'typescript';
+    parser?: 'babylon' | 'flow' | 'postcss' | 'graphql' | 'typescript';
     printWidth?: number;
     tabWidth?: number;
     useTabs?: boolean;
@@ -38,12 +38,20 @@ interface ExtensionConfig {
     /**
      * Language ids to run postcss prettier on.
      */
-    cssEnable: ('css' | 'less' | 'sass' | string)[];
+    cssEnable: ('css' | 'less' | 'sass' | 'postcss' | string)[];
+    /**
+     * Language ids to run graphql prettier on.
+     */
+    graphqlEnable: ('graphql' | string)[];
 }
 
 /**
  * Configuration for prettier-vscode
  */
 export type PrettierVSCodeConfig = PrettierConfig & ExtensionConfig;
+export interface Prettier {
+    format: (string, PrettierConfig?) => string;
+    readonly version: string;
+}
 
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';

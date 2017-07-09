@@ -24,7 +24,7 @@ type ShowAction = 'Show';
  * @param path formatting file's path
  * @returns {string} formatted text
  */
-function format (
+function format(
     text: string,
     { fileName, languageId }: TextDocument,
     customOptions: object
@@ -46,9 +46,13 @@ function format (
         parser = 'postcss';
         isNonJsParser = true;
     }
+    if (config.graphqlEnable.includes(languageId)) {
+        parser = 'graphql';
+        isNonJsParser = true;
+    }
 
-    const prettierOptions = Object.assign(
-        {
+    const prettierOptions = {
+        ...{
             printWidth: config.printWidth,
             tabWidth: config.tabWidth,
             useTabs: config.useTabs,
@@ -70,19 +74,19 @@ function format (
             alignObjectProperties: config.alignObjectProperties,
             filepath: fileName
         },
-        customOptions
-    );
+        ...customOptions
+    };
 
     return prettier.format(text, prettierOptions);
 }
 
-function fullDocumentRange (document: TextDocument): Range {
+function fullDocumentRange(document: TextDocument): Range {
     const lastLineId = document.lineCount - 1;
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
 }
 
 class PrettierEditProvider implements DocumentFormattingEditProvider {
-    provideDocumentFormattingEdits (
+    provideDocumentFormattingEdits(
         document: TextDocument,
         options: FormattingOptions,
         token: CancellationToken
@@ -117,7 +121,7 @@ class PrettierEditProvider implements DocumentFormattingEditProvider {
  * @param message Error message
  * @param errorPosition Position where the error occured. Relative to document.
  */
-function handleError (
+function handleError(
     document: TextDocument,
     message: string,
     errorPosition: Position
@@ -125,7 +129,7 @@ function handleError (
     if (errorPosition) {
         window
             .showErrorMessage(message, 'Show')
-            .then(function onAction (action?: ShowAction) {
+            .then(function onAction(action?: ShowAction) {
                 if (action === 'Show') {
                     const rangeError = new Range(errorPosition, errorPosition);
                     /*

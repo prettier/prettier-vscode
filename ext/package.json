@@ -1,6 +1,6 @@
 {
   "name": "prettier-miscellaneous",
-  "version": "1.4.4",
+  "version": "1.5.2",
   "description": "Prettier is an opinionated JavaScript formatter",
   "bin": {
     "prettier": "./bin/prettier.js"
@@ -18,7 +18,7 @@
     "eslint-plugin-prettier": "2.1.1",
     "jest": "20.0.0",
     "mkdirp": "^0.5.1",
-    "prettier": "1.4.2",
+    "prettier": "1.5.2",
     "rimraf": "2.6.1",
     "rollup": "0.41.1",
     "rollup-plugin-commonjs": "7.0.0",

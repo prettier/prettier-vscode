@@ -101,7 +101,8 @@ CMD + Shift + P -> Format Document
 |**semi**|Print semicolons at the ends of statements.<br/><br/>Valid options:<br/>`true` - Add a semicolon at the end of every statement.<br/>`false` - Only add semicolons at the beginning of lines that may introduce ASI failures.|`true`
 |**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
 |**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
-|**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files|`["css","less","scss"]`
+|**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`
+|**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
 |**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line.|`false`
 |**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
 |**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
