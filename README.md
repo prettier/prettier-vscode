@@ -14,6 +14,9 @@ This extension is just a wrapper around Prettier Miscellaneous, please report an
 
 --------------------------------------------------------------------------------
 
+#### *Update 1.3.0*
+*Added support for GraphQL and CSS files with PostCSS syntax.*
+<br/>
 #### *Update 1.2.0*
 *New options jsxSingleQuote, spaceBeforeParen, alignObjectProperties. breakBeforeElse should now break properly.*
 <br/>
