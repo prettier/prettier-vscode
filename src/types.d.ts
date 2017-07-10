@@ -62,6 +62,15 @@ interface ExtensionConfig {
 export type PrettierVSCodeConfig = ExtensionConfig & PrettierConfig;
 export interface Prettier {
     format: (text: string, options?: PrettierConfig) => string;
+    resolveConfig: (
+        filePath: string,
+        options?: {
+            /**
+             * Use cache, defaults to true.
+             */
+            useCache: boolean;
+        }
+    ) => Promise<PrettierConfig>;
     readonly version: string;
 }
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';

@@ -214,7 +214,7 @@
     "vscode": "^1.1.4"
   },
   "dependencies": {
-    "prettier": "1.5.3",
+    "prettier": "github:prettier/prettier",
     "prettier-eslint": "^6.4.2",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"

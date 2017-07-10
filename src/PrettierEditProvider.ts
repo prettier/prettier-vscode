@@ -22,6 +22,7 @@ import {
     ParserOption,
 } from './types.d';
 
+const bundledPrettier = require('prettier') as Prettier;
 let errorShown: Boolean = false;
 
 /**
@@ -59,19 +60,19 @@ function parserExists(parser: ParserOption, prettier: Prettier) {
  * @param path formatting file's path
  * @returns {string} formatted text
  */
-function format(
+async function format(
     text: string,
     { fileName, languageId }: TextDocument,
     customOptions: object
-): string {
-    const config: PrettierVSCodeConfig = workspace.getConfiguration(
+): Promise<string> {
+    const vscodeConfig: PrettierVSCodeConfig = workspace.getConfiguration(
         'prettier'
     ) as any;
 
     /*
     handle trailingComma changes boolean -> string
     */
-    let trailingComma = config.trailingComma;
+    let trailingComma = vscodeConfig.trailingComma;
     if (trailingComma === true) {
         trailingComma = 'es5';
     } else if (trailingComma === false) {
@@ -80,42 +81,45 @@ function format(
     /*
     handle deprecated parser option
     */
-    let parser = config.parser;
+    let parser = vscodeConfig.parser;
     let isNonJsParser = false;
-    if (config.typescriptEnable.includes(languageId)) {
+    if (vscodeConfig.typescriptEnable.includes(languageId)) {
         parser = 'typescript';
         isNonJsParser = true;
     }
-    if (config.cssEnable.includes(languageId)) {
+    if (vscodeConfig.cssEnable.includes(languageId)) {
         parser = 'postcss';
         isNonJsParser = true;
     }
-    if (config.jsonEnable.includes(languageId)) {
+    if (vscodeConfig.jsonEnable.includes(languageId)) {
         parser = 'json';
         isNonJsParser = true;
         trailingComma = 'none'; // Fix will land in prettier > 1.5.2
     }
-    if (config.graphqlEnable.includes(languageId)) {
+    if (vscodeConfig.graphqlEnable.includes(languageId)) {
         parser = 'graphql';
         isNonJsParser = true;
     }
 
+    const fileOptions = await bundledPrettier.resolveConfig(fileName);
+
     const prettierOptions = Object.assign(
         {
-            printWidth: config.printWidth,
-            tabWidth: config.tabWidth,
-            singleQuote: config.singleQuote,
+            printWidth: vscodeConfig.printWidth,
+            tabWidth: vscodeConfig.tabWidth,
+            singleQuote: vscodeConfig.singleQuote,
             trailingComma,
-            bracketSpacing: config.bracketSpacing,
-            jsxBracketSameLine: config.jsxBracketSameLine,
+            bracketSpacing: vscodeConfig.bracketSpacing,
+            jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
             parser: parser,
-            semi: config.semi,
-            useTabs: config.useTabs,
+            semi: vscodeConfig.semi,
+            useTabs: vscodeConfig.useTabs,
         },
-        customOptions
+        customOptions,
+        fileOptions
     );
 
-    if (config.eslintIntegration && !isNonJsParser) {
+    if (vscodeConfig.eslintIntegration && !isNonJsParser) {
         return safeExecution(
             () => {
                 const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
@@ -133,7 +137,6 @@ function format(
     if (isNonJsParser && !parserExists(parser, prettier)) {
         return safeExecution(
             () => {
-                const bundledPrettier = require('prettier') as Prettier;
                 const warningMessage =
                     `prettier@${prettier.version} doesn't support ${languageId}. ` +
                     `Falling back to bundled prettier@${bundledPrettier.version}.`;
@@ -172,28 +175,20 @@ class PrettierEditProvider
         range: Range,
         options: FormattingOptions,
         token: CancellationToken
-    ): TextEdit[] {
-        return [
-            TextEdit.replace(
-                fullDocumentRange(document),
-                format(document.getText(), document, {
+    ): Promise<TextEdit[]> {
+        return format(document.getText(), document, {
                     rangeStart: document.offsetAt(range.start),
                     rangeEnd: document.offsetAt(range.end),
-                })
-            ),
-        ];
+        }).then(code => [TextEdit.replace(fullDocumentRange(document), code)]);
     }
     provideDocumentFormattingEdits(
         document: TextDocument,
         options: FormattingOptions,
         token: CancellationToken
-    ): TextEdit[] {
-        return [
-            TextEdit.replace(
-                fullDocumentRange(document),
-                format(document.getText(), document, {})
-            ),
-        ];
+    ): Promise<TextEdit[]> {
+        return format(document.getText(), document, {}).then(code => [
+            TextEdit.replace(fullDocumentRange(document), code),
+        ]);
     }
 }
 
