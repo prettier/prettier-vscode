@@ -9,10 +9,12 @@
 
 VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*
 
-[Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous) is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.
-This extension is just a wrapper around Prettier Miscellaneous, please report any issues regarding the output [Here](https://github.com/arijs/prettier-miscellaneous).
+Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.<br/>
+This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).<br/>
 
 --------------------------------------------------------------------------------
+
+<small>
 
 #### *Update 1.3.0*
 *Added support for GraphQL and CSS files with PostCSS syntax.*
@@ -22,6 +24,8 @@ This extension is just a wrapper around Prettier Miscellaneous, please report an
 <br/>
 #### *Update 1.1.0*
 *Added support for TypeScript, CSS, LESS and SASS files.*
+
+</small>
 
 --------------------------------------------------------------------------------
 
@@ -80,6 +84,9 @@ Set `editor.formatOnSave` to `true` in settings to automatically format files on
 ```
 CMD + Shift + P -> Format Document
 ```
+
+*<small>In order to run Prettier on your file, make sure VSCode recognises it as a filetype supported by Prettier Now. The filetype currently recognized is shown in the status bar. (e.g: JavaScript for .js files, Sass for .scss files, etc...). If for some reasons Prettier isn't applied on some filetype and you think it should, please let me know and report it [here](https://github.com/remimarsal/prettier-now-vscode/issues) !</small>*
+
 --------------------------------------------------------------------------------
 
 ### Settings
@@ -114,4 +121,4 @@ CMD + Shift + P -> Format Document
 --------------------------------------------------------------------------------
 ### Contribute
 
-Feel free to open issue or PRs [Here](https://github.com/remimarsal/prettier-now-vscode/pulls)!
+Feel free to open issue or PRs [Here](https://github.com/remimarsal/prettier-now-vscode)!
