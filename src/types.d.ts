@@ -55,6 +55,10 @@ interface ExtensionConfig {
      * Language ids to run graphql prettier on
      */
     graphqlEnable: ('graphql' | string)[];
+    /**
+     * Language ids to run packageName prettier on
+     */
+    packageName: ('prettier' | string);
 }
 
 /**

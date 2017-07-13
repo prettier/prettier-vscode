@@ -36,7 +36,12 @@ function requireLocalPkg(fspath: string, pkgName: string): any {
         console.log('Using ', pkgName, resolved.version, 'from', modulePath);
         return resolved;
     }
-    return require(pkgName);
+    try {
+        return require(pkgName);
+    }
+        catch(err) {
+
+        }
 }
 
 export { requireLocalPkg };
