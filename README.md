@@ -82,6 +82,9 @@ Advanced feature. Use this to opt in / out prettier on various language ids. Res
 Use parser `postcss` for given language ids.
 Use with care.
 
+#### prettier.packageName (default: 'prettier') 
+Which prettier package name to use from local dependencies. Usefull when you want to use a customized prettier or symlink to a custom folder and switch between prettier packages. Restart required.
+
 ### Prettier resolution
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 

@@ -133,7 +133,7 @@ function format(
             fileName
         );
     }
-    const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
+    const prettier = (requireLocalPkg(fileName, config.packageName) || requireLocalPkg(fileName, 'prettier')) as Prettier;
     if (isNonJsParser && !parserExists(parser, prettier)) {
         return safeExecution(
             () => {

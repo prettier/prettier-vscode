@@ -200,6 +200,11 @@
           "default": [
             "graphql"
           ]
+        },
+        "prettier.packageName": {
+          "type": "string",
+          "default": "prettier",
+          "description": "Override the package name which is used to search in local dependencies. You shouldn't have to change this setting. Restart required"
         }
       }
     }
