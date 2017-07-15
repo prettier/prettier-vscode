@@ -197,7 +197,21 @@
           ]
         }
       }
-    }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": ".prettierrc",
+        "url": "http://json.schemastore.org/prettierrc"
+      }
+    ],
+    "languages": [
+      {
+        "id": "json",
+        "filenames": [
+          ".prettierrc"
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
