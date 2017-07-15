@@ -18,10 +18,7 @@ const PRETTIER_CONFIG_FILES = [
  */
 function fileListener() {
     const fileWatcher = workspace.createFileSystemWatcher(
-        `**/{${PRETTIER_CONFIG_FILES.join(',')}}`,
-        false,
-        false,
-        false
+        `**/{${PRETTIER_CONFIG_FILES.join(',')}}`
     );
     fileWatcher.onDidChange(prettier.clearConfigCache);
     fileWatcher.onDidCreate(prettier.clearConfigCache);
