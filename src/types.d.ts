@@ -71,6 +71,7 @@ export interface Prettier {
             useCache: boolean;
         }
     ) => Promise<PrettierConfig>;
+    clearConfigCache: () => void;
     readonly version: string;
 }
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';

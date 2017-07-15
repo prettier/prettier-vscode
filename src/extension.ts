@@ -2,6 +2,7 @@ import { languages, ExtensionContext, DocumentSelector } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
 import { getConfig, allEnabledLanguages } from './utils';
+import fileListener from './configCacheHandler';
 
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
@@ -24,6 +25,7 @@ export function activate(context: ExtensionContext) {
             editProvider
         ),
         setupErrorHandler(),
+        fileListener(),
         ...registerDisposables()
     );
 }
