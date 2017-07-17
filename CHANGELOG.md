@@ -3,6 +3,9 @@ All notable changes to the "prettier-now" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.2]
+- Prettier Miscelleanous upgraded to version 1.5.3
+
 ## [1.3.0]
 - Support for GraphQL and CSS with PostCSS syntax
 - Update GIF

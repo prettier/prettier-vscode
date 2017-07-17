@@ -12,7 +12,7 @@ import {
     Position
 } from 'vscode';
 
-import * as prettier from '../ext';
+const prettier = require('../ext');
 
 import { PrettierVSCodeConfig } from './types.d';
 

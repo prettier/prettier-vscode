@@ -2,12 +2,12 @@
   "name": "prettier-now",
   "displayName": "Prettier Now",
   "description": "VS Code plugin for Prettier Miscellaneous / Code Formatter",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "publisher": "remimarsal",
   "author": "Remi Marsal <@remimarsal>",
   "galleryBanner": {
-    "color": "#ffe04b",
-    "theme": "light"
+    "color": "#1b2c34",
+    "theme": "dark"
   },
   "icon": "prettier-logo.png",
   "repository": {
