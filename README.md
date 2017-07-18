@@ -1,4 +1,4 @@
-<div style="padding:0 8px">
+<div style="padding: 25px 8px 0">
 
 <div align="center" style="background-color:#1b2c34">
   <img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" />
@@ -121,8 +121,9 @@ Example config:
 ```
 "prettier.singleQuote": true,
 "prettier.arrowParens": true,
-"prettier.jsonEnable": [] // will disable Prettier Misc on JSON files
+"prettier.jsonEnable": [] // Will disable Prettier Misc on JSON files
 ```
+<br/>
 
 | Option | Description | Default |
 | ------------- | ------------- | ------------- |
@@ -131,7 +132,7 @@ Example config:
 |**useTabs**|Use tabs instead of spaces.|`true`
 |**singleQuote**|If true, will use single instead of double quotes.<br/><br/>*Notes:<br/>• Quotes in JSX will always be double and ignore this setting.<br/>• If the number of quotes outweighs the other quote, the quote which is less used will be used to format the string - Example: `"I'm double quoted"` results in `"I'm double quoted"` and `"This \"example\" is single quoted"` results in `'This "example" is single quoted'`.*|`true`
 |**jsxSingleQuote**|If true, will use single instead of double quotes in JSX.|`false`
-|**trailingComma**|Controls the printing of trailing commas wherever possible.<br /><br />Valid options:<br/>`none` - No trailing commas<br/>`es5`  - Trailing commas where valid in ES5 (objects, arrays, etc)<br/>`all`  - Trailing commas wherever possible (function arguments)|`none`
+|**trailingComma**|Controls the printing of trailing commas wherever possible.<br /><br />Valid options:<br/>`none` - No trailing commas<br/>`es5`  - Trailing commas where valid in ES5 (objects, arrays, etc)<br/>`all`  - Trailing commas wherever possible (function arguments)|`"none"`
 |**bracketSpacing**|Print spaces between brackets in array literals.<br /><br />Valid options: <br/>`true` - Example: `[ foo: bar ]`<br/>`false` - Example: `[foo: bar]`.|`true`
 |**bracesSpacing**|Print spaces between brackets in object literals<br /><br />Valid options: <br/>`true` - Example: `{ foo: bar }`<br/>`false` - Example: `{foo: bar}`.|`true`
 |**breakProperty**|Allow object properties to break lines between the property name and its value.|`false`
@@ -142,14 +143,14 @@ Example config:
 |**spaceBeforeParen**|Put a space before function parenthesis.|`false`
 |**alignObjectProperties**|Align colons in multiline object literals. Does nothing if object has computed property names.|`false`
 |**semi**|Print semicolons at the ends of statements.<br/><br/>Valid options:<br/>`true` - Add a semicolon at the end of every statement.<br/>`false` - Only add semicolons at the beginning of lines that may introduce ASI failures.|`true`
+|**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line.|`false`
+|**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
+|**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
 |**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
 |**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
 |**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`
 |**jsonEnable**|Will apply Prettier Misc on JSON files.<br /><br />Valid options:<br/>`json` - JSON files|`["json"]`
 |**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
-|**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line.|`false`
-|**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
-|**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
 
 --------------------------------------------------------------------------------
 ## Contribute
