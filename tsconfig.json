@@ -3,19 +3,16 @@
         "module": "commonjs",
         "target": "es6",
         "outDir": "out",
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
         "allowUnreachableCode": true,
         "allowJs": true,
-        "lib": [
-            "es2016"
-        ],
+        "lib": [ "es2016" ],
         "sourceMap": true,
         "rootDir": "."
     },
-    "exclude": [
-        ".vscode-test",
-        "node_modules",
-        "ext",
-        "test",
-        "out"
-    ]
+    "exclude": [ ".vscode-test", "node_modules", "ext", "test", "out" ]
 }

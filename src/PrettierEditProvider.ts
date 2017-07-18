@@ -1,22 +1,20 @@
 import {
     workspace,
-    window,
-    DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider,
     Range,
     TextDocument,
     FormattingOptions,
     CancellationToken,
-    TextEdit,
-    Selection,
-    Position
+    TextEdit
 } from 'vscode';
 
+import { PrettierVSCodeConfig } from './prettier.d';
+import { PrettierEslint } from './prettier-eslint.d';
+
+import { selectParser, isBabylonParser, extractUserVSConfig } from './config';
+import { safeExecution } from './exec';
+
 const prettier = require('../ext');
-
-import { PrettierVSCodeConfig } from './types.d';
-
-type ShowAction = 'Show';
 
 /**
  * Format the given text with user's configuration.
@@ -33,51 +31,38 @@ function format(
         'prettier'
     ) as any;
 
-    let parser = config.parser;
-    let isNonJsParser = false;
+    const parser = selectParser(config, languageId);
     if (!parser) {
-        parser = 'babylon';
-    }
-    if (config.typescriptEnable.includes(languageId)) {
-        parser = 'typescript';
-        isNonJsParser = true;
-    }
-    if (config.cssEnable.includes(languageId)) {
-        parser = 'postcss';
-        isNonJsParser = true;
-    }
-    if (config.graphqlEnable.includes(languageId)) {
-        parser = 'graphql';
-        isNonJsParser = true;
+        return text;
     }
 
     const prettierOptions = {
-        ...{
-            printWidth: config.printWidth,
-            tabWidth: config.tabWidth,
-            useTabs: config.useTabs,
-            singleQuote: config.singleQuote,
-            jsxSingleQuote: config.jsxSingleQuote,
-            trailingComma: config.trailingComma,
-            bracketSpacing: config.bracketSpacing,
-            bracesSpacing: config.bracesSpacing,
-            breakProperty: config.breakProperty,
-            arrowParens: config.arrowParens,
-            arrayExpand: config.arrayExpand,
-            flattenTernaries: config.flattenTernaries,
-            breakBeforeElse: config.breakBeforeElse,
-            jsxBracketSameLine: config.jsxBracketSameLine,
-            noSpaceEmptyFn: config.noSpaceEmptyFn,
-            parser: config.parser,
-            semi: config.semi,
-            spaceBeforeFunctionParen: config.spaceBeforeFunctionParen,
-            alignObjectProperties: config.alignObjectProperties,
-            filepath: fileName
-        },
+        ...{ parser, filepath: fileName },
+        ...extractUserVSConfig(config),
         ...customOptions
     };
 
-    return prettier.format(text, prettierOptions);
+    if (config.eslintIntegration && isBabylonParser(parser)) {
+        return safeExecution(
+            () => {
+                const prettierEslint = require('prettier-eslint') as PrettierEslint;
+
+                return prettierEslint({
+                    text,
+                    filePath: fileName,
+                    fallbackPrettierOptions: prettierOptions
+                });
+            },
+            text,
+            fileName
+        );
+    }
+
+    return safeExecution(
+        () => prettier.format(text, prettierOptions),
+        text,
+        fileName
+    );
 }
 
 function fullDocumentRange(document: TextDocument): Range {
@@ -91,63 +76,13 @@ class PrettierEditProvider implements DocumentFormattingEditProvider {
         options: FormattingOptions,
         token: CancellationToken
     ): TextEdit[] {
-        try {
-            return [
-                TextEdit.replace(
-                    fullDocumentRange(document),
-                    format(document.getText(), document, {})
-                )
-            ];
-        } catch (e) {
-            let errorPosition;
-            if (e.loc) {
-                errorPosition = new Position(
-                    e.loc.start.line - 1,
-                    e.loc.start.column
-                );
-            }
-            handleError(document, e.message, errorPosition);
-        }
+        return [
+            TextEdit.replace(
+                fullDocumentRange(document),
+                format(document.getText(), document, {})
+            )
+        ];
     }
 }
 
-/**
- * Handle errors for a given text document.
- * Steps:
- *  - Show the error message.
- *  - Scroll to the error position in given document if asked for it.
- *
- * @param document Document which raised the error
- * @param message Error message
- * @param errorPosition Position where the error occured. Relative to document.
- */
-function handleError(
-    document: TextDocument,
-    message: string,
-    errorPosition: Position
-) {
-    if (errorPosition) {
-        window
-            .showErrorMessage(message, 'Show')
-            .then(function onAction(action?: ShowAction) {
-                if (action === 'Show') {
-                    const rangeError = new Range(errorPosition, errorPosition);
-                    /*
-                    Show text document which has errored.
-                    Format on save case. (save all)
-                    */
-                    window.showTextDocument(document).then((editor) => {
-                        // move cursor to error position and show it.
-                        editor.selection = new Selection(
-                            rangeError.start,
-                            rangeError.end
-                        );
-                        editor.revealRange(rangeError);
-                    });
-                }
-            });
-    } else {
-        window.showErrorMessage(message);
-    }
-}
 export default PrettierEditProvider;

@@ -1,22 +1,20 @@
-import {
-    languages,
-    ExtensionContext,
-    DocumentSelector,
-    window,
-    workspace
-} from 'vscode';
+import { languages, ExtensionContext, workspace } from 'vscode';
+
 import EditProvider from './PrettierEditProvider';
-import { PrettierVSCodeConfig } from './types.d';
+
+import { ExtensionConfig } from './extension.d';
+import { setupStatusHandler } from './exec';
 
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
-    const config: PrettierVSCodeConfig = workspace.getConfiguration(
+    const config: ExtensionConfig = workspace.getConfiguration(
         'prettier'
     ) as any;
     const languageSelector = [
         ...config.javascriptEnable,
         ...config.typescriptEnable,
         ...config.cssEnable,
+        ...config.jsonEnable,
         ...config.graphqlEnable
     ];
 
@@ -24,7 +22,8 @@ export function activate(context: ExtensionContext) {
         languages.registerDocumentFormattingEditProvider(
             languageSelector,
             editProvider
-        )
+        ),
+        setupStatusHandler()
     );
 }
 

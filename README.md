@@ -1,5 +1,12 @@
-<h1 align="center"><img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></h1>
-<h2 align="center">Prettier Now - Code Formatter for Visual Studio Code</h2>
+<div style="padding:0 8px">
+
+<div align="center" style="background-color:#1b2c34">
+  <img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" />
+</div>
+
+<h1 align="center">Prettier Now</h1>
+<h2 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
+
 
 <div align="center">
 
@@ -15,22 +22,35 @@ Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prett
 This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).<br/><br/>
 
 <p align="center">
-  <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual">
+  <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
 </p>
 
 --------------------------------------------------------------------------------
 
+## Changelog
 <small>
+<ul>
+<li>
 
 #### *Update 1.3.0*
 *Added support for GraphQL and CSS files with PostCSS syntax.*
-<br/>
+
+</li>
+
+<li>
+
 #### *Update 1.2.0*
 *New options jsxSingleQuote, spaceBeforeParen, alignObjectProperties. breakBeforeElse should now break properly.*
-<br/>
+
+</li>
+
+<li>
+
 #### *Update 1.1.0*
 *Added support for TypeScript, CSS, LESS and SASS files.*
 
+</li>
+</ul>
 </small>
 
 --------------------------------------------------------------------------------
@@ -66,7 +86,7 @@ Prettier enforces a consistent code **style** (i.e. code formatting that won't a
 into account, wrapping code when necessary.
 
 --------------------------------------------------------------------------------
-### Installation
+## Installation
 
 Install through VS Code extensions. Search for `Prettier Now`.
 
@@ -79,7 +99,7 @@ ext install prettier-now
 ```
 --------------------------------------------------------------------------------
 
-### Usage
+## Usage
 
 #### Format On Save
 
@@ -90,13 +110,19 @@ Set `editor.formatOnSave` to `true` in settings to automatically format files on
 ```
 CMD + Shift + P -> Format Document
 ```
-<br/>
 
 *<small>In order to run Prettier on your file, make sure VSCode recognises it as a filetype supported by Prettier Now. The filetype currently recognized is shown in the status bar. (e.g: JavaScript for .js files, Sass for .scss files, etc...). If for some reasons Prettier isn't applied on some filetype and you think it should, please let me know and report it [here](https://github.com/remimarsal/prettier-now-vscode/issues) !</small>*
 
 --------------------------------------------------------------------------------
 
-### Settings
+## Settings
+Extension settings are specified within VSCode Settings.
+Example config:
+```
+"prettier.singleQuote": true,
+"prettier.arrowParens": true,
+"prettier.jsonEnable": [] // will disable Prettier Misc on JSON files
+```
 
 | Option | Description | Default |
 | ------------- | ------------- | ------------- |
@@ -119,13 +145,14 @@ CMD + Shift + P -> Format Document
 |**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
 |**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
 |**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`
+|**jsonEnable**|Will apply Prettier Misc on JSON files.<br /><br />Valid options:<br/>`json` - JSON files|`["json"]`
 |**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
 |**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line.|`false`
 |**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
 |**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
-|**parser**|Specify which parser to use. Both the `babylon` and `flow` parsers support the same set of JavaScript features (including Flow).<br /><br />Valid options:<br/>`babylon` - Babylon parser<br/>`flow` - Flow parser|`babylon`
 
 --------------------------------------------------------------------------------
-### Contribute
+## Contribute
 
 Feel free to open issue or PRs [Here](https://github.com/remimarsal/prettier-now-vscode)!
+</div>

@@ -3,3 +3,5 @@ node_modules
 .vscode-test
 .DS_Store
 test
+*.vsix
+.eslintrc

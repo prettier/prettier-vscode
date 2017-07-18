@@ -1,254 +1,230 @@
 {
-  "name": "prettier-now",
-  "displayName": "Prettier Now",
-  "description": "VS Code plugin for Prettier Miscellaneous / Code Formatter",
-  "version": "1.3.2",
-  "publisher": "remimarsal",
-  "author": "Remi Marsal <@remimarsal>",
-  "galleryBanner": {
-    "color": "#1b2c34",
-    "theme": "dark"
-  },
-  "icon": "prettier-logo.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/remimarsal/prettier-now-vscode.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/remimarsal/prettier-now-vscode/issues"
-  },
-  "engines": {
-    "vscode": "^1.5.0"
-  },
-  "categories": [
-    "Formatters"
-  ],
-  "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact",
-    "onLanguage:css",
-    "onLanguage:less",
-    "onLanguage:scss",
-    "onLanguage:postcss",
-    "onLanguage:graphql"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Prettier Now",
-      "properties": {
-        "prettier.printWidth": {
-          "type": "integer",
-          "default": 120,
-          "description": "Fit code within this line limit"
-        },
-        "prettier.tabWidth": {
-          "type": "integer",
-          "default": 4,
-          "description": "Number of spaces it should use per tab"
-        },
-        "prettier.useTabs": {
-          "type": "boolean",
-          "default": true,
-          "description": "Use tabs instead of spaces"
-        },
-        "prettier.singleQuote": {
-          "type": "boolean",
-          "default": true,
-          "description": "If true, will use single instead of double quotes"
-        },
-        "prettier.jsxSingleQuote": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, will use single instead of double quotes in JSX"
-        },
-        "prettier.trailingComma": {
-          "type": "string",
-          "enum": [
-            "none",
-            "es5",
-            "all"
-          ],
-          "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible"
-        },
-        "prettier.bracketSpacing": {
-          "type": "boolean",
-          "default": true,
-          "description": "Print spaces between brackets in array literals"
-        },
-        "prettier.bracesSpacing": {
-          "type": "boolean",
-          "default": true,
-          "description": "Print spaces between brackets in object literals"
-        },
-        "prettier.breakProperty": {
-          "type": "boolean",
-          "default": false,
-          "description": "Allow object properties to break lines between the property name and its value"
-        },
-        "prettier.arrowParens": {
-          "type": "boolean",
-          "default": true,
-          "description": "Always put parentheses on arrow function arguments"
-        },
-        "prettier.arrayExpand": {
-          "type": "boolean",
-          "default": false,
-          "description": "Expand arrays into one item per line"
-        },
-        "prettier.flattenTernaries": {
-          "type": "boolean",
-          "default": false,
-          "description": "Format ternaries in a flat style"
-        },
-        "prettier.breakBeforeElse": {
-          "type": "boolean",
-          "default": false,
-          "description": "Put else clause in a new line"
-        },
-        "prettier.jsxBracketSameLine": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
-        },
-        "prettier.noSpaceEmptyFn": {
-          "type": "boolean",
-          "default": false,
-          "description": "Omit space before empty anonymous function body"
-        },
-        "prettier.parser": {
-          "type": "string",
-          "enum": [
-            "babylon",
-            "flow"
-          ],
-          "default": "babylon",
-          "description": "Which parser to use. Valid options are 'flow' and 'babylon'"
-        },
-        "prettier.semi": {
-          "type": "boolean",
-          "default": true,
-          "description": "Print semicolons at the ends of statements"
-        },
-        "prettier.spaceBeforeFunctionParen": {
-          "description": "Put a space before function parenthesis",
-          "type": "boolean",
-          "default": false
-        },
-        "prettier.alignObjectProperties": {
-          "description": "Align colons in multiline object literals. Does nothing if object has computed property names.",
-          "type": "boolean",
-          "default": false
-        },
-        "prettier.javascriptEnable": {
-          "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "javascript",
-                  "javascriptreact"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "javascript",
-            "javascriptreact"
-          ]
-        },
-        "prettier.typescriptEnable": {
-          "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "typescript",
-                  "typescriptreact"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "typescript",
-            "typescriptreact"
-          ]
-        },
-        "prettier.cssEnable": {
-          "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "css",
-                  "less",
-                  "scss",
-                  "postcss"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "css",
-            "less",
-            "scss",
-            "postcss"
-          ]
-        },
-        "prettier.graphqlEnable": {
-          "description": "Advanced feature. Enable and use graphQL parser. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "graphql"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "graphql"
-          ]
+    "name": "prettier-now",
+    "displayName": "Prettier Now",
+    "description": "VS Code plugin for Prettier Miscellaneous / Code Formatter",
+    "version": "1.4.0",
+    "publisher": "remimarsal",
+    "author": "Remi Marsal <@remimarsal>",
+    "galleryBanner": {
+        "color": "#1b2c34",
+        "theme": "dark"
+    },
+    "icon": "prettier-logo.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/remimarsal/prettier-now-vscode.git"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/remimarsal/prettier-now-vscode/issues"
+    },
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [ "Formatters" ],
+    "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact",
+        "onLanguage:css",
+        "onLanguage:less",
+        "onLanguage:scss",
+        "onLanguage:postcss",
+        "onLanguage:json",
+        "onLanguage:graphql"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Prettier Now",
+            "properties": {
+                "prettier.printWidth": {
+                    "type": "integer",
+                    "default": 120,
+                    "description": "Fit code within this line limit"
+                },
+                "prettier.tabWidth": {
+                    "type": "integer",
+                    "default": 4,
+                    "description": "Number of spaces it should use per tab"
+                },
+                "prettier.useTabs": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use tabs instead of spaces"
+                },
+                "prettier.singleQuote": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "If true, will use single instead of double quotes"
+                },
+                "prettier.jsxSingleQuote": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If true, will use single instead of double quotes in JSX"
+                },
+                "prettier.trailingComma": {
+                    "type": "string",
+                    "enum": [ "none", "es5", "all" ],
+                    "default": "none",
+                    "description": "Controls the printing of trailing commas wherever possible"
+                },
+                "prettier.bracketSpacing": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Print spaces between brackets in array literals"
+                },
+                "prettier.bracesSpacing": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Print spaces between brackets in object literals"
+                },
+                "prettier.breakProperty": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Allow object properties to break lines between the property name and its value"
+                },
+                "prettier.arrowParens": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Always put parentheses on arrow function arguments"
+                },
+                "prettier.arrayExpand": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Expand arrays into one item per line"
+                },
+                "prettier.flattenTernaries": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Format ternaries in a flat style"
+                },
+                "prettier.breakBeforeElse": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Put else clause in a new line"
+                },
+                "prettier.jsxBracketSameLine": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
+                },
+                "prettier.noSpaceEmptyFn": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Omit space before empty anonymous function body"
+                },
+                "prettier.semi": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Print semicolons at the ends of statements"
+                },
+                "prettier.spaceBeforeFunctionParen": {
+                    "description": "Put a space before function parenthesis",
+                    "type": "boolean",
+                    "default": false
+                },
+                "prettier.alignObjectProperties": {
+                    "description": "Align colons in multiline object literals. Does nothing if object has computed property names.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "prettier.javascriptEnable": {
+                    "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": [ "javascript", "javascriptreact" ]
+                            }
+                        ]
+                    },
+                    "default": [ "javascript", "javascriptreact" ]
+                },
+                "prettier.typescriptEnable": {
+                    "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": [ "typescript", "typescriptreact" ]
+                            }
+                        ]
+                    },
+                    "default": [ "typescript", "typescriptreact" ]
+                },
+                "prettier.cssEnable": {
+                    "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": [ "css", "less", "scss", "postcss" ]
+                            }
+                        ]
+                    },
+                    "default": [ "css", "less", "scss", "postcss" ]
+                },
+                "prettier.jsonEnable": {
+                    "description": "Advanced feature. Enable and use JSON parser. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": [ "json" ]
+                            }
+                        ]
+                    },
+                    "default": [ "json" ]
+                },
+                "prettier.graphqlEnable": {
+                    "description": "Advanced feature. Enable and use graphQL parser. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": [ "graphql" ]
+                            }
+                        ]
+                    },
+                    "default": [ "graphql" ]
+                }
+            }
         }
-      }
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test",
+        "pkgvars": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.40",
+        "mocha": "^2.3.3",
+        "typescript": "^2.3.4",
+        "vscode": "^1.1.0"
+    },
+    "dependencies": {
+        "fs": "^0.0.1-security",
+        "prettier-eslint": "^6.4.2"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test",
-    "pkgvars": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "mocha": "^2.3.3",
-    "typescript": "^2.3.4",
-    "vscode": "^1.1.0"
-  },
-  "dependencies": {
-    "prettier-miscellaneous": "^1.4.4"
-  }
 }
