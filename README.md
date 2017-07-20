@@ -5,7 +5,7 @@
 </div>
 
 <h1 align="center">Prettier Now</h1>
-<h2 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
+<h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
 
 
 <div align="center">
@@ -15,6 +15,7 @@
 
 </div>
 
+<br/>
 
 VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*
 
@@ -27,7 +28,7 @@ This extension is a wrapper around Prettier Miscellaneous, please report issues 
 
 --------------------------------------------------------------------------------
 
-## Changelog
+### Changelog
 <small>
 <ul>
 <li>
@@ -67,7 +68,7 @@ This extension is a wrapper around Prettier Miscellaneous, please report issues 
 
 --------------------------------------------------------------------------------
 
-## What does prettier do?
+### What does prettier do?
 
 Prettier takes your code and reprints it from scratch by taking into account the line length.
 
@@ -98,7 +99,7 @@ Prettier enforces a consistent code **style** (i.e. code formatting that won't a
 into account, wrapping code when necessary.
 
 --------------------------------------------------------------------------------
-## Installation
+### Installation
 
 Install through VS Code extensions. Search for `Prettier Now`.
 
@@ -111,7 +112,7 @@ ext install prettier-now
 ```
 --------------------------------------------------------------------------------
 
-## Usage
+### Usage
 
 #### Format On Save
 
@@ -127,7 +128,7 @@ CMD + Shift + P -> Format Document
 
 --------------------------------------------------------------------------------
 
-## Settings
+### Settings
 Extension settings are specified within VSCode Settings.
 Example config:
 ```
@@ -187,7 +188,7 @@ Example config:
 |**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
 
 --------------------------------------------------------------------------------
-## Contribute
+### Contribute
 
 Feel free to open issue or PRs [Here](https://github.com/remimarsal/prettier-now-vscode)!
 </div>
