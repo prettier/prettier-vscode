@@ -6,11 +6,12 @@
         "strict": true,
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
+        "noImplicitThis": false,
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
         "allowUnreachableCode": true,
         "allowJs": true,
-        "lib": [ "es2016" ],
+        "lib": [ "es2016", "dom" ],
         "sourceMap": true,
         "rootDir": "."
     },

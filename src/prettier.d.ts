@@ -4,7 +4,6 @@ import { ExtensionConfig } from './extension.d';
  * Prettier configuration
  */
 export interface PrettierConfig {
-    parser?: 'babylon' | 'flow' | 'postcss' | 'json' | 'graphql' | 'typescript';
     printWidth?: number;
     tabWidth?: number;
     useTabs?: boolean;

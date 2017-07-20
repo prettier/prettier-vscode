@@ -1,30 +1,24 @@
-import { languages, ExtensionContext, workspace } from 'vscode';
+import { commands, languages, ExtensionContext } from 'vscode';
 
 import EditProvider from './PrettierEditProvider';
 
-import { ExtensionConfig } from './extension.d';
-import { setupStatusHandler } from './exec';
+import { getActiveLanguages } from './config';
+import { setupOutputHandler, channelCommand, showChannel } from './output';
+import { setupStatusHandler } from './status';
 
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
-    const config: ExtensionConfig = workspace.getConfiguration(
-        'prettier'
-    ) as any;
-    const languageSelector = [
-        ...config.javascriptEnable,
-        ...config.typescriptEnable,
-        ...config.cssEnable,
-        ...config.jsonEnable,
-        ...config.graphqlEnable
-    ];
 
     context.subscriptions.push(
+        commands.registerCommand(channelCommand, showChannel),
         languages.registerDocumentFormattingEditProvider(
-            languageSelector,
+            getActiveLanguages(),
             editProvider
-        ),
-        setupStatusHandler()
+        )
     );
+
+    setupStatusHandler();
+    setupOutputHandler();
 }
 
 // this method is called when your extension is deactivated

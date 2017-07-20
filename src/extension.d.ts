@@ -3,23 +3,23 @@
  */
 export interface ExtensionConfig {
     /**
-     * Language ids to run javascript prettier on.
+     * Language IDs to run javascript parser on.
      */
     javascriptEnable: ('javascript' | 'javascriptreact' | string)[];
     /**
-     * Language ids to run typescript prettier on.
+     * Language IDs to run typescript parser on.
      */
     typescriptEnable: ('typescript' | 'typescriptreact' | string)[];
     /**
-     * Language ids to run postcss prettier on.
+     * Language IDs to run postcss parser on.
      */
     cssEnable: ('css' | 'less' | 'sass' | 'postcss' | string)[];
     /**
-     * Language ids to run json prettier on.
+     * Language IDs to run json parser on.
      */
     jsonEnable: ('json' | string)[];
     /**
-     * Language ids to run graphql prettier on.
+     * Language IDs to run graphql parser on.
      */
     graphqlEnable: ('graphql' | string)[];
     /**

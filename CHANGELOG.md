@@ -2,8 +2,10 @@
 
 # 1.4.0
 - Added Prettier in status bar
+- Added output to show parsing errors
 - Disabled parser option (selecting parser is handled automatically)
 - Added missing option to disable JSON
+- Disabling a language should now work as expected
 
 # 1.3.2
 - Prettier Miscelleanous upgraded to version 1.5.3

@@ -132,7 +132,7 @@
                     "default": false
                 },
                 "prettier.javascriptEnable": {
-                    "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
+                    "description": "Advanced feature. Enable Prettier parser for JavaScript.",
                     "type": "array",
                     "items": {
                         "anyOf": [
@@ -147,7 +147,7 @@
                     "default": [ "javascript", "javascriptreact" ]
                 },
                 "prettier.typescriptEnable": {
-                    "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
+                    "description": "Advanced feature. Enable Prettier parser for TypeScript.",
                     "type": "array",
                     "items": {
                         "anyOf": [
@@ -162,7 +162,7 @@
                     "default": [ "typescript", "typescriptreact" ]
                 },
                 "prettier.cssEnable": {
-                    "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
+                    "description": "Advanced feature. Enable Prettier parser for styling files.",
                     "type": "array",
                     "items": {
                         "anyOf": [
@@ -177,7 +177,7 @@
                     "default": [ "css", "less", "scss", "postcss" ]
                 },
                 "prettier.jsonEnable": {
-                    "description": "Advanced feature. Enable and use JSON parser. Restart required",
+                    "description": "Advanced feature. Enable Prettier parser for JSON.",
                     "type": "array",
                     "items": {
                         "anyOf": [
@@ -192,7 +192,7 @@
                     "default": [ "json" ]
                 },
                 "prettier.graphqlEnable": {
-                    "description": "Advanced feature. Enable and use graphQL parser. Restart required",
+                    "description": "Advanced feature. Enable Prettier parser for GraphQL.",
                     "type": "array",
                     "items": {
                         "anyOf": [
@@ -224,7 +224,6 @@
         "vscode": "^1.1.0"
     },
     "dependencies": {
-        "fs": "^0.0.1-security",
         "prettier-eslint": "^6.4.2"
     }
 }

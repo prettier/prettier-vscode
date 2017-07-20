@@ -1,4 +1,57 @@
-import { PrettierVSCodeConfig } from './prettier.d';
+import { workspace, TextDocument } from 'vscode';
+
+import { PrettierConfig, PrettierVSCodeConfig } from './prettier.d';
+
+let config: PrettierVSCodeConfig;
+let activeLanguages: Array<string> = [];
+
+/**
+ * Refresh and get extension config
+ */
+export function getExtensionConfig(): PrettierVSCodeConfig {
+    config = workspace.getConfiguration('prettier') as any;
+
+    activeLanguages = [
+        ...config.javascriptEnable,
+        ...config.typescriptEnable,
+        ...config.cssEnable,
+        ...config.jsonEnable,
+        ...config.graphqlEnable
+    ];
+
+    return config;
+}
+
+/**
+ * Refresh config and returns active languages
+ */
+export function getActiveLanguages(): Array<string> {
+    getExtensionConfig();
+
+    return activeLanguages;
+}
+
+/**
+ * Returns false if language is not activated 
+ * or gets Prettier options from config
+ * 
+ * @param {fileName, languageId}
+ */
+export function getPrettierOptions({
+    fileName,
+    languageId
+}: TextDocument): PrettierConfig | false {
+    const parser = selectParser(languageId);
+
+    if (!parser) {
+        return false;
+    }
+
+    return {
+        ...{ parser, filepath: fileName },
+        ...extractUserVSConfig()
+    };
+}
 
 /**
  * Select parser based on current file languageId
@@ -6,10 +59,7 @@ import { PrettierVSCodeConfig } from './prettier.d';
  * @param config 
  * @param languageId 
  */
-export function selectParser(
-    config: PrettierVSCodeConfig,
-    languageId: string
-): string | void {
+export function selectParser(languageId: string): string | void {
     switch (true) {
         case config.javascriptEnable.includes(languageId):
             return 'babylon';
@@ -25,9 +75,9 @@ export function selectParser(
 }
 
 /**
- * @param string parser 
+ * @param parser 
  */
-export function isBabylonParser(parser: string): Boolean {
+export function isJavaScriptParser(parser: string): Boolean {
     return parser === 'babylon';
 }
 
@@ -35,9 +85,8 @@ export function isBabylonParser(parser: string): Boolean {
  * Returns object with relevant properties from user VSCode config
  * for Prettier configuration
  * 
- * @param object config 
  */
-export function extractUserVSConfig(config: PrettierVSCodeConfig): Object {
+export function extractUserVSConfig(): Object {
     return Object.keys(config).reduce((res, key) => {
         const item = config[key];
 
@@ -51,4 +100,13 @@ export function extractUserVSConfig(config: PrettierVSCodeConfig): Object {
 
         return res;
     }, {});
+}
+
+/**
+ * Check if provided languageID is activated
+ * 
+ * @param languageId 
+ */
+export function isLanguageActive(languageId: string): Boolean {
+    return activeLanguages.indexOf(languageId) > -1;
 }
