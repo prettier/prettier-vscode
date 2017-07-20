@@ -1,13 +1,9 @@
 <div style="padding: 25px 8px 0">
-
-<div align="center" style="background-color:#1b2c34">
+<div align="center">
   <img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" />
 </div>
-
 <h1 align="center">Prettier Now</h1>
 <h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
-
-
 <div align="center">
 
 [![](https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
@@ -23,15 +19,13 @@ Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prett
 This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).<br/><br/>
 
 <p align="center">
-  <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
+<img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
 </p>
 
 --------------------------------------------------------------------------------
-
 ### Changelog
+
 <small>
-<ul>
-<li>
 
 #### *Update 1.4.0*
   - Added Prettier in status bar
@@ -41,29 +35,14 @@ This extension is a wrapper around Prettier Miscellaneous, please report issues 
   - Added missing option to disable JSON formatting
   - Disabling a language should now work as expected
 
-</li>
-
-<li>
-
 #### *Update 1.3.0*
 *Added support for GraphQL and CSS files with PostCSS syntax.*
-
-</li>
-
-<li>
 
 #### *Update 1.2.0*
 *New options jsxSingleQuote, spaceBeforeParen, alignObjectProperties. breakBeforeElse should now break properly.*
 
-</li>
-
-<li>
-
 #### *Update 1.1.0*
 *Added support for TypeScript, CSS, LESS and SASS files.*
-
-</li>
-</ul>
 </small>
 
 --------------------------------------------------------------------------------
