@@ -166,8 +166,7 @@ Example config:
 |**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
 |**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
 
---------------------------------------------------------------------------------
-
+<br/>
 <br/>
 
 <h3 align="center">
