@@ -1,4 +1,10 @@
-import { window, workspace, StatusBarItem, StatusBarAlignment } from 'vscode';
+import {
+    window,
+    workspace,
+    StatusBarItem,
+    StatusBarAlignment,
+    TextDocument
+} from 'vscode';
 
 import { channelCommand } from './output';
 import { getExtensionConfig, isLanguageActive } from './config';
@@ -7,6 +13,7 @@ const statusKey = 'Prettier:';
 
 // Status bar
 let statusBarItem: StatusBarItem;
+let currentDocument: TextDocument;
 
 /**
  * Initial text
@@ -50,15 +57,17 @@ function updateStatus(message: string) {
  * Toggles status bar based on current file type
  * Let it open when if watching output log
  * 
- * @param languageId 
  * @param supportedLanguages 
  */
-function toggleStatusBar(languageId: string): void {
-    if (languageId === `Log`) {
+function toggleStatusBar(document: TextDocument): void {
+    if (document.languageId === `Log`) {
         return;
     }
 
-    isLanguageActive(languageId) ? statusInitial() : statusEmpty();
+    if (!currentDocument || document !== currentDocument) {
+        currentDocument = document;
+        isLanguageActive(document.languageId) ? statusInitial() : statusEmpty();
+    }
 }
 
 /**
@@ -69,15 +78,15 @@ function toggleStatusBar(languageId: string): void {
 export function setupStatusHandler() {
     let config = getExtensionConfig();
 
+    // init status bar
     statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
     statusBarItem.command = channelCommand;
 
-    toggleStatusBar(window.activeTextEditor.document.languageId);
+    // initial toggle
+    toggleStatusBar(window.activeTextEditor.document);
 
-    window.onDidChangeActiveTextEditor((e) =>
-        toggleStatusBar(e.document.languageId)
-    );
-
+    // setting event handlers
+    window.onDidChangeActiveTextEditor((e) => toggleStatusBar(e.document));
     workspace.onDidChangeConfiguration(() => {
         // refresh config
         config = getExtensionConfig();
