@@ -5,10 +5,8 @@
 <h1 align="center">Prettier Now</h1>
 <h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
 <div align="center">
-
 [![](https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
 [![](https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg)](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
-
 </div>
 
 <br/>

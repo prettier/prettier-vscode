@@ -2,7 +2,7 @@
     "name": "prettier-now",
     "displayName": "Prettier Now",
     "description": "VS Code plugin for Prettier Miscellaneous / Code Formatter",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "publisher": "remimarsal",
     "author": "Remi Marsal <@remimarsal>",
     "galleryBanner": {
