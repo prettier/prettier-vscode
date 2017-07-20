@@ -3,6 +3,18 @@
  */
 export interface ExtensionConfig {
     /**
+     * Display Prettier status in the bottom bar
+     */
+    statusBar: boolean;
+    /**
+     * Automatically opens Prettier output when an error is detected
+     */
+    openOutput: boolean;
+    /**
+     * Scroll automatically to line where error has been detected
+     */
+    autoScroll: boolean;
+    /**
      * Language IDs to run javascript parser on.
      */
     javascriptEnable: ('javascript' | 'javascriptreact' | string)[];

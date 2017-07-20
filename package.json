@@ -131,6 +131,21 @@
                     "type": "boolean",
                     "default": false
                 },
+                "prettier.statusBar": {
+                    "description": "Display Prettier status in the bottom bar",
+                    "type": "boolean",
+                    "default": true
+                },
+                "prettier.openOutput": {
+                    "description": "Automatically opens Prettier output when an error is detected",
+                    "type": "boolean",
+                    "default": true
+                },
+                "prettier.autoScroll": {
+                    "description": "Scroll automatically to line where error has been detected",
+                    "type": "boolean",
+                    "default": true
+                },
                 "prettier.javascriptEnable": {
                     "description": "Advanced feature. Enable Prettier parser for JavaScript.",
                     "type": "array",

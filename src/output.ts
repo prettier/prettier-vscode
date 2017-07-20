@@ -1,5 +1,7 @@
 import { window, OutputChannel } from 'vscode';
 
+import { getExtensionConfig } from './config';
+
 export const channelCommand = `prettier-now.show-output`;
 let channel: OutputChannel;
 
@@ -31,13 +33,14 @@ export function hideChannel(): void {
  * @param fileName The path to the file
  */
 export function addToOutput(message: string, fileName: string): void {
+    const config = getExtensionConfig();
     const infos = `[${new Date().toLocaleTimeString()}] ${fileName}:\n`;
 
     channel.appendLine(infos);
     channel.appendLine(`${message}`);
     channel.appendLine('-'.repeat(infos.length));
 
-    showChannel();
+    config.openOutput && showChannel();
 }
 
 /**

@@ -1,5 +1,6 @@
 import { window, TextDocument, Position, Range, Selection } from 'vscode';
 
+import { getExtensionConfig } from './config';
 import { statusSuccess, statusFailed } from './status';
 import { hideChannel, addToOutput } from './output';
 
@@ -37,11 +38,13 @@ export function exec(
  * @param document 
  */
 function handleError(err: any, document: TextDocument) {
+    const config = getExtensionConfig();
+
     statusFailed();
     addToOutput(err.message, document.fileName);
 
     // move cursor straight to error
-    if (err.loc) {
+    if (config.autoScroll && err.loc) {
         const errorPosition = new Position(
             err.loc.start.line - 1,
             err.loc.start.column

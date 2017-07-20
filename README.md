@@ -32,6 +32,18 @@ This extension is a wrapper around Prettier Miscellaneous, please report issues 
 <ul>
 <li>
 
+#### *Update 1.4.0*
+  - Added Prettier in status bar
+  - Added output to show parsing errors
+  - Added options to toggle Prettier in status bar / toggle automatic opening of Prettier output / toggle auto scroll to detected error
+  - Disabled parser option (selecting parser is handled automatically)
+  - Added missing option to disable JSON formatting
+  - Disabling a language should now work as expected
+
+</li>
+
+<li>
+
 #### *Update 1.3.0*
 *Added support for GraphQL and CSS files with PostCSS syntax.*
 
@@ -125,6 +137,12 @@ Example config:
 ```
 <br/>
 
+<h3 align="center">
+
+`Prettier Misc options`
+
+</h3>
+
 | Option | Description | Default |
 | ------------- | ------------- | ------------- |
 | **printWidth**|Fit code within this line limit.| `120`
@@ -146,6 +164,22 @@ Example config:
 |**jsxBracketSameLine**|If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line.|`false`
 |**groupFirstArg**|Print functions like setTimeout in a more compact form.|`false`
 |**noSpaceEmptyFn**|Omit space before empty anonymous function body.|`false`
+
+--------------------------------------------------------------------------------
+
+<br/>
+
+<h3 align="center">
+
+`Extension options`
+
+</h3>
+
+| Option | Description | Default |
+| ------------- | ------------- | ------------- |
+|**statusBar**|Display Prettier status in the bottom bar|`true`
+|**openOutput**|Automatically opens Prettier output when an error is detected|`true`
+|**autoScroll**|Scroll automatically to line where error has been detected|`true`
 |**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
 |**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
 |**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`

@@ -11,14 +11,6 @@ let activeLanguages: Array<string> = [];
 export function getExtensionConfig(): PrettierVSCodeConfig {
     config = workspace.getConfiguration('prettier') as any;
 
-    activeLanguages = [
-        ...config.javascriptEnable,
-        ...config.typescriptEnable,
-        ...config.cssEnable,
-        ...config.jsonEnable,
-        ...config.graphqlEnable
-    ];
-
     return config;
 }
 
@@ -26,7 +18,15 @@ export function getExtensionConfig(): PrettierVSCodeConfig {
  * Refresh config and returns active languages
  */
 export function getActiveLanguages(): Array<string> {
-    getExtensionConfig();
+    const config = getExtensionConfig();
+
+    activeLanguages = [
+        ...config.javascriptEnable,
+        ...config.typescriptEnable,
+        ...config.cssEnable,
+        ...config.jsonEnable,
+        ...config.graphqlEnable
+    ];
 
     return activeLanguages;
 }

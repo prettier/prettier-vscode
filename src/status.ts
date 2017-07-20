@@ -1,8 +1,7 @@
-// import { workspace, window, Disposable, StatusBarItem, StatusBarAlignment } from 'vscode';
-import { window, StatusBarItem, StatusBarAlignment } from 'vscode';
+import { window, workspace, StatusBarItem, StatusBarAlignment } from 'vscode';
 
 import { channelCommand } from './output';
-import { isLanguageActive } from './config';
+import { getExtensionConfig, isLanguageActive } from './config';
 
 const statusKey = 'Prettier:';
 
@@ -14,21 +13,21 @@ let statusBarItem: StatusBarItem;
  */
 export function statusInitial() {
     statusBarItem.show();
-    return updateStatus('...');
+    updateStatus('...');
 }
 
 /**
  * Displays check
  */
 export function statusSuccess() {
-    return updateStatus('$(check)');
+    updateStatus('$(check)');
 }
 
 /**
  * Displays alert
  */
 export function statusFailed() {
-    return updateStatus('$(issue-opened)');
+    updateStatus('$(issue-opened)');
 }
 
 /**
@@ -68,6 +67,8 @@ function toggleStatusBar(languageId: string): void {
  * @returns {Disposable} The command to open the output channel
  */
 export function setupStatusHandler() {
+    let config = getExtensionConfig();
+
     statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
     statusBarItem.command = channelCommand;
 
@@ -76,4 +77,13 @@ export function setupStatusHandler() {
     window.onDidChangeActiveTextEditor((e) =>
         toggleStatusBar(e.document.languageId)
     );
+
+    workspace.onDidChangeConfiguration(() => {
+        // refresh config
+        config = getExtensionConfig();
+
+        !config.statusBar && statusEmpty();
+    });
+
+    !config.statusBar && statusEmpty();
 }
