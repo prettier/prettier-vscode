@@ -40,7 +40,7 @@ export function statusFailed(): void {
 /**
  * Clear the status bar
  */
-export function statusEmpty(): void {
+export function clearStatus(): void {
     statusBarItem.text = ``;
 }
 
@@ -66,7 +66,7 @@ function toggleStatusBar(document: TextDocument): void {
 
     if (!currentDocument || document !== currentDocument) {
         currentDocument = document;
-        isLanguageActive(document.languageId) ? statusInitial() : statusEmpty();
+        isLanguageActive(document.languageId) ? statusInitial() : clearStatus();
     }
 }
 
@@ -88,8 +88,8 @@ export function setupStatusHandler(): void {
     workspace.onDidChangeConfiguration(() => {
         // get fresh config
         config = getExtensionConfig();
-        !config.statusBar && statusEmpty();
+        !config.statusBar && clearStatus();
     });
 
-    !config.statusBar && statusEmpty();
+    !config.statusBar && clearStatus();
 }

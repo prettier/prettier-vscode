@@ -1,4 +1,7 @@
-<div align="center"><img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></div><h1 align="center">Prettier Now</h1><h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2><div align="center"><img src="https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg" alt=""><img src="https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg" alt=""></div>
+<div style="padding: 0 25px 0">
+<div align="center"><img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></div><h1 align="center">Prettier Now</h1><h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2><div align="center">
+<img src="https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg" alt="">
+<img src="https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg" alt=""></div>
 
 <span>VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*</span>
 
@@ -96,9 +99,10 @@ CMD + Shift + P -> Format Document
 Extension settings are specified within VSCode Settings.
 Example config:
 ```
-"prettier.singleQuote": true,
-"prettier.arrowParens": true,
+"prettier.jsxSingleQuote": true,
+"prettier.useTabs": false,
 "prettier.jsonEnable": [] // Will disable Prettier Misc on JSON files
+"prettier.openOutput": false
 ```
 <br/>
 
