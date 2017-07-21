@@ -29,7 +29,10 @@ export interface PrettierConfig {
  * Configuration for prettier-vscode
  */
 export type PrettierVSCodeConfig = PrettierConfig & ExtensionConfig;
+
+/**
+ * Prettier Misc API
+ */
 export interface Prettier {
     format: (string: string, PrettierConfig?: PrettierConfig) => string;
-    readonly version: string;
 }

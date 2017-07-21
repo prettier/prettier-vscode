@@ -5,34 +5,33 @@ import { PrettierConfig, PrettierVSCodeConfig } from './prettier.d';
 let config: PrettierVSCodeConfig = workspace.getConfiguration(
     'prettier'
 ) as any;
-let activeLanguages: Array<string> = [];
+let activeLanguages: Array<string> = getActiveLanguages();
+let userConfig: PrettierConfig = extractUserVSConfig();
 
 /**
- * Refresh and get extension config
+ * Setting refresh handler and returns extension config
  */
 export function getExtensionConfig(): PrettierVSCodeConfig {
-    workspace.onDidChangeConfiguration(
-        () => (config = workspace.getConfiguration('prettier') as any)
-    );
+    workspace.onDidChangeConfiguration(() => {
+        config = workspace.getConfiguration('prettier') as any;
+        userConfig = extractUserVSConfig();
+        activeLanguages = getActiveLanguages();
+    });
 
     return config;
 }
 
 /**
- * Refresh config and returns active languages
+ * Returns active languages
  */
 export function getActiveLanguages(): Array<string> {
-    const config = getExtensionConfig();
-
-    activeLanguages = [
+    return [
         ...config.javascriptEnable,
         ...config.typescriptEnable,
         ...config.cssEnable,
         ...config.jsonEnable,
         ...config.graphqlEnable
     ];
-
-    return activeLanguages;
 }
 
 /**
@@ -53,7 +52,7 @@ export function getPrettierOptions({
 
     return {
         ...{ parser, filepath: fileName },
-        ...extractUserVSConfig()
+        ...getUserVSConfig()
     };
 }
 
@@ -104,6 +103,13 @@ export function extractUserVSConfig(): object {
 
         return res;
     }, {});
+}
+
+/**
+ * Returns User VSCode config for extension
+ */
+function getUserVSConfig(): PrettierConfig {
+    return userConfig as PrettierConfig;
 }
 
 /**

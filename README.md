@@ -2,14 +2,14 @@
 <div align="center"><img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></div><h1 align="center">Prettier Now</h1><h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2><div align="center">
 <img src="https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg" alt="">
 <img src="https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg" alt=""></div>
-
-<span>VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*</span>
-
-<span>Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.<br/>
-This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).</span><br/><br/>
+<br/>
 <div align="center">
 <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
 </div>
+
+<span>VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*</span>
+<span>Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.<br/>
+This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).</span><br/><br/>
 
 
 --------------------------------------------------------------------------------
@@ -90,6 +90,12 @@ Set `editor.formatOnSave` to `true` in settings to automatically format files on
 ```
 CMD + Shift + P -> Format Document
 ```
+
+If you are using the Prettier output option, it is recommanded to use the [Output Colorizer](https://marketplace.visualstudio.com/items?itemName=IBM.output-colorizer) extension to get some syntactic coloring in the logs.
+
+<div align="center">
+<img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/output.png" alt="Visual" />
+</div>
 
 *<small>In order to run Prettier on your file, make sure VSCode recognises it as a filetype supported by Prettier Now. The filetype currently recognized is shown in the status bar. (e.g: JavaScript for .js files, Sass for .scss files, etc...). If for some reasons Prettier isn't applied on some filetype and you think it should, please let me know and report it [here](https://github.com/remimarsal/prettier-now-vscode/issues) !</small>*
 

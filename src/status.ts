@@ -86,7 +86,6 @@ export function setupStatusHandler(): void {
     // setting event handlers
     window.onDidChangeActiveTextEditor((e) => toggleStatusBar(e.document));
     workspace.onDidChangeConfiguration(() => {
-        // get fresh config
         config = getExtensionConfig();
         !config.statusBar && clearStatus();
     });
