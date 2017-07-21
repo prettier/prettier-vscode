@@ -7,9 +7,9 @@
 
 <span>Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.<br/>
 This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).</span><br/><br/>
-<span align="center">
+<div align="center">
 <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
-</span>
+</div>
 
 
 --------------------------------------------------------------------------------
