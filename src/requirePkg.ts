@@ -1,3 +1,5 @@
+import { addToOutput } from './errorHandler';
+
 const path = require('path');
 const readPkgUp = require('read-pkg-up');
 
@@ -32,11 +34,15 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
 function requireLocalPkg(fspath: string, pkgName: string): any {
     const modulePath = findPkg(fspath, pkgName);
     if (modulePath !== void 0) {
-        const resolved = require(modulePath);
-        console.log('Using ', pkgName, resolved.version, 'from', modulePath);
-        return resolved;
+        try {
+            return require(modulePath);
+        } catch (e) {
+            addToOutput(
+                `Failed to load ${pkgName} from ${modulePath}. Using bundled`
+            );
+        }
     }
+
     return require(pkgName);
 }
-
 export { requireLocalPkg };
