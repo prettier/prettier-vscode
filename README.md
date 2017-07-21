@@ -94,7 +94,7 @@ CMD + Shift + P -> Format Document
 If you are using the Prettier output option, it is recommanded to use the [Output Colorizer](https://marketplace.visualstudio.com/items?itemName=IBM.output-colorizer) extension to get some syntactic coloring in the logs.
 
 <div align="center">
-<img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/output.png" alt="Visual" />
+<img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/output.png" alt="Visual" height="320" />
 </div>
 
 *<small>In order to run Prettier on your file, make sure VSCode recognises it as a filetype supported by Prettier Now. The filetype currently recognized is shown in the status bar. (e.g: JavaScript for .js files, Sass for .scss files, etc...). If for some reasons Prettier isn't applied on some filetype and you think it should, please let me know and report it [here](https://github.com/remimarsal/prettier-now-vscode/issues) !</small>*
@@ -159,6 +159,10 @@ Example config:
 |**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`
 |**jsonEnable**|Will apply Prettier Misc on JSON files.<br /><br />Valid options:<br/>`json` - JSON files|`["json"]`
 |**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
+
+--------------------------------------------------------------------------------
+### Know issues
+* Prettier JSON parser doesn't tolerate comments as they're not part of JSON spec. It is cumbersome since it will trigger an error on document save and more and more projects make use of comments in JSON files (included VSCode configuration files). This will get fixed in upcoming versions of Prettier (see this [issue](https://github.com/prettier/prettier/issues/2378)).
 
 --------------------------------------------------------------------------------
 ### Contribute
