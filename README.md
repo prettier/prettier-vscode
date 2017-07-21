@@ -1,23 +1,17 @@
-<div style="padding: 25px 8px 0">
-<div align="center"><img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></div>
-<h1 align="center">Prettier Now</h1>
-<h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2>
-<div align="center"><img src="https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg" alt="">
-<img src="https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg" alt=""></div>
-<br/>
+<div align="center"><img  src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-logo.png" alt="Logo" height="128" /></div><h1 align="center">Prettier Now</h1><h3 align="center" style="border:none">Code Formatter for Visual Studio Code</h2><div align="center"><img src="https://vsmarketplacebadge.apphb.com/version/remimarsal.prettier-now.svg" alt=""><img src="https://vsmarketplacebadge.apphb.com/installs/remimarsal.prettier-now.svg" alt=""></div>
 
 <span>VS Code package to format your Javascript using [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous). *Based on [Esben Petersen's extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [Bastian Kistner's extension](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs).*</span>
 
 <span>Prettier Miscellaneous is a fork of [Prettier](https://github.com/prettier/prettier) and allows more customization of the output.<br/>
 This extension is a wrapper around Prettier Miscellaneous, please report issues regarding the output on [Prettier Now](https://github.com/remimarsal/prettier-now-vscode/issues) or [Prettier Miscellaneous](https://github.com/arijs/prettier-miscellaneous/issues).</span><br/><br/>
-<p align="center">
+<span align="center">
 <img src="https://github.com/remimarsal/prettier-now-vscode/raw/master/prettier-now2.gif" alt="Visual" />
-</p>
+</span>
+
 
 --------------------------------------------------------------------------------
-### Changelog
 
-<small>
+### Changelog
 
 #### *Update 1.4.0*
   - Added Prettier in status bar
@@ -35,7 +29,6 @@ This extension is a wrapper around Prettier Miscellaneous, please report issues 
 
 #### *Update 1.1.0*
 *Added support for TypeScript, CSS, LESS and SASS files.*
-</small>
 
 --------------------------------------------------------------------------------
 
