@@ -27,27 +27,25 @@ export function hideChannel(): void {
 }
 
 /**
- * Append messages to the output channel and format it with a title
+ * Append messages to the output channel
  *
- * @param message The message to append to the output channel
- * @param fileName The path to the file
+ * @param message
+ * @param fileName
  */
 export function addToOutput(message: string, fileName: string): void {
     const config = getExtensionConfig();
-    const infos = `[${new Date().toLocaleTimeString()}] ${fileName}:\n`;
+    const metas = `[${new Date().toLocaleTimeString()}] ${fileName}:\n`;
 
-    channel.appendLine(infos);
+    channel.appendLine(metas);
     channel.appendLine(`${message}`);
-    channel.appendLine('-'.repeat(infos.length));
+    channel.appendLine('-'.repeat(metas.length));
 
     config.openOutput && showChannel();
 }
 
 /**
  * Setup status bar if current document is supported
- *
- * @returns {Disposable} The command to open the output channel
  */
-export function setupOutputHandler() {
+export function setupOutputHandler(): void {
     channel = window.createOutputChannel('Prettier');
 }

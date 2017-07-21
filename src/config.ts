@@ -2,14 +2,18 @@ import { workspace, TextDocument } from 'vscode';
 
 import { PrettierConfig, PrettierVSCodeConfig } from './prettier.d';
 
-let config: PrettierVSCodeConfig;
+let config: PrettierVSCodeConfig = workspace.getConfiguration(
+    'prettier'
+) as any;
 let activeLanguages: Array<string> = [];
 
 /**
  * Refresh and get extension config
  */
 export function getExtensionConfig(): PrettierVSCodeConfig {
-    config = workspace.getConfiguration('prettier') as any;
+    workspace.onDidChangeConfiguration(
+        () => (config = workspace.getConfiguration('prettier') as any)
+    );
 
     return config;
 }
@@ -77,7 +81,7 @@ export function selectParser(languageId: string): string | void {
 /**
  * @param parser 
  */
-export function isJavaScriptParser(parser: string): Boolean {
+export function isJavaScriptParser(parser: string): boolean {
     return parser === 'babylon';
 }
 
@@ -86,7 +90,7 @@ export function isJavaScriptParser(parser: string): Boolean {
  * for Prettier configuration
  * 
  */
-export function extractUserVSConfig(): Object {
+export function extractUserVSConfig(): object {
     return Object.keys(config).reduce((res, key) => {
         const item = config[key];
 
@@ -107,6 +111,6 @@ export function extractUserVSConfig(): Object {
  * 
  * @param languageId 
  */
-export function isLanguageActive(languageId: string): Boolean {
+export function isLanguageActive(languageId: string): boolean {
     return activeLanguages.indexOf(languageId) > -1;
 }

@@ -18,7 +18,7 @@ let currentDocument: TextDocument;
 /**
  * Initial text
  */
-export function statusInitial() {
+export function statusInitial(): void {
     statusBarItem.show();
     updateStatus('...');
 }
@@ -26,21 +26,21 @@ export function statusInitial() {
 /**
  * Displays check
  */
-export function statusSuccess() {
+export function statusSuccess(): void {
     updateStatus('$(check)');
 }
 
 /**
  * Displays alert
  */
-export function statusFailed() {
+export function statusFailed(): void {
     updateStatus('$(issue-opened)');
 }
 
 /**
  * Clear the status bar
  */
-export function statusEmpty() {
+export function statusEmpty(): void {
     statusBarItem.text = ``;
 }
 
@@ -49,13 +49,13 @@ export function statusEmpty() {
  * 
  * @param message
  */
-function updateStatus(message: string) {
+function updateStatus(message: string): void {
     statusBarItem.text = `${statusKey} ${message}`;
 }
 
 /**
  * Toggles status bar based on current file type
- * Let it open when if watching output log
+ * Let it open when if switching to output log
  * 
  * @param supportedLanguages 
  */
@@ -72,10 +72,8 @@ function toggleStatusBar(document: TextDocument): void {
 
 /**
  * Setup status bar if current document is supported
- *
- * @returns {Disposable} The command to open the output channel
  */
-export function setupStatusHandler() {
+export function setupStatusHandler(): void {
     let config = getExtensionConfig();
 
     // init status bar
@@ -88,9 +86,8 @@ export function setupStatusHandler() {
     // setting event handlers
     window.onDidChangeActiveTextEditor((e) => toggleStatusBar(e.document));
     workspace.onDidChangeConfiguration(() => {
-        // refresh config
+        // get fresh config
         config = getExtensionConfig();
-
         !config.statusBar && statusEmpty();
     });
 

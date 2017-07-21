@@ -40,7 +40,7 @@ function getFormatter(
     text: string,
     fileName: string,
     prettierOptions: PrettierConfig
-) {
+): () => string {
     const config = getExtensionConfig();
 
     if (
