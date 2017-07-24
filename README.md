@@ -2,7 +2,7 @@
 
 VS Code package to format your Javascript / Typescript / CSS using [Prettier](https://github.com/prettier/prettier).
 
-### Installation
+## Installation
 
 Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
 
@@ -14,9 +14,9 @@ Can also be installed using
 ext install prettier-vscode
 ```
 
-### Usage
+## Usage
 
-#### Using Command Palette (CMD + Shift + P)
+### Using Command Palette (CMD/CTRL + Shift + P)
 
 ```
 1. CMD + Shift + P -> Format Document
@@ -25,14 +25,21 @@ OR
 2. CMD + Shift + P -> Format Selection
 ```
 
-#### Format On Save
+### Format On Save
 
 Respects `editor.formatOnSave` setting.
 
-### Settings
-#### prettier.eslintIntegration (default: false) - Javascript only
-Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
-Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+## Settings
+
+### Prettier's Settings
+
+Settings will be read from:
+1. File system, first matching file in 
+    1. `package.json` - `prettier` key
+    1. `.prettierrc`
+    1. `.prettier.config.js`
+1. VSCode prettier's settings, described bellow
+1. VSCode prettier's default settings
 
 #### prettier.printWidth (default: 80)
 
@@ -67,6 +74,12 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 #### prettier.useTabs (default: false)
 If true, indent lines with tabs
 
+### VSCode specific settings
+
+#### prettier.eslintIntegration (default: false) - Javascript only
+Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
+Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+
 #### prettier.javascriptEnable (default: ["javascript", "javascriptreact"])
 Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
 Use parser `babylon` or `flow` depending on `prettier.parser` for given language ids.
@@ -82,9 +95,9 @@ Advanced feature. Use this to opt in / out prettier on various language ids. Res
 Use parser `postcss` for given language ids.
 Use with care.
 
-### Prettier resolution
+## Prettier resolution
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 
-### Contribute
+## Contribute
 
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
