@@ -2,11 +2,13 @@ import {
     Disposable,
     StatusBarItem,
     OutputChannel,
+    StatusBarAlignment,
     commands,
     window,
+    languages,
 } from 'vscode';
 
-import { onWorkspaceRootChange } from './utils';
+import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
@@ -17,6 +19,18 @@ let outputChannelOpen: Boolean = false;
  */
 onWorkspaceRootChange(() => {
     outputChannelOpen = false;
+});
+
+window.onDidChangeActiveTextEditor(editor => {
+    if (editor !== undefined && statusBarItem !== undefined) {
+        const score = languages.match(allEnabledLanguages(), editor.document);
+
+        if (score > 0) {
+            statusBarItem.show();
+        } else {
+            statusBarItem.hide();
+        }
+    }
 });
 
 /**
