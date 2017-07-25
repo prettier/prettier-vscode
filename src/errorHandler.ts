@@ -114,7 +114,7 @@ export function safeExecution(
  */
 export function setupErrorHandler(): Disposable {
     // Setup the statusBarItem
-    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
+    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
     statusBarItem.text = 'Prettier';
     statusBarItem.show();
 
