@@ -49,11 +49,6 @@
           "default": 2,
           "description": "Number of spaces it should use per tab"
         },
-        "prettier.useFlowParser": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use the flow parser instead of babylon (deprecated, use 'parser:\"babylon\"' instead)"
-        },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,

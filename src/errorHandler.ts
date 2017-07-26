@@ -2,22 +2,58 @@ import {
     Disposable,
     StatusBarItem,
     OutputChannel,
+    StatusBarAlignment,
+    TextEditor,
     commands,
     window,
+    languages,
 } from 'vscode';
 
-import { onWorkspaceRootChange } from './utils';
+import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let outputChannelOpen: Boolean = false;
 
-/**
- * Mark the outputChannelOpen as false when changing workspaces
- */
-onWorkspaceRootChange(() => {
-    outputChannelOpen = false;
-});
+function toggleStatusBarItem(editor: TextEditor): void {
+    if (editor !== undefined) {
+        // The function will be triggered everytime the active "editor" instance changes
+        // It also triggers when we focus on the output panel or on the debug panel
+        // Both are seen as an "editor".
+        // The following check will ignore such panels
+        if (
+            ['debug', 'output'].some(
+                part => editor.document.uri.scheme === part
+            )
+        ) {
+            return;
+        }
+
+        const score = languages.match(allEnabledLanguages(), editor.document);
+
+        if (score > 0) {
+            statusBarItem.show();
+        } else {
+            statusBarItem.hide();
+        }
+    }
+}
+
+export function registerDisposables(): Disposable[] {
+    return [
+        // Mark the outputChannelOpen as false when changing workspaces
+        onWorkspaceRootChange(() => {
+            outputChannelOpen = false;
+        }),
+
+        // Keep track whether to show/hide the statusbar
+        window.onDidChangeActiveTextEditor(editor => {
+            if (statusBarItem !== undefined) {
+                toggleStatusBarItem(editor);
+            }
+        }),
+    ];
+}
 
 /**
  * Update the statusBarItem message and show the statusBarItem
@@ -26,7 +62,6 @@ onWorkspaceRootChange(() => {
  */
 function updateStatusBar(message: string): void {
     statusBarItem.text = message;
-    statusBarItem.command = 'prettier.open-output';
     statusBarItem.show();
 }
 
@@ -100,9 +135,11 @@ export function safeExecution(
  */
 export function setupErrorHandler(): Disposable {
     // Setup the statusBarItem
-    statusBarItem = window.createStatusBarItem();
+    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
     statusBarItem.text = 'Prettier';
-    statusBarItem.show();
+    statusBarItem.command = 'prettier.open-output';
+
+    toggleStatusBarItem(window.activeTextEditor);
 
     // Setup the outputChannel
     outputChannel = window.createOutputChannel('Prettier');

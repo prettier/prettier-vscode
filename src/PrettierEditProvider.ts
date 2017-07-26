@@ -82,10 +82,6 @@ function format(
     */
     let parser = config.parser;
     let isNonJsParser = false;
-    if (!parser) {
-        // unset config
-        parser = config.useFlowParser ? 'flow' : 'babylon';
-    }
     if (config.typescriptEnable.includes(languageId)) {
         parser = 'typescript';
         isNonJsParser = true;

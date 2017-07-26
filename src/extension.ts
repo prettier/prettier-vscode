@@ -1,43 +1,13 @@
-import {
-    languages,
-    ExtensionContext,
-    DocumentSelector,
-    window,
-    workspace,
-} from 'vscode';
+import { languages, ExtensionContext, DocumentSelector } from 'vscode';
 import EditProvider from './PrettierEditProvider';
-import { setupErrorHandler } from './errorHandler';
-import { PrettierVSCodeConfig } from './types.d';
-
-function checkConfig(): PrettierVSCodeConfig {
-    const config: PrettierVSCodeConfig = workspace.getConfiguration(
-        'prettier'
-    ) as any;
-    if (config.useFlowParser) {
-        window.showWarningMessage(
-            "Option 'useFlowParser' has been deprecated. " +
-                'Use \'parser: "flow"\' instead.'
-        );
-    }
-    if (typeof config.trailingComma === 'boolean') {
-        window.showWarningMessage(
-            "Option 'trailingComma' as a boolean value has been deprecated. " +
-                "Use 'none', 'es5' or 'all' instead."
-        );
-    }
-    return config;
-}
+import { setupErrorHandler, registerDisposables } from './errorHandler';
+import { getConfig, allEnabledLanguages } from './utils';
 
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
-    const config = checkConfig();
-    const languageSelector: DocumentSelector = [
-        ...config.javascriptEnable,
-        ...config.typescriptEnable,
-        ...config.cssEnable,
-        ...config.jsonEnable,
-        ...config.graphqlEnable,
-    ];
+    const config = getConfig();
+    const languageSelector = allEnabledLanguages();
+
     // CSS/json/graphql doesn't work with range yet.
     const rangeLanguageSelector: DocumentSelector = [
         ...config.javascriptEnable,
@@ -53,7 +23,8 @@ export function activate(context: ExtensionContext) {
             languageSelector,
             editProvider
         ),
-        setupErrorHandler()
+        setupErrorHandler(),
+        ...registerDisposables()
     );
 }
 
