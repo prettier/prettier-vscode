@@ -1,11 +1,11 @@
 import { languages, ExtensionContext, DocumentSelector } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler } from './errorHandler';
-import { checkConfig, allEnabledLanguages } from './utils';
+import { getConfig, allEnabledLanguages } from './utils';
 
 export function activate(context: ExtensionContext) {
     const editProvider = new EditProvider();
-    const config = checkConfig();
+    const config = getConfig();
     const languageSelector = allEnabledLanguages();
 
     // CSS/json/graphql doesn't work with range yet.

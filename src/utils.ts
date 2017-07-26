@@ -1,4 +1,4 @@
-import { window, workspace, DocumentSelector } from 'vscode';
+import { workspace, DocumentSelector } from 'vscode';
 import { PrettierVSCodeConfig } from './types.d';
 
 let currentRootPath: string = workspace.rootPath;
@@ -12,27 +12,13 @@ export function onWorkspaceRootChange(cb: (rootPath: string) => void): void {
     });
 }
 
-export function checkConfig(): PrettierVSCodeConfig {
-    const config: PrettierVSCodeConfig = workspace.getConfiguration(
-        'prettier'
-    ) as any;
-    if (config.useFlowParser) {
-        window.showWarningMessage(
-            "Option 'useFlowParser' has been deprecated. " +
-                'Use \'parser: "flow"\' instead.'
-        );
-    }
-    if (typeof config.trailingComma === 'boolean') {
-        window.showWarningMessage(
-            "Option 'trailingComma' as a boolean value has been deprecated. " +
-                "Use 'none', 'es5' or 'all' instead."
-        );
-    }
-    return config;
+export function getConfig(): PrettierVSCodeConfig {
+    return workspace.getConfiguration('prettier') as any;
 }
 
 export function allEnabledLanguages(): DocumentSelector {
-    const config = checkConfig();
+    const config = getConfig();
+
     return [
         ...config.javascriptEnable,
         ...config.typescriptEnable,
