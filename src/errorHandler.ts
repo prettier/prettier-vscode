@@ -122,8 +122,8 @@ export function setupErrorHandler(): Disposable {
     // Setup the statusBarItem
     statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
     statusBarItem.text = 'Prettier';
-    statusBarItem.show();
     statusBarItem.command = 'prettier.open-output';
+    statusBarItem.hide();
 
     // Setup the outputChannel
     outputChannel = window.createOutputChannel('Prettier');
