@@ -17,7 +17,6 @@ type TrailingCommaOption =
 export interface PrettierConfig {
     printWidth?: number;
     tabWidth?: number;
-    useFlowParser?: boolean; // deprecated
     singleQuote?: boolean;
     trailingComma?: TrailingCommaOption;
     bracketSpacing?: boolean;
