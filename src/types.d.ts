@@ -15,15 +15,15 @@ type TrailingCommaOption =
  * Prettier configuration
  */
 export interface PrettierConfig {
-    printWidth?: number;
-    tabWidth?: number;
-    singleQuote?: boolean;
-    trailingComma?: TrailingCommaOption;
-    bracketSpacing?: boolean;
-    jsxBracketSameLine?: boolean;
-    parser?: ParserOption;
-    semi?: boolean;
-    useTabs?: boolean;
+    printWidth: number;
+    tabWidth: number;
+    singleQuote: boolean;
+    trailingComma: TrailingCommaOption;
+    bracketSpacing: boolean;
+    jsxBracketSameLine: boolean;
+    parser: ParserOption;
+    semi: boolean;
+    useTabs: boolean;
 }
 /**
  * prettier-vscode specific configuration
