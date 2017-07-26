@@ -17,6 +17,14 @@ let outputChannelOpen: Boolean = false;
 
 function toggleStatusBarItem(editor: TextEditor): void {
     if (editor !== undefined) {
+        if (
+            ['debug', 'output'].some(
+                part => editor.document.uri.scheme === part
+            )
+        ) {
+            return;
+        }
+
         const score = languages.match(allEnabledLanguages(), editor.document);
 
         if (score > 0) {
@@ -24,8 +32,6 @@ function toggleStatusBarItem(editor: TextEditor): void {
         } else {
             statusBarItem.hide();
         }
-    } else {
-        statusBarItem.hide();
     }
 }
 
