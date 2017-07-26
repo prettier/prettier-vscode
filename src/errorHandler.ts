@@ -47,7 +47,6 @@ window.onDidChangeActiveTextEditor(editor => {
  */
 function updateStatusBar(message: string): void {
     statusBarItem.text = message;
-    statusBarItem.command = 'prettier.open-output';
     statusBarItem.show();
 }
 
@@ -124,6 +123,7 @@ export function setupErrorHandler(): Disposable {
     statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
     statusBarItem.text = 'Prettier';
     statusBarItem.show();
+    statusBarItem.command = 'prettier.open-output';
 
     // Setup the outputChannel
     outputChannel = window.createOutputChannel('Prettier');
