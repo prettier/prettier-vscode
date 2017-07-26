@@ -3,6 +3,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.22.0]
+- Changed Status bar: hide/show depending on active editor.
+- Fix local resolution.
+
 ## [0.21.0]
 - Reworked error messages. They are now in a dedicated output channel.
 
