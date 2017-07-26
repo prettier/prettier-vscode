@@ -17,6 +17,10 @@ let outputChannelOpen: Boolean = false;
 
 function toggleStatusBarItem(editor: TextEditor): void {
     if (editor !== undefined) {
+        // The function will be triggered everytime the active "editor" instance changes
+        // It also triggers when we focus on the output panel or on the debug panel
+        // Both are seen as an "editor".
+        // The following check will ignore such panels
         if (
             ['debug', 'output'].some(
                 part => editor.document.uri.scheme === part
