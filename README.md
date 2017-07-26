@@ -26,27 +26,23 @@ OR
 ```
 
 ### Format On Save
-
 Respects `editor.formatOnSave` setting.
 
 ## Settings
 
 ### Prettier's Settings
-
 Settings will be read from:
 1. File system, first matching file in 
     1. `package.json` - `prettier` key
     1. `.prettierrc`
     1. `.prettier.config.js`
-1. VSCode prettier's settings, described bellow
+1. VSCode prettier's settings, described below
 1. VSCode prettier's default settings
 
 #### prettier.printWidth (default: 80)
-
 Fit code within this line limit
 
 #### prettier.tabWidth (default: 2)
-
 Number of spaces it should use per tab
 
 #### prettier.singleQuote (default: false)
@@ -99,5 +95,4 @@ Use with care.
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 
 ## Contribute
-
-This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issue or PRs!
+This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issues or PRs!
