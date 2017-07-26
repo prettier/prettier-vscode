@@ -207,16 +207,16 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
+    "@types/node": "^7.0.39",
     "@types/semver": "^5.3.31",
     "mocha": "^2.3.3",
-    "typescript": "^2.4.1",
-    "vscode": "^1.1.0"
+    "typescript": "^2.4.2",
+    "vscode": "^1.1.4"
   },
   "dependencies": {
-    "prettier": "1.5.2",
+    "prettier": "1.5.3",
     "prettier-eslint": "^6.4.2",
     "read-pkg-up": "2.0.0",
-    "semver": "^5.3.0"
+    "semver": "^5.4.1"
   }
 }
