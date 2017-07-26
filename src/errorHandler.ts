@@ -22,11 +22,18 @@ onWorkspaceRootChange(() => {
 });
 
 window.onDidChangeActiveTextEditor(editor => {
-    if (editor !== undefined && statusBarItem !== undefined) {
-        const score = languages.match(allEnabledLanguages(), editor.document);
+    if (statusBarItem !== undefined) {
+        if (editor !== undefined) {
+            const score = languages.match(
+                allEnabledLanguages(),
+                editor.document
+            );
 
-        if (score > 0) {
-            statusBarItem.show();
+            if (score > 0) {
+                statusBarItem.show();
+            } else {
+                statusBarItem.hide();
+            }
         } else {
             statusBarItem.hide();
         }
