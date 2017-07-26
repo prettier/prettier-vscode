@@ -3,6 +3,7 @@ import {
     StatusBarItem,
     OutputChannel,
     StatusBarAlignment,
+    TextEditor,
     commands,
     window,
     languages,
@@ -14,6 +15,20 @@ let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let outputChannelOpen: Boolean = false;
 
+function toggleStatusBarItem(editor: TextEditor): void {
+    if (editor !== undefined) {
+        const score = languages.match(allEnabledLanguages(), editor.document);
+
+        if (score > 0) {
+            statusBarItem.show();
+        } else {
+            statusBarItem.hide();
+        }
+    } else {
+        statusBarItem.hide();
+    }
+}
+
 export function registerDisposables(): Disposable[] {
     return [
         // Mark the outputChannelOpen as false when changing workspaces
@@ -24,20 +39,7 @@ export function registerDisposables(): Disposable[] {
         // Keep track whether to show/hide the statusbar
         window.onDidChangeActiveTextEditor(editor => {
             if (statusBarItem !== undefined) {
-                if (editor !== undefined) {
-                    const score = languages.match(
-                        allEnabledLanguages(),
-                        editor.document
-                    );
-
-                    if (score > 0) {
-                        statusBarItem.show();
-                    } else {
-                        statusBarItem.hide();
-                    }
-                } else {
-                    statusBarItem.hide();
-                }
+                toggleStatusBarItem(editor);
             }
         }),
     ];
@@ -126,7 +128,8 @@ export function setupErrorHandler(): Disposable {
     statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
     statusBarItem.text = 'Prettier';
     statusBarItem.command = 'prettier.open-output';
-    statusBarItem.hide();
+
+    toggleStatusBarItem(window.activeTextEditor);
 
     // Setup the outputChannel
     outputChannel = window.createOutputChannel('Prettier');
