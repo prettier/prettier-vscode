@@ -14,31 +14,34 @@ let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let outputChannelOpen: Boolean = false;
 
-/**
- * Mark the outputChannelOpen as false when changing workspaces
- */
-onWorkspaceRootChange(() => {
-    outputChannelOpen = false;
-});
+export function registerDisposables(): Disposable[] {
+    return [
+        // Mark the outputChannelOpen as false when changing workspaces
+        onWorkspaceRootChange(() => {
+            outputChannelOpen = false;
+        }),
 
-window.onDidChangeActiveTextEditor(editor => {
-    if (statusBarItem !== undefined) {
-        if (editor !== undefined) {
-            const score = languages.match(
-                allEnabledLanguages(),
-                editor.document
-            );
+        // Keep track whether to show/hide the statusbar
+        window.onDidChangeActiveTextEditor(editor => {
+            if (statusBarItem !== undefined) {
+                if (editor !== undefined) {
+                    const score = languages.match(
+                        allEnabledLanguages(),
+                        editor.document
+                    );
 
-            if (score > 0) {
-                statusBarItem.show();
-            } else {
-                statusBarItem.hide();
+                    if (score > 0) {
+                        statusBarItem.show();
+                    } else {
+                        statusBarItem.hide();
+                    }
+                } else {
+                    statusBarItem.hide();
+                }
             }
-        } else {
-            statusBarItem.hide();
-        }
-    }
-});
+        }),
+    ];
+}
 
 /**
  * Update the statusBarItem message and show the statusBarItem

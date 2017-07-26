@@ -1,10 +1,12 @@
-import { workspace, DocumentSelector } from 'vscode';
+import { workspace, Disposable, DocumentSelector } from 'vscode';
 import { PrettierVSCodeConfig } from './types.d';
 
 let currentRootPath: string = workspace.rootPath;
 
-export function onWorkspaceRootChange(cb: (rootPath: string) => void): void {
-    workspace.onDidChangeConfiguration(() => {
+export function onWorkspaceRootChange(
+    cb: (rootPath: string) => void
+): Disposable {
+    return workspace.onDidChangeConfiguration(() => {
         if (currentRootPath !== workspace.rootPath) {
             cb(workspace.rootPath);
             currentRootPath = workspace.rootPath;
