@@ -2,7 +2,7 @@
     "name": "prettier-now",
     "displayName": "Prettier Now",
     "description": "VS Code plugin for Prettier Miscellaneous / Code Formatter",
-    "version": "1.4.6",
+    "version": "1.4.8",
     "publisher": "remimarsal",
     "author": "Remi Marsal <@remimarsal>",
     "galleryBanner": {
@@ -23,6 +23,7 @@
     },
     "categories": [ "Formatters" ],
     "activationEvents": [
+        "*",
         "onLanguage:javascript",
         "onLanguage:javascriptreact",
         "onLanguage:typescript",
@@ -30,7 +31,6 @@
         "onLanguage:css",
         "onLanguage:less",
         "onLanguage:scss",
-        "onLanguage:postcss",
         "onLanguage:json",
         "onLanguage:graphql"
     ],

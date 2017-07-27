@@ -154,11 +154,11 @@ Example config:
 |**statusBar**|Display Prettier status in the bottom bar|`true`
 |**openOutput**|Automatically opens Prettier output when an error is detected|`true`
 |**autoScroll**|Scroll automatically to line where error has been detected|`true`
-|**javascriptEnable**|Will apply Prettier Misc on JavaScript files.<br /><br />Valid options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files|`["javascript","javascriptreact"]`
-|**typescriptEnable**|Will apply Prettier Misc on TypeScript files.<br /><br />Valid options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files|`["typescript","typescriptreact"]`
-|**cssEnable**|Will apply Prettier Misc on Styling files.<br /><br />Valid options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax|`["css","less","scss","postcss"]`
-|**jsonEnable**|Will apply Prettier Misc on JSON files.<br /><br />Valid options:<br/>`json` - JSON files|`["json"]`
-|**graphqlEnable**|Will apply Prettier Misc on GraphQL files.<br /><br />Valid options:<br/>`graphql` - GQL and GraphQL files|`["graphql"]`
+|**javascriptEnable**|Will apply Prettier Misc using JavaScript parser.<br /><br />Supported options:<br/>`javascript` - JavaScript files<br/>`javascriptreact` - JSX files<br/><br/>*You can now try to add other languages IDs that have JavaScript syntax but result is not guaranteed. No restart is required.*|`["javascript","javascriptreact"]`
+|**typescriptEnable**|Will apply Prettier Misc using TypeScript parser.<br /><br />Supported options:<br/>`typescript` - TypeScript files<br/>`typescriptreact` - TSX files<br/><br/>*You can now try to add other languages IDs that have TypeScript syntax but result is not guaranteed. No restart is required.*|`["typescript","typescriptreact"]`
+|**cssEnable**|Will apply Prettier Misc using PostCSS parser.<br /><br />Supported options:<br/>`css` - CSS files<br/>`less` - LESS files<br/>`scss` - SASS files<br/>`postcss` - CSS files with PostCSS syntax<br/><br/>*You can now try to add other languages IDs that have CSS syntax but result is not guaranteed. No restart is required.*|`["css","less","scss","postcss"]`
+|**jsonEnable**|Will apply Prettier Misc using JSON parser.<br /><br />Supported options:<br/>`json` - JSON files<br/><br/>*You can now try to add other languages IDs that have JSON syntax but result is not guaranteed. No restart is required.*|`["json"]`
+|**graphqlEnable**|Will apply Prettier Misc using GraphQL parser.<br /><br />Supported options:<br/>`graphql` - GQL and GraphQL files<br/><br/>*You can now try to add other languages IDs that have GraphQL syntax but result is not guaranteed. No restart is required.*|`["graphql"]`
 
 --------------------------------------------------------------------------------
 ### Know issues

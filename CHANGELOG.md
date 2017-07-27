@@ -1,5 +1,8 @@
 <h1 style="border:none">Changelog</h1>
 
+# 1.4.7
+- It's now possible to add your own languages IDs with specific parsers & without restart.
+
 # 1.4.0
 - Added Prettier in status bar
 - Added output to show parsing errors

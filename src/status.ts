@@ -77,7 +77,7 @@ export function setupStatusHandler(): void {
     let config = getExtensionConfig();
 
     // init status bar
-    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
+    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 42);
     statusBarItem.command = channelCommand;
 
     // initial toggle
