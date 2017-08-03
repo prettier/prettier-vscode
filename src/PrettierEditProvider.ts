@@ -85,7 +85,6 @@ async function format(
     let isNonJsParser = false;
     if (vscodeConfig.typescriptEnable.includes(languageId)) {
         parser = 'typescript';
-        isNonJsParser = true;
     }
     if (vscodeConfig.cssEnable.includes(languageId)) {
         parser = 'postcss';
