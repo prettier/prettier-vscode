@@ -91,7 +91,18 @@ Advanced feature. Use this to opt in / out prettier on various language ids. Res
 Use parser `postcss` for given language ids.
 Use with care.
 
+#### prettier.jsonEnable (default: ["json"])
+Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
+Use parser `json` for given language ids.
+Use with care.
+
+#### prettier.graphqlEnable (default: ["graphql"])
+Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
+Use parser `graphql` for given language ids.
+Use with care.
+
 ## Prettier resolution
+
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
 
 ## Contribute

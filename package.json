@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - JavaScript formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -12,11 +12,11 @@
   "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/esbenp/prettier-vscode.git"
+    "url": "https://github.com/prettier/prettier-vscode.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/esbenp/prettier-vscode/issues"
+    "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
     "vscode": "^1.5.0"
