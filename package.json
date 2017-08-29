@@ -197,7 +197,21 @@
           ]
         }
       }
-    }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": ".prettierrc",
+        "url": "http://json.schemastore.org/prettierrc"
+      }
+    ],
+    "languages": [
+      {
+        "id": "json",
+        "filenames": [
+          ".prettierrc"
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
@@ -214,7 +228,7 @@
     "vscode": "^1.1.4"
   },
   "dependencies": {
-    "prettier": "1.5.3",
+    "prettier": "1.6.0",
     "prettier-eslint": "^6.4.2",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
