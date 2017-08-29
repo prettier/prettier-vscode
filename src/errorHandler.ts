@@ -97,7 +97,7 @@ export function addToOutput(message: string): void {
     outputChannel.appendLine(`${message}\n`);
 
     if (outputChannelOpen === false) {
-        outputChannel.show();
+        outputChannel.show(true);
         outputChannelOpen = true;
     }
 }
