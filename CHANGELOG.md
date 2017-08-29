@@ -5,6 +5,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.23.0]
 - Read configuration from files.
+- Prettier 1.6
 
 ## [0.22.0]
 - Changed Status bar: hide/show depending on active editor.
