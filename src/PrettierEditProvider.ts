@@ -82,22 +82,22 @@ async function format(
     handle deprecated parser option
     */
     let parser = vscodeConfig.parser;
-    let isNonJsParser = false;
+    let doesParserSupportEslint = true;
     if (vscodeConfig.typescriptEnable.includes(languageId)) {
         parser = 'typescript';
     }
     if (vscodeConfig.cssEnable.includes(languageId)) {
         parser = 'postcss';
-        isNonJsParser = true;
+        doesParserSupportEslint = false;
     }
     if (vscodeConfig.jsonEnable.includes(languageId)) {
         parser = 'json';
-        isNonJsParser = true;
+        doesParserSupportEslint = false;
         trailingComma = 'none'; // Fix will land in prettier > 1.5.2
     }
     if (vscodeConfig.graphqlEnable.includes(languageId)) {
         parser = 'graphql';
-        isNonJsParser = true;
+        doesParserSupportEslint = false;
     }
 
     const fileOptions = await bundledPrettier.resolveConfig(fileName);
@@ -118,7 +118,7 @@ async function format(
         fileOptions
     );
 
-    if (vscodeConfig.eslintIntegration && !isNonJsParser) {
+    if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
         return safeExecution(
             () => {
                 const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
@@ -133,7 +133,7 @@ async function format(
         );
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
-    if (isNonJsParser && !parserExists(parser, prettier)) {
+    if (!doesParserSupportEslint && !parserExists(parser, prettier)) {
         return safeExecution(
             () => {
                 const warningMessage =
