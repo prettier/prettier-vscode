@@ -72,7 +72,7 @@ If true, indent lines with tabs
 
 ### VSCode specific settings
 
-#### prettier.eslintIntegration (default: false) - Javascript only
+#### prettier.eslintIntegration (default: false) - Javascript and TypeScript only
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
