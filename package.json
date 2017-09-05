@@ -229,7 +229,7 @@
   },
   "dependencies": {
     "prettier": "1.6.1",
-    "prettier-eslint": "^6.4.2",
+    "prettier-eslint": "^7.1.0",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
   }
