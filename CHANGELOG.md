@@ -3,8 +3,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.23.1]
+- Prettier 1.6.1
+
 ## [0.23.0]
 - Read configuration from files.
+- Prettier 1.6
 
 ## [0.22.0]
 - Changed Status bar: hide/show depending on active editor.

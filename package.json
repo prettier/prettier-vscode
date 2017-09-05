@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - JavaScript formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -228,7 +228,7 @@
     "vscode": "^1.1.4"
   },
   "dependencies": {
-    "prettier": "1.6.0",
+    "prettier": "1.6.1",
     "prettier-eslint": "^7.1.0",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
