@@ -169,23 +169,33 @@ function fullDocumentRange(document: TextDocument): Range {
 class PrettierEditProvider
     implements DocumentRangeFormattingEditProvider,
         DocumentFormattingEditProvider {
+    constructor(private _fileIsIgnored: (filePath: string) => boolean) {}
+
     provideDocumentRangeFormattingEdits(
         document: TextDocument,
         range: Range,
         options: FormattingOptions,
         token: CancellationToken
     ): Promise<TextEdit[]> {
-        return format(document.getText(), document, {
-                    rangeStart: document.offsetAt(range.start),
-                    rangeEnd: document.offsetAt(range.end),
-        }).then(code => [TextEdit.replace(fullDocumentRange(document), code)]);
+        return this._provideEdits(document, {
+            rangeStart: document.offsetAt(range.start),
+            rangeEnd: document.offsetAt(range.end),
+        });
     }
+
     provideDocumentFormattingEdits(
         document: TextDocument,
         options: FormattingOptions,
         token: CancellationToken
     ): Promise<TextEdit[]> {
-        return format(document.getText(), document, {}).then(code => [
+        return this._provideEdits(document, {});
+    }
+
+    private _provideEdits(document: TextDocument, options: object) {
+        if (!document.isUntitled && this._fileIsIgnored(document.fileName)) {
+            return Promise.resolve([]);
+        }
+        return format(document.getText(), document, options).then(code => [
             TextEdit.replace(fullDocumentRange(document), code),
         ]);
     }

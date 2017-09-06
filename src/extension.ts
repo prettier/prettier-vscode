@@ -2,10 +2,12 @@ import { languages, ExtensionContext, DocumentSelector } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
 import { getConfig, allEnabledLanguages } from './utils';
-import fileListener from './configCacheHandler';
+import configFileListener from './configCacheHandler';
+import ignoreFileListener from './ignoreFileHandler';
 
 export function activate(context: ExtensionContext) {
-    const editProvider = new EditProvider();
+    const { fileIsIgnored, fileWatcher } = ignoreFileListener();
+    const editProvider = new EditProvider(fileIsIgnored);
     const config = getConfig();
     const languageSelector = allEnabledLanguages();
 
@@ -25,7 +27,8 @@ export function activate(context: ExtensionContext) {
             editProvider
         ),
         setupErrorHandler(),
-        fileListener(),
+        configFileListener(),
+        fileWatcher,
         ...registerDisposables()
     );
 }
