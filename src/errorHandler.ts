@@ -60,7 +60,7 @@ export function registerDisposables(): Disposable[] {
  * 
  * @param message The message to put inside the statusBarItem
  */
-function updateStatusBar(message: string): void {
+export function updateStatusBar(message: string): void {
     statusBarItem.text = message;
     statusBarItem.show();
 }
@@ -72,7 +72,7 @@ function updateStatusBar(message: string): void {
  * @param fileName The path to the file
  * @returns {string} enhanced message with the filename
  */
-function addFilePath(msg: string, fileName: string): string {
+export function addFilePath(msg: string, fileName: string): string {
     const lines = msg.split('\n');
     if (lines.length > 0) {
         lines[0] = lines[0].replace(/(\d*):(\d*)/g, `${fileName}:$1:$2`);

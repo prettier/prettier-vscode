@@ -10,7 +10,12 @@ import {
     TextEdit,
 } from 'vscode';
 
-import { safeExecution, addToOutput } from './errorHandler';
+import {
+    safeExecution,
+    addToOutput,
+    addFilePath,
+    updateStatusBar,
+} from './errorHandler';
 import { onWorkspaceRootChange } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
@@ -20,6 +25,7 @@ import {
     Prettier,
     PrettierEslintFormat,
     ParserOption,
+    PrettierStylelint,
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
@@ -131,6 +137,30 @@ async function format(
             text,
             fileName
         );
+    }
+    if (vscodeConfig.stylelintIntegration && parser === 'postcss') {
+        window.showInformationMessage('stylelintIntegration on');
+
+        const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
+
+        return prettierStylelint
+            .format({
+                text,
+                filePath: fileName,
+            })
+            .then(source => {
+                updateStatusBar('Prettier: $(check)');
+                console.log(source);
+                return source;
+            })
+            .catch((err: Error) => {
+                console.log(err);
+                addToOutput(`prettier-stylelint error: ${fileName}
+Couldn't find a stylelint config or it's malformed.
+            `);
+                updateStatusBar('Prettier: $(x)');
+                return text;
+            });
     }
     const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
     if (!doesParserSupportEslint && !parserExists(parser, prettier)) {
