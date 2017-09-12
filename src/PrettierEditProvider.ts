@@ -150,11 +150,9 @@ async function format(
             })
             .then(source => {
                 updateStatusBar('Prettier: $(check)');
-                console.log(source);
                 return source;
             })
             .catch((err: Error) => {
-                console.log(err);
                 addToOutput(`prettier-stylelint error: ${fileName}
 Couldn't find a stylelint config or it's malformed.
             `);
@@ -206,8 +204,8 @@ class PrettierEditProvider
         token: CancellationToken
     ): Promise<TextEdit[]> {
         return format(document.getText(), document, {
-                    rangeStart: document.offsetAt(range.start),
-                    rangeEnd: document.offsetAt(range.end),
+            rangeStart: document.offsetAt(range.start),
+            rangeEnd: document.offsetAt(range.end),
         }).then(code => [TextEdit.replace(fullDocumentRange(document), code)]);
     }
     provideDocumentFormattingEdits(
