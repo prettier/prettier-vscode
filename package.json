@@ -39,6 +39,11 @@
           "default": false,
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
         },
+        "prettier.ignorePath": {
+          "type": "string",
+          "default": ".prettierignore",
+          "description": "Path to a .prettierignore or similar file"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,

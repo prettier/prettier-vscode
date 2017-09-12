@@ -6,9 +6,9 @@ import configFileListener from './configCacheHandler';
 import ignoreFileListener from './ignoreFileHandler';
 
 export function activate(context: ExtensionContext) {
-    const { fileIsIgnored, fileWatcher } = ignoreFileListener();
-    const editProvider = new EditProvider(fileIsIgnored);
     const config = getConfig();
+    const { fileIsIgnored, fileWatcher } = ignoreFileListener(config.ignorePath);
+    const editProvider = new EditProvider(fileIsIgnored);
     const languageSelector = allEnabledLanguages();
 
     // CSS/json/graphql doesn't work with range yet.

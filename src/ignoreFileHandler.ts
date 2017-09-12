@@ -3,42 +3,41 @@ import { readFileSync, existsSync } from 'fs';
 import * as path from 'path';
 import { workspace } from 'vscode';
 
-// TODO(azz): make this configurable?
-const PRETTIER_IGNORE_FILE = '.prettierignore';
+interface Ignorer {
+    ignores(filePath: string): boolean;
+}
+
+const nullIgnorer: Ignorer = { ignores: () => false };
 
 /**
  * Create a file watcher. Reloads the contents of .prettierignore
  * on file change, create, delete.
  */
-function fileListener() {
-    const fileWatcher = workspace.createFileSystemWatcher(PRETTIER_IGNORE_FILE);
+function fileListener(ignorePath: string) {
+    const fileWatcher = workspace.createFileSystemWatcher(ignorePath);
 
     fileWatcher.onDidChange(reloadIgnoreFile);
     fileWatcher.onDidCreate(reloadIgnoreFile);
     fileWatcher.onDidDelete(reloadIgnoreFile);
 
+    let ignorer: Ignorer;
     reloadIgnoreFile();
-
-    let ignorer: any;
 
     return {
         fileWatcher,
         fileIsIgnored(filePath: string) {
-            return ignorer && ignorer.ignores(filePath);
+            return ignorer.ignores(filePath);
         },
     };
 
     function reloadIgnoreFile() {
-        ignorer = null;
+        ignorer = nullIgnorer;
 
         if (workspace.rootPath) {
-            const ignorePath = path.join(
-                workspace.rootPath,
-                PRETTIER_IGNORE_FILE
-            );
-            if (existsSync(ignorePath)) {
-                const ignoreFileContents = readFileSync(ignorePath, 'utf8');
-                ignorer = ignore().add(ignoreFileContents);                
+            const fullIgnorePath = path.join(workspace.rootPath, ignorePath);
+            if (existsSync(fullIgnorePath)) {
+                const ignoreFileContents = readFileSync(fullIgnorePath, 'utf8');
+                ignorer = ignore().add(ignoreFileContents);
             }
         }
     }
