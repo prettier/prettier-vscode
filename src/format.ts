@@ -5,7 +5,7 @@ import { PrettierEslint } from './prettier-eslint.d';
 import {
     getExtensionConfig,
     getPrettierOptions,
-    isJavaScriptParser
+    isESLintCompatibleParser
 } from './config';
 import { exec } from './exec';
 
@@ -26,6 +26,7 @@ export function format(text: string, document: TextDocument): string {
 
     const formatter = getFormatter(text, document.fileName, prettierOptions);
 
+    debugger;
     return exec(formatter, text, document);
 }
 
@@ -43,16 +44,17 @@ function getFormatter(
 ): () => string {
     const config = getExtensionConfig();
 
+    debugger;
     if (
         config.eslintIntegration &&
-        isJavaScriptParser(prettierOptions.parser)
+        isESLintCompatibleParser(prettierOptions.parser)
     ) {
         const prettierEslint = require('prettier-eslint') as PrettierEslint;
 
         return prettierEslint.bind(null, {
             text,
             filePath: fileName,
-            fallbackPrettierOptions: prettierOptions
+            prettierOptions: prettierOptions
         });
     }
 

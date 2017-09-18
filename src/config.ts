@@ -5,8 +5,8 @@ import { PrettierConfig, PrettierVSCodeConfig } from './prettier.d';
 let config: PrettierVSCodeConfig = workspace.getConfiguration(
     'prettier'
 ) as any;
-let activeLanguages: Array<string> = getActiveLanguages();
 let userConfig: PrettierConfig = extractUserVSConfig();
+let activeLanguages: Array<string> = getActiveLanguages();
 
 /**
  * Setting refresh handler and returns extension config
@@ -80,8 +80,8 @@ export function selectParser(languageId: string): string | void {
 /**
  * @param parser 
  */
-export function isJavaScriptParser(parser: string): boolean {
-    return parser === 'babylon';
+export function isESLintCompatibleParser(parser: string): boolean {
+    return parser === 'babylon' || parser === 'typescript';
 }
 
 /**

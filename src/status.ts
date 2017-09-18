@@ -81,7 +81,8 @@ export function setupStatusHandler(): void {
     statusBarItem.command = channelCommand;
 
     // initial toggle
-    toggleStatusBar(window.activeTextEditor.document);
+    window.activeTextEditor &&
+        toggleStatusBar(window.activeTextEditor.document);
 
     // setting event handlers
     window.onDidChangeActiveTextEditor((e) => toggleStatusBar(e.document));
