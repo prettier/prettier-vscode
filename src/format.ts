@@ -2,7 +2,11 @@ import { TextDocument } from 'vscode';
 
 import { PrettierConfig } from './prettier.d';
 import { PrettierEslint } from './prettier-eslint.d';
-import { getExtensionConfig, getPrettierOptions, isESLintCompatibleParser } from './config';
+import {
+    getExtensionConfig,
+    getPrettierOptions,
+    isESLintCompatibleParser
+} from './config';
 import { exec } from './exec';
 
 const prettier = require('../ext');
@@ -14,15 +18,15 @@ const prettier = require('../ext');
  * @param document 
  */
 export function format(text: string, document: TextDocument): string {
-	const prettierOptions = getPrettierOptions(document);
+    const prettierOptions = getPrettierOptions(document);
 
-	if (!prettierOptions) {
-		return text;
-	}
+    if (!prettierOptions) {
+        return text;
+    }
 
-	const formatter = getFormatter(text, document.fileName, prettierOptions);
+    const formatter = getFormatter(text, document.fileName, prettierOptions);
 
-	return exec(formatter, text, document);
+    return exec(formatter, text, document);
 }
 
 /**
@@ -32,18 +36,25 @@ export function format(text: string, document: TextDocument): string {
  * @param fileName 
  * @param prettierOptions 
  */
-function getFormatter(text: string, fileName: string, prettierOptions: PrettierConfig): () => string {
-	const config = getExtensionConfig();
+function getFormatter(
+    text: string,
+    fileName: string,
+    prettierOptions: PrettierConfig
+): () => string {
+    const config = getExtensionConfig();
 
-	if (config.eslintIntegration && isESLintCompatibleParser(prettierOptions.parser)) {
-		const prettierEslint = require('prettier-eslint') as PrettierEslint;
+    if (
+        config.eslintIntegration &&
+        isESLintCompatibleParser(prettierOptions.parser)
+    ) {
+        const prettierEslint = require('prettier-eslint') as PrettierEslint;
 
-		return prettierEslint.bind(null, {
-			text,
-			filePath: fileName,
-			prettierOptions: prettierOptions
-		});
-	}
+        return prettierEslint.bind(null, {
+            text,
+            filePath: fileName,
+            prettierOptions: prettierOptions
+        });
+    }
 
-	return prettier.format.bind(null, text, prettierOptions);
+    return prettier.format.bind(null, text, prettierOptions);
 }
