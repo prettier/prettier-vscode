@@ -49,6 +49,8 @@ function ignoreFileHandler(disposables: Disposable[]) {
             const fileWatcher = workspace.createFileSystemWatcher(
                 ignoreUri.fsPath
             );
+            disposables.push(fileWatcher);
+
             fileWatcher.onDidCreate(loadIgnorer, null, disposables);
             fileWatcher.onDidChange(loadIgnorer, null, disposables);
             fileWatcher.onDidDelete(unloadIgnorer, null, disposables);
