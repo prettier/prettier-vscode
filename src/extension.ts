@@ -3,11 +3,11 @@ import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
 import { getConfig, allEnabledLanguages } from './utils';
 import configFileListener from './configCacheHandler';
-import ignoreFileListener from './ignoreFileHandler';
+import ignoreFileHandler from './ignoreFileHandler';
 
 export function activate(context: ExtensionContext) {
     const config = getConfig();
-    const { fileIsIgnored, fileWatcher } = ignoreFileListener(config.ignorePath);
+    const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
     const editProvider = new EditProvider(fileIsIgnored);
     const languageSelector = allEnabledLanguages();
 
@@ -28,7 +28,6 @@ export function activate(context: ExtensionContext) {
         ),
         setupErrorHandler(),
         configFileListener(),
-        fileWatcher,
         ...registerDisposables()
     );
 }

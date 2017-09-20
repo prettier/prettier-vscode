@@ -103,7 +103,7 @@ Use with care.
 
 #### prettier.ignorePath (default: .prettierignore)
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
-Files which match will not be formatted. Restart required.
+Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
 
 ## Prettier resolution
 

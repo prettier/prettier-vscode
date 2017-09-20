@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.5.0"
+    "vscode": "^1.15.0"
   },
   "categories": [
     "Formatters"
@@ -42,7 +42,8 @@
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
-          "description": "Path to a .prettierignore or similar file"
+          "description": "Path to a .prettierignore or similar file",
+          "scope": "resource"
         },
         "prettier.printWidth": {
           "type": "integer",
