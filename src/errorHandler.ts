@@ -110,10 +110,24 @@ export function addToOutput(message: string): void {
  * @returns {string} formatted text or defaultText
  */
 export function safeExecution(
-    cb: () => string,
+    cb: (() => string) | Promise<string>,
     defaultText: string,
     fileName: string
-): string {
+): string | Promise<string> {
+    if (cb instanceof Promise) {
+        return cb
+            .then(returnValue => {
+                updateStatusBar('Prettier: $(check)');
+                return returnValue;
+            })
+            .catch((err: Error) => {
+                addToOutput(addFilePath(err.message, fileName));
+                updateStatusBar('Prettier: $(x)');
+
+                console.log(err);
+                return defaultText;
+            });
+    }
     try {
         const returnValue = cb();
 
