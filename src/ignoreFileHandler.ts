@@ -34,7 +34,9 @@ function fileListener(ignorePath: string) {
         ignorer = nullIgnorer;
 
         if (workspace.rootPath) {
-            const fullIgnorePath = path.join(workspace.rootPath, ignorePath);
+            const fullIgnorePath = path.isAbsolute(ignorePath)
+                ? ignorePath
+                : path.join(workspace.rootPath, ignorePath);
             if (existsSync(fullIgnorePath)) {
                 const ignoreFileContents = readFileSync(fullIgnorePath, 'utf8');
                 ignorer = ignore().add(ignoreFileContents);
