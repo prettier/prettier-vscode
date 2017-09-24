@@ -1,243 +1,215 @@
 {
-  "name": "prettier-vscode",
-  "displayName": "Prettier - JavaScript formatter",
-  "description": "VS Code plugin for prettier/prettier",
-  "version": "0.23.1",
-  "publisher": "esbenp",
-  "author": "Esben Petersen <@esbenp>",
-  "galleryBanner": {
-    "color": "#ffe04b",
-    "theme": "light"
-  },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/prettier/prettier-vscode.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/prettier/prettier-vscode/issues"
-  },
-  "engines": {
-    "vscode": "^1.15.0"
-  },
-  "categories": [
-    "Formatters"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "icon": "icon.png",
-  "main": "./out/src/extension",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Prettier - JavaScript formatter configuration",
-      "properties": {
-        "prettier.eslintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
-        },
-        "prettier.ignorePath": {
-          "type": "string",
-          "default": ".prettierignore",
-          "description": "Path to a .prettierignore or similar file",
-          "scope": "resource"
-        },
-        "prettier.printWidth": {
-          "type": "integer",
-          "default": 80,
-          "description": "Fit code within this line limit"
-        },
-        "prettier.tabWidth": {
-          "type": "integer",
-          "default": 2,
-          "description": "Number of spaces it should use per tab"
-        },
-        "prettier.singleQuote": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, will use single instead of double quotes"
-        },
-        "prettier.trailingComma": {
-          "type": "string",
-          "enum": [
-            "none",
-            "es5",
-            "all"
-          ],
-          "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible"
-        },
-        "prettier.bracketSpacing": {
-          "type": "boolean",
-          "default": true,
-          "description": "Controls the printing of spaces inside object literals"
-        },
-        "prettier.jsxBracketSameLine": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
-        },
-        "prettier.parser": {
-          "type": "string",
-          "enum": [
-            "babylon",
-            "flow"
-          ],
-          "default": "babylon",
-          "description": "Override the parser. You shouldn't have to change this setting."
-        },
-        "prettier.semi": {
-          "type": "boolean",
-          "default": true,
-          "description": "Whether to add a semicolon at the end of every line"
-        },
-        "prettier.useTabs": {
-          "type": "boolean",
-          "default": false,
-          "description": "Indent lines with tabs"
-        },
-        "prettier.javascriptEnable": {
-          "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "javascript",
-                  "javascriptreact"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "javascript",
-            "javascriptreact"
-          ]
-        },
-        "prettier.typescriptEnable": {
-          "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "typescript",
-                  "typescriptreact"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "typescript",
-            "typescriptreact"
-          ]
-        },
-        "prettier.cssEnable": {
-          "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "css",
-                  "less",
-                  "scss"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "css",
-            "less",
-            "scss"
-          ]
-        },
-        "prettier.jsonEnable": {
-          "description": "Advanced feature. Enable and use json parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "json"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "json"
-          ]
-        },
-        "prettier.graphqlEnable": {
-          "description": "Advanced feature. Enable and use graphql parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "graphql"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "graphql"
-          ]
-        }
-      }
+    "name": "prettier-vscode",
+    "displayName": "Prettier - JavaScript formatter",
+    "description": "VS Code plugin for prettier/prettier",
+    "version": "0.23.1",
+    "publisher": "esbenp",
+    "author": "Esben Petersen <@esbenp>",
+    "galleryBanner": {
+        "color": "#ffe04b",
+        "theme": "light"
     },
-    "jsonValidation": [
-      {
-        "fileMatch": ".prettierrc",
-        "url": "http://json.schemastore.org/prettierrc"
-      }
-    ],
-    "languages": [
-      {
-        "id": "json",
-        "filenames": [
-          ".prettierrc"
+    "homepage":
+        "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/prettier/prettier-vscode.git"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/prettier/prettier-vscode/issues"
+    },
+    "engines": {
+        "vscode": "^1.15.0"
+    },
+    "categories": ["Formatters"],
+    "activationEvents": ["*"],
+    "icon": "icon.png",
+    "main": "./out/src/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Prettier - JavaScript formatter configuration",
+            "properties": {
+                "prettier.eslintIntegration": {
+                    "type": "boolean",
+                    "default": false,
+                    "description":
+                        "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
+                },
+                "prettier.ignorePath": {
+                    "type": "string",
+                    "default": ".prettierignore",
+                    "description": "Path to a .prettierignore or similar file",
+                    "scope": "resource"
+                },
+                "prettier.printWidth": {
+                    "type": "integer",
+                    "default": 80,
+                    "description": "Fit code within this line limit"
+                },
+                "prettier.tabWidth": {
+                    "type": "integer",
+                    "default": 2,
+                    "description": "Number of spaces it should use per tab"
+                },
+                "prettier.singleQuote": {
+                    "type": "boolean",
+                    "default": false,
+                    "description":
+                        "If true, will use single instead of double quotes"
+                },
+                "prettier.trailingComma": {
+                    "type": "string",
+                    "enum": ["none", "es5", "all"],
+                    "default": "none",
+                    "description":
+                        "Controls the printing of trailing commas wherever possible"
+                },
+                "prettier.bracketSpacing": {
+                    "type": "boolean",
+                    "default": true,
+                    "description":
+                        "Controls the printing of spaces inside object literals"
+                },
+                "prettier.jsxBracketSameLine": {
+                    "type": "boolean",
+                    "default": false,
+                    "description":
+                        "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
+                },
+                "prettier.parser": {
+                    "type": "string",
+                    "enum": ["babylon", "flow"],
+                    "default": "babylon",
+                    "description":
+                        "Override the parser. You shouldn't have to change this setting."
+                },
+                "prettier.semi": {
+                    "type": "boolean",
+                    "default": true,
+                    "description":
+                        "Whether to add a semicolon at the end of every line"
+                },
+                "prettier.useTabs": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Indent lines with tabs"
+                },
+                "prettier.javascriptEnable": {
+                    "description":
+                        "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": ["javascript", "javascriptreact"]
+                            }
+                        ]
+                    },
+                    "default": ["javascript", "javascriptreact"]
+                },
+                "prettier.typescriptEnable": {
+                    "description":
+                        "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": ["typescript", "typescriptreact"]
+                            }
+                        ]
+                    },
+                    "default": ["typescript", "typescriptreact"]
+                },
+                "prettier.cssEnable": {
+                    "description":
+                        "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": ["css", "less", "scss"]
+                            }
+                        ]
+                    },
+                    "default": ["css", "less", "scss"]
+                },
+                "prettier.jsonEnable": {
+                    "description":
+                        "Advanced feature. Enable and use json parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": ["json"]
+                            }
+                        ]
+                    },
+                    "default": ["json"]
+                },
+                "prettier.graphqlEnable": {
+                    "description":
+                        "Advanced feature. Enable and use graphql parser for those language ids. Restart required",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "enum": ["graphql"]
+                            }
+                        ]
+                    },
+                    "default": ["graphql"]
+                }
+            }
+        },
+        "jsonValidation": [
+            {
+                "fileMatch": ".prettierrc",
+                "url": "http://json.schemastore.org/prettierrc"
+            }
+        ],
+        "languages": [
+            {
+                "id": "json",
+                "filenames": [".prettierrc"]
+            }
         ]
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^7.0.39",
-    "@types/semver": "^5.3.31",
-    "mocha": "^2.3.3",
-    "typescript": "^2.4.2",
-    "vscode": "^1.1.4"
-  },
-  "dependencies": {
-    "ignore": "^3.3.5",
-    "prettier": "1.6.1",
-    "prettier-eslint": "^7.1.0",
-    "read-pkg-up": "2.0.0",
-    "semver": "^5.4.1"
-  }
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^7.0.39",
+        "@types/semver": "^5.3.31",
+        "mocha": "^2.3.3",
+        "typescript": "^2.4.2",
+        "vscode": "^1.1.4"
+    },
+    "dependencies": {
+        "ignore": "^3.3.5",
+        "prettier": "1.7.3",
+        "prettier-eslint": "^8.2.0",
+        "read-pkg-up": "2.0.0",
+        "semver": "^5.4.1"
+    }
 }
