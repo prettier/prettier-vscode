@@ -14,6 +14,7 @@ import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let outputChannelOpen: Boolean = false;
+let prettierInformation: String;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
@@ -62,7 +63,24 @@ export function registerDisposables(): Disposable[] {
  */
 function updateStatusBar(message: string): void {
     statusBarItem.text = message;
+    statusBarItem.tooltip = prettierInformation.toString();
     statusBarItem.show();
+}
+
+/**
+ * 
+ * @param module the module used
+ * @param version the version of the module
+ * @param bundled is it bundled with the extension or not
+ */
+export function setUsedPrettier(
+    module: string,
+    version: string,
+    bundled: boolean
+) {
+    prettierInformation = `Module: ${module} | Version: ${version} | Bundled with extension: ${bundled
+        ? 'yes'
+        : 'no'}`;
 }
 
 /**

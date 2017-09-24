@@ -10,7 +10,7 @@ import {
     TextEdit,
 } from 'vscode';
 
-import { safeExecution, addToOutput } from './errorHandler';
+import { safeExecution, addToOutput, setUsedPrettier } from './errorHandler';
 import { onWorkspaceRootChange } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
@@ -122,6 +122,8 @@ async function format(
         return safeExecution(
             () => {
                 const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+                setUsedPrettier('prettier-eslint', 'Unknown', true);
+
                 return prettierEslint({
                     text,
                     filePath: fileName,
@@ -147,12 +149,16 @@ async function format(
                     errorShown = true;
                 }
 
+                setUsedPrettier('prettier', bundledPrettier.version, true);
+
                 return bundledPrettier.format(text, prettierOptions);
             },
             text,
             fileName
         );
     }
+
+    setUsedPrettier('prettier', prettier.version, false);
 
     return safeExecution(
         () => prettier.format(text, prettierOptions),
