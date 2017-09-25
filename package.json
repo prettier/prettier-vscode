@@ -235,7 +235,7 @@
   "dependencies": {
     "prettier": "1.6.1",
     "prettier-eslint": "^7.1.0",
-    "prettier-stylelint": "^0.3.0",
+    "prettier-stylelint": "^0.3.2",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
   }
