@@ -139,6 +139,7 @@ async function format(
             prettierStylelint.format({
                 text,
                 filePath: fileName,
+                prettierOptions
             }),
             text,
             fileName
