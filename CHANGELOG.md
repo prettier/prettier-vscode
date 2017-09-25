@@ -33,7 +33,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.18.0]
 - Prettier 1.4
-- Now also formats CSS and Typescript
+- Now also formats CSS and TypeScript
 - Format Selection highly improved.
 
 ## [0.17.0]
@@ -61,7 +61,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.7.0]
 - Removed `Prettier` action.
 - Use vscode actions `Format Document` and `Format Selection`.
-- Removed `prettier.formatOnSave` setting in favor of the more general setting `editor.formatOnSave` 
+- Removed `prettier.formatOnSave` setting in favor of the more general setting `editor.formatOnSave`
 - Deprecated `useFlowParser` setting. Introduced `parser` setting. (Since prettier 0.0.10)
 
 ## [0.1.0]
