@@ -13,8 +13,8 @@ import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
-let outputChannelOpen: Boolean = false;
-let prettierInformation: String;
+let outputChannelOpen: boolean = false;
+let prettierInformation: string;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
@@ -63,7 +63,7 @@ export function registerDisposables(): Disposable[] {
  */
 function updateStatusBar(message: string): void {
     statusBarItem.text = message;
-    statusBarItem.tooltip = prettierInformation.toString();
+    statusBarItem.tooltip = prettierInformation;
     statusBarItem.show();
 }
 
@@ -78,9 +78,7 @@ export function setUsedModule(
     version: string,
     bundled: boolean
 ) {
-    prettierInformation = `Module: ${module} | Version: ${version} | Bundled with extension: ${bundled
-        ? 'yes'
-        : 'no'}`;
+    prettierInformation = `${module}@${version}${bundled ? ' (bundled)' : ''}`;
 }
 
 /**
@@ -99,6 +97,7 @@ function addFilePath(msg: string, fileName: string): string {
 
     return msg;
 }
+
 /**
  * Append messages to the output channel and format it with a title
  * 
@@ -119,6 +118,7 @@ export function addToOutput(message: string): void {
         outputChannelOpen = true;
     }
 }
+
 /**
  * Execute a callback safely, if it doesn't work, return default and log messages.
  * 
