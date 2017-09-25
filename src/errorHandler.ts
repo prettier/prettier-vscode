@@ -73,7 +73,7 @@ function updateStatusBar(message: string): void {
  * @param version the version of the module
  * @param bundled is it bundled with the extension or not
  */
-export function setUsedPrettier(
+export function setUsedModule(
     module: string,
     version: string,
     bundled: boolean
