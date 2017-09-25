@@ -1,6 +1,6 @@
 # Prettier formatter for Visual Studio Code
 
-VS Code package to format your Javascript / Typescript / CSS using [Prettier](https://github.com/prettier/prettier).
+VS Code package to format your JavaScript / Typescript / CSS using [Prettier](https://github.com/prettier/prettier).
 
 ## Installation
 
@@ -8,7 +8,7 @@ Install through VS Code extensions. Search for `Prettier - JavaScript formatter`
 
 [Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-Can also be installed using 
+Can also be installed using
 
 ```
 ext install prettier-vscode
@@ -32,7 +32,7 @@ Respects `editor.formatOnSave` setting.
 
 ### Prettier's Settings
 Settings will be read from:
-1. File system, first matching file in 
+1. File system, first matching file in
     1. `package.json` - `prettier` key
     1. `.prettierrc`
     1. `.prettier.config.js`
@@ -60,7 +60,7 @@ Controls the printing of spaces inside object literals
 #### prettier.jsxBracketSameLine (default: false)
 If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
 
-#### prettier.parser (default: 'babylon') - Javascript only
+#### prettier.parser (default: 'babylon') - JavaScript only
 Which parser to use. Valid options are 'flow' and 'babylon'.
 
 #### prettier.semi (default: true)
@@ -72,7 +72,7 @@ If true, indent lines with tabs
 
 ### VSCode specific settings
 
-#### prettier.eslintIntegration (default: false) - Javascript and TypeScript only
+#### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
@@ -103,7 +103,7 @@ Use with care.
 
 ## Prettier resolution
 
-This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension. 
+This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
 
 ## Contribute
 This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issues or PRs!
