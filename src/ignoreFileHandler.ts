@@ -78,20 +78,20 @@ function getIgnorePathForFile(
         return null;
     }
     if (workspace.rootPath) {
-        return getPath(workspace.rootPath);
+        return getPath(ignorePath, workspace.rootPath);
     }
     if (workspace.workspaceFolders) {
         const folder = workspace.getWorkspaceFolder(Uri.file(filePath));
-        return folder ? getPath(folder.uri.fsPath) : null;
+        return folder ? getPath(ignorePath, folder.uri.fsPath) : null;
     }
 
     return null;
+}
 
-    function getPath(relativeTo: string) {
-        return path.isAbsolute(ignorePath)
-            ? ignorePath
-            : path.join(relativeTo, ignorePath);
-    }
+function getPath(fsPath: string, relativeTo: string) {
+    return path.isAbsolute(fsPath)
+        ? fsPath
+        : path.join(relativeTo, fsPath);
 }
 
 export default ignoreFileHandler;
