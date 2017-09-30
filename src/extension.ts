@@ -2,11 +2,13 @@ import { languages, ExtensionContext, DocumentSelector } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
 import { getConfig, allEnabledLanguages } from './utils';
-import fileListener from './configCacheHandler';
+import configFileListener from './configCacheHandler';
+import ignoreFileHandler from './ignoreFileHandler';
 
 export function activate(context: ExtensionContext) {
-    const editProvider = new EditProvider();
     const config = getConfig();
+    const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
+    const editProvider = new EditProvider(fileIsIgnored);
     const languageSelector = allEnabledLanguages();
 
     // CSS/json/graphql doesn't work with range yet.
@@ -25,7 +27,7 @@ export function activate(context: ExtensionContext) {
             editProvider
         ),
         setupErrorHandler(),
-        fileListener(),
+        configFileListener(),
         ...registerDisposables()
     );
 }

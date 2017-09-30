@@ -15,7 +15,7 @@ let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let outputChannelOpen: Boolean = false;
 
-function toggleStatusBarItem(editor: TextEditor): void {
+function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
         // The function will be triggered everytime the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
