@@ -3,6 +3,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## Unreleased
+- Prettier 1.7.3.
+  Note that v1.7 brings some changes to how JSX is formatted.
+
 ## [0.23.1]
 - Prettier 1.6.1
 
