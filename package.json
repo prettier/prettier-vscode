@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.5.0"
+    "vscode": "^1.15.0"
   },
   "categories": [
     "Formatters"
@@ -43,6 +43,12 @@
           "type": "boolean",
           "default": false,
           "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules."
+        },
+        "prettier.ignorePath": {
+          "type": "string",
+          "default": ".prettierignore",
+          "description": "Path to a .prettierignore or similar file",
+          "scope": "resource"
         },
         "prettier.printWidth": {
           "type": "integer",
@@ -233,9 +239,10 @@
     "vscode": "^1.1.4"
   },
   "dependencies": {
-    "prettier": "1.6.1",
-    "prettier-eslint": "^7.1.0",
     "prettier-stylelint": "^0.4.1",
+    "ignore": "^3.3.5",
+    "prettier": "1.7.3",
+    "prettier-eslint": "^8.2.0",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
   }

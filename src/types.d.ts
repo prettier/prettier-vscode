@@ -40,6 +40,10 @@ interface ExtensionConfig {
      */
     stylelintIntegration: boolean;
     /**
+     * Path to '.prettierignore' or similar.
+     */
+    ignorePath: string;
+    /**
      * Language ids to run javascript prettier on.
      */
     javascriptEnable: ('javascript' | 'javascriptreact' | string)[];

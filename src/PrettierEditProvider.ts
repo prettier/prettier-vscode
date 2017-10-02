@@ -10,7 +10,7 @@ import {
     TextEdit,
 } from 'vscode';
 
-import { safeExecution, addToOutput } from './errorHandler';
+import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
 import { onWorkspaceRootChange } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
@@ -123,6 +123,8 @@ async function format(
         return safeExecution(
             () => {
                 const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+                setUsedModule('prettier-eslint', 'Unknown', true);
+
                 return prettierEslint({
                     text,
                     filePath: fileName,
@@ -160,12 +162,16 @@ async function format(
                     errorShown = true;
                 }
 
+                setUsedModule('prettier', bundledPrettier.version, true);
+
                 return bundledPrettier.format(text, prettierOptions);
             },
             text,
             fileName
         );
     }
+
+    setUsedModule('prettier', prettier.version, false);
 
     return safeExecution(
         () => prettier.format(text, prettierOptions),
@@ -182,23 +188,33 @@ function fullDocumentRange(document: TextDocument): Range {
 class PrettierEditProvider
     implements DocumentRangeFormattingEditProvider,
         DocumentFormattingEditProvider {
+    constructor(private _fileIsIgnored: (filePath: string) => boolean) {}
+
     provideDocumentRangeFormattingEdits(
         document: TextDocument,
         range: Range,
         options: FormattingOptions,
         token: CancellationToken
     ): Promise<TextEdit[]> {
-        return format(document.getText(), document, {
+        return this._provideEdits(document, {
             rangeStart: document.offsetAt(range.start),
             rangeEnd: document.offsetAt(range.end),
-        }).then(code => [TextEdit.replace(fullDocumentRange(document), code)]);
+        });
     }
+
     provideDocumentFormattingEdits(
         document: TextDocument,
         options: FormattingOptions,
         token: CancellationToken
     ): Promise<TextEdit[]> {
-        return format(document.getText(), document, {}).then(code => [
+        return this._provideEdits(document, {});
+    }
+
+    private _provideEdits(document: TextDocument, options: object) {
+        if (!document.isUntitled && this._fileIsIgnored(document.fileName)) {
+            return Promise.resolve([]);
+        }
+        return format(document.getText(), document, options).then(code => [
             TextEdit.replace(fullDocumentRange(document), code),
         ]);
     }

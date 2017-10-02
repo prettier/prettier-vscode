@@ -13,9 +13,10 @@ import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
-let outputChannelOpen: Boolean = false;
+let outputChannelOpen: boolean = false;
+let prettierInformation: string;
 
-function toggleStatusBarItem(editor: TextEditor): void {
+function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
         // The function will be triggered everytime the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
@@ -62,7 +63,22 @@ export function registerDisposables(): Disposable[] {
  */
 function updateStatusBar(message: string): void {
     statusBarItem.text = message;
+    statusBarItem.tooltip = prettierInformation;
     statusBarItem.show();
+}
+
+/**
+ * 
+ * @param module the module used
+ * @param version the version of the module
+ * @param bundled is it bundled with the extension or not
+ */
+export function setUsedModule(
+    module: string,
+    version: string,
+    bundled: boolean
+) {
+    prettierInformation = `${module}@${version}${bundled ? ' (bundled)' : ''}`;
 }
 
 /**
@@ -81,6 +97,7 @@ function addFilePath(msg: string, fileName: string): string {
 
     return msg;
 }
+
 /**
  * Append messages to the output channel and format it with a title
  * 
@@ -101,6 +118,7 @@ export function addToOutput(message: string): void {
         outputChannelOpen = true;
     }
 }
+
 /**
  * Execute a callback safely, if it doesn't work, return default and log messages.
  * 
