@@ -124,7 +124,6 @@ export function safeExecution(
                 addToOutput(addFilePath(err.message, fileName));
                 updateStatusBar('Prettier: $(x)');
 
-                console.log(err);
                 return defaultText;
             });
     }
