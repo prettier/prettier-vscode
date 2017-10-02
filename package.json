@@ -235,8 +235,8 @@
   },
   "dependencies": {
     "ignore": "^3.3.5",
-    "prettier": "1.6.1",
-    "prettier-eslint": "^7.1.0",
+    "prettier": "1.7.3",
+    "prettier-eslint": "^8.2.0",
     "read-pkg-up": "2.0.0",
     "semver": "^5.4.1"
   }
