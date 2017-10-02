@@ -20,6 +20,7 @@ import {
     Prettier,
     PrettierEslintFormat,
     ParserOption,
+    PrettierStylelint,
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
@@ -130,6 +131,18 @@ async function format(
                     fallbackPrettierOptions: prettierOptions,
                 });
             },
+            text,
+            fileName
+        );
+    }
+    if (vscodeConfig.stylelintIntegration && parser === 'postcss') {
+        const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
+        return safeExecution(
+            prettierStylelint.format({
+                text,
+                filePath: fileName,
+                prettierOptions
+            }),
             text,
             fileName
         );
