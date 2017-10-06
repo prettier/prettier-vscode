@@ -35,6 +35,11 @@ interface ExtensionConfig {
      */
     eslintIntegration: boolean;
     /**
+     * Use 'prettier-stylelint' instead of 'prettier'.
+     * Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+     */
+    stylelintIntegration: boolean;
+    /**
      * Path to '.prettierignore' or similar.
      */
     ignorePath: string;
@@ -130,3 +135,13 @@ interface PrettierEslintOptions {
  * @returns {string} the formatted code.
  */
 export type PrettierEslintFormat = (options: PrettierEslintOptions) => string;
+
+export interface PrettierStylelint {
+    format: (options: PrettierEslintOptions) => Promise<string>;
+    resolveConfig: (
+        file: string,
+        options?: {
+            useCache: boolean;
+        }
+    ) => Promise<[PrettierConfig, Object]>;
+}

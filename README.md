@@ -76,6 +76,10 @@ If true, indent lines with tabs
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from eslint rules.
 
+#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only 
+Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
+Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+
 #### prettier.javascriptEnable (default: ["javascript", "javascriptreact"])
 Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
 Use parser `babylon` or `flow` depending on `prettier.parser` for given language ids.

@@ -4,6 +4,7 @@ out/test/**
 test/**
 src/**
 testProject/**
+scripts/**
 **/*.map
 .gitignore
 tsconfig.json
