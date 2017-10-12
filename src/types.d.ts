@@ -5,7 +5,7 @@ export type ParserOption =
     | 'typescript'
     | 'json'
     | 'graphql';
-export type TrailingCommaOption =
+type TrailingCommaOption =
     | 'none'
     | 'es5'
     | 'all'
