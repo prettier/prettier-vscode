@@ -1,6 +1,6 @@
 import { addToOutput } from './errorHandler';
 
-const path = require('path');
+import * as path from 'path';
 const readPkgUp = require('read-pkg-up');
 
 /**
@@ -12,6 +12,7 @@ const readPkgUp = require('read-pkg-up');
  */
 function findPkg(fspath: string, pkgName: string): string | undefined {
     const res = readPkgUp.sync({ cwd: fspath, normalize: false });
+    const { root } = path.parse(fspath);
     if (
         res.pkg &&
         ((res.pkg.dependencies && res.pkg.dependencies[pkgName]) ||
@@ -19,7 +20,10 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
     ) {
         return path.resolve(res.path, '..', 'node_modules/', pkgName);
     } else if (res.path) {
-        return findPkg(path.resolve(path.dirname(res.path), '..'), pkgName);
+        const parent = path.resolve(path.dirname(res.path), '..');
+        if (parent !== root) {
+            return findPkg(parent, pkgName);
+        }
     }
     return;
 }
