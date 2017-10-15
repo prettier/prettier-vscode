@@ -118,4 +118,21 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
 
 ## Contribute
-This is my first Visual Studio Extension so I probably made some terrible choices. Feel free to open issues or PRs!
+Feel free to open issues or PRs!
+
+### Running extension
+- Open this repository inside VSCode
+- Debug sidebar
+- `Launch Extension`
+
+### Running tests
+Tests open a VSCode instance and load `./testProject` as root workspace.
+
+- Open this repository inside VSCode
+- Debug sidebar
+- `Launch Tests`
+
+OR
+
+Without having an instance VSCode running (or it won't start)
+`npm run test` 

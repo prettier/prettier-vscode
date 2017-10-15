@@ -1,0 +1,31 @@
+{
+    "prettier.eslintIntegration": false,
+    "prettier.printWidth": 80,
+    "prettier.tabWidth": 2,
+    "prettier.singleQuote": false,
+    "prettier.trailingComma": "none",
+    "prettier.bracketSpacing": true,
+    "prettier.jsxBracketSameLine": false,
+    "prettier.parser": "babylon",
+    "prettier.semi": true,
+    "prettier.useTabs": false,
+    "prettier.javascriptEnable": [
+        "javascript",
+        "javascriptreact"
+    ],
+    "prettier.typescriptEnable": [
+        "typescript",
+        "typescriptreact"
+    ],
+    "prettier.cssEnable": [
+        "css",
+        "less",
+        "scss"
+    ],
+    "prettier.jsonEnable": [
+        "json"
+    ],
+    "prettier.graphqlEnable": [
+        "graphql"
+    ]
+}

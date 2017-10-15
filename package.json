@@ -228,14 +228,15 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test",
+    "test": "cross-env CODE_TESTS_WORKSPACE=testProject node ./node_modules/vscode/bin/test",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.32",
+    "@types/mocha": "^2.2.43",
     "@types/node": "^7.0.39",
     "@types/semver": "^5.3.31",
-    "mocha": "^2.3.3",
+    "cross-env": "^5.0.5",
+    "mocha": "^3.5.3",
     "typescript": "^2.4.2",
     "vscode": "^1.1.4"
   },

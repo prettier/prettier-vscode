@@ -1,4 +1,4 @@
-type ParserOption =
+export type ParserOption =
     | 'babylon'
     | 'flow'
     | 'postcss'
@@ -70,7 +70,7 @@ interface ExtensionConfig {
  */
 export type PrettierVSCodeConfig = ExtensionConfig & PrettierConfig;
 export interface Prettier {
-    format: (text: string, options?: PrettierConfig) => string;
+    format: (text: string, options?: Partial<PrettierConfig>) => string;
     resolveConfig: (
         filePath: string,
         options?: {
