@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.15.0"
+    "vscode": "^1.17.0"
   },
   "categories": [
     "Formatters"
@@ -37,12 +37,14 @@
         "prettier.eslintIntegration": {
           "type": "boolean",
           "default": false,
-          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules."
+          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
+          "scope": "resource"
         },
         "prettier.stylelintIntegration": {
           "type": "boolean",
           "default": false,
-          "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules."
+          "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
+          "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
@@ -53,17 +55,20 @@
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
-          "description": "Fit code within this line limit"
+          "description": "Fit code within this line limit",
+          "scope": "resource"
         },
         "prettier.tabWidth": {
           "type": "integer",
           "default": 2,
-          "description": "Number of spaces it should use per tab"
+          "description": "Number of spaces it should use per tab",
+          "scope": "resource"
         },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "If true, will use single instead of double quotes"
+          "description": "If true, will use single instead of double quotes",
+          "scope": "resource"
         },
         "prettier.trailingComma": {
           "type": "string",
@@ -73,17 +78,20 @@
             "all"
           ],
           "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)"
+          "description": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
+          "scope": "resource"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "Controls the printing of spaces inside object literals"
+          "description": "Controls the printing of spaces inside object literals",
+          "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
-          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line"
+          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line",
+          "scope": "resource"
         },
         "prettier.parser": {
           "type": "string",
@@ -92,17 +100,20 @@
             "flow"
           ],
           "default": "babylon",
-          "description": "Override the parser. You shouldn't have to change this setting."
+          "description": "Override the parser. You shouldn't have to change this setting.",
+          "scope": "resource"
         },
         "prettier.semi": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to add a semicolon at the end of every line"
+          "description": "Whether to add a semicolon at the end of every line",
+          "scope": "resource"
         },
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
-          "description": "Indent lines with tabs"
+          "description": "Indent lines with tabs",
+          "scope": "resource"
         },
         "prettier.javascriptEnable": {
           "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
@@ -123,7 +134,8 @@
           "default": [
             "javascript",
             "javascriptreact"
-          ]
+          ],
+          "scope": "window"
         },
         "prettier.typescriptEnable": {
           "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
@@ -144,7 +156,8 @@
           "default": [
             "typescript",
             "typescriptreact"
-          ]
+          ],
+          "scope": "window"
         },
         "prettier.cssEnable": {
           "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
@@ -167,7 +180,8 @@
             "css",
             "less",
             "scss"
-          ]
+          ],
+          "scope": "window"
         },
         "prettier.jsonEnable": {
           "description": "Advanced feature. Enable and use json parser for those language ids. Restart required",
@@ -186,7 +200,8 @@
           },
           "default": [
             "json"
-          ]
+          ],
+          "scope": "window"
         },
         "prettier.graphqlEnable": {
           "description": "Advanced feature. Enable and use graphql parser for those language ids. Restart required",
@@ -205,7 +220,8 @@
           },
           "default": [
             "graphql"
-          ]
+          ],
+          "scope": "window"
         }
       }
     },
@@ -238,7 +254,7 @@
     "cross-env": "^5.0.5",
     "mocha": "^3.5.3",
     "typescript": "^2.4.2",
-    "vscode": "^1.1.4"
+    "vscode": "^1.1.6"
   },
   "dependencies": {
     "prettier-stylelint": "^0.4.1",

@@ -1,5 +1,4 @@
 import {
-    workspace,
     window,
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider,
@@ -11,7 +10,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange } from './utils';
+import { onWorkspaceRootChange, getConfig } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
 
@@ -63,12 +62,10 @@ function parserExists(parser: ParserOption, prettier: Prettier) {
  */
 async function format(
     text: string,
-    { fileName, languageId }: TextDocument,
+    { fileName, languageId, uri }: TextDocument,
     customOptions: object
 ): Promise<string> {
-    const vscodeConfig: PrettierVSCodeConfig = workspace.getConfiguration(
-        'prettier'
-    ) as any;
+    const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
 
     /*
     handle trailingComma changes boolean -> string
@@ -141,7 +138,7 @@ async function format(
             prettierStylelint.format({
                 text,
                 filePath: fileName,
-                prettierOptions
+                prettierOptions,
             }),
             text,
             fileName
