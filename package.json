@@ -73,7 +73,7 @@
             "all"
           ],
           "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible"
+          "description": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
