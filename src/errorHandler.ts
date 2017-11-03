@@ -9,11 +9,10 @@ import {
     languages,
 } from 'vscode';
 
-import { onWorkspaceRootChange, allEnabledLanguages } from './utils';
+import { allEnabledLanguages } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
-let outputChannelOpen: boolean = false;
 let prettierInformation: string;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
@@ -42,11 +41,6 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
 
 export function registerDisposables(): Disposable[] {
     return [
-        // Mark the outputChannelOpen as false when changing workspaces
-        onWorkspaceRootChange(() => {
-            outputChannelOpen = false;
-        }),
-
         // Keep track whether to show/hide the statusbar
         window.onDidChangeActiveTextEditor(editor => {
             if (statusBarItem !== undefined) {
@@ -112,11 +106,6 @@ export function addToOutput(message: string): void {
 
     // Append actual output
     outputChannel.appendLine(`${message}\n`);
-
-    if (outputChannelOpen === false) {
-        outputChannel.show(true);
-        outputChannelOpen = true;
-    }
 }
 
 /**
