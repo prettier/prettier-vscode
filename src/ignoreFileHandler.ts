@@ -77,9 +77,6 @@ function getIgnorePathForFile(
     if (!ignorePath) {
         return null;
     }
-    if (workspace.rootPath) {
-        return getPath(ignorePath, workspace.rootPath);
-    }
     if (workspace.workspaceFolders) {
         const folder = workspace.getWorkspaceFolder(Uri.file(filePath));
         return folder ? getPath(ignorePath, folder.uri.fsPath) : null;

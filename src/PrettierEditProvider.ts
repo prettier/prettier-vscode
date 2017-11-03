@@ -1,5 +1,4 @@
 import {
-    window,
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider,
     Range,
@@ -10,7 +9,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange, getConfig } from './utils';
+import { getConfig } from './utils';
 import { requireLocalPkg } from './requirePkg';
 import * as semver from 'semver';
 
@@ -23,7 +22,6 @@ import {
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
-let errorShown: Boolean = false;
 
 /**
  * Various parser appearance
@@ -36,13 +34,6 @@ const PARSER_SINCE = {
     json: '1.5.0',
     graphql: '1.5.0',
 };
-
-/**
- * Mark the error as not show, when changing workspaces
- */
-onWorkspaceRootChange(() => {
-    errorShown = false;
-});
 
 /**
  * Check if the given parser exists in a prettier module.
@@ -153,11 +144,6 @@ async function format(
                     `Falling back to bundled prettier@${bundledPrettier.version}.`;
 
                 addToOutput(warningMessage);
-
-                if (errorShown === false) {
-                    window.showWarningMessage(warningMessage);
-                    errorShown = true;
-                }
 
                 setUsedModule('prettier', bundledPrettier.version, true);
 
