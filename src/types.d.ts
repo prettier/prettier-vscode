@@ -1,7 +1,10 @@
 export type ParserOption =
     | 'babylon'
     | 'flow'
-    | 'postcss'
+    | 'postcss' // deprecated
+    | 'css'
+    | 'less'
+    | 'scss'
     | 'typescript'
     | 'json'
     | 'graphql'
@@ -17,7 +20,7 @@ interface PrettierSupportInfo {
     languages: {
         name: string,
         since: string,
-        parsers: string[],
+        parsers: ParserOption[],
         group?: string,
         tmScope: string,
         aceMode: string,
@@ -63,30 +66,6 @@ interface ExtensionConfig {
      * Path to '.prettierignore' or similar.
      */
     ignorePath: string;
-    /**
-     * Language ids to run javascript prettier on.
-     */
-    javascriptEnable: ('javascript' | 'javascriptreact' | string)[];
-    /**
-     * Language ids to run typescript prettier on.
-     */
-    typescriptEnable: ('typescript' | 'typescriptreact' | string)[];
-    /**
-     * Language ids to run postcss prettier on.
-     */
-    cssEnable: ('css' | 'less' | 'scss' | string)[];
-    /**
-     * Language ids to run json prettier on
-     */
-    jsonEnable: ('json' | string)[];
-    /**
-     * Language ids to run graphql prettier on
-     */
-    graphqlEnable: ('graphql' | string)[];
-    /**
-     * Language ids to run markdown prettier on
-     */
-    markdownEnable: ('markdown' | string)[];
 }
 
 /**

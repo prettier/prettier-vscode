@@ -11,7 +11,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange } from './utils';
+import { onWorkspaceRootChange, getGroup } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -45,6 +45,24 @@ function parserExists(parser: ParserOption, prettier: Prettier) {
 }
 
 /**
+ * Gets a list of parser options from a language ID
+ */
+function getParsersFromLanguageId(
+    languageId: string,
+    prettier: Prettier
+): ParserOption[] {
+    const language = bundledPrettier
+        .getSupportInfo(prettier.version)
+        .languages.find(
+            lang => lang.vscodeLanguageIds.indexOf(languageId) > -1
+        );
+    if (!language) {
+        return [];
+    }
+    return language.parsers;
+}
+
+/**
  * Format the given text with user's configuration.
  * @param text Text to format
  * @param path formatting file's path
@@ -58,6 +76,7 @@ async function format(
     const vscodeConfig: PrettierVSCodeConfig = workspace.getConfiguration(
         'prettier'
     ) as any;
+    const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
 
     /*
     handle trailingComma changes boolean -> string
@@ -68,32 +87,22 @@ async function format(
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
-    /*
-    handle deprecated parser option
-    */
-    let parser = vscodeConfig.parser;
-    let doesParserSupportEslint = true;
-    if (vscodeConfig.typescriptEnable.includes(languageId)) {
-        parser = 'typescript';
+
+    const dynamicParsers = getParsersFromLanguageId(languageId, localPrettier);
+    let parser: ParserOption;
+
+    if (!dynamicParsers.length) {
+        return text; // no-op
+    } else if (dynamicParsers.indexOf(vscodeConfig.parser) > -1) {
+        // handle deprecated parser option (parser: "flow")
+        parser = vscodeConfig.parser;
+    } else {
+        parser = dynamicParsers[0];
     }
-    if (vscodeConfig.cssEnable.includes(languageId)) {
-        parser = 'postcss';
-        doesParserSupportEslint = false;
-    }
-    if (vscodeConfig.jsonEnable.includes(languageId)) {
-        parser = 'json';
-        doesParserSupportEslint = false;
-        trailingComma = 'none'; // Fix will land in prettier > 1.5.2
-    }
-    if (vscodeConfig.graphqlEnable.includes(languageId)) {
-        parser = 'graphql';
-        doesParserSupportEslint = false;
-    }
-    if (vscodeConfig.markdownEnable.includes(languageId)) {
-        parser = 'markdown';
-        doesParserSupportEslint = false;
-    }
-    
+    const doesParserSupportEslint = !!getGroup('JavaScript').find(
+        lang => lang.parsers.indexOf(parser) > -1
+    );
+
     const fileOptions = await bundledPrettier.resolveConfig(fileName);
 
     const prettierOptions = Object.assign(
@@ -128,6 +137,7 @@ async function format(
             fileName
         );
     }
+
     if (vscodeConfig.stylelintIntegration && parser === 'postcss') {
         const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
         return safeExecution(
@@ -140,12 +150,12 @@ async function format(
             fileName
         );
     }
-    const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
-    if (!doesParserSupportEslint && !parserExists(parser, prettier)) {
+
+    if (!doesParserSupportEslint && !parserExists(parser, localPrettier)) {
         return safeExecution(
             () => {
                 const warningMessage =
-                    `prettier@${prettier.version} doesn't support ${
+                    `prettier@${localPrettier.version} doesn't support ${
                         languageId
                     }. ` +
                     `Falling back to bundled prettier@${
@@ -168,10 +178,10 @@ async function format(
         );
     }
 
-    setUsedModule('prettier', prettier.version, false);
+    setUsedModule('prettier', localPrettier.version, false);
 
     return safeExecution(
-        () => prettier.format(text, prettierOptions),
+        () => localPrettier.format(text, prettierOptions),
         text,
         fileName
     );

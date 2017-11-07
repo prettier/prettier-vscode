@@ -1,5 +1,5 @@
 import { workspace, Disposable, DocumentSelector, Uri } from 'vscode';
-import { PrettierVSCodeConfig } from './types.d';
+import { PrettierVSCodeConfig, Prettier, PrettierSupportInfo } from './types.d';
 
 let currentRootPath: string = workspace.rootPath!;
 
@@ -21,14 +21,22 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
 }
 
 export function allEnabledLanguages(): DocumentSelector {
-    const config = getConfig();
+    return (require('prettier') as Prettier)
+        .getSupportInfo()
+        .languages.reduce(
+            (ids, language) => [...ids, ...language.vscodeLanguageIds],
+            []
+        );
+}
 
-    return [
-        ...config.javascriptEnable,
-        ...config.typescriptEnable,
-        ...config.cssEnable,
-        ...config.jsonEnable,
-        ...config.graphqlEnable,
-        ...config.markdownEnable,
-    ];
+export function allJSLanguages(): DocumentSelector {
+    return getGroup('JavaScript')
+        .filter(language => language.group === 'JavaScript')
+        .reduce((ids, language) => [...ids, ...language.vscodeLanguageIds], []);
+}
+
+export function getGroup(group: string): PrettierSupportInfo['languages'] {
+    return (require('prettier') as Prettier)
+        .getSupportInfo()
+        .languages.filter(language => language.group === group);
 }
