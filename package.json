@@ -206,6 +206,25 @@
           "default": [
             "graphql"
           ]
+        },
+        "prettier.markdownEnable": {
+          "description": "Advanced feature. Enable and use markdown parser for those language ids. Restart required",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "markdown"
+                ]
+              }
+            ]
+          },
+          "default": [
+            "markdown"
+          ]
         }
       }
     },
@@ -234,7 +253,6 @@
   "devDependencies": {
     "@types/mocha": "^2.2.43",
     "@types/node": "^7.0.39",
-    "@types/semver": "^5.3.31",
     "cross-env": "^5.0.5",
     "mocha": "^3.5.3",
     "typescript": "^2.4.2",
@@ -243,9 +261,8 @@
   "dependencies": {
     "prettier-stylelint": "^0.4.1",
     "ignore": "^3.3.5",
-    "prettier": "1.7.3",
+    "prettier": "1.8.0",
     "prettier-eslint": "^8.2.0",
-    "read-pkg-up": "2.0.0",
-    "semver": "^5.4.1"
+    "read-pkg-up": "2.0.0"
   }
 }

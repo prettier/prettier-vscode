@@ -13,7 +13,6 @@ import {
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
 import { onWorkspaceRootChange } from './utils';
 import { requireLocalPkg } from './requirePkg';
-import * as semver from 'semver';
 
 import {
     PrettierVSCodeConfig,
@@ -25,18 +24,6 @@ import {
 
 const bundledPrettier = require('prettier') as Prettier;
 let errorShown: Boolean = false;
-
-/**
- * Various parser appearance
- */
-const PARSER_SINCE = {
-    babylon: '0.0.0',
-    flow: '0.0.0',
-    typescript: '1.4.0-beta',
-    postcss: '1.4.0-beta',
-    json: '1.5.0',
-    graphql: '1.5.0',
-};
 
 /**
  * Mark the error as not show, when changing workspaces
@@ -52,7 +39,9 @@ onWorkspaceRootChange(() => {
  * @returns {boolean} Does the parser exist
  */
 function parserExists(parser: ParserOption, prettier: Prettier) {
-    return semver.gte(prettier.version, PARSER_SINCE[parser]);
+    return !!bundledPrettier
+        .getSupportInfo(prettier.version)
+        .languages.find(lang => lang.parsers.indexOf(parser) > -1);
 }
 
 /**
@@ -100,7 +89,11 @@ async function format(
         parser = 'graphql';
         doesParserSupportEslint = false;
     }
-
+    if (vscodeConfig.markdownEnable.includes(languageId)) {
+        parser = 'markdown';
+        doesParserSupportEslint = false;
+    }
+    
     const fileOptions = await bundledPrettier.resolveConfig(fileName);
 
     const prettierOptions = Object.assign(
@@ -141,7 +134,7 @@ async function format(
             prettierStylelint.format({
                 text,
                 filePath: fileName,
-                prettierOptions
+                prettierOptions,
             }),
             text,
             fileName
@@ -152,8 +145,12 @@ async function format(
         return safeExecution(
             () => {
                 const warningMessage =
-                    `prettier@${prettier.version} doesn't support ${languageId}. ` +
-                    `Falling back to bundled prettier@${bundledPrettier.version}.`;
+                    `prettier@${prettier.version} doesn't support ${
+                        languageId
+                    }. ` +
+                    `Falling back to bundled prettier@${
+                        bundledPrettier.version
+                    }.`;
 
                 addToOutput(warningMessage);
 

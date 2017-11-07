@@ -29,5 +29,6 @@ export function allEnabledLanguages(): DocumentSelector {
         ...config.cssEnable,
         ...config.jsonEnable,
         ...config.graphqlEnable,
+        ...config.markdownEnable,
     ];
 }

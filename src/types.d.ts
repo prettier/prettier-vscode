@@ -4,12 +4,32 @@ export type ParserOption =
     | 'postcss'
     | 'typescript'
     | 'json'
-    | 'graphql';
+    | 'graphql'
+    | 'markdown';
+
 type TrailingCommaOption =
     | 'none'
     | 'es5'
     | 'all'
     | boolean; /* deprecated boolean*/
+
+interface PrettierSupportInfo {
+    languages: {
+        name: string,
+        since: string,
+        parsers: string[],
+        group?: string,
+        tmScope: string,
+        aceMode: string,
+        codemirrorMode: string,
+        codemirrorMimeType: string,
+        aliases?: string[],
+        extensions: string[],
+        filenames?: string[],
+        linguistLanguageId: number,
+        vscodeLanguageIds: string[],
+    }[];
+}
 
 /**
  * Prettier configuration
@@ -63,6 +83,10 @@ interface ExtensionConfig {
      * Language ids to run graphql prettier on
      */
     graphqlEnable: ('graphql' | string)[];
+    /**
+     * Language ids to run markdown prettier on
+     */
+    markdownEnable: ('markdown' | string)[];
 }
 
 /**
@@ -81,6 +105,7 @@ export interface Prettier {
         }
     ) => Promise<PrettierConfig>;
     clearConfigCache: () => void;
+    getSupportInfo(version?: string): PrettierSupportInfo;
     readonly version: string;
 }
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
