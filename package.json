@@ -21,6 +21,9 @@
   "engines": {
     "vscode": "^1.17.0"
   },
+  "keywords": [
+    "multi-root ready"
+  ],
   "categories": [
     "Formatters"
   ],
