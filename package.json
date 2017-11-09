@@ -139,7 +139,7 @@
   "dependencies": {
     "prettier-stylelint": "^0.4.1",
     "ignore": "^3.3.5",
-    "prettier": "1.8.0",
+    "prettier": "1.8.2",
     "prettier-eslint": "^8.2.0",
     "read-pkg-up": "2.0.0"
   }
