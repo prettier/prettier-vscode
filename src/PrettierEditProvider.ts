@@ -11,7 +11,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange, getGroup } from './utils';
+import { onWorkspaceRootChange, getGroup, getParsersFromLanguageId } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -31,36 +31,6 @@ let errorShown: Boolean = false;
 onWorkspaceRootChange(() => {
     errorShown = false;
 });
-
-/**
- * Check if the given parser exists in a prettier module.
- * @param parser parser to test
- * @param prettier Prettier module to test against
- * @returns {boolean} Does the parser exist
- */
-function parserExists(parser: ParserOption, prettier: Prettier) {
-    return !!bundledPrettier
-        .getSupportInfo(prettier.version)
-        .languages.find(lang => lang.parsers.indexOf(parser) > -1);
-}
-
-/**
- * Gets a list of parser options from a language ID
- */
-function getParsersFromLanguageId(
-    languageId: string,
-    prettier: Prettier
-): ParserOption[] {
-    const language = bundledPrettier
-        .getSupportInfo(prettier.version)
-        .languages.find(
-            lang => lang.vscodeLanguageIds.indexOf(languageId) > -1
-        );
-    if (!language) {
-        return [];
-    }
-    return language.parsers;
-}
 
 /**
  * Format the given text with user's configuration.
@@ -88,19 +58,25 @@ async function format(
         trailingComma = 'none';
     }
 
-    const dynamicParsers = getParsersFromLanguageId(languageId, localPrettier);
+    const dynamicParsers = getParsersFromLanguageId(languageId, localPrettier.version);
+    let useBundled = false;
     let parser: ParserOption;
 
     if (!dynamicParsers.length) {
-        return text; // no-op
-    } else if (dynamicParsers.indexOf(vscodeConfig.parser) > -1) {
+        const bundledParsers = getParsersFromLanguageId(
+            languageId,
+            bundledPrettier.version
+        );
+        parser = bundledParsers[0] || 'babylon';
+        useBundled = true;
+    } else if (dynamicParsers.includes(vscodeConfig.parser)) {
         // handle deprecated parser option (parser: "flow")
         parser = vscodeConfig.parser;
     } else {
         parser = dynamicParsers[0];
     }
-    const doesParserSupportEslint = !!getGroup('JavaScript').find(
-        lang => lang.parsers.indexOf(parser) > -1
+    const doesParserSupportEslint = getGroup('JavaScript').some(lang =>
+        lang.parsers.includes(parser)
     );
 
     const fileOptions = await bundledPrettier.resolveConfig(fileName);
@@ -151,7 +127,7 @@ async function format(
         );
     }
 
-    if (!doesParserSupportEslint && !parserExists(parser, localPrettier)) {
+    if (!doesParserSupportEslint && useBundled) {
         return safeExecution(
             () => {
                 const warningMessage =
