@@ -39,7 +39,7 @@ Settings will be read from:
 1. File system, first matching file in
     1. `package.json` - `prettier` key
     1. `.prettierrc`
-    1. `.prettier.config.js`
+    1. `prettier.config.js`
 1. VSCode prettier's settings, described below
 1. VSCode prettier's default settings
 
