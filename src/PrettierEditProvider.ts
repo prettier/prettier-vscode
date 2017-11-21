@@ -1,6 +1,4 @@
 import {
-    workspace,
-    window,
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider,
     Range,
@@ -11,7 +9,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange, getGroup, getParsersFromLanguageId } from './utils';
+import { getGroup, getParsersFromLanguageId, getConfig } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -24,14 +22,6 @@ import {
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
-let errorShown: Boolean = false;
-
-/**
- * Mark the error as not show, when changing workspaces
- */
-onWorkspaceRootChange(() => {
-    errorShown = false;
-});
 
 /**
  * Format the given text with user's configuration.
@@ -41,12 +31,10 @@ onWorkspaceRootChange(() => {
  */
 async function format(
     text: string,
-    { fileName, languageId }: TextDocument,
+    { fileName, languageId, uri }: TextDocument,
     customOptions: object
 ): Promise<string> {
-    const vscodeConfig: PrettierVSCodeConfig = workspace.getConfiguration(
-        'prettier'
-    ) as any;
+    const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
     const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
 
     if (vscodeConfig.disableLanguages.includes(languageId)) {
@@ -145,11 +133,6 @@ async function format(
                     }.`;
 
                 addToOutput(warningMessage);
-
-                if (errorShown === false) {
-                    window.showWarningMessage(warningMessage);
-                    errorShown = true;
-                }
 
                 setUsedModule('prettier', bundledPrettier.version, true);
 
