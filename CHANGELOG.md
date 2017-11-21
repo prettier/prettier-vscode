@@ -4,6 +4,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+
+## [0.25.0]
 - Multi-root support.
 - Removed all `*Enable` settings, these are now inferred from Prettier itself. Use scoped `editor.formatOnSave` to disable formatting some languages on save.
 (See README)

@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -131,9 +131,9 @@
           "type": "boolean",
           "default": true,
           "description": "(Markdown) wrap prose over multiple lines"
-              }
-              }
-        },
+        }
+      }
+    },
     "jsonValidation": [
       {
         "fileMatch": ".prettierrc",
