@@ -1,15 +1,38 @@
 export type ParserOption =
     | 'babylon'
     | 'flow'
-    | 'postcss'
+    | 'postcss' // deprecated
+    | 'css'
+    | 'less'
+    | 'scss'
     | 'typescript'
     | 'json'
-    | 'graphql';
+    | 'graphql'
+    | 'markdown';
+
 type TrailingCommaOption =
     | 'none'
     | 'es5'
     | 'all'
     | boolean; /* deprecated boolean*/
+
+interface PrettierSupportInfo {
+    languages: {
+        name: string,
+        since: string,
+        parsers: ParserOption[],
+        group?: string,
+        tmScope: string,
+        aceMode: string,
+        codemirrorMode: string,
+        codemirrorMimeType: string,
+        aliases?: string[],
+        extensions: string[],
+        filenames?: string[],
+        linguistLanguageId: number,
+        vscodeLanguageIds: string[],
+    }[];
+}
 
 /**
  * Prettier configuration
@@ -24,6 +47,7 @@ export interface PrettierConfig {
     parser: ParserOption;
     semi: boolean;
     useTabs: boolean;
+    proseWrap: boolean;
 }
 /**
  * prettier-vscode specific configuration
@@ -44,25 +68,9 @@ interface ExtensionConfig {
      */
     ignorePath: string;
     /**
-     * Language ids to run javascript prettier on.
+     * Array of language IDs to ignore
      */
-    javascriptEnable: ('javascript' | 'javascriptreact' | string)[];
-    /**
-     * Language ids to run typescript prettier on.
-     */
-    typescriptEnable: ('typescript' | 'typescriptreact' | string)[];
-    /**
-     * Language ids to run postcss prettier on.
-     */
-    cssEnable: ('css' | 'less' | 'scss' | string)[];
-    /**
-     * Language ids to run json prettier on
-     */
-    jsonEnable: ('json' | string)[];
-    /**
-     * Language ids to run graphql prettier on
-     */
-    graphqlEnable: ('graphql' | string)[];
+    disableLanguages: string[];
 }
 
 /**
@@ -81,6 +89,7 @@ export interface Prettier {
         }
     ) => Promise<PrettierConfig>;
     clearConfigCache: () => void;
+    getSupportInfo(version?: string): PrettierSupportInfo;
     readonly version: string;
 }
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';

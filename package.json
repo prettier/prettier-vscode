@@ -1,6 +1,6 @@
 {
   "name": "prettier-vscode",
-  "displayName": "Prettier - JavaScript formatter",
+  "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
   "version": "0.24.0",
   "publisher": "esbenp",
@@ -35,8 +35,17 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Prettier - JavaScript formatter configuration",
+      "title": "Prettier - Code formatter configuration",
       "properties": {
+        "prettier.disableLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "A list of languages IDs to disable this extension on",
+          "scope": "resource"
+        },
         "prettier.eslintIntegration": {
           "type": "boolean",
           "default": false,
@@ -118,116 +127,13 @@
           "description": "Indent lines with tabs",
           "scope": "resource"
         },
-        "prettier.javascriptEnable": {
-          "description": "Advanced feature. Enable and use 'prettier.parser' parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "javascript",
-                  "javascriptreact"
-                ]
+        "prettier.proseWrap": {
+          "type": "boolean",
+          "default": true,
+          "description": "(Markdown) wrap prose over multiple lines"
               }
-            ]
-          },
-          "default": [
-            "javascript",
-            "javascriptreact"
-          ],
-          "scope": "window"
+              }
         },
-        "prettier.typescriptEnable": {
-          "description": "Advanced feature. Enable and use typescript parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "typescript",
-                  "typescriptreact"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "typescript",
-            "typescriptreact"
-          ],
-          "scope": "window"
-        },
-        "prettier.cssEnable": {
-          "description": "Advanced feature. Enable and use postcss parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "css",
-                  "less",
-                  "scss"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "css",
-            "less",
-            "scss"
-          ],
-          "scope": "window"
-        },
-        "prettier.jsonEnable": {
-          "description": "Advanced feature. Enable and use json parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "json"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "json"
-          ],
-          "scope": "window"
-        },
-        "prettier.graphqlEnable": {
-          "description": "Advanced feature. Enable and use graphql parser for those language ids. Restart required",
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "enum": [
-                  "graphql"
-                ]
-              }
-            ]
-          },
-          "default": [
-            "graphql"
-          ],
-          "scope": "window"
-        }
-      }
-    },
     "jsonValidation": [
       {
         "fileMatch": ".prettierrc",
@@ -253,7 +159,6 @@
   "devDependencies": {
     "@types/mocha": "^2.2.43",
     "@types/node": "^7.0.39",
-    "@types/semver": "^5.3.31",
     "cross-env": "^5.0.5",
     "mocha": "^3.5.3",
     "typescript": "^2.4.2",
@@ -262,9 +167,8 @@
   "dependencies": {
     "prettier-stylelint": "^0.4.1",
     "ignore": "^3.3.5",
-    "prettier": "1.7.3",
+    "prettier": "1.8.2",
     "prettier-eslint": "^8.2.0",
-    "read-pkg-up": "2.0.0",
-    "semver": "^5.4.1"
+    "read-pkg-up": "2.0.0"
   }
 }

@@ -5,6 +5,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 - Multi-root support.
+- Removed all `*Enable` settings, these are now inferred from Prettier itself. Use scoped `editor.formatOnSave` to disable formatting some languages on save.
+(See README)
+- Markdown support
+- Prettier 1.8.2
 
 ## [0.24.0]
 - new setting, ignorePath. Ignore files.
