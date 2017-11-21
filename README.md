@@ -102,6 +102,9 @@ Other settings will only be fallbacks in case they could not be inferred from st
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
 
+#### prettier.disableLanguages (default: [])
+A list of languages IDs to disable this extension on.
+
 ## Prettier resolution
 
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
