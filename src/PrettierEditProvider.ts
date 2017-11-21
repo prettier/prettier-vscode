@@ -11,9 +11,8 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { onWorkspaceRootChange } from './utils';
+import { onWorkspaceRootChange, getGroup, getParsersFromLanguageId } from './utils';
 import { requireLocalPkg } from './requirePkg';
-import * as semver from 'semver';
 
 import {
     PrettierVSCodeConfig,
@@ -21,22 +20,11 @@ import {
     PrettierEslintFormat,
     ParserOption,
     PrettierStylelint,
+    PrettierConfig,
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
 let errorShown: Boolean = false;
-
-/**
- * Various parser appearance
- */
-const PARSER_SINCE = {
-    babylon: '0.0.0',
-    flow: '0.0.0',
-    typescript: '1.4.0-beta',
-    postcss: '1.4.0-beta',
-    json: '1.5.0',
-    graphql: '1.5.0',
-};
 
 /**
  * Mark the error as not show, when changing workspaces
@@ -44,16 +32,6 @@ const PARSER_SINCE = {
 onWorkspaceRootChange(() => {
     errorShown = false;
 });
-
-/**
- * Check if the given parser exists in a prettier module.
- * @param parser parser to test
- * @param prettier Prettier module to test against
- * @returns {boolean} Does the parser exist
- */
-function parserExists(parser: ParserOption, prettier: Prettier) {
-    return semver.gte(prettier.version, PARSER_SINCE[parser]);
-}
 
 /**
  * Format the given text with user's configuration.
@@ -69,6 +47,11 @@ async function format(
     const vscodeConfig: PrettierVSCodeConfig = workspace.getConfiguration(
         'prettier'
     ) as any;
+    const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
+
+    if (vscodeConfig.disableLanguages.includes(languageId)) {
+        return text;
+    }
 
     /*
     handle trailingComma changes boolean -> string
@@ -79,27 +62,27 @@ async function format(
     } else if (trailingComma === false) {
         trailingComma = 'none';
     }
-    /*
-    handle deprecated parser option
-    */
-    let parser = vscodeConfig.parser;
-    let doesParserSupportEslint = true;
-    if (vscodeConfig.typescriptEnable.includes(languageId)) {
-        parser = 'typescript';
+
+    const dynamicParsers = getParsersFromLanguageId(languageId, localPrettier.version);
+    let useBundled = false;
+    let parser: ParserOption;
+
+    if (!dynamicParsers.length) {
+        const bundledParsers = getParsersFromLanguageId(
+            languageId,
+            bundledPrettier.version
+        );
+        parser = bundledParsers[0] || 'babylon';
+        useBundled = true;
+    } else if (dynamicParsers.includes(vscodeConfig.parser)) {
+        // handle deprecated parser option (parser: "flow")
+        parser = vscodeConfig.parser;
+    } else {
+        parser = dynamicParsers[0];
     }
-    if (vscodeConfig.cssEnable.includes(languageId)) {
-        parser = 'postcss';
-        doesParserSupportEslint = false;
-    }
-    if (vscodeConfig.jsonEnable.includes(languageId)) {
-        parser = 'json';
-        doesParserSupportEslint = false;
-        trailingComma = 'none'; // Fix will land in prettier > 1.5.2
-    }
-    if (vscodeConfig.graphqlEnable.includes(languageId)) {
-        parser = 'graphql';
-        doesParserSupportEslint = false;
-    }
+    const doesParserSupportEslint = getGroup('JavaScript').some(lang =>
+        lang.parsers.includes(parser)
+    );
 
     const fileOptions = await bundledPrettier.resolveConfig(fileName);
 
@@ -114,7 +97,8 @@ async function format(
             parser: parser,
             semi: vscodeConfig.semi,
             useTabs: vscodeConfig.useTabs,
-        },
+            proseWrap: vscodeConfig.proseWrap,
+        } as PrettierConfig,
         customOptions,
         fileOptions
     );
@@ -135,25 +119,30 @@ async function format(
             fileName
         );
     }
+
     if (vscodeConfig.stylelintIntegration && parser === 'postcss') {
         const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
         return safeExecution(
             prettierStylelint.format({
                 text,
                 filePath: fileName,
-                prettierOptions
+                prettierOptions,
             }),
             text,
             fileName
         );
     }
-    const prettier = requireLocalPkg(fileName, 'prettier') as Prettier;
-    if (!doesParserSupportEslint && !parserExists(parser, prettier)) {
+
+    if (!doesParserSupportEslint && useBundled) {
         return safeExecution(
             () => {
                 const warningMessage =
-                    `prettier@${prettier.version} doesn't support ${languageId}. ` +
-                    `Falling back to bundled prettier@${bundledPrettier.version}.`;
+                    `prettier@${localPrettier.version} doesn't support ${
+                        languageId
+                    }. ` +
+                    `Falling back to bundled prettier@${
+                        bundledPrettier.version
+                    }.`;
 
                 addToOutput(warningMessage);
 
@@ -171,10 +160,10 @@ async function format(
         );
     }
 
-    setUsedModule('prettier', prettier.version, false);
+    setUsedModule('prettier', localPrettier.version, false);
 
     return safeExecution(
-        () => prettier.format(text, prettierOptions),
+        () => localPrettier.format(text, prettierOptions),
         text,
         fileName
     );

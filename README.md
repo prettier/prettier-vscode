@@ -32,6 +32,17 @@ If you don't like the defaults, you can rebind `editor.action.formatDocument` an
 ### Format On Save
 Respects `editor.formatOnSave` setting.
 
+You can turn off format-on-save on a per-language basis by scoping the setting:
+
+```json
+// Set the default
+"editor.formatOnSave": false,
+// Enable per-language
+"[javascript]": {
+    "editor.formatOnSave": true
+}
+```
+
 ## Settings
 
 ### Prettier's Settings
@@ -74,6 +85,9 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 #### prettier.useTabs (default: false)
 If true, indent lines with tabs
 
+#### prettier.proseWrap (default: true)
+(Markdown) wrap prose over multiple lines.
+
 ### VSCode specific settings
 
 #### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
@@ -83,31 +97,6 @@ Other settings will only be fallbacks in case they could not be inferred from ES
 #### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only 
 Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
-
-#### prettier.javascriptEnable (default: ["javascript", "javascriptreact"])
-Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
-Use parser `babylon` or `flow` depending on `prettier.parser` for given language ids.
-Use with care.
-
-#### prettier.typescriptEnable (default: ["typescript", "typescriptreact"])
-Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
-Use parser `typescript` for given language ids.
-Use with care.
-
-#### prettier.cssEnable (default: ["css", "less", "scss"])
-Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
-Use parser `postcss` for given language ids.
-Use with care.
-
-#### prettier.jsonEnable (default: ["json"])
-Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
-Use parser `json` for given language ids.
-Use with care.
-
-#### prettier.graphqlEnable (default: ["graphql"])
-Advanced feature. Use this to opt in / out prettier on various language ids. Restart required.
-Use parser `graphql` for given language ids.
-Use with care.
 
 #### prettier.ignorePath (default: .prettierignore)
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.

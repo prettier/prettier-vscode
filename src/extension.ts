@@ -1,21 +1,17 @@
-import { languages, ExtensionContext, DocumentSelector } from 'vscode';
+import { languages, ExtensionContext } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
-import { getConfig, allEnabledLanguages } from './utils';
+import { allEnabledLanguages, allJSLanguages } from './utils';
 import configFileListener from './configCacheHandler';
 import ignoreFileHandler from './ignoreFileHandler';
 
 export function activate(context: ExtensionContext) {
-    const config = getConfig();
     const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
     const editProvider = new EditProvider(fileIsIgnored);
     const languageSelector = allEnabledLanguages();
 
-    // CSS/json/graphql doesn't work with range yet.
-    const rangeLanguageSelector: DocumentSelector = [
-        ...config.javascriptEnable,
-        ...config.typescriptEnable,
-    ];
+    // Range selection is only supported for JS/TS
+    const rangeLanguageSelector = allJSLanguages();
 
     context.subscriptions.push(
         languages.registerDocumentRangeFormattingEditProvider(
