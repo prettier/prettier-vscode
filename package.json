@@ -34,6 +34,15 @@
       "type": "object",
       "title": "Prettier - Code formatter configuration",
       "properties": {
+        "prettier.disableLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "A list of languages IDs to disable this extension on",
+          "scope": "resource"
+        },
         "prettier.eslintIntegration": {
           "type": "boolean",
           "default": false,
@@ -103,6 +112,11 @@
           "type": "boolean",
           "default": false,
           "description": "Indent lines with tabs"
+        },
+        "prettier.proseWrap": {
+          "type": "boolean",
+          "default": true,
+          "description": "(Markdown) wrap prose over multiple lines"
         }
       }
     },

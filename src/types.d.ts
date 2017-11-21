@@ -47,6 +47,7 @@ export interface PrettierConfig {
     parser: ParserOption;
     semi: boolean;
     useTabs: boolean;
+    proseWrap: boolean;
 }
 /**
  * prettier-vscode specific configuration
@@ -66,6 +67,10 @@ interface ExtensionConfig {
      * Path to '.prettierignore' or similar.
      */
     ignorePath: string;
+    /**
+     * Array of language IDs to ignore
+     */
+    disableLanguages: string[];
 }
 
 /**

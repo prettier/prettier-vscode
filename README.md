@@ -85,6 +85,9 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 #### prettier.useTabs (default: false)
 If true, indent lines with tabs
 
+#### prettier.proseWrap (default: true)
+(Markdown) wrap prose over multiple lines.
+
 ### VSCode specific settings
 
 #### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only

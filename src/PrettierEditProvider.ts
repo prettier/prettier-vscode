@@ -20,6 +20,7 @@ import {
     PrettierEslintFormat,
     ParserOption,
     PrettierStylelint,
+    PrettierConfig,
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
@@ -47,6 +48,10 @@ async function format(
         'prettier'
     ) as any;
     const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
+
+    if (vscodeConfig.disableLanguages.includes(languageId)) {
+        return text;
+    }
 
     /*
     handle trailingComma changes boolean -> string
@@ -92,7 +97,8 @@ async function format(
             parser: parser,
             semi: vscodeConfig.semi,
             useTabs: vscodeConfig.useTabs,
-        },
+            proseWrap: vscodeConfig.proseWrap,
+        } as PrettierConfig,
         customOptions,
         fileOptions
     );
