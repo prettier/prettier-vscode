@@ -58,6 +58,12 @@
           "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
           "scope": "resource"
         },
+        "prettier.requireConfig":{
+          "type": "boolean",
+          "default": false,
+          "description": "Require a 'prettierconfig' to format",
+          "scope": "resource"
+        },
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
@@ -128,9 +134,20 @@
           "scope": "resource"
         },
         "prettier.proseWrap": {
-          "type": "boolean",
-          "default": true,
+          "type": "string",
+          "enum": ["preserve", "always", "never"],
+          "default": "preserve",
           "description": "(Markdown) wrap prose over multiple lines"
+        },
+        "prettier.arrowParens": {
+          "type": "string",
+          "enum": [
+            "avoid",
+            "always"
+          ],
+          "default": "avoid",
+          "description": "Include parentheses around a sole arrow function parameter",
+          "scope": "resource"
         }
       }
     },
@@ -157,18 +174,18 @@
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.43",
-    "@types/node": "^7.0.39",
-    "cross-env": "^5.0.5",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^7.0.48",
+    "cross-env": "^5.1.1",
     "mocha": "^3.5.3",
-    "typescript": "^2.4.2",
-    "vscode": "^1.1.6"
+    "typescript": "^2.6.2",
+    "vscode": "^1.1.10"
   },
   "dependencies": {
+    "ignore": "^3.3.7",
+    "prettier": "1.9.0",
+    "prettier-eslint": "^8.2.4",
     "prettier-stylelint": "^0.4.1",
-    "ignore": "^3.3.5",
-    "prettier": "1.8.2",
-    "prettier-eslint": "^8.2.0",
     "read-pkg-up": "2.0.0"
   }
 }
