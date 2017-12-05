@@ -21,28 +21,34 @@ function ignoreFileHandler(disposables: Disposable[]) {
 
     return {
         fileIsIgnored(filePath: string) {
-            return getIgnorerForFile(filePath).ignores(filePath);
+            const { ignorer, ignoreFilePath } = getIgnorerForFile(filePath);
+            return ignorer.ignores(path.relative(ignoreFilePath, filePath));
         },
     };
 
-    function getIgnorerForFile(fsPath: string): Ignorer {
+    function getIgnorerForFile(
+        fsPath: string
+    ): { ignorer: Ignorer; ignoreFilePath: string } {
         const absolutePath = getIgnorePathForFile(
             fsPath,
             getConfig(Uri.file(fsPath)).ignorePath
         );
 
         if (!absolutePath) {
-            return nullIgnorer;
+            return { ignoreFilePath: '', ignorer: nullIgnorer };
         }
 
-        if (ignorers.has(absolutePath)) {
-            return ignorers.get(absolutePath)!;
+        if (!ignorers.has(absolutePath)) {
+            loadIgnorer(Uri.file(absolutePath));
         }
 
-        return loadIgnorer(Uri.file(absolutePath));
+        return {
+            ignoreFilePath: absolutePath,
+            ignorer: ignorers.get(absolutePath)!,
+        };
     }
 
-    function loadIgnorer(ignoreUri: Uri): Ignorer {
+    function loadIgnorer(ignoreUri: Uri) {
         let ignorer = nullIgnorer;
 
         if (!ignorers.has(ignoreUri.fsPath)) {
@@ -61,7 +67,6 @@ function ignoreFileHandler(disposables: Disposable[]) {
         }
 
         ignorers.set(ignoreUri.fsPath, ignorer);
-        return ignorer;
     }
 
     function unloadIgnorer(ignoreUri: Uri) {
@@ -86,9 +91,7 @@ function getIgnorePathForFile(
 }
 
 function getPath(fsPath: string, relativeTo: string) {
-    return path.isAbsolute(fsPath)
-        ? fsPath
-        : path.join(relativeTo, fsPath);
+    return path.isAbsolute(fsPath) ? fsPath : path.join(relativeTo, fsPath);
 }
 
 export default ignoreFileHandler;
