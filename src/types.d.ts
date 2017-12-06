@@ -1,6 +1,7 @@
 export type ParserOption =
     | 'babylon'
     | 'flow'
+    | 'postcss' // deprecated, but may be found in getSupportInfo
     | 'css'
     | 'less'
     | 'scss'

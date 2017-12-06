@@ -25,7 +25,7 @@ const bundledPrettier = require('prettier') as Prettier;
 /**
  * HOLD style parsers (for stylelint integration)
  */
-const STYLE_PARSERS: ParserOption[] = ['css', 'less', 'scss'];
+const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
 /**
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
