@@ -58,7 +58,7 @@
           "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
           "scope": "resource"
         },
-        "prettier.requireConfig":{
+        "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
           "description": "Require a 'prettierconfig' to format",
@@ -135,7 +135,11 @@
         },
         "prettier.proseWrap": {
           "type": "string",
-          "enum": ["preserve", "always", "never"],
+          "enum": [
+            "preserve",
+            "always",
+            "never"
+          ],
           "default": "preserve",
           "description": "(Markdown) wrap prose over multiple lines"
         },
@@ -183,8 +187,8 @@
   },
   "dependencies": {
     "ignore": "^3.3.7",
-    "prettier": "1.9.0",
-    "prettier-eslint": "^8.2.4",
+    "prettier": "1.9.1",
+    "prettier-eslint": "^8.2.5",
     "prettier-stylelint": "^0.4.1",
     "read-pkg-up": "2.0.0"
   }
