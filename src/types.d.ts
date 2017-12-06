@@ -1,7 +1,6 @@
 export type ParserOption =
     | 'babylon'
     | 'flow'
-    | 'postcss' // deprecated
     | 'css'
     | 'less'
     | 'scss'
@@ -10,11 +9,7 @@ export type ParserOption =
     | 'graphql'
     | 'markdown';
 
-type TrailingCommaOption =
-    | 'none'
-    | 'es5'
-    | 'all'
-    | boolean; /* deprecated boolean*/
+type TrailingCommaOption = 'none' | 'es5' | 'all';
 
 interface PrettierSupportInfo {
     languages: {

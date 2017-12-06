@@ -23,6 +23,10 @@ import {
 
 const bundledPrettier = require('prettier') as Prettier;
 /**
+ * HOLD style parsers (for stylelint integration)
+ */
+const STYLE_PARSERS: ParserOption[] = ['css', 'less', 'scss'];
+/**
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
  */
@@ -139,7 +143,7 @@ async function format(
         );
     }
 
-    if (vscodeConfig.stylelintIntegration && parser === 'postcss') {
+    if (vscodeConfig.stylelintIntegration && STYLE_PARSERS.includes(parser)) {
         const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
         return safeExecution(
             prettierStylelint.format({
