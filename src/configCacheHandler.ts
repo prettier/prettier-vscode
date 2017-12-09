@@ -7,6 +7,10 @@ const prettier = require('prettier') as Prettier;
  */
 const PRETTIER_CONFIG_FILES = [
     '.prettierrc',
+    '.prettierrc.json',
+    '.prettierrc.yaml',
+    '.prettierrc.yml',
+    '.prettierrc.js',
     'package.json',
     'prettier.config.js',
 ];
