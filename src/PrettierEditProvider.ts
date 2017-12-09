@@ -105,7 +105,7 @@ async function format(
 
     const hasConfig = await hasPrettierConfig(fileName);
 
-    if (hasConfig === null && vscodeConfig.requireConfig) {
+    if (!hasConfig && vscodeConfig.requireConfig) {
         return text;
     }
     const fileOptions = await bundledPrettier.resolveConfig(fileName, {
