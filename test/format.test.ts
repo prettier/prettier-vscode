@@ -6,7 +6,7 @@ const prettier = require('prettier') as Prettier;
 // import * as PrettierVSCode from '../src/extension';
 
 const EXT_PARSER: { [ext: string]: ParserOption } = {
-    css: 'postcss',
+    css: 'css',
     json: 'json',
     ts: 'typescript',
 };
@@ -24,9 +24,11 @@ function formatSameAsPrettier(file: string) {
         const text = doc.getText();
         return vscode.window.showTextDocument(doc).then(
             () => {
+                console.time(file);
                 return vscode.commands
                     .executeCommand('editor.action.formatDocument')
                     .then(() => {
+                        console.timeEnd(file);
                         const prettierFormatted = prettier.format(text, {
                             parser:
                                 EXT_PARSER[path.extname(file).slice(1)] ||

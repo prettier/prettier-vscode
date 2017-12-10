@@ -1,7 +1,7 @@
 export type ParserOption =
     | 'babylon'
     | 'flow'
-    | 'postcss' // deprecated
+    | 'postcss' // deprecated, but may be found in getSupportInfo
     | 'css'
     | 'less'
     | 'scss'
@@ -10,27 +10,23 @@ export type ParserOption =
     | 'graphql'
     | 'markdown';
 
-type TrailingCommaOption =
-    | 'none'
-    | 'es5'
-    | 'all'
-    | boolean; /* deprecated boolean*/
+type TrailingCommaOption = 'none' | 'es5' | 'all';
 
 interface PrettierSupportInfo {
     languages: {
-        name: string,
-        since: string,
-        parsers: ParserOption[],
-        group?: string,
-        tmScope: string,
-        aceMode: string,
-        codemirrorMode: string,
-        codemirrorMimeType: string,
-        aliases?: string[],
-        extensions: string[],
-        filenames?: string[],
-        linguistLanguageId: number,
-        vscodeLanguageIds: string[],
+        name: string;
+        since: string;
+        parsers: ParserOption[];
+        group?: string;
+        tmScope: string;
+        aceMode: string;
+        codemirrorMode: string;
+        codemirrorMimeType: string;
+        aliases?: string[];
+        extensions: string[];
+        filenames?: string[];
+        linguistLanguageId: number;
+        vscodeLanguageIds: string[];
     }[];
 }
 
@@ -47,7 +43,10 @@ export interface PrettierConfig {
     parser: ParserOption;
     semi: boolean;
     useTabs: boolean;
-    proseWrap: boolean;
+    proseWrap: 'preserve' | 'always' | 'never';
+    arrowParens: 'avoid' | 'always';
+    rangeStart: number;
+    rangeEnd: number;
 }
 /**
  * prettier-vscode specific configuration
@@ -68,6 +67,10 @@ interface ExtensionConfig {
      */
     ignorePath: string;
     /**
+     * If true will skip formatting if a prettierconfig isn't found.
+     */
+    requireConfig: boolean;
+    /**
      * Array of language IDs to ignore
      */
     disableLanguages: string[];
@@ -85,7 +88,11 @@ export interface Prettier {
             /**
              * Use cache, defaults to true.
              */
-            useCache: boolean;
+            useCache?: boolean;
+            /**
+             * read editorconfig, defaults to false.
+             */
+            editorconfig?: boolean;
         }
     ) => Promise<PrettierConfig>;
     clearConfigCache: () => void;
@@ -120,13 +127,13 @@ interface PrettierEslintOptions {
      * formatting with `prettier`. If not provided, prettier-eslint will attempt
      * to create the options based on the eslintConfig
      */
-    prettierOptions?: PrettierConfig;
+    prettierOptions?: Partial<PrettierConfig>;
     /**
      * The options to pass for
      * formatting with `prettier` if the given option is not inferrable from the
      * eslintConfig.
      */
-    fallbackPrettierOptions?: PrettierConfig;
+    fallbackPrettierOptions?: Partial<PrettierConfig>;
     /**
      * The level for the logs
      */

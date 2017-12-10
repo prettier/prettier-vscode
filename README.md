@@ -85,8 +85,11 @@ or only at the beginning of lines that may introduce ASI failures (semi: false)
 #### prettier.useTabs (default: false)
 If true, indent lines with tabs
 
-#### prettier.proseWrap (default: true)
+#### prettier.proseWrap (default: 'preserve')
 (Markdown) wrap prose over multiple lines.
+
+#### prettier.arrowParens (default: 'avoid')
+Include parentheses around a sole arrow function parameter
 
 ### VSCode specific settings
 
@@ -97,6 +100,9 @@ Other settings will only be fallbacks in case they could not be inferred from ES
 #### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only 
 Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
+
+#### prettier.requireConfig (default: false)
+Require a 'prettierconfig' to format
 
 #### prettier.ignorePath (default: .prettierignore)
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.

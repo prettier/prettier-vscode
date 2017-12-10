@@ -4,6 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+- Prettier 1.9
+- New option: requireConfig (boolean) Format only files which have a prettier config (.prettierrc, ...)
+- Don't merge editor's options into prettier config
 
 ## [0.25.0]
 - Multi-root support.
