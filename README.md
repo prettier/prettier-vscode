@@ -93,6 +93,8 @@ Include parentheses around a sole arrow function parameter
 
 ### VSCode specific settings
 
+These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
+
 #### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from ESLint rules.
