@@ -23,7 +23,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
         fileIsIgnored(filePath: string) {
             const { ignorer, ignoreFilePath } = getIgnorerForFile(filePath);
             return ignorer.ignores(
-                path.relative(path.resolve(ignoreFilePath, '..'), filePath)
+                path.relative(path.dirname(ignoreFilePath), filePath)
             );
         },
     };
