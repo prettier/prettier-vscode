@@ -46,13 +46,13 @@ You can turn off format-on-save on a per-language basis by scoping the setting:
 ## Settings
 
 ### Prettier's Settings
-Settings will be read from:
-1. File system, first matching file in
-    1. `package.json` - `prettier` key
-    1. `.prettierrc`
-    1. `prettier.config.js`
-1. VSCode prettier's settings, described below
-1. VSCode prettier's default settings
+Settings will be read from (listed by priority):
+1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
+1. `.editorconfig`
+
+Or if no prettier configuration file exist
+1. `.editorconfig`
+1. VSCode prettier's settings (described below with their default)
 
 #### prettier.printWidth (default: 80)
 Fit code within this line limit
