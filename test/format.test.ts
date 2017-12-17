@@ -11,11 +11,11 @@ const EXT_PARSER: { [ext: string]: ParserOption } = {
     ts: 'typescript',
 };
 /**
- * Compare prettier's output (default settings)
- * with the output from extension.
+ * loads and format a file.
  * @param file path relative to workspace root
+ * @returns source code and resulting code
  */
-function formatSameAsPrettier(file: string) {
+export function format(file: string) {
     const absPath = path.join(
         vscode.workspace.rootPath! /* Test are run in a workspace */,
         file
@@ -29,16 +29,24 @@ function formatSameAsPrettier(file: string) {
                     .executeCommand('editor.action.formatDocument')
                     .then(() => {
                         console.timeEnd(file);
-                        const prettierFormatted = prettier.format(text, {
-                            parser:
-                                EXT_PARSER[path.extname(file).slice(1)] ||
-                                'babylon',
-                        });
-                        assert.equal(doc.getText(), prettierFormatted);
+                        return { result: doc.getText(), source: text };
                     });
             },
             e => console.error(e)
         );
+    });
+}
+/**
+ * Compare prettier's output (default settings)
+ * with the output from extension.
+ * @param file path relative to workspace root
+ */
+function formatSameAsPrettier(file: string) {
+    return format(file).then(result => {
+        const prettierFormatted = prettier.format(result.source, {
+            parser: EXT_PARSER[path.extname(file).slice(1)] || 'babylon',
+        });
+        assert.equal(result.result, prettierFormatted);
     });
 }
 
