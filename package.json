@@ -191,8 +191,8 @@
   },
   "dependencies": {
     "ignore": "^3.3.7",
-    "prettier": "1.9.1",
-    "prettier-eslint": "^8.2.5",
+    "prettier": "1.9.2",
+    "prettier-eslint": "^8.3.1",
     "prettier-stylelint": "^0.4.1",
     "read-pkg-up": "2.0.0"
   }
