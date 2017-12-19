@@ -1,4 +1,4 @@
-import { workspace, DocumentSelector, Uri } from 'vscode';
+import { workspace, Uri } from 'vscode';
 import {
     PrettierVSCodeConfig,
     Prettier,
@@ -23,14 +23,14 @@ export function getParsersFromLanguageId(
     return language.parsers;
 }
 
-export function allEnabledLanguages(): DocumentSelector {
+export function allEnabledLanguages(): string[] {
     return getSupportLanguages().reduce(
         (ids, language) => [...ids, ...language.vscodeLanguageIds],
         [] as string[]
     );
 }
 
-export function allJSLanguages(): DocumentSelector {
+export function allJSLanguages(): string[] {
     return getGroup('JavaScript')
         .filter(language => language.group === 'JavaScript')
         .reduce(
