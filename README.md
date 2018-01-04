@@ -111,7 +111,7 @@ Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
 
 #### prettier.disableLanguages (default: [])
-A list of languages IDs to disable this extension on.
+A list of languages IDs to disable this extension on. Restart required.
 
 ## Prettier resolution
 
