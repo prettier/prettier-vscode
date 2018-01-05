@@ -21,6 +21,9 @@ interface Selectors {
 
 let formatterHandler: undefined | Disposable;
 let rangeFormatterHandler: undefined | Disposable;
+/**
+ * Dispose formatters
+ */
 function disposeHandlers() {
     if (formatterHandler) {
         formatterHandler.dispose();
@@ -31,7 +34,10 @@ function disposeHandlers() {
     formatterHandler = undefined;
     rangeFormatterHandler = undefined;
 }
-
+/**
+ * Build formatter selectors for a given workspace folder
+ * @param wf workspace folder
+ */
 function selectorsCreator(wf: WorkspaceFolder) {
     const allLanguages = allEnabledLanguages();
     const allRangeLanguages = allJSLanguages();
@@ -52,7 +58,9 @@ function selectorsCreator(wf: WorkspaceFolder) {
 
     return { languageSelector, rangeLanguageSelector };
 }
-
+/**
+ * Build formatter selectors
+ */
 function selectors(): Selectors {
     const allLanguages = allEnabledLanguages();
     const allRangeLanguages = allJSLanguages();
@@ -79,10 +87,7 @@ function selectors(): Selectors {
         l => ({ language: l, scheme: 'untitled' })
     );
     return workspace.workspaceFolders.reduce(
-        (
-            previous,
-            workspaceFolder
-        ) => {
+        (previous, workspaceFolder) => {
             let { languageSelector, rangeLanguageSelector } = previous;
             const select = selectorsCreator(workspaceFolder);
             return {
@@ -107,11 +112,11 @@ export function activate(context: ExtensionContext) {
     function registerFormatter() {
         disposeHandlers();
         const { languageSelector, rangeLanguageSelector } = selectors();
-        formatterHandler = languages.registerDocumentRangeFormattingEditProvider(
+        rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
             rangeLanguageSelector,
             editProvider
         );
-        rangeFormatterHandler = languages.registerDocumentFormattingEditProvider(
+        formatterHandler = languages.registerDocumentFormattingEditProvider(
             languageSelector,
             editProvider
         );

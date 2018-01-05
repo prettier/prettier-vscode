@@ -19,7 +19,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
-                "${workspaceRoot}/testProject",
+                "${workspaceRoot}/testWorkspace.code-workspace",
                 "--extensions-dir=${workspaceRoot}/.", // no other extension loaded
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "--extensionTestsPath=${workspaceRoot}/out/test"
