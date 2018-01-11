@@ -112,6 +112,7 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 
 #### prettier.disableLanguages (default: [])
 A list of languages IDs to disable this extension on. Restart required.
+*Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run*
 
 ## Prettier resolution
 
