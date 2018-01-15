@@ -4,6 +4,10 @@ out/test/**
 test/**
 src/**
 testProject/**
+testWorkspaceFolder/**
+testWorkspace.code-workspace
+.prettierignore
+.travis.yml
 scripts/**
 **/*.map
 .gitignore

@@ -1,27 +1,132 @@
-import { languages, ExtensionContext } from 'vscode';
+import {
+    languages,
+    ExtensionContext,
+    workspace,
+    DocumentFilter,
+    DocumentSelector,
+    RelativePattern,
+    WorkspaceFolder,
+    Disposable,
+} from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
-import { allEnabledLanguages, allJSLanguages } from './utils';
+import { allEnabledLanguages, allJSLanguages, getConfig } from './utils';
 import configFileListener from './configCacheHandler';
 import ignoreFileHandler from './ignoreFileHandler';
+
+interface Selectors {
+    rangeLanguageSelector: DocumentSelector;
+    languageSelector: DocumentSelector;
+}
+
+let formatterHandler: undefined | Disposable;
+let rangeFormatterHandler: undefined | Disposable;
+/**
+ * Dispose formatters
+ */
+function disposeHandlers() {
+    if (formatterHandler) {
+        formatterHandler.dispose();
+    }
+    if (rangeFormatterHandler) {
+        rangeFormatterHandler.dispose();
+    }
+    formatterHandler = undefined;
+    rangeFormatterHandler = undefined;
+}
+/**
+ * Build formatter selectors for a given workspace folder
+ * @param wf workspace folder
+ */
+function selectorsCreator(wf: WorkspaceFolder) {
+    const allLanguages = allEnabledLanguages();
+    const allRangeLanguages = allJSLanguages();
+    const { disableLanguages } = getConfig(wf.uri);
+    const relativePattern = new RelativePattern(wf, '**');
+    function docFilterForLangs(languages: string[]) {
+        return languages.filter(l => !disableLanguages.includes(l)).map(
+            l =>
+                ({
+                    language: l,
+                    pattern: relativePattern,
+                } as DocumentFilter)
+        );
+    }
+    const languageSelector = docFilterForLangs(allLanguages);
+
+    const rangeLanguageSelector = docFilterForLangs(allRangeLanguages);
+
+    return { languageSelector, rangeLanguageSelector };
+}
+/**
+ * Build formatter selectors
+ */
+function selectors(): Selectors {
+    const allLanguages = allEnabledLanguages();
+    const allRangeLanguages = allJSLanguages();
+    const { disableLanguages } = getConfig();
+    const globalLanguageSelector = allLanguages.filter(
+        l => !disableLanguages.includes(l)
+    );
+    const globalRangeLanguageSelector = allRangeLanguages.filter(
+        l => !disableLanguages.includes(l)
+    );
+    if (workspace.workspaceFolders === undefined) {
+        // no workspace opened
+        return {
+            languageSelector: globalLanguageSelector,
+            rangeLanguageSelector: globalRangeLanguageSelector,
+        };
+    }
+
+    // at least 1 workspace
+    const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
+        l => ({ language: l, scheme: 'untitled' })
+    );
+    const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
+        l => ({ language: l, scheme: 'untitled' })
+    );
+    return workspace.workspaceFolders.reduce(
+        (previous, workspaceFolder) => {
+            let { languageSelector, rangeLanguageSelector } = previous;
+            const select = selectorsCreator(workspaceFolder);
+            return {
+                languageSelector: languageSelector.concat(
+                    select.languageSelector
+                ),
+                rangeLanguageSelector: rangeLanguageSelector.concat(
+                    select.rangeLanguageSelector
+                ),
+            };
+        },
+        {
+            languageSelector: untitledLanguageSelector,
+            rangeLanguageSelector: untitledRangeLanguageSelector,
+        }
+    );
+}
 
 export function activate(context: ExtensionContext) {
     const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
     const editProvider = new EditProvider(fileIsIgnored);
-    const languageSelector = allEnabledLanguages();
-
-    // Range selection is only supported for JS/TS
-    const rangeLanguageSelector = allJSLanguages();
-
-    context.subscriptions.push(
-        languages.registerDocumentRangeFormattingEditProvider(
+    function registerFormatter() {
+        disposeHandlers();
+        const { languageSelector, rangeLanguageSelector } = selectors();
+        rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
             rangeLanguageSelector,
             editProvider
-        ),
-        languages.registerDocumentFormattingEditProvider(
+        );
+        formatterHandler = languages.registerDocumentFormattingEditProvider(
             languageSelector,
             editProvider
-        ),
+        );
+    }
+    registerFormatter();
+    context.subscriptions.push(
+        workspace.onDidChangeWorkspaceFolders(registerFormatter),
+        {
+            dispose: disposeHandlers,
+        },
         setupErrorHandler(),
         configFileListener(),
         ...registerDisposables()

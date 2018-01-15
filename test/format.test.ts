@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Prettier, ParserOption } from '../src/types';
+import { Uri } from 'vscode';
 const prettier = require('prettier') as Prettier;
 // import * as PrettierVSCode from '../src/extension';
 
@@ -12,12 +13,13 @@ const EXT_PARSER: { [ext: string]: ParserOption } = {
 };
 /**
  * loads and format a file.
- * @param file path relative to workspace root
+ * @param file path relative to base URI (a workspaceFolder's URI)
+ * @param base base URI
  * @returns source code and resulting code
  */
-export function format(file: string) {
+export function format(file: string, base: Uri = vscode.workspace.workspaceFolders![0].uri) {
     const absPath = path.join(
-        vscode.workspace.rootPath! /* Test are run in a workspace */,
+        base.fsPath,
         file
     );
     return vscode.workspace.openTextDocument(absPath).then(doc => {

@@ -4,6 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+- Disabling a language `disableLanguages` now allows to use an other formatter. NOT when disabling in a sub workspace folder (noop)
 
 ## [1.0.0]
 - Prettier 1.9

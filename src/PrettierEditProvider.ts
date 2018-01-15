@@ -75,6 +75,9 @@ async function format(
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
     const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
 
+    // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
+    // wf1  (with "lang") -> glob: "wf1/**"
+    // wf1/wf2  (without "lang") -> match "wf1/**"
     if (vscodeConfig.disableLanguages.includes(languageId)) {
         return text;
     }
