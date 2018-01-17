@@ -4,6 +4,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+
+## [1.1.1]
 - prettier-eslint@8.7.5 
 
 ## [1.1.0]
