@@ -3,6 +3,7 @@
 out/test/**
 test/**
 src/**
+testEslint/**
 testProject/**
 testWorkspaceFolder/**
 testWorkspace.code-workspace

@@ -1,0 +1,15 @@
+{
+  "name": "testeslint",
+  "version": "1.0.0",
+  "description": "Test eslint integration on this dummy project",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cigit",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-plugin-prettier": "^2.5.0"
+  },
+  "dependencies": {}
+}

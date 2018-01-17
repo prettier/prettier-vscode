@@ -1,4 +1,5 @@
 package.json
 package-lock.json
+testEslint/
 testProject/
 testWorkspaceFolder/

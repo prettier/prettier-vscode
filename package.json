@@ -178,7 +178,7 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
+    "test": "cd testEslint && npm i && cd .. && cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
@@ -193,7 +193,7 @@
   "dependencies": {
     "ignore": "^3.3.7",
     "prettier": "1.10.2",
-    "prettier-eslint": "^8.3.1",
+    "prettier-eslint": "^8.7.5",
     "prettier-stylelint": "^0.4.1",
     "read-pkg-up": "2.0.0",
     "resolve": "^1.5.0"
