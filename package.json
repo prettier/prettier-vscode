@@ -193,7 +193,7 @@
   "dependencies": {
     "ignore": "^3.3.7",
     "prettier": "1.10.2",
-    "prettier-eslint": "^8.7.5",
+    "prettier-eslint": "^8.8.0",
     "prettier-stylelint": "^0.4.1",
     "read-pkg-up": "2.0.0",
     "resolve": "^1.5.0"

@@ -2,6 +2,7 @@
   "name": "testeslint",
   "version": "1.0.0",
   "description": "Test eslint integration on this dummy project",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -13,7 +13,7 @@ function foo() {
     return 'bar'
 }
 `
-                ); // Expect 4 space, space before function paren and single-quote
+                );
             }
         );
     });
