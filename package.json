@@ -184,6 +184,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.44",
     "@types/node": "^7.0.48",
+    "@types/resolve": "0.0.6",
     "cross-env": "^5.1.1",
     "mocha": "^3.5.3",
     "typescript": "^2.6.2",
@@ -194,6 +195,7 @@
     "prettier": "1.10.2",
     "prettier-eslint": "^8.3.1",
     "prettier-stylelint": "^0.4.1",
-    "read-pkg-up": "2.0.0"
+    "read-pkg-up": "2.0.0",
+    "resolve": "^1.5.0"
   }
 }
