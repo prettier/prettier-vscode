@@ -1,6 +1,7 @@
 import { addToOutput } from './errorHandler';
 
 import * as path from 'path';
+import * as resolve from 'resolve';
 const readPkgUp = require('read-pkg-up');
 
 /**
@@ -18,7 +19,7 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
         ((res.pkg.dependencies && res.pkg.dependencies[pkgName]) ||
             (res.pkg.devDependencies && res.pkg.devDependencies[pkgName]))
     ) {
-        return path.resolve(res.path, '..', 'node_modules/', pkgName);
+        return resolve.sync(pkgName, { basedir: res.path });
     } else if (res.path) {
         const parent = path.resolve(path.dirname(res.path), '..');
         if (parent !== root) {
