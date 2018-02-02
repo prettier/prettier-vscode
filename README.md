@@ -6,7 +6,7 @@ VS Code package to format your JavaScript / TypeScript / CSS using [Prettier](ht
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Can also be installed using
 
