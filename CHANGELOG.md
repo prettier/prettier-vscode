@@ -5,6 +5,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 - prettier-eslint@8.8.1
+- `vue` is now disabled by default. Opt-in by removing `vue` from disableLanguages setting
 
 ## [1.1.2]
 - prettier-eslint@8.3.1 revert previous update
