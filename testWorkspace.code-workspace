@@ -1,11 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "testProject"
-		},
-		{
-			"path": "testWorkspaceFolder"
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "testProject"
+        },
+        {
+            "path": "testWorkspaceFolder"
+        },
+        {
+            "path": "testEslint"
+        }
+    ],
+    "settings": {}
 }
