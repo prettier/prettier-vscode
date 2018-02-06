@@ -4,6 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+- Improve prettier resolution algorithm for monorepos
 - prettier-eslint@8.8.1
 - `vue` is now disabled by default. Opt-in by removing `vue` from disableLanguages setting
 

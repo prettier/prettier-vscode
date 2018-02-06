@@ -42,7 +42,9 @@
           "items": {
             "type": "string"
           },
-          "default": ["vue"],
+          "default": [
+            "vue"
+          ],
           "description": "A list of languages IDs to disable this extension on",
           "scope": "resource"
         },
