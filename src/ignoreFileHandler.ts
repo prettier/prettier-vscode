@@ -86,7 +86,7 @@ function getIgnorePathForFile(
         return null;
     }
     if (!existsSync(ignorePath)) {
-        addToOutput("Wrong prettier.ignorePath provided in your User or Workspace Settings. The path does not exist.");
+        addToOutput(`Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`);
         return null;
     }
     if (workspace.workspaceFolders) {
