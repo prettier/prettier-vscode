@@ -2,6 +2,7 @@ import { readFileSync, existsSync } from 'fs';
 import * as path from 'path';
 import { workspace, Uri, Disposable } from 'vscode';
 import { getConfig } from './utils';
+import { addToOutput } from './errorHandler';
 
 const ignore = require('ignore');
 
@@ -82,6 +83,10 @@ function getIgnorePathForFile(
 ): string | null {
     // Configuration `prettier.ignorePath` is set to `null`
     if (!ignorePath) {
+        return null;
+    }
+    if (!existsSync(ignorePath)) {
+        addToOutput(`Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`);
         return null;
     }
     if (workspace.workspaceFolders) {
