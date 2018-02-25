@@ -31,8 +31,21 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * @param filePath file's path
  */
 async function hasPrettierConfig(filePath: string) {
-    return (await bundledPrettier.resolveConfig(filePath)) !== null;
+    return (await resolveConfig(filePath)) !== null;
 }
+
+/**
+ * Resolves the prettierconfig for the given file.
+ * 
+ * @param filePath file's path
+ */
+async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<PrettierConfig | null> {
+    try {
+        return await bundledPrettier.resolveConfig(filePath, options);
+    } catch (e) {
+        return null;
+    }
+ }
 
 /**
  * Define which config should be used.
@@ -111,9 +124,9 @@ async function format(
     if (!hasConfig && vscodeConfig.requireConfig) {
         return text;
     }
-    const fileOptions = await bundledPrettier.resolveConfig(fileName, {
+    const fileOptions = await resolveConfig(fileName, {
         editorconfig: true,
-    });
+    }) || {};
 
     const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions, {
         printWidth: vscodeConfig.printWidth,
