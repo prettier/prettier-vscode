@@ -31,20 +31,23 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * @param filePath file's path
  */
 async function hasPrettierConfig(filePath: string) {
-    return (await resolveConfig(filePath)) !== null;
+    const { config } = await resolveConfig(filePath);
+    return config !== null;
 }
+
+type ResolveConfigResult = { config: Partial<PrettierConfig>, error?: Error };
 
 /**
  * Resolves the prettierconfig for the given file.
  * 
  * @param filePath file's path
  */
-async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<PrettierConfig | null> {
+async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<ResolveConfigResult> {
     try {
-        return await bundledPrettier.resolveConfig(filePath, options);
-    } catch (e) {
-        addToOutput(`Failed to resolve config for ${filePath}. Falling back to the default config settings.`);
-        return null;
+        const config = await bundledPrettier.resolveConfig(filePath, options);
+        return { config };
+    } catch (error) {
+        return { config: {}, error };
     }
  }
 
@@ -126,9 +129,13 @@ async function format(
         return text;
     }
 
-    const fileOptions = (hasConfig ? await resolveConfig(fileName, {
+    const { config: fileOptions, error } = await resolveConfig(fileName, {
         editorconfig: true,
-    }) : null) || {};
+    });
+
+    if (error) {
+        addToOutput(`Failed to resolve config for ${fileName}. Falling back to the default config settings.`);
+    }
 
     const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions, {
         printWidth: vscodeConfig.printWidth,
