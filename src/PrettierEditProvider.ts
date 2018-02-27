@@ -31,8 +31,8 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * @param filePath file's path
  */
 async function hasPrettierConfig(filePath: string) {
-    const { config } = await resolveConfig(filePath);
-    return config !== null;
+    const { error } = await resolveConfig(filePath);
+    return error == null;
 }
 
 type ResolveConfigResult = { config: Partial<PrettierConfig>, error?: Error };
