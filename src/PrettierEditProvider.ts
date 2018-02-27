@@ -31,11 +31,11 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * @param filePath file's path
  */
 async function hasPrettierConfig(filePath: string) {
-    const { error } = await resolveConfig(filePath);
-    return error == null;
+    const { config } = await resolveConfig(filePath);
+    return config !== null;
 }
 
-type ResolveConfigResult = { config: Partial<PrettierConfig>, error?: Error };
+type ResolveConfigResult = { config: PrettierConfig | null, error?: Error };
 
 /**
  * Resolves the prettierconfig for the given file.
@@ -47,7 +47,7 @@ async function resolveConfig(filePath: string, options?: { editorconfig?: boolea
         const config = await bundledPrettier.resolveConfig(filePath, options);
         return { config };
     } catch (error) {
-        return { config: {}, error };
+        return { config: null, error };
     }
  }
 
@@ -137,7 +137,7 @@ async function format(
         addToOutput(`Failed to resolve config for ${fileName}. Falling back to the default config settings.`);
     }
 
-    const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions, {
+    const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions || {}, {
         printWidth: vscodeConfig.printWidth,
         tabWidth: vscodeConfig.tabWidth,
         singleQuote: vscodeConfig.singleQuote,
