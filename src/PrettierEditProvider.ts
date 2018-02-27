@@ -43,6 +43,7 @@ async function resolveConfig(filePath: string, options?: { editorconfig?: boolea
     try {
         return await bundledPrettier.resolveConfig(filePath, options);
     } catch (e) {
+        addToOutput(`Failed to resolve config for ${filePath}. Falling back to the default config settings.`);
         return null;
     }
  }
@@ -124,9 +125,10 @@ async function format(
     if (!hasConfig && vscodeConfig.requireConfig) {
         return text;
     }
-    const fileOptions = await resolveConfig(fileName, {
+
+    const fileOptions = (hasConfig ? await resolveConfig(fileName, {
         editorconfig: true,
-    }) || {};
+    }) : null) || {};
 
     const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions, {
         printWidth: vscodeConfig.printWidth,
