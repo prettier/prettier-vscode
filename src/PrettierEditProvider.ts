@@ -31,8 +31,25 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * @param filePath file's path
  */
 async function hasPrettierConfig(filePath: string) {
-    return (await bundledPrettier.resolveConfig(filePath)) !== null;
+    const { config } = await resolveConfig(filePath);
+    return config !== null;
 }
+
+type ResolveConfigResult = { config: PrettierConfig | null, error?: Error };
+
+/**
+ * Resolves the prettierconfig for the given file.
+ * 
+ * @param filePath file's path
+ */
+async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<ResolveConfigResult> {
+    try {
+        const config = await bundledPrettier.resolveConfig(filePath, options);
+        return { config };
+    } catch (error) {
+        return { config: null, error };
+    }
+ }
 
 /**
  * Define which config should be used.
@@ -111,11 +128,16 @@ async function format(
     if (!hasConfig && vscodeConfig.requireConfig) {
         return text;
     }
-    const fileOptions = await bundledPrettier.resolveConfig(fileName, {
+
+    const { config: fileOptions, error } = await resolveConfig(fileName, {
         editorconfig: true,
     });
 
-    const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions, {
+    if (error) {
+        addToOutput(`Failed to resolve config for ${fileName}. Falling back to the default config settings.`);
+    }
+
+    const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions || {}, {
         printWidth: vscodeConfig.printWidth,
         tabWidth: vscodeConfig.tabWidth,
         singleQuote: vscodeConfig.singleQuote,
