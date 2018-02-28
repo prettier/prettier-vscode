@@ -189,12 +189,12 @@
     "@types/resolve": "0.0.6",
     "cross-env": "^5.1.1",
     "mocha": "^3.5.3",
-    "prettier": "1.11.0",
     "typescript": "^2.6.2",
     "vscode": "^1.1.10"
   },
   "dependencies": {
     "ignore": "^3.3.7",
+    "prettier": "1.11.0",
     "prettier-eslint": "^8.8.1",
     "prettier-stylelint": "^0.4.1",
     "read-pkg-up": "2.0.0",
