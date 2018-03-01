@@ -86,7 +86,12 @@ function getIgnorePathForFile(
         return null;
     }
     if (!existsSync(ignorePath)) {
-        addToOutput(`Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`);
+        // Don't log default value.
+        if (ignorePath !== '.prettierignore') {
+            addToOutput(
+                `Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`
+            );
+        }
         return null;
     }
     if (workspace.workspaceFolders) {
