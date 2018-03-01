@@ -44,7 +44,16 @@ function ignoreFileHandler(disposables: Disposable[]) {
         if (!ignorers.has(absolutePath)) {
             loadIgnorer(Uri.file(absolutePath));
         }
-
+        if (!existsSync(absolutePath)) {
+            // Don't log default value.
+            const ignorePath = getConfig(Uri.file(fsPath)).ignorePath;
+            if (ignorePath !== '.prettierignore') {
+                addToOutput(
+                    `Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`
+                );
+            }
+            return { ignoreFilePath: '', ignorer: nullIgnorer };
+        }
         return {
             ignoreFilePath: absolutePath,
             ignorer: ignorers.get(absolutePath)!,
@@ -83,15 +92,6 @@ function getIgnorePathForFile(
 ): string | null {
     // Configuration `prettier.ignorePath` is set to `null`
     if (!ignorePath) {
-        return null;
-    }
-    if (!existsSync(ignorePath)) {
-        // Don't log default value.
-        if (ignorePath !== '.prettierignore') {
-            addToOutput(
-                `Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`
-            );
-        }
         return null;
     }
     if (workspace.workspaceFolders) {
