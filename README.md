@@ -32,7 +32,7 @@ If you don't like the defaults, you can rebind `editor.action.formatDocument` an
 ### Format On Save
 Respects `editor.formatOnSave` setting.
 
-You can turn off format-on-save on a per-language basis by scoping the setting:
+You can turn on format-on-save on a per-language basis by scoping the setting:
 
 ```json
 // Set the default
