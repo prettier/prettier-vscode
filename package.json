@@ -54,6 +54,12 @@
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
           "scope": "resource"
         },
+        "prettier.tslintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
+          "scope": "resource"
+        },
         "prettier.stylelintIntegration": {
           "type": "boolean",
           "default": false,
@@ -197,6 +203,7 @@
     "prettier": "1.11.1",
     "prettier-eslint": "^8.8.1",
     "prettier-stylelint": "^0.4.1",
+    "prettier-tslint": "file:../prettier-tslint",
     "read-pkg-up": "2.0.0",
     "resolve": "^1.5.0"
   }

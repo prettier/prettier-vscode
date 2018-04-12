@@ -16,6 +16,7 @@ import {
     PrettierVSCodeConfig,
     Prettier,
     PrettierEslintFormat,
+    PrettierTslintFormat,
     ParserOption,
     PrettierStylelint,
     PrettierConfig,
@@ -39,7 +40,7 @@ type ResolveConfigResult = { config: PrettierConfig | null, error?: Error };
 
 /**
  * Resolves the prettierconfig for the given file.
- * 
+ *
  * @param filePath file's path
  */
 async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<ResolveConfigResult> {
@@ -150,6 +151,23 @@ async function format(
         proseWrap: vscodeConfig.proseWrap,
         arrowParens: vscodeConfig.arrowParens,
     });
+
+    if (vscodeConfig.tslintIntegration && parser === 'typescript') {
+        return safeExecution(
+            () => {
+                const prettierTslint = require('prettier-tslint').format as PrettierTslintFormat;
+                setUsedModule('prettier-tslint', 'Unknown', true);
+
+                return prettierTslint({
+                    text,
+                    filePath: fileName,
+                    fallbackPrettierOptions: prettierOptions,
+                });
+            },
+            text,
+            fileName
+        );
+    }
 
     if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
         return safeExecution(
