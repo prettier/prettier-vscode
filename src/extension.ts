@@ -49,6 +49,7 @@ function selectorsCreator(wf: WorkspaceFolder) {
                 ({
                     language: l,
                     pattern: relativePattern,
+                    scheme: 'file'
                 } as DocumentFilter)
         );
     }
