@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.3.0]
+
 *   [prettier 1.12.0](https://prettier.io/blog/2018/04/11/1.12.0.html)
 
 ## [1.2.0]
