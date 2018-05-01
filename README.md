@@ -110,6 +110,9 @@ Require a 'prettierconfig' to format
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
 
+#### prettier.config (default: setting is not used)
+Supply the path to a prettier config file such as `.prettierrc`. Restart required.
+
 #### prettier.disableLanguages (default: ["vue"])
 A list of languages IDs to disable this extension on. Restart required.
 *Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run*

@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'fs';
 import * as path from 'path';
 import { workspace, Uri, Disposable } from 'vscode';
-import { getConfig } from './utils';
+import { getConfig, getAbsolutePath } from './utils';
 import { addToOutput } from './errorHandler';
 
 const ignore = require('ignore');
@@ -32,10 +32,8 @@ function ignoreFileHandler(disposables: Disposable[]) {
     function getIgnorerForFile(
         fsPath: string
     ): { ignorer: Ignorer; ignoreFilePath: string } {
-        const absolutePath = getIgnorePathForFile(
-            fsPath,
-            getConfig(Uri.file(fsPath)).ignorePath
-        );
+        const uri = Uri.file(fsPath);
+        const absolutePath = getAbsolutePath(uri, getConfig(uri).ignorePath);
 
         if (!absolutePath) {
             return { ignoreFilePath: '', ignorer: nullIgnorer };
@@ -84,26 +82,6 @@ function ignoreFileHandler(disposables: Disposable[]) {
     function unloadIgnorer(ignoreUri: Uri) {
         ignorers.set(ignoreUri.fsPath, nullIgnorer);
     }
-}
-
-function getIgnorePathForFile(
-    filePath: string,
-    ignorePath: string
-): string | null {
-    // Configuration `prettier.ignorePath` is set to `null`
-    if (!ignorePath) {
-        return null;
-    }
-    if (workspace.workspaceFolders) {
-        const folder = workspace.getWorkspaceFolder(Uri.file(filePath));
-        return folder ? getPath(ignorePath, folder.uri.fsPath) : null;
-    }
-
-    return null;
-}
-
-function getPath(fsPath: string, relativeTo: string) {
-    return path.isAbsolute(fsPath) ? fsPath : path.join(relativeTo, fsPath);
 }
 
 export default ignoreFileHandler;

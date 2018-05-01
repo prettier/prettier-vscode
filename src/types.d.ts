@@ -67,6 +67,10 @@ interface ExtensionConfig {
      */
     ignorePath: string;
     /**
+     * Path to prettier config file.
+     */
+    config: string;
+    /**
      * If true will skip formatting if a prettierconfig isn't found.
      */
     requireConfig: boolean;
@@ -93,6 +97,10 @@ export interface Prettier {
              * read editorconfig, defaults to false.
              */
             editorconfig?: boolean;
+            /**
+             * Path to the config file to use, optional.
+             */
+            config?: string;
         }
     ) => Promise<PrettierConfig>;
     clearConfigCache: () => void;

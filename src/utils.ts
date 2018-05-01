@@ -1,3 +1,4 @@
+import { isAbsolute, join } from 'path';
 import { workspace, Uri } from 'vscode';
 import {
     PrettierVSCodeConfig,
@@ -45,4 +46,22 @@ export function getGroup(group: string): PrettierSupportInfo['languages'] {
 
 function getSupportLanguages() {
     return (require('prettier') as Prettier).getSupportInfo().languages;
+}
+
+/**
+ * Get absolute path for relative or absolute filePath.
+ * Relative to uri's workspace folder in relative case.
+ */
+export function getAbsolutePath(uri: Uri, filePath: string): string | undefined {
+    if (!filePath) {
+        return undefined;
+    }
+    if (isAbsolute(filePath)) {
+        return filePath;
+    }
+    if (workspace.workspaceFolders) {
+        const folder = workspace.getWorkspaceFolder(uri);
+        return folder && join(folder.uri.fsPath, filePath);
+    }
+    return undefined;
 }

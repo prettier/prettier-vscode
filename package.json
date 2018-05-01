@@ -72,6 +72,11 @@
           "description": "Path to a .prettierignore or similar file",
           "scope": "resource"
         },
+        "prettier.config": {
+          "type": "string",
+          "description": "Path to prettier config file",
+          "scope": "resource"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,

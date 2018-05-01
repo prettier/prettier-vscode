@@ -9,7 +9,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { getGroup, getParsersFromLanguageId, getConfig } from './utils';
+import { getGroup, getParsersFromLanguageId, getConfig, getAbsolutePath } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -39,17 +39,17 @@ type ResolveConfigResult = { config: PrettierConfig | null, error?: Error };
 
 /**
  * Resolves the prettierconfig for the given file.
- * 
+ *
  * @param filePath file's path
  */
-async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<ResolveConfigResult> {
+async function resolveConfig(filePath: string, options?: { editorconfig?: boolean, config?: string }): Promise<ResolveConfigResult> {
     try {
         const config = await bundledPrettier.resolveConfig(filePath, options);
         return { config };
     } catch (error) {
         return { config: null, error };
     }
- }
+}
 
 /**
  * Define which config should be used.
@@ -131,6 +131,7 @@ async function format(
 
     const { config: fileOptions, error } = await resolveConfig(fileName, {
         editorconfig: true,
+        config: getAbsolutePath(uri, getConfig(uri).config),
     });
 
     if (error) {

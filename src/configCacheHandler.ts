@@ -1,5 +1,7 @@
+import { basename } from 'path';
 import { workspace } from 'vscode';
 import { Prettier } from './types';
+import { getConfig } from './utils';
 
 const prettier = require('prettier') as Prettier;
 /**
@@ -14,6 +16,12 @@ const PRETTIER_CONFIG_FILES = [
     'package.json',
     'prettier.config.js',
 ];
+
+const prettierConfigPath = getConfig().config;
+
+if (prettierConfigPath) {
+    PRETTIER_CONFIG_FILES.push(basename(prettierConfigPath));
+}
 
 /**
  * Create a file watcher. Clears prettier's configuration cache on
