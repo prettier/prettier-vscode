@@ -15,9 +15,21 @@ let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let prettierInformation: string;
 
+function showPrettierErrorMessage() {
+    const showErrorAction = 'Show error';
+
+    window
+        .showErrorMessage('Prettier failed to format!', showErrorAction)
+        .then(action => {
+            if (action === showErrorAction) {
+                commands.executeCommand('prettier.open-output');
+            }
+        });
+}
+
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
-        // The function will be triggered everytime the active "editor" instance changes
+        // The function will be triggered every time the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
         // Both are seen as an "editor".
         // The following check will ignore such panels
@@ -130,6 +142,7 @@ export function safeExecution(
             .catch((err: Error) => {
                 addToOutput(addFilePath(err.message, fileName));
                 updateStatusBar('Prettier: $(x)');
+                showPrettierErrorMessage();
 
                 return defaultText;
             });
@@ -143,6 +156,7 @@ export function safeExecution(
     } catch (err) {
         addToOutput(addFilePath(err.message, fileName));
         updateStatusBar('Prettier: $(x)');
+        showPrettierErrorMessage();
 
         return defaultText;
     }
