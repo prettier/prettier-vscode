@@ -154,7 +154,7 @@ async function format(
     if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
         return safeExecution(
             () => {
-                const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+                const prettierEslint = requireLocalPkg(fileName, 'prettier-eslint') as PrettierEslintFormat;
                 setUsedModule('prettier-eslint', 'Unknown', true);
 
                 return prettierEslint({
