@@ -14,7 +14,7 @@ Can also be installed using
 ext install prettier-vscode
 ```
 
-A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of prettier leading to unexpected results.
+A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
 
 ## Usage
 
