@@ -10,6 +10,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 *   New option: tslintIntegration (boolean) use `prettier-tslint` instead of `prettier`
 
 
+## [1.3.1]
+
+*   prettier 1.12.1
+
+## [1.3.0]
+
+*   [prettier 1.12.0](https://prettier.io/blog/2018/04/11/1.12.0.html)
+
 ## [1.2.0]
 
 *   [Prettier 1.11.1](https://prettier.io/blog/2018/02/26/1.11.0.html)
