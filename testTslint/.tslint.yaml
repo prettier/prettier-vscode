@@ -1,0 +1,26 @@
+defaultSeverity: warning
+extends:
+  - tslint:recommended
+linterOptions:
+  exclude:
+    - '**/vendor/**'
+    - '**/node_modules/**'
+    - '**/*.d.ts'
+rules:
+  semicolon:
+    severity: error
+    options:
+      - never
+  indent:
+    severity: error
+    options:
+      - 4
+  trailing-comma:
+    severity: error
+    options:
+      - multiline: always
+        singleline: never
+  quotes:
+    severity: error
+    options:
+      - single
