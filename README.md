@@ -99,6 +99,10 @@ These settings are specific to VSCode and need to be set in the VSCode settings 
 Use *[prettier-eslint](https://github.com/prettier/prettier-eslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from ESLint rules.
 
+#### prettier.tslintIntegration (default: false) - JavaScript and TypeScript only
+Use *[prettier-tslint](https://github.com/azz/prettier-tslint)* instead of *prettier*.
+Other settings will only be fallbacks in case they could not be inferred from TSLint rules.
+
 #### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only 
 Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
