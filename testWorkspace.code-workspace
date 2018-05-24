@@ -8,6 +8,9 @@
         },
         {
             "path": "testEslint"
+        },
+        {
+            "path": "testTslint"
         }
     ],
     "settings": {}
