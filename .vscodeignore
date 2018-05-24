@@ -5,6 +5,7 @@ test/**
 src/**
 testEslint/**
 testProject/**
+testTslint/**
 testWorkspaceFolder/**
 testWorkspace.code-workspace
 .prettierignore
