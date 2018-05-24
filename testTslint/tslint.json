@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "align": [true, "parameters", "statements"],
+    "arrow-parens": true,
+    "ban": [
+      true,
+      "eval",
+      { "name": ["Typesettable", "Measurer"], "message": "Use CacheMeasurer instead" }
+    ],
+    "interface-name": [true, "always-prefix"],
+    "ordered-imports": true,
+    "no-consecutive-blank-lines": true,
+    "no-console": true,
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-string-throw": true,
+    "no-trailing-whitespace": true,
+    "no-var-keyword": true,
+    "object-literal-key-quotes": [true, "as-needed"],
+    "prefer-const": true,
+    "quotemark": [true, "single"],
+    "semicolon": [true, "never"],
+    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
+    "whitespace": true
+  }
+}

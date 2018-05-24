@@ -9,6 +9,7 @@
   "author": "faultless",
   "license": "MIT",
   "devDependencies": {
+    "prettier-tslint": "^0.4.0",
     "tslint": "^5.10.0",
     "tslint-plugin-prettier": "^1.3.0"
   },
