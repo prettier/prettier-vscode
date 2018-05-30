@@ -1,4 +1,4 @@
 {
-    "prettier.eslintIntegration": true,
+    "prettier.tslintIntegration": true,
     "prettier.singleQuote": false
 }
