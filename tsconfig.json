@@ -7,15 +7,9 @@
         "noUnusedLocals": true,
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
-        "lib": [
-            "es2016"
-        ],
+        "lib": ["es2016"],
         "sourceMap": true,
         "rootDir": "."
     },
-    "exclude": [
-        "node_modules",
-        ".vscode-test",
-        "testProject"
-    ]
+    "exclude": ["node_modules", ".vscode-test", "testProject", "testTslint"]
 }
