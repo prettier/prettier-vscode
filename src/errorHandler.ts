@@ -18,16 +18,13 @@ let prettierInformation: string;
 function showPrettierErrorMessage(message: string = 'failed to format!') {
     const showErrorAction = 'More';
 
-    // Prefix the message with Prettier so that the user knows which extension it is
-    const fullMessage = `Prettier: ${message}`;
-
     const maxMessageLength = 60;
 
     // Truncate the message so that we don't show huge blocks of source code
     const actualMessage =
-        fullMessage.length <= maxMessageLength
-            ? fullMessage
-            : fullMessage.substr(0, maxMessageLength - 3) + '...';
+        message.length <= maxMessageLength
+            ? message
+            : message.substr(0, maxMessageLength - 3) + '...';
 
     window.showErrorMessage(actualMessage, showErrorAction).then(action => {
         if (action === showErrorAction) {
