@@ -184,7 +184,7 @@
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.0",
+    "@types/mocha": "^5.2.1",
     "@types/node": "~7.0.65",
     "@types/resolve": "0.0.8",
     "cross-env": "^5.1.6",
@@ -194,7 +194,7 @@
   },
   "dependencies": {
     "ignore": "^3.3.8",
-    "prettier": "1.13.3",
+    "prettier": "1.13.4",
     "prettier-eslint": "^8.8.1",
     "prettier-stylelint": "^0.4.2",
     "read-pkg-up": "3.0.0",
