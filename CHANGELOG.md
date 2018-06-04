@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.4.0]
+
 -   [prettier 1.13.4](https://prettier.io/blog/2018/05/27/1.13.0.html)
 -   prettier-stylelint 0.4.2
 
