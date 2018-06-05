@@ -30,8 +30,8 @@ const STYLE_PARSERS: ParserOption[] = ['postcss', 'css', 'less', 'scss'];
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
  */
-async function hasPrettierConfig(filePath: string) {
-    const { config } = await resolveConfig(filePath);
+async function hasPrettierConfig(filePath: string, configPath?: string) {
+    const { config } = await resolveConfig(filePath, { config: configPath });
     return config !== null;
 }
 
@@ -123,7 +123,9 @@ async function format(
         lang.parsers.includes(parser)
     );
 
-    const hasConfig = await hasPrettierConfig(fileName);
+    const config = getAbsolutePath(uri, getConfig(uri).config);
+
+    const hasConfig = await hasPrettierConfig(fileName, config);
 
     if (!hasConfig && vscodeConfig.requireConfig) {
         return text;
@@ -131,7 +133,7 @@ async function format(
 
     const { config: fileOptions, error } = await resolveConfig(fileName, {
         editorconfig: true,
-        config: getAbsolutePath(uri, getConfig(uri).config),
+        config,
     });
 
     if (error) {
