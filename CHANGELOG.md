@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.5.0]
+
 -   Revert notification popup: remove it.
 -   fix parser inference
 
