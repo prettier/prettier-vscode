@@ -1,4 +1,5 @@
 import { workspace, Uri } from 'vscode';
+import { basename } from 'path';
 import {
     PrettierVSCodeConfig,
     Prettier,
@@ -12,10 +13,17 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
 
 export function getParsersFromLanguageId(
     languageId: string,
-    version: string
+    version: string,
+    path?: string
 ): ParserOption[] {
-    const language = getSupportLanguages().find(lang =>
-        lang.vscodeLanguageIds.includes(languageId)
+    const language = getSupportLanguages(version).find(
+        lang =>
+            lang.vscodeLanguageIds.includes(languageId) &&
+            // Only for some specific filenames
+            (lang.extensions.length > 0 ||
+                (path != null &&
+                    lang.filenames != null &&
+                    lang.filenames.includes(basename(path))))
     );
     if (!language) {
         return [];
@@ -43,6 +51,6 @@ export function getGroup(group: string): PrettierSupportInfo['languages'] {
     return getSupportLanguages().filter(language => language.group === group);
 }
 
-function getSupportLanguages() {
-    return (require('prettier') as Prettier).getSupportInfo().languages;
+function getSupportLanguages(version?: string) {
+    return (require('prettier') as Prettier).getSupportInfo(version).languages;
 }
