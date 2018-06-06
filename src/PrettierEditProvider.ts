@@ -35,21 +35,24 @@ async function hasPrettierConfig(filePath: string) {
     return config !== null;
 }
 
-type ResolveConfigResult = { config: PrettierConfig | null, error?: Error };
+type ResolveConfigResult = { config: PrettierConfig | null; error?: Error };
 
 /**
  * Resolves the prettierconfig for the given file.
- * 
+ *
  * @param filePath file's path
  */
-async function resolveConfig(filePath: string, options?: { editorconfig?: boolean }): Promise<ResolveConfigResult> {
+async function resolveConfig(
+    filePath: string,
+    options?: { editorconfig?: boolean }
+): Promise<ResolveConfigResult> {
     try {
         const config = await bundledPrettier.resolveConfig(filePath, options);
         return { config };
     } catch (error) {
         return { config: null, error };
     }
- }
+}
 
 /**
  * Define which config should be used.
@@ -86,7 +89,7 @@ function mergeConfig(
  */
 async function format(
     text: string,
-    { fileName, languageId, uri }: TextDocument,
+    { fileName, languageId, uri, isUntitled }: TextDocument,
     customOptions: Partial<PrettierConfig>
 ): Promise<string> {
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
@@ -101,7 +104,8 @@ async function format(
 
     const dynamicParsers = getParsersFromLanguageId(
         languageId,
-        localPrettier.version
+        localPrettier.version,
+        isUntitled ? undefined : fileName
     );
     let useBundled = false;
     let parser: ParserOption;
@@ -109,7 +113,8 @@ async function format(
     if (!dynamicParsers.length) {
         const bundledParsers = getParsersFromLanguageId(
             languageId,
-            bundledPrettier.version
+            bundledPrettier.version,
+            isUntitled ? undefined : fileName
         );
         parser = bundledParsers[0] || 'babylon';
         useBundled = true;
@@ -134,22 +139,29 @@ async function format(
     });
 
     if (error) {
-        addToOutput(`Failed to resolve config for ${fileName}. Falling back to the default config settings.`);
+        addToOutput(
+            `Failed to resolve config for ${fileName}. Falling back to the default config settings.`
+        );
     }
 
-    const prettierOptions = mergeConfig(hasConfig, customOptions, fileOptions || {}, {
-        printWidth: vscodeConfig.printWidth,
-        tabWidth: vscodeConfig.tabWidth,
-        singleQuote: vscodeConfig.singleQuote,
-        trailingComma: vscodeConfig.trailingComma,
-        bracketSpacing: vscodeConfig.bracketSpacing,
-        jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
-        parser: parser,
-        semi: vscodeConfig.semi,
-        useTabs: vscodeConfig.useTabs,
-        proseWrap: vscodeConfig.proseWrap,
-        arrowParens: vscodeConfig.arrowParens,
-    });
+    const prettierOptions = mergeConfig(
+        hasConfig,
+        customOptions,
+        fileOptions || {},
+        {
+            printWidth: vscodeConfig.printWidth,
+            tabWidth: vscodeConfig.tabWidth,
+            singleQuote: vscodeConfig.singleQuote,
+            trailingComma: vscodeConfig.trailingComma,
+            bracketSpacing: vscodeConfig.bracketSpacing,
+            jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
+            parser: parser,
+            semi: vscodeConfig.semi,
+            useTabs: vscodeConfig.useTabs,
+            proseWrap: vscodeConfig.proseWrap,
+            arrowParens: vscodeConfig.arrowParens,
+        }
+    );
 
     if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
         return safeExecution(
@@ -218,7 +230,8 @@ function fullDocumentRange(document: TextDocument): Range {
 }
 
 class PrettierEditProvider
-    implements DocumentRangeFormattingEditProvider,
+    implements
+        DocumentRangeFormattingEditProvider,
         DocumentFormattingEditProvider {
     constructor(private _fileIsIgnored: (filePath: string) => boolean) {}
 
