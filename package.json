@@ -72,6 +72,12 @@
           "description": "Path to a .prettierignore or similar file",
           "scope": "resource"
         },
+        "prettier.showErrorMessages": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show error message popups when prettier fails to format",
+          "scope": "resource"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,

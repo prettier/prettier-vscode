@@ -74,6 +74,10 @@ interface ExtensionConfig {
      * Array of language IDs to ignore
      */
     disableLanguages: string[];
+    /**
+     * If true will show error message popup when prettier fails to format
+     */
+    showErrorMessages: boolean;
 }
 
 /**

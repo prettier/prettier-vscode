@@ -9,13 +9,15 @@ import {
     languages,
 } from 'vscode';
 
-import { allEnabledLanguages } from './utils';
+import { allEnabledLanguages, getConfig } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let prettierInformation: string;
 
 function showPrettierErrorMessage(message: string = 'failed to format!') {
+    if (!getConfig().showErrorMessages) return;
+
     const showErrorAction = 'More';
 
     const maxMessageLength = 60;
