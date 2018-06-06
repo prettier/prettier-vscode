@@ -15,27 +15,9 @@ let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
 let prettierInformation: string;
 
-function showPrettierErrorMessage(message: string = 'failed to format!') {
-    const showErrorAction = 'More';
-
-    const maxMessageLength = 60;
-
-    // Truncate the message so that we don't show huge blocks of source code
-    const actualMessage =
-        message.length <= maxMessageLength
-            ? message
-            : message.substr(0, maxMessageLength - 3) + '...';
-
-    window.showErrorMessage(actualMessage, showErrorAction).then(action => {
-        if (action === showErrorAction) {
-            commands.executeCommand('prettier.open-output');
-        }
-    });
-}
-
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
-        // The function will be triggered every time the active "editor" instance changes
+        // The function will be triggered everytime the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
         // Both are seen as an "editor".
         // The following check will ignore such panels
@@ -70,7 +52,7 @@ export function registerDisposables(): Disposable[] {
 
 /**
  * Update the statusBarItem message and show the statusBarItem
- *
+ * 
  * @param message The message to put inside the statusBarItem
  */
 function updateStatusBar(message: string): void {
@@ -80,7 +62,7 @@ function updateStatusBar(message: string): void {
 }
 
 /**
- *
+ * 
  * @param module the module used
  * @param version the version of the module
  * @param bundled is it bundled with the extension or not
@@ -112,7 +94,7 @@ function addFilePath(msg: string, fileName: string): string {
 
 /**
  * Append messages to the output channel and format it with a title
- *
+ * 
  * @param message The message to append to the output channel
  */
 export function addToOutput(message: string): void {
@@ -124,15 +106,12 @@ export function addToOutput(message: string): void {
 
     // Append actual output
     outputChannel.appendLine(`${message}\n`);
-
-    // Show prettier error message popup
-    showPrettierErrorMessage(message);
 }
 
 /**
  * Execute a callback safely, if it doesn't work, return default and log messages.
- *
- * @param cb The function to be executed,
+ * 
+ * @param cb The function to be executed, 
  * @param defaultText The default value if execution of the cb failed
  * @param fileName The filename of the current document
  * @returns {string} formatted text or defaultText
@@ -171,7 +150,7 @@ export function safeExecution(
 /**
  * Setup the output channel and the statusBarItem.
  * Create a command to show the output channel
- *
+ * 
  * @returns {Disposable} The command to open the output channel
  */
 export function setupErrorHandler(): Disposable {
