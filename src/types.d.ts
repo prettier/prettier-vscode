@@ -7,6 +7,7 @@ export type ParserOption =
     | 'scss'
     | 'typescript'
     | 'json'
+    | 'json-stringify'
     | 'graphql'
     | 'markdown';
 
@@ -47,6 +48,7 @@ export interface PrettierConfig {
     arrowParens: 'avoid' | 'always';
     rangeStart: number;
     rangeEnd: number;
+    filepath: string;
 }
 /**
  * prettier-vscode specific configuration

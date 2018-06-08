@@ -7,6 +7,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [Unreleased]
 
 *   New option: tslintIntegration (boolean) use `prettier-tslint` instead of `prettier`
+
+## [1.5.0]
+
+-   Revert notification popup: remove it.
+-   fix parser inference
+
+## [1.4.0]
+
 -   [prettier 1.13.4](https://prettier.io/blog/2018/05/27/1.13.0.html)
 -   prettier-stylelint 0.4.2
 
