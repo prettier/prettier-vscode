@@ -1,27 +1,21 @@
 import * as assert from 'assert';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { Prettier, ParserOption } from '../src/types';
+import { Prettier } from '../src/types';
 import { Uri } from 'vscode';
 const prettier = require('prettier') as Prettier;
-// import * as PrettierVSCode from '../src/extension';
 
-const EXT_PARSER: { [ext: string]: ParserOption } = {
-    css: 'css',
-    json: 'json',
-    ts: 'typescript',
-};
 /**
  * loads and format a file.
  * @param file path relative to base URI (a workspaceFolder's URI)
  * @param base base URI
  * @returns source code and resulting code
  */
-export function format(file: string, base: Uri = vscode.workspace.workspaceFolders![0].uri) {
-    const absPath = path.join(
-        base.fsPath,
-        file
-    );
+export function format(
+    file: string,
+    base: Uri = vscode.workspace.workspaceFolders![0].uri
+) {
+    const absPath = path.join(base.fsPath, file);
     return vscode.workspace.openTextDocument(absPath).then(doc => {
         const text = doc.getText();
         return vscode.window.showTextDocument(doc).then(
@@ -46,7 +40,7 @@ export function format(file: string, base: Uri = vscode.workspace.workspaceFolde
 function formatSameAsPrettier(file: string) {
     return format(file).then(result => {
         const prettierFormatted = prettier.format(result.source, {
-            parser: EXT_PARSER[path.extname(file).slice(1)] || 'babylon',
+            filepath: file,
         });
         assert.equal(result.result, prettierFormatted);
     });
@@ -59,6 +53,7 @@ suite('Test format Document', function() {
         formatSameAsPrettier('formatTest/ugly.ts'));
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/ugly.json'));
+    test('it formats JSON', () => formatSameAsPrettier('formatTest/package.json'));
     // one would need to register that language for it to work ...
     // test('it formats GraphQL', () => {
     //     return;
