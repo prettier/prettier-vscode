@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+-   New setting `config`. Specify path to prettier config file.
+
 ## [1.5.0]
 
 -   Revert notification popup: remove it.
@@ -15,7 +17,6 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 -   [prettier 1.13.4](https://prettier.io/blog/2018/05/27/1.13.0.html)
 -   prettier-stylelint 0.4.2
--   New setting `config`. Specify path to prettier config file.
 
 ## [1.3.1]
 
