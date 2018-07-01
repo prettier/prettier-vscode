@@ -18,6 +18,12 @@ ext install prettier-vscode
 
 ## Usage
 
+### Keyboard shortcuts
+
+To format the document:
+
+- Mac: `Option + Shift + F`
+
 ### Using Command Palette (CMD/CTRL + Shift + P)
 
 ```
