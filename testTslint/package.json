@@ -1,0 +1,19 @@
+{
+  "name": "testtslint",
+  "version": "1.0.0",
+  "description": "Test tslint integration on this dummy project",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "faultless",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.12.1",
+    "prettier-tslint": "^0.4.0",
+    "tslint": "^5.10.0",
+    "tslint-plugin-prettier": "^1.3.0",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {}
+}

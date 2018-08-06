@@ -54,6 +54,12 @@
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
           "scope": "resource"
         },
+        "prettier.tslintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
+          "scope": "resource"
+        },
         "prettier.stylelintIntegration": {
           "type": "boolean",
           "default": false,
@@ -180,7 +186,7 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc --watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "cd testEslint && npm i && cd .. && cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
+    "test": "cd testEslint && npm i && cd ../testTslint && npm i && cd .. && cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
@@ -197,6 +203,7 @@
     "prettier": "1.13.4",
     "prettier-eslint": "^8.8.1",
     "prettier-stylelint": "^0.4.2",
+    "prettier-tslint": "^0.4.0",
     "read-pkg-up": "3.0.0",
     "resolve": "^1.7.1"
   }
