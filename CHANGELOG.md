@@ -6,7 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-*   New option: tslintIntegration (boolean) use `prettier-tslint` instead of `prettier`
+-   disableLanguages only in User / Workspace settings (no more in folder settings).
+-   New option: tslintIntegration (boolean) use `prettier-tslint` instead of `prettier`
 
 ## [1.5.0]
 
