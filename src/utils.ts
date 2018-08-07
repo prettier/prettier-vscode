@@ -18,7 +18,7 @@ export function getParsersFromLanguageId(
 ): ParserOption[] {
     const language = getSupportLanguages(version).find(
         lang =>
-            lang.vscodeLanguageIds.includes(languageId) &&
+            lang.vscodeLanguageIds && lang.vscodeLanguageIds.includes(languageId) &&
             // Only for some specific filenames
             (lang.extensions.length > 0 ||
                 (path != null &&
@@ -33,7 +33,7 @@ export function getParsersFromLanguageId(
 
 export function allEnabledLanguages(): string[] {
     return getSupportLanguages().reduce(
-        (ids, language) => [...ids, ...language.vscodeLanguageIds],
+        (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
         [] as string[]
     );
 }
@@ -42,7 +42,7 @@ export function allJSLanguages(): string[] {
     return getGroup('JavaScript')
         .filter(language => language.group === 'JavaScript')
         .reduce(
-            (ids, language) => [...ids, ...language.vscodeLanguageIds],
+            (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
             [] as string[]
         );
 }
