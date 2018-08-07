@@ -18,7 +18,8 @@ export function getParsersFromLanguageId(
 ): ParserOption[] {
     const language = getSupportLanguages(version).find(
         lang =>
-            lang.vscodeLanguageIds && lang.vscodeLanguageIds.includes(languageId) &&
+            Array.isArray(lang.vscodeLanguageIds) &&
+            lang.vscodeLanguageIds.includes(languageId) &&
             // Only for some specific filenames
             (lang.extensions.length > 0 ||
                 (path != null &&

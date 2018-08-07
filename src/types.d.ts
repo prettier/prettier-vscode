@@ -27,7 +27,10 @@ interface PrettierSupportInfo {
         extensions: string[];
         filenames?: string[];
         linguistLanguageId: number;
-        vscodeLanguageIds: string[];
+        /**
+         * Optional since prettier 1.14.0
+         */
+        vscodeLanguageIds?: string[];
     }[];
 }
 
