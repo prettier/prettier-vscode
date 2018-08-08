@@ -46,7 +46,7 @@
             "vue"
           ],
           "description": "A list of languages IDs to disable this extension on",
-          "scope": "resource"
+          "scope": "window"
         },
         "prettier.eslintIntegration": {
           "type": "boolean",
