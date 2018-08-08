@@ -200,7 +200,7 @@
   },
   "dependencies": {
     "ignore": "^3.3.8",
-    "prettier": "1.13.4",
+    "prettier": "1.14.0",
     "prettier-eslint": "^8.8.1",
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.0",
