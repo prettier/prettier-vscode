@@ -39,13 +39,15 @@ export function allEnabledLanguages(): string[] {
     );
 }
 
-export function allJSLanguages(): string[] {
-    return getGroup('JavaScript')
-        .filter(language => language.group === 'JavaScript')
-        .reduce(
-            (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
-            [] as string[]
-        );
+export function rangeSupportedLanguages(): string[] {
+    return [
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'json',
+        'graphql',
+    ];
 }
 
 export function getGroup(group: string): PrettierSupportInfo['languages'] {
