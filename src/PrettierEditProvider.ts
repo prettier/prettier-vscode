@@ -9,7 +9,7 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { getGroup, getParsersFromLanguageId, getConfig } from './utils';
+import { getParsersFromLanguageId, getConfig } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -125,9 +125,13 @@ async function format(
     } else {
         parser = dynamicParsers[0];
     }
-    const doesParserSupportEslint = getGroup('JavaScript').some(lang =>
-        lang.parsers.includes(parser)
-    );
+    const doesParserSupportEslint = [
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'vue',
+    ].includes(languageId);
 
     const hasConfig = await hasPrettierConfig(fileName);
 
@@ -167,7 +171,8 @@ async function format(
     if (vscodeConfig.tslintIntegration && parser === 'typescript') {
         return safeExecution(
             () => {
-                const prettierTslint = require('prettier-tslint').format as PrettierTslintFormat;
+                const prettierTslint = require('prettier-tslint')
+                    .format as PrettierTslintFormat;
                 setUsedModule('prettier-tslint', 'Unknown', true);
 
                 return prettierTslint({
