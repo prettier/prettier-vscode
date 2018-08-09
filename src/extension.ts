@@ -8,7 +8,7 @@ import {
 } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
-import { allEnabledLanguages, allJSLanguages, getConfig } from './utils';
+import { allEnabledLanguages, rangeSupportedLanguages, getConfig } from './utils';
 import configFileListener from './configCacheHandler';
 import ignoreFileHandler from './ignoreFileHandler';
 
@@ -37,7 +37,7 @@ function disposeHandlers() {
  */
 function selectors(): Selectors {
     const allLanguages = allEnabledLanguages();
-    const allRangeLanguages = allJSLanguages();
+    const allRangeLanguages = rangeSupportedLanguages();
     const { disableLanguages } = getConfig();
     const globalLanguageSelector = allLanguages.filter(
         l => !disableLanguages.includes(l)
