@@ -8,10 +8,10 @@ Install through VS Code extensions. Search for `Prettier - Code formatter`
 
 [Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-Can also be installed using
+Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install prettier-vscode
+ext install esbenp.prettier-vscode
 ```
 
 &#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
