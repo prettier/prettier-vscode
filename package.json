@@ -33,6 +33,20 @@
   "icon": "icon.png",
   "main": "./out/src/extension",
   "contributes": {
+    "menus": {
+      "touchBar": [
+        {
+          "command": "editor.action.formatDocument",
+          "group": "editing"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "editor.action.formatDocument",
+        "title": "Format"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "Prettier - Code formatter configuration",
