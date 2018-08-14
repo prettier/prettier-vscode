@@ -52,7 +52,7 @@ export function registerDisposables(): Disposable[] {
 
 /**
  * Update the statusBarItem message and show the statusBarItem
- * 
+ *
  * @param message The message to put inside the statusBarItem
  */
 function updateStatusBar(message: string): void {
@@ -62,7 +62,7 @@ function updateStatusBar(message: string): void {
 }
 
 /**
- * 
+ *
  * @param module the module used
  * @param version the version of the module
  * @param bundled is it bundled with the extension or not
@@ -94,7 +94,7 @@ function addFilePath(msg: string, fileName: string): string {
 
 /**
  * Append messages to the output channel and format it with a title
- * 
+ *
  * @param message The message to append to the output channel
  */
 export function addToOutput(message: string): void {
@@ -110,8 +110,8 @@ export function addToOutput(message: string): void {
 
 /**
  * Execute a callback safely, if it doesn't work, return default and log messages.
- * 
- * @param cb The function to be executed, 
+ *
+ * @param cb The function to be executed,
  * @param defaultText The default value if execution of the cb failed
  * @param fileName The filename of the current document
  * @returns {string} formatted text or defaultText
@@ -150,7 +150,7 @@ export function safeExecution(
 /**
  * Setup the output channel and the statusBarItem.
  * Create a command to show the output channel
- * 
+ *
  * @returns {Disposable} The command to open the output channel
  */
 export function setupErrorHandler(): Disposable {

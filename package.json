@@ -191,12 +191,12 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.1",
-    "@types/node": "~7.0.65",
+    "@types/node": "^8.10.25",
     "@types/resolve": "0.0.8",
     "cross-env": "^5.1.6",
     "mocha": "^5.2.0",
-    "typescript": "^2.9.1",
-    "vscode": "^1.1.18"
+    "typescript": "^3.0.1",
+    "vscode": "^1.1.20"
   },
   "dependencies": {
     "ignore": "^3.3.8",

@@ -8,7 +8,11 @@ import {
 } from 'vscode';
 import EditProvider from './PrettierEditProvider';
 import { setupErrorHandler, registerDisposables } from './errorHandler';
-import { allEnabledLanguages, rangeSupportedLanguages, getConfig } from './utils';
+import {
+    allEnabledLanguages,
+    rangeSupportedLanguages,
+    getConfig,
+} from './utils';
 import configFileListener from './configCacheHandler';
 import ignoreFileHandler from './ignoreFileHandler';
 
