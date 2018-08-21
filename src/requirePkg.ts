@@ -19,7 +19,11 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
         ((res.pkg.dependencies && res.pkg.dependencies[pkgName]) ||
             (res.pkg.devDependencies && res.pkg.devDependencies[pkgName]))
     ) {
-        return resolve.sync(pkgName, { basedir: res.path });
+        try {
+            return resolve.sync(pkgName, { basedir: res.path });
+        } catch (e) {
+            return;
+        }
     } else if (res.path) {
         const parent = path.resolve(path.dirname(res.path), '..');
         if (parent !== root) {
