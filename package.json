@@ -171,6 +171,10 @@
       {
         "fileMatch": ".prettierrc.json",
         "url": "http://json.schemastore.org/prettierrc"
+      },
+      {
+        "fileMatch": "package.json",
+        "url": "./package-json-schema.json"
       }
     ],
     "languages": [
