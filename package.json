@@ -179,6 +179,12 @@
         "filenames": [
           ".prettierrc"
         ]
+      },
+      {
+        "id": "ignore",
+        "filenames": [
+          ".prettierignore"
+        ]
       }
     ]
   },
