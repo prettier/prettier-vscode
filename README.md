@@ -120,6 +120,16 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 A list of languages IDs to disable this extension on. Restart required.
 *Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run*
 
+#### prettier.jsxSingleQuote (default: false)
+Use single quotes instead of double quotes in JSX.
+
+#### prettier.htmlWhitespaceSensitivity (default: 'css')
+Specify the global whitespace sensitivity for HTML files. [Learn more here](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
+
+
+#### prettier.htmlWhitespaceSensitivity (default: 'auto')
+Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
+
 ## Prettier resolution
 
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.

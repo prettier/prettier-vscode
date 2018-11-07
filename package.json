@@ -160,6 +160,32 @@
           "default": "avoid",
           "description": "Include parentheses around a sole arrow function parameter",
           "scope": "resource"
+        },
+        "prettier.jsxSingleQuote": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use single quotes instead of double quotes in JSX"
+        },
+        "prettier.htmlWhitespaceSensitivity": {
+          "type": "string",
+          "enum": [
+            "css",
+            "strict",
+            "ignore"
+          ],
+          "default": "css",
+          "description": "Specify the global whitespace sensitivity for HTML files.\n Valid options: \n'css' - Respect the default value of CSS display property. \n'strict' - Whitespaces are considered sensitive. \n'ignore' - Whitespaces are considered insensitive."
+        },
+        "prettier.endOfLine": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "lf",
+            "crlf",
+            "cr"
+          ],
+          "default": "auto",
+          "description": "Specify the end of line used by prettier"
         }
       }
     },
