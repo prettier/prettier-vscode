@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+-   Validate the `"prettier"` key in `package.json` using the prettier settings schema
+
 ## [1.6.0]
 
 -   disableLanguages only in User / Workspace settings (no more in folder settings).It allows to register formatters for every supported language.
