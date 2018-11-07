@@ -54,6 +54,7 @@ suite('Test format Document', function() {
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/ugly.json'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/package.json'));
+    test('it formats HTML', () => formatSameAsPrettier('formatTest/index.html'));
     // one would need to register that language for it to work ...
     // test('it formats GraphQL', () => {
     //     return;

@@ -52,6 +52,9 @@ export interface PrettierConfig {
     rangeStart: number;
     rangeEnd: number;
     filepath: string;
+    jsxSingleQuote: boolean;
+    htmlWhitespaceSensitivity: 'css' | 'strict' | 'ignore';
+    endOfLine: 'auto' | 'lf' | 'crlf' | 'cr';
 }
 /**
  * prettier-vscode specific configuration
