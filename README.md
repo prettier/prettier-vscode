@@ -93,6 +93,16 @@ If true, indent lines with tabs
 #### prettier.arrowParens (default: 'avoid')
 Include parentheses around a sole arrow function parameter
 
+#### prettier.jsxSingleQuote (default: false)
+Use single quotes instead of double quotes in JSX.
+
+#### prettier.htmlWhitespaceSensitivity (default: 'css')
+Specify the global whitespace sensitivity for HTML files. [Learn more here](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
+
+#### prettier.endOfLine (default: 'auto')
+Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
+
+
 ### VSCode specific settings
 
 These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
@@ -119,16 +129,6 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 #### prettier.disableLanguages (default: ["vue"])
 A list of languages IDs to disable this extension on. Restart required.
 *Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run*
-
-#### prettier.jsxSingleQuote (default: false)
-Use single quotes instead of double quotes in JSX.
-
-#### prettier.htmlWhitespaceSensitivity (default: 'css')
-Specify the global whitespace sensitivity for HTML files. [Learn more here](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
-
-
-#### prettier.htmlWhitespaceSensitivity (default: 'auto')
-Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
 
 ## Prettier resolution
 
