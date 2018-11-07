@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.7.0]
+
 -   Validate the `"prettier"` key in `package.json` using the prettier settings schema
 -   Prettier [1.15](https://prettier.io/blog/2018/11/07/1.15.0.html)
 -   New options: jsxSingleQuote, htmlWhitespaceSensitivity and endOfLine (More info in readme).
