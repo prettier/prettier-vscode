@@ -165,6 +165,9 @@ async function format(
             useTabs: vscodeConfig.useTabs,
             proseWrap: vscodeConfig.proseWrap,
             arrowParens: vscodeConfig.arrowParens,
+            jsxSingleQuote: vscodeConfig.jsxSingleQuote,
+            htmlWhitespaceSensitivity: vscodeConfig.htmlWhitespaceSensitivity,
+            endOfLine: vscodeConfig.endOfLine,
         }
     );
 
