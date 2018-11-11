@@ -45,6 +45,12 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 }
 ```
 
+### VSCode ESLint and TSLint Integration
+
+`prettier-eslint` and `prettier-tslint` are included with the installation of this extension.  There is no need for a separate local or global install of either for functionality.  
+
+`eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally.  Global installations will not be recognized.
+
 ## Settings
 
 ### Prettier's Settings
