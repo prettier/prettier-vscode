@@ -12,15 +12,15 @@ const readPkgUp = require('read-pkg-up');
  * @returns {string} resolved path to prettier
  */
 function findPkg(fspath: string, pkgName: string): string | undefined {
-    const res = readPkgUp.sync({ cwd: fspath, normalize: false });
+    const res = readPkgUp.sync({ cwd: fspath });
     const { root } = path.parse(fspath);
-    if (
-        res.pkg &&
-        ((res.pkg.dependencies && res.pkg.dependencies[pkgName]) ||
-            (res.pkg.devDependencies && res.pkg.devDependencies[pkgName]))
-    ) {
-        return resolve.sync(pkgName, { basedir: res.path });
-    } else if (res.path) {
+    if (res.pkg) {
+        const resolved = resolve.sync(pkgName, { basedir: res.path });
+        if (resolved) {
+            return resolved;
+        }
+    }
+    if (res.path) {
         const parent = path.resolve(path.dirname(res.path), '..');
         if (parent !== root) {
             return findPkg(parent, pkgName);
@@ -30,8 +30,8 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
 }
 
 /**
- * Require package explicitely installed relative to given path.
- * Fallback to bundled one if no pacakge was found bottom up.
+ * Require package explicitly installed relative to given path.
+ * Fallback to bundled one if no package was found bottom up.
  * @param {string} fspath file system path starting point to resolve package
  * @param {string} pkgName package's name to require
  * @returns module
