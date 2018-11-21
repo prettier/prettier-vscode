@@ -16,7 +16,6 @@ scripts/**
 tsconfig.json
 vsc-extension-quickstart.md
 package-lock.json
-CHANGELOG.md
 CONTRIBUTORS.md
 
 node_modules/**/*.yml
