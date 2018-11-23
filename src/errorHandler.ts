@@ -47,6 +47,11 @@ export function registerDisposables(): Disposable[] {
                 toggleStatusBarItem(editor);
             }
         }),
+        window.onDidChangeActiveTextEditor(editor => {
+            if (editor === undefined) {
+                statusBarItem.hide();
+            }
+        }),
     ];
 }
 
