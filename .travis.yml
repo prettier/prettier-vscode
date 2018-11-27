@@ -30,4 +30,4 @@ install:
   - yarn vscode:prepublish
 
 script:
-  - yarn --silent
+  - yarn test --silent
