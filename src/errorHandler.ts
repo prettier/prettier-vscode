@@ -16,6 +16,10 @@ let outputChannel: OutputChannel;
 let prettierInformation: string;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
+    if (statusBarItem === undefined) {
+        return;
+    }
+  
     if (editor !== undefined) {
         // The function will be triggered everytime the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
@@ -36,6 +40,8 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
         } else {
             statusBarItem.hide();
         }
+    } else {
+        statusBarItem.hide();
     }
 }
 
@@ -43,14 +49,10 @@ export function registerDisposables(): Disposable[] {
     return [
         // Keep track whether to show/hide the statusbar
         window.onDidChangeActiveTextEditor(editor => {
-            if (statusBarItem !== undefined) {
-                toggleStatusBarItem(editor);
-            }
+            toggleStatusBarItem(editor);
         }),
         window.onDidChangeActiveTextEditor(editor => {
-            if (editor === undefined) {
-                statusBarItem.hide();
-            }
+            toggleStatusBarItem(editor);
         }),
     ];
 }
