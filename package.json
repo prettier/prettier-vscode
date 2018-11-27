@@ -231,7 +231,7 @@
     "@types/resolve": "0.0.8",
     "cross-env": "^5.1.6",
     "mocha": "^5.2.0",
-    "vscode": "^1.1.21"
+    "vscode": "^1.1.22"
   },
   "dependencies": {
     "ignore": "^3.3.8",
