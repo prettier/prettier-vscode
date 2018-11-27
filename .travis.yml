@@ -26,6 +26,7 @@ before_install:
     fi
 
 install:
+  - yarn
   - yarn vscode:prepublish
 
 script:
