@@ -42,6 +42,3 @@ node_modules/**/*/examples/
 
 node_modules/**/*/.editorconfig
 node_modules/**/*/bower.json
-node_modules/**/*/LICENSE
-node_modules/**/*/license
-node_modules/**/*/AUTHORS
