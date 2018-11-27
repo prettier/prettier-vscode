@@ -1,13 +1,23 @@
 sudo: false
+
 language: node_js
+
 node_js:
  - "8"
+
 os:
   - linux
+
+cache:
+  yarn: true
+  directories:
+    - "node_modules"
+
 addons:
   apt:
     packages:
       - libsecret-1-dev
+
 before_install:
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
       export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
@@ -16,8 +26,7 @@ before_install:
     fi
 
 install:
-  - npm ci
-  - npm run vscode:prepublish
+  - yarn vscode:prepublish
 
 script:
-  - npm test --silent
+  - yarn --silent

@@ -47,7 +47,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 ### VSCode ESLint and TSLint Integration
 
-`prettier-eslint` and `prettier-tslint` are included with the installation of this extension.  There is no need for a separate local or global install of either for functionality.  
+`prettier-eslint` and `prettier-tslint` are included with the installation of this extension.  There is no need for a separate local or global install of either for functionality.
 
 `eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally.  Global installations will not be recognized.
 
@@ -121,7 +121,7 @@ Other settings will only be fallbacks in case they could not be inferred from ES
 Use *[prettier-tslint](https://github.com/azz/prettier-tslint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from TSLint rules.
 
-#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only 
+#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only
 Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
 
@@ -158,4 +158,4 @@ Tests open a VSCode instance and load `./testProject` as root workspace.
 OR
 
 Without having an instance VSCode running (or it won't start)
-`npm run test` 
+`yarn test`
