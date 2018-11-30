@@ -50,10 +50,7 @@ export function registerDisposables(): Disposable[] {
         // Keep track whether to show/hide the statusbar
         window.onDidChangeActiveTextEditor(editor => {
             toggleStatusBarItem(editor);
-        }),
-        window.onDidChangeActiveTextEditor(editor => {
-            toggleStatusBarItem(editor);
-        }),
+        })
     ];
 }
 
