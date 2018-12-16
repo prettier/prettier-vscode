@@ -231,11 +231,11 @@
     "@types/resolve": "0.0.8",
     "cross-env": "^5.1.6",
     "mocha": "^5.2.0",
-    "vscode": "^1.1.21"
+    "vscode": "^1.1.22"
   },
   "dependencies": {
     "ignore": "^3.3.8",
-    "prettier": "1.15.2",
+    "prettier": "1.15.3",
     "prettier-eslint": "^8.8.2",
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.0",
