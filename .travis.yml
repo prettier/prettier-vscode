@@ -1,19 +1,11 @@
-sudo: false
 language: node_js
 node_js:
- - "8"
-os:
-  - linux
-addons:
-  apt:
-    packages:
-      - libsecret-1-dev
+ - lts/*
+
 before_install:
-  - if [ $TRAVIS_OS_NAME == "linux" ]; then
-      export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
-      sh -e /etc/init.d/xvfb start;
-      sleep 3;
-    fi
+  - export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
+  - sh -e /etc/init.d/xvfb start;
+  - sleep 3;
 
 install:
   - npm ci
