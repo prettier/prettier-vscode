@@ -26,7 +26,13 @@ OR
 1. Select the text you want to Prettify
 2. CMD + Shift + P -> Format Selection
 ```
+### Using Shortcut (OPTIONS/ALT + Shift + F)
 
+```
+1. ALT + Shift + F (For Windows)
+2. OPTIONS + Shift + F (For Mac)
+
+```
 ### Custom keybindings
 
 If you don't like the defaults, you can rebind `editor.action.formatDocument` and `editor.action.formatSelection` in the keyboard shortcuts menu of vscode.
