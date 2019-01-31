@@ -105,7 +105,7 @@ async function format(
 
     const dynamicParsers = getParsersFromLanguageId(
         languageId,
-        localPrettier.version,
+        localPrettier,
         isUntitled ? undefined : fileName
     );
     let useBundled = false;
@@ -114,7 +114,7 @@ async function format(
     if (!dynamicParsers.length) {
         const bundledParsers = getParsersFromLanguageId(
             languageId,
-            bundledPrettier.version,
+            bundledPrettier,
             isUntitled ? undefined : fileName
         );
         parser = bundledParsers[0] || 'babylon';

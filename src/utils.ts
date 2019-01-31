@@ -7,16 +7,18 @@ import {
     ParserOption,
 } from './types.d';
 
+const bundledPrettier = require('prettier') as Prettier;
+
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
     return workspace.getConfiguration('prettier', uri) as any;
 }
 
 export function getParsersFromLanguageId(
     languageId: string,
-    version: string,
+    prettierInstance: Prettier,
     path?: string
 ): ParserOption[] {
-    const language = getSupportLanguages(version).find(
+    const language = getSupportLanguages(prettierInstance).find(
         lang =>
             Array.isArray(lang.vscodeLanguageIds) &&
             lang.vscodeLanguageIds.includes(languageId) &&
@@ -54,6 +56,6 @@ export function getGroup(group: string): PrettierSupportInfo['languages'] {
     return getSupportLanguages().filter(language => language.group === group);
 }
 
-function getSupportLanguages(version?: string) {
-    return (require('prettier') as Prettier).getSupportInfo(version).languages;
+function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
+    return prettierInstance.getSupportInfo(prettierInstance.version).languages;
 }
