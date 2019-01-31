@@ -57,5 +57,10 @@ export function getGroup(group: string): PrettierSupportInfo['languages'] {
 }
 
 function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
-    return prettierInstance.getSupportInfo(prettierInstance.version).languages;
+    // prettier.getSupportInfo was added in prettier@1.8.0
+    if (prettierInstance.getSupportInfo) {
+        return prettierInstance.getSupportInfo(prettierInstance.version).languages;
+    } else {
+        return bundledPrettier.getSupportInfo(prettierInstance.version).languages;
+    }
 }
