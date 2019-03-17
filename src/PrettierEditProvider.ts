@@ -6,10 +6,11 @@ import {
     FormattingOptions,
     CancellationToken,
     TextEdit,
+    window,
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { getParsersFromLanguageId, getConfig } from './utils';
+import { getParsersFromLanguageId, getConfig, supportsLanguage } from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -100,6 +101,13 @@ async function format(
     // wf1  (with "lang") -> glob: "wf1/**"
     // wf1/wf2  (without "lang") -> match "wf1/**"
     if (vscodeConfig.disableLanguages.includes(languageId)) {
+        return text;
+    }
+
+    if (!supportsLanguage(languageId, localPrettier)) {
+        window.showErrorMessage(
+            `Prettier does not support "${languageId}". Maybe a plugin is missing from the workspace?`
+        );
         return text;
     }
 

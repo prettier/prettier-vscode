@@ -51,6 +51,10 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 `eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally.  Global installations will not be recognized.
 
+### Prettier Plugins
+
+Prettier plugins are supported when using a local Prettier installation. Just install the plugin you need locally to your project, restart vscode and you are good to go.
+
 ## Settings
 
 ### Prettier's Settings

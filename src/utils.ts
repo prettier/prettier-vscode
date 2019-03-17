@@ -6,6 +6,7 @@ import {
     PrettierSupportInfo,
     ParserOption,
 } from './types.d';
+import { requireLocalPkg } from './requirePkg';
 
 const bundledPrettier = require('prettier') as Prettier;
 
@@ -35,8 +36,35 @@ export function getParsersFromLanguageId(
 }
 
 export function allEnabledLanguages(): string[] {
-    return getSupportLanguages().reduce(
-        (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
+    if (!workspace.workspaceFolders) {
+        return getSupportLanguages().reduce(
+            (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
+            [] as string[]
+        );
+    }
+
+    return workspace.workspaceFolders.reduce(
+        (ids, workspaceFolder) => {
+            const workspacePrettier = requireLocalPkg(
+                workspaceFolder.uri.fsPath,
+                'prettier'
+            ) as Prettier;
+
+            const newLanguages: string[] = [];
+
+            for (const language of getSupportLanguages(workspacePrettier)) {
+                if (!language.vscodeLanguageIds) {
+                    continue;
+                }
+                for (const id of language.vscodeLanguageIds) {
+                    if (!ids.includes(id)) {
+                        newLanguages.push(id);
+                    }
+                }
+            }
+
+            return [...ids, ...newLanguages];
+        },
         [] as string[]
     );
 }
@@ -58,4 +86,19 @@ export function getGroup(group: string): PrettierSupportInfo['languages'] {
 
 function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
     return prettierInstance.getSupportInfo(prettierInstance.version).languages;
+}
+
+export function supportsLanguage(
+    vscodeLanguageId: string,
+    prettierInstance: Prettier
+) {
+    return prettierInstance
+        .getSupportInfo(prettierInstance.version)
+        .languages.some(language => {
+            if (!language.vscodeLanguageIds) {
+                return false;
+            }
+
+            return language.vscodeLanguageIds.includes(vscodeLanguageId);
+        });
 }
