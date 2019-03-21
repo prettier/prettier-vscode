@@ -1,5 +1,5 @@
 import { workspace, Uri } from 'vscode';
-import { basename } from 'path';
+import { basename, dirname, join } from 'path';
 import {
     PrettierVSCodeConfig,
     Prettier,
@@ -7,17 +7,42 @@ import {
     ParserOption,
 } from './types.d';
 import { requireLocalPkg } from './requirePkg';
+import { execSync } from 'child_process';
 
 const requireGlobal = require('requireg');
 const bundledPrettier = require('prettier') as Prettier;
+
+let globalNodeExecPath: string | undefined;
+
+try {
+    globalNodeExecPath = execSync(
+        'node --eval "process.stdout.write(process.execPath)"'
+    ).toString();
+} catch (error) {
+    // Not installed
+}
 
 /**
  * Require global prettier or undefined if none is installed
  */
 export function requireGlobalPrettier(): Prettier | undefined {
+    if (!globalNodeExecPath) {
+        return;
+    }
+
+    // The global node is different from the one vscode extensions executes in.
+    // So workaround it by setting NODE_PATH using the process.execPath from the
+    // global node installation
+    const origNodePath = process.env.NODE_PATH;
+    process.env.NODE_PATH = join(dirname(globalNodeExecPath), 'node_modules');
+
     try {
         return requireGlobal('prettier', true);
-    } catch (error) {}
+    } catch (error) {
+        // No global installed
+    } finally {
+        process.env.NODE_PATH = origNodePath;
+    }
 }
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
