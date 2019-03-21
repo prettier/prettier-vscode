@@ -53,7 +53,9 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 ### Prettier Plugins
 
-Prettier plugins are supported when using a local Prettier installation. Just install the plugin you need locally to your project, restart vscode and you are good to go.
+Prettier plugins are supported when using a custom Prettier installation local or global. The plugins must be installed to the corresponding installation.
+
+Eg. if you have installed Prettier locally to your project with `npm install --save-dev prettier` you must install the plugins like it too `npm install --save-dev @prettier/plugin-php`.
 
 ## Settings
 
