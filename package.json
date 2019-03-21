@@ -240,6 +240,7 @@
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^4.0.0",
+    "requireg": "^0.2.1",
     "resolve": "^1.10.0",
     "typescript": "^2.9.2"
   }

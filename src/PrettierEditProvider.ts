@@ -10,7 +10,12 @@ import {
 } from 'vscode';
 
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
-import { getParsersFromLanguageId, getConfig, supportsLanguage } from './utils';
+import {
+    getParsersFromLanguageId,
+    getConfig,
+    supportsLanguage,
+    requireGlobalPrettier,
+} from './utils';
 import { requireLocalPkg } from './requirePkg';
 
 import {
@@ -83,6 +88,27 @@ function mergeConfig(
           )
         : Object.assign(vscodeConfig, prettierConfig, additionalConfig);
 }
+
+function getPrettierForFile(fileName: string): Prettier {
+    // First try to use the local prettier for this file
+    const local = requireLocalPkg<Prettier>(fileName, 'prettier');
+    if (local) {
+        console.log('Formatting with local prettier');
+        return local;
+    }
+
+    // Fallback to global if no local is found
+    const global = requireGlobalPrettier();
+    if (global) {
+        console.log('Formatting with global prettier');
+        return global;
+    }
+
+    // Finally use the bundled one if all else fail
+    console.log('Formatting with bundled prettier');
+    return bundledPrettier;
+}
+
 /**
  * Format the given text with user's configuration.
  * @param text Text to format
@@ -95,7 +121,7 @@ async function format(
     customOptions: Partial<PrettierConfig>
 ): Promise<string> {
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
-    const localPrettier = requireLocalPkg(fileName, 'prettier') as Prettier;
+    const prettierInstance = getPrettierForFile(fileName);
 
     // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
     // wf1  (with "lang") -> glob: "wf1/**"
@@ -104,7 +130,7 @@ async function format(
         return text;
     }
 
-    if (!supportsLanguage(languageId, localPrettier)) {
+    if (!supportsLanguage(languageId, prettierInstance)) {
         window.showErrorMessage(
             `Prettier does not support "${languageId}". Maybe a plugin is missing from the workspace?`
         );
@@ -113,7 +139,7 @@ async function format(
 
     const dynamicParsers = getParsersFromLanguageId(
         languageId,
-        localPrettier,
+        prettierInstance,
         isUntitled ? undefined : fileName
     );
     let useBundled = false;
@@ -232,7 +258,7 @@ async function format(
             () => {
                 const warningMessage =
                     `prettier@${
-                        localPrettier.version
+                        prettierInstance.version
                     } doesn't support ${languageId}. ` +
                     `Falling back to bundled prettier@${
                         bundledPrettier.version
@@ -249,10 +275,10 @@ async function format(
         );
     }
 
-    setUsedModule('prettier', localPrettier.version, false);
+    setUsedModule('prettier', prettierInstance.version, false);
 
     return safeExecution(
-        () => localPrettier.format(text, prettierOptions),
+        () => prettierInstance.format(text, prettierOptions),
         text,
         fileName
     );

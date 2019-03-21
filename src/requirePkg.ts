@@ -36,18 +36,17 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
  * @param {string} pkgName package's name to require
  * @returns module
  */
-function requireLocalPkg(fspath: string, pkgName: string): any {
+function requireLocalPkg<T>(fspath: string, pkgName: string): T | undefined {
     const modulePath = findPkg(fspath, pkgName);
+    console.log('Found module path', modulePath);
     if (modulePath !== void 0) {
         try {
             return require(modulePath);
         } catch (e) {
             addToOutput(
-                `Failed to load ${pkgName} from ${modulePath}. Using bundled`
+                `Failed to load ${pkgName} from ${modulePath}. Using bundled or global`
             );
         }
     }
-
-    return require(pkgName);
 }
 export { requireLocalPkg };

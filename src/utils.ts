@@ -8,7 +8,17 @@ import {
 } from './types.d';
 import { requireLocalPkg } from './requirePkg';
 
+const requireGlobal = require('requireg');
 const bundledPrettier = require('prettier') as Prettier;
+
+/**
+ * Require global prettier or undefined if none is installed
+ */
+export function requireGlobalPrettier(): Prettier | undefined {
+    try {
+        return requireGlobal('prettier', true);
+    } catch (error) {}
+}
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
     return workspace.getConfiguration('prettier', uri) as any;
@@ -35,38 +45,66 @@ export function getParsersFromLanguageId(
     return language.parsers;
 }
 
+/**
+ * Type Guard function for filtering empty values out of arrays.
+ *
+ * Usage: arr.filter(notEmpty)
+ */
+export function notEmpty<TValue>(
+    value: TValue | null | undefined
+): value is TValue {
+    return value !== null && value !== undefined;
+}
+
+/**
+ * Find all enabled languages from all available prettiers: local, global and
+ * bundled.
+ */
 export function allEnabledLanguages(): string[] {
-    if (!workspace.workspaceFolders) {
-        return getSupportLanguages().reduce(
-            (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
-            [] as string[]
-        );
+    let prettierInstances: Prettier[] = [bundledPrettier];
+
+    const globalPrettier = requireGlobalPrettier();
+    if (globalPrettier) {
+        console.log('Has global Prettier');
+        prettierInstances = prettierInstances.concat(globalPrettier);
+    } else {
+        console.log('No global Prettier');
     }
 
-    return workspace.workspaceFolders.reduce(
-        (ids, workspaceFolder) => {
-            const workspacePrettier = requireLocalPkg(
-                workspaceFolder.uri.fsPath,
-                'prettier'
-            ) as Prettier;
+    if (workspace.workspaceFolders) {
+        // Each workspace can have own local prettier
+        const localPrettiers = workspace.workspaceFolders
+            .map(workspaceFolder =>
+                requireLocalPkg<Prettier>(
+                    workspaceFolder.uri.fsPath,
+                    'prettier'
+                )
+            )
+            .filter(notEmpty);
 
-            const newLanguages: string[] = [];
+        prettierInstances = prettierInstances.concat(localPrettiers);
+    }
 
-            for (const language of getSupportLanguages(workspacePrettier)) {
-                if (!language.vscodeLanguageIds) {
-                    continue;
-                }
-                for (const id of language.vscodeLanguageIds) {
-                    if (!ids.includes(id)) {
-                        newLanguages.push(id);
-                    }
-                }
+    return getUniqueSupportedLanguages(prettierInstances);
+}
+
+function getUniqueSupportedLanguages(prettierInstances: Prettier[]): string[] {
+    const languages = new Set<string>();
+
+    for (const prettier of prettierInstances) {
+        for (const language of getSupportLanguages(prettier)) {
+            if (!language.vscodeLanguageIds) {
+                continue;
             }
 
-            return [...ids, ...newLanguages];
-        },
-        [] as string[]
-    );
+            for (const id of language.vscodeLanguageIds) {
+                languages.add(id);
+            }
+        }
+    }
+
+    console.log('LANGS', prettierInstances.length, Array.from(languages));
+    return Array.from(languages);
 }
 
 export function rangeSupportedLanguages(): string[] {
@@ -80,11 +118,16 @@ export function rangeSupportedLanguages(): string[] {
     ];
 }
 
-export function getGroup(group: string): PrettierSupportInfo['languages'] {
-    return getSupportLanguages().filter(language => language.group === group);
+export function getGroup(
+    prettier: Prettier,
+    group: string
+): PrettierSupportInfo['languages'] {
+    return getSupportLanguages(prettier).filter(
+        language => language.group === group
+    );
 }
 
-function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
+function getSupportLanguages(prettierInstance: Prettier) {
     return prettierInstance.getSupportInfo(prettierInstance.version).languages;
 }
 
