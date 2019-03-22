@@ -87,14 +87,15 @@ export function notEmpty<TValue>(
  * bundled.
  */
 export function allEnabledLanguages(): string[] {
-    let prettierInstances: Prettier[] = [bundledPrettier];
+    let prettierInstances: Prettier[] = [];
 
     const globalPrettier = requireGlobalPrettier();
     if (globalPrettier) {
-        console.log('prettier: Has global Prettier');
+        console.log('prettier: Found global Prettier');
         prettierInstances = prettierInstances.concat(globalPrettier);
     } else {
-        console.log('prettier: No global Prettier');
+        prettierInstances = prettierInstances.concat(bundledPrettier);
+        console.log('prettier: No global Prettier. Using bundled.');
     }
 
     if (workspace.workspaceFolders) {
