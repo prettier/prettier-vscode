@@ -121,7 +121,6 @@ async function format(
     customOptions: Partial<PrettierConfig>
 ): Promise<string> {
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
-    const prettierInstance = getPrettierForFile(fileName);
 
     // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
     // wf1  (with "lang") -> glob: "wf1/**"
@@ -129,6 +128,8 @@ async function format(
     if (vscodeConfig.disableLanguages.includes(languageId)) {
         return text;
     }
+
+    const prettierInstance = getPrettierForFile(fileName);
 
     if (!supportsLanguage(languageId, prettierInstance)) {
         window.showErrorMessage(
