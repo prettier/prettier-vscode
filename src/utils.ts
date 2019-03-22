@@ -91,10 +91,10 @@ export function allEnabledLanguages(): string[] {
 
     const globalPrettier = requireGlobalPrettier();
     if (globalPrettier) {
-        console.log('Has global Prettier');
+        console.log('prettier: Has global Prettier');
         prettierInstances = prettierInstances.concat(globalPrettier);
     } else {
-        console.log('No global Prettier');
+        console.log('prettier: No global Prettier');
     }
 
     if (workspace.workspaceFolders) {
@@ -111,7 +111,9 @@ export function allEnabledLanguages(): string[] {
         prettierInstances = prettierInstances.concat(localPrettiers);
     }
 
-    return getUniqueSupportedLanguages(prettierInstances);
+    const languages = getUniqueSupportedLanguages(prettierInstances);
+    console.log('prettier: supported languages: ' + languages.join(','));
+    return languages;
 }
 
 function getUniqueSupportedLanguages(prettierInstances: Prettier[]): string[] {
@@ -134,7 +136,6 @@ function getUniqueSupportedLanguages(prettierInstances: Prettier[]): string[] {
         }
     }
 
-    console.log('LANGS', prettierInstances.length, Array.from(languages));
     return Array.from(languages);
 }
 

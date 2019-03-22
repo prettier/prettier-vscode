@@ -38,7 +38,6 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
  */
 function requireLocalPkg<T>(fspath: string, pkgName: string): T | undefined {
     const modulePath = findPkg(fspath, pkgName);
-    console.log('Found module path', modulePath);
     if (modulePath !== void 0) {
         try {
             return require(modulePath);
