@@ -1,4 +1,4 @@
-import { workspace, Uri } from 'vscode';
+import { workspace, Uri, window } from 'vscode';
 import { basename } from 'path';
 import {
     PrettierVSCodeConfig,
@@ -120,6 +120,11 @@ function getUniqueSupportedLanguages(prettierInstances: Prettier[]): string[] {
     for (const prettier of prettierInstances) {
         for (const language of getSupportLanguages(prettier)) {
             if (!language.vscodeLanguageIds) {
+                window.showErrorMessage(
+                    `Prettier plugin for ${
+                        language.name
+                    } does no support vscodeLanguageIds property`
+                );
                 continue;
             }
 
