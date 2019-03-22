@@ -1,5 +1,5 @@
 import { workspace, Uri } from 'vscode';
-import { basename, dirname, join } from 'path';
+import { basename } from 'path';
 import {
     PrettierVSCodeConfig,
     Prettier,
@@ -12,21 +12,22 @@ import { execSync } from 'child_process';
 const requireGlobal = require('requireg');
 const bundledPrettier = require('prettier') as Prettier;
 
-let globalNodeExecPath: string | undefined;
+/**
+ * Path to the global node_modules directory
+ */
+let rootNodeModules: string | undefined;
 
 try {
-    globalNodeExecPath = execSync(
-        'node --eval "process.stdout.write(process.execPath)"'
-    ).toString();
+    rootNodeModules = execSync('npm root --quiet -g').toString();
 } catch (error) {
-    // Not installed
+    // No nodejs installed
 }
 
 /**
  * Require global prettier or undefined if none is installed
  */
 export function requireGlobalPrettier(): Prettier | undefined {
-    if (!globalNodeExecPath) {
+    if (!rootNodeModules) {
         return;
     }
 
@@ -34,7 +35,7 @@ export function requireGlobalPrettier(): Prettier | undefined {
     // So workaround it by setting NODE_PATH using the process.execPath from the
     // global node installation
     const origNodePath = process.env.NODE_PATH;
-    process.env.NODE_PATH = join(dirname(globalNodeExecPath), 'node_modules');
+    process.env.NODE_PATH = rootNodeModules;
 
     try {
         return requireGlobal('prettier', true);
