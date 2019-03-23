@@ -69,14 +69,14 @@ function updateStatusBar(message: string): void {
  *
  * @param module the module used
  * @param version the version of the module
- * @param bundled is it bundled with the extension or not
+ * @param type is it local, global or bundled
  */
 export function setUsedModule(
     module: string,
     version: string,
-    bundled: boolean
+    type: 'local' | 'global' | 'bundled'
 ) {
-    prettierInformation = `${module}@${version}${bundled ? ' (bundled)' : ''}`;
+    prettierInformation = `${module}@${version} (${type})`;
 }
 
 /**

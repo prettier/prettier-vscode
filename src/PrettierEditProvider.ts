@@ -89,24 +89,26 @@ function mergeConfig(
         : Object.assign(vscodeConfig, prettierConfig, additionalConfig);
 }
 
-function getPrettierForFile(fileName: string): Prettier {
+function getPrettierForFile(
+    fileName: string
+): { prettierInstance: Prettier; type: 'local' | 'global' | 'bundled' } {
     // First try to use the local prettier for this file
     const local = requireLocalPkg<Prettier>(fileName, 'prettier');
     if (local) {
         addToOutput('Formatting with local prettier');
-        return local;
+        return { type: 'local', prettierInstance: local };
     }
 
     // Fallback to global if no local is found
     const global = requireGlobalPrettier();
     if (global) {
         addToOutput('Formatting with global prettier');
-        return global;
+        return { type: 'global', prettierInstance: global };
     }
 
     // Finally use the bundled one if all else fail
     addToOutput('Formatting with bundled prettier');
-    return bundledPrettier;
+    return { type: 'bundled', prettierInstance: bundledPrettier };
 }
 
 /**
@@ -129,7 +131,7 @@ async function format(
         return text;
     }
 
-    const prettierInstance = getPrettierForFile(fileName);
+    const { prettierInstance, type } = getPrettierForFile(fileName);
 
     if (!supportsLanguage(languageId, prettierInstance)) {
         window.showErrorMessage(
@@ -211,7 +213,7 @@ async function format(
             () => {
                 const prettierTslint = require('prettier-tslint')
                     .format as PrettierTslintFormat;
-                setUsedModule('prettier-tslint', 'Unknown', true);
+                setUsedModule('prettier-tslint', 'Unknown', 'bundled');
 
                 return prettierTslint({
                     text,
@@ -228,7 +230,7 @@ async function format(
         return safeExecution(
             () => {
                 const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
-                setUsedModule('prettier-eslint', 'Unknown', true);
+                setUsedModule('prettier-eslint', 'Unknown', 'bundled');
 
                 return prettierEslint({
                     text,
@@ -267,7 +269,7 @@ async function format(
 
                 addToOutput(warningMessage);
 
-                setUsedModule('prettier', bundledPrettier.version, true);
+                setUsedModule('prettier', bundledPrettier.version, 'bundled');
 
                 return bundledPrettier.format(text, prettierOptions);
             },
@@ -276,7 +278,7 @@ async function format(
         );
     }
 
-    setUsedModule('prettier', prettierInstance.version, false);
+    setUsedModule('prettier', prettierInstance.version, type);
 
     return safeExecution(
         () => prettierInstance.format(text, prettierOptions),
