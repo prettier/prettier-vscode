@@ -33,6 +33,14 @@
   "icon": "icon.png",
   "main": "./out/src/extension",
   "contributes": {
+    "commands": [
+      {
+       	"title": "Show Output Channel",
+        "category": "Prettier",
+        "command": "prettier.open-output"
+      }
+
+    ],
     "configuration": {
       "type": "object",
       "title": "Prettier - Code formatter configuration",
