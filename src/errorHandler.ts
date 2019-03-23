@@ -145,7 +145,7 @@ export function safeExecution(
 
         return returnValue;
     } catch (err) {
-        addToOutput(addFilePath(err.message, fileName));
+        addToOutput(addFilePath(err.message || String(err), fileName));
         updateStatusBar('Prettier: $(x)');
 
         return defaultText;
