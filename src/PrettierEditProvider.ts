@@ -93,19 +93,19 @@ function getPrettierForFile(fileName: string): Prettier {
     // First try to use the local prettier for this file
     const local = requireLocalPkg<Prettier>(fileName, 'prettier');
     if (local) {
-        console.log('prettier: Formatting with local prettier');
+        addToOutput('Formatting with local prettier');
         return local;
     }
 
     // Fallback to global if no local is found
     const global = requireGlobalPrettier();
     if (global) {
-        console.log('prettier: Formatting with global prettier');
+        addToOutput('Formatting with global prettier');
         return global;
     }
 
     // Finally use the bundled one if all else fail
-    console.log('prettier: Formatting with bundled prettier');
+    addToOutput('Formatting with bundled prettier');
     return bundledPrettier;
 }
 
