@@ -6,7 +6,7 @@
   "ext.config.stylelintIntegration": "使用 'prettier-stylelint' 而不是 'prettier'。 其他设置只会是备选方案，以防无法从stylelint规则推断出它们。",
   "ext.config.requireConfig": "需要 'prettierconfig' 来格式化",
   "ext.config.ignorePath": ".prettierignore或类似文件的路径",
-  "ext.config.printWidth": "指定美行代码的最佳长度， 如果超出长度则换行。",
+  "ext.config.printWidth": "指定每行代码的最佳长度， 如果超出长度则换行。",
   "ext.config.tabWidth": "每个制表符占用的空格数",
   "ext.config.singleQuote": "如果为 true，将使用单引号而不是双引号",
   "ext.config.trailingComma": "尽可能控制尾随逗号的输出。\n有效选项：\n'无' - 无尾随逗号\n'es5' - 在ES5中有效的尾随逗号（对象，数组等）\n'all' - 尾随逗号 尽可能（函数参数）",
