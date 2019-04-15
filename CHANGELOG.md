@@ -5,6 +5,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
+-   Prettier [1.17](https://prettier.io/blog/2019/04/12/1.17.0.html)
 
 ## [1.8.0]
 
