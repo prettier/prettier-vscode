@@ -27,6 +27,15 @@
         "prettier.disableLanguages": [],
         "prettier.endOfLine": "auto",
         "prettier.htmlWhitespaceSensitivity": "css",
-        "prettier.jsxSingleQuote": false
+        "prettier.jsxSingleQuote": false,
+        "[typescript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
     }
 }
