@@ -30,22 +30,23 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
 }
 
 /**
- * Require package explicitely installed relative to given path.
+ * Require package explicitly installed relative to given path.
  * Fallback to bundled one if no pacakge was found bottom up.
  * @param {string} fspath file system path starting point to resolve package
  * @param {string} pkgName package's name to require
  * @returns module
  */
 function requireLocalPkg(fspath: string, pkgName: string): any {
-    const modulePath = findPkg(fspath, pkgName);
-    if (modulePath !== void 0) {
-        try {
+    let modulePath;
+    try {
+        modulePath = findPkg(fspath, pkgName);
+        if (modulePath !== void 0) {
             return require(modulePath);
-        } catch (e) {
-            addToOutput(
-                `Failed to load ${pkgName} from ${modulePath}. Using bundled`
-            );
         }
+    } catch (e) {
+        addToOutput(
+            `Failed to load ${pkgName} from ${modulePath}. Using bundled.`
+        );
     }
 
     return require(pkgName);
