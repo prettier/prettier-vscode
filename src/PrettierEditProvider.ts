@@ -168,6 +168,7 @@ async function format(
             jsxSingleQuote: vscodeConfig.jsxSingleQuote,
             htmlWhitespaceSensitivity: vscodeConfig.htmlWhitespaceSensitivity,
             endOfLine: vscodeConfig.endOfLine,
+            quoteProps: vscodeConfig.quoteProps,
         }
     );
 

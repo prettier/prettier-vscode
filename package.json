@@ -186,6 +186,16 @@
           ],
           "default": "auto",
           "description": "Specify the end of line used by prettier"
+        },
+        "prettier.quoteProps": {
+          "type": "string",
+          "enum": [
+            "as-needed",
+            "consistent",
+            "preserve"
+          ],
+          "default": "as-needed",
+          "description": "Change when properties in objects are quoted"
         }
       }
     },

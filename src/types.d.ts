@@ -55,6 +55,7 @@ export interface PrettierConfig {
     jsxSingleQuote: boolean;
     htmlWhitespaceSensitivity: 'css' | 'strict' | 'ignore';
     endOfLine: 'auto' | 'lf' | 'crlf' | 'cr';
+    quoteProps: 'as-needed' | 'consistent' | 'preserve';
 }
 /**
  * prettier-vscode specific configuration
