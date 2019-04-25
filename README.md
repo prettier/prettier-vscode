@@ -108,6 +108,8 @@ Specify the global whitespace sensitivity for HTML files. [Learn more here](http
 #### prettier.endOfLine (default: 'auto')
 Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
 
+#### prettier.quoteProps (default: 'as-needed')
+Change when properties in objects are quoted. [Learn more here](https://prettier.io/docs/en/options.html#quote-props)
 
 ### VSCode specific settings
 

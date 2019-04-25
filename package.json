@@ -186,6 +186,16 @@
           ],
           "default": "auto",
           "description": "Specify the end of line used by prettier"
+        },
+        "prettier.quoteProps": {
+          "type": "string",
+          "enum": [
+            "as-needed",
+            "consistent",
+            "preserve"
+          ],
+          "default": "as-needed",
+          "description": "Change when properties in objects are quoted"
         }
       }
     },
@@ -235,7 +245,7 @@
   },
   "dependencies": {
     "ignore": "^3.3.8",
-    "prettier": "1.16.3",
+    "prettier": "1.17.0",
     "prettier-eslint": "^8.8.2",
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.2",
