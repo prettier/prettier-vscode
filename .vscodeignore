@@ -13,6 +13,7 @@ testWorkspace.code-workspace
 scripts/**
 **/*.map
 .gitignore
+.github/**
 tsconfig.json
 vsc-extension-quickstart.md
 package-lock.json
