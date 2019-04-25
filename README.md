@@ -51,6 +51,8 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 `eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally.  Global installations will not be recognized.
 
+If you have both `"prettier.tslintIntegration"` and `"prettier.eslintIntegration"` enabled in your Visual Studio Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
+
 ## Settings
 
 ### Prettier's Settings
