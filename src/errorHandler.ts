@@ -10,8 +10,7 @@ import {
 } from 'vscode';
 
 import { allEnabledLanguages, getConfig } from './utils';
-import { PrettierVSCodeConfig, Prettier } from './types';
-import { requireLocalPkg } from './requirePkg';
+import { PrettierVSCodeConfig } from './types';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
@@ -35,8 +34,8 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
             return;
         }
 
-        const prettierInstance = requireLocalPkg(editor.document.uri.fsPath, 'prettier') as Prettier;
-        const score = languages.match(allEnabledLanguages(prettierInstance), editor.document);
+        const filePath = editor.document.isUntitled ? undefined : editor.document.fileName;
+        const score = languages.match(allEnabledLanguages(filePath), editor.document);
         const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
 
         if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {

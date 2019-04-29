@@ -15,10 +15,6 @@ import {
 } from './utils';
 import configFileListener from './configCacheHandler';
 import ignoreFileHandler from './ignoreFileHandler';
-import { requireLocalPkg } from './requirePkg';
-import { Prettier } from './types.d';
-
-const bundledPrettier = require('prettier') as Prettier;
 
 interface Selectors {
     rangeLanguageSelector: DocumentSelector;
@@ -44,16 +40,14 @@ function disposeHandlers() {
  * Build formatter selectors
  */
 function selectors(): Selectors {
-    let prettierInstance: Prettier;
-
-    const workspaceFolders = workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders[0]) {
-        prettierInstance = requireLocalPkg(workspaceFolders[0].uri.fsPath, 'prettier') as Prettier;
+    let filePath;
+    if (workspace.workspaceFolders && workspace.workspaceFolders[0]) {
+        filePath = workspace.workspaceFolders[0].uri.fsPath;
     } else {
-        prettierInstance = bundledPrettier;
+        filePath = undefined;
     }
 
-    const allLanguages = allEnabledLanguages(prettierInstance);
+    const allLanguages = allEnabledLanguages(filePath);
     const allRangeLanguages = rangeSupportedLanguages();
     const { disableLanguages } = getConfig();
     const globalLanguageSelector = allLanguages.filter(
