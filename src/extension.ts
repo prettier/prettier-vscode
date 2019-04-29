@@ -42,7 +42,6 @@ function disposeHandlers() {
 function selectors(): Selectors {
     let allLanguages: string[];
     if (workspace.workspaceFolders === undefined) {
-        // filePath = workspace.workspaceFolders[0].uri.fsPath;
         allLanguages = allEnabledLanguages();
     } else {
         allLanguages = [];
