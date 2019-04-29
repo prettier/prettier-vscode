@@ -34,8 +34,8 @@ export function getParsersFromLanguageId(
     return language.parsers;
 }
 
-export function allEnabledLanguages(): string[] {
-    return getSupportLanguages().reduce(
+export function allEnabledLanguages(prettierInstance: Prettier): string[] {
+    return getSupportLanguages(prettierInstance).reduce(
         (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
         [] as string[]
     );
@@ -52,11 +52,11 @@ export function rangeSupportedLanguages(): string[] {
     ];
 }
 
-export function getGroup(group: string): PrettierSupportInfo['languages'] {
-    return getSupportLanguages().filter(language => language.group === group);
+export function getGroup(group: string, prettierInstance: Prettier): PrettierSupportInfo['languages'] {
+    return getSupportLanguages(prettierInstance).filter(language => language.group === group);
 }
 
-function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
+function getSupportLanguages(prettierInstance: Prettier) {
     // prettier.getSupportInfo was added in prettier@1.8.0
     if (prettierInstance.getSupportInfo) {
         return prettierInstance.getSupportInfo(prettierInstance.version).languages;
