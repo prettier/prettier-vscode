@@ -1,6 +1,13 @@
 # Prettier formatter for Visual Studio Code
 
-VS Code package to format your JavaScript / TypeScript / CSS using [Prettier](https://github.com/prettier/prettier).
+VS Code package to format your:
+- HTML / Vue / Angular
+- JavaScript / JSX / Flow / TypeScript / JSON
+- CSS / LESS / SCSS Styled Components / Styled JSX
+- Markdown / CommonMark / GitHub-Flavored Markdown / MDX
+- YAML
+
+using [Prettier](https://github.com/prettier/prettier).
 
 ## Installation
 
