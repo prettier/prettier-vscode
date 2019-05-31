@@ -38,9 +38,11 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
  */
 function requireLocalPkg<T>(fspath: string, pkgName: string): T | undefined {
     let modulePath;
+    addToOutput('Looking local prettier for ' + fspath);
     try {
         modulePath = findPkg(fspath, pkgName);
         if (modulePath !== void 0) {
+            addToOutput('Found local prettier ' + modulePath);
             return require(modulePath);
         }
     } catch (e) {
