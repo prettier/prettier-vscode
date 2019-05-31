@@ -1,7 +1,6 @@
 import {
     Disposable,
     StatusBarItem,
-    OutputChannel,
     StatusBarAlignment,
     TextEditor,
     commands,
@@ -13,7 +12,7 @@ import { allEnabledLanguages, getConfig } from './utils';
 import { PrettierVSCodeConfig } from './types';
 
 let statusBarItem: StatusBarItem;
-let outputChannel: OutputChannel;
+const outputChannel = window.createOutputChannel('Prettier');
 let prettierInformation: string;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
@@ -168,8 +167,6 @@ export function setupErrorHandler(): Disposable {
     toggleStatusBarItem(window.activeTextEditor);
 
     // Setup the outputChannel
-    outputChannel = window.createOutputChannel('Prettier');
-
     return commands.registerCommand('prettier.open-output', () => {
         outputChannel.show();
     });
