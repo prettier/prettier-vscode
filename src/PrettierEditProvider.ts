@@ -95,19 +95,23 @@ function getPrettierForFile(
     // First try to use the local prettier for this file
     const local = requireLocalPkg<Prettier>(fileName, 'prettier');
     if (local) {
-        addToOutput('Formatting with local prettier');
+        addToOutput('Formatting with local prettier version ' + local.version);
         return { type: 'local', prettierInstance: local };
     }
 
     // Fallback to global if no local is found
     const global = requireGlobalPrettier();
     if (global) {
-        addToOutput('Formatting with global prettier');
+        addToOutput(
+            'Formatting with global prettier version ' + global.version
+        );
         return { type: 'global', prettierInstance: global };
     }
 
     // Finally use the bundled one if all else fail
-    addToOutput('Formatting with bundled prettier');
+    addToOutput(
+        'Formatting with bundled prettier version ' + bundledPrettier.version
+    );
     return { type: 'bundled', prettierInstance: bundledPrettier };
 }
 
