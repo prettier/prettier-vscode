@@ -9,7 +9,8 @@ import {
     languages,
 } from 'vscode';
 
-import { allEnabledLanguages } from './utils';
+import { allEnabledLanguages, getConfig } from './utils';
+import { PrettierVSCodeConfig } from './types';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
@@ -19,7 +20,7 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (statusBarItem === undefined) {
         return;
     }
-  
+
     if (editor !== undefined) {
         // The function will be triggered everytime the active "editor" instance changes
         // It also triggers when we focus on the output panel or on the debug panel
@@ -34,8 +35,9 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
         }
 
         const score = languages.match(allEnabledLanguages(), editor.document);
+        const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
 
-        if (score > 0) {
+        if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
             statusBarItem.show();
         } else {
             statusBarItem.hide();
