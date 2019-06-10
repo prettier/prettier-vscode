@@ -11,20 +11,22 @@ const prettier = require('prettier') as Prettier;
  * @param base base URI
  * @returns source code and resulting code
  */
-export function format(file: string, base: Uri = vscode.workspace.workspaceFolders![0].uri) {
+export function format(
+    file: string,
+    base: Uri = vscode.workspace.workspaceFolders![0].uri
+): Promise<{ result: string; source: string }> {
     const absPath = path.join(base.fsPath, file);
-    return vscode.workspace.openTextDocument(absPath).then(doc => {
-        const text = doc.getText();
-        return vscode.window.showTextDocument(doc).then(
-            () => {
+    return new Promise((resolve, reject) => {
+        vscode.workspace.openTextDocument(absPath).then(doc => {
+            const text = doc.getText();
+            vscode.window.showTextDocument(doc).then(() => {
                 console.time(file);
-                return vscode.commands.executeCommand('editor.action.formatDocument').then(() => {
+                vscode.commands.executeCommand('editor.action.formatDocument').then(() => {
                     console.timeEnd(file);
-                    return { result: doc.getText(), source: text };
-                });
-            },
-            e => console.error(e)
-        );
+                    resolve({ result: doc.getText(), source: text });
+                }, reject);
+            }, reject);
+        }, reject);
     });
 }
 /**
@@ -37,11 +39,11 @@ function formatSameAsPrettier(file: string) {
         const prettierFormatted = prettier.format(result.source, {
             filepath: file,
         });
-        assert.equal(result.result, prettierFormatted);
+        assert.strictEqual(result.result, prettierFormatted);
     });
 }
 
-suite('Test format Document', function() {
+suite('Test format Document', () => {
     test('it formats JavaScript', () => formatSameAsPrettier('formatTest/ugly.js'));
     test('it formats TypeScript', () => formatSameAsPrettier('formatTest/ugly.ts'));
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
