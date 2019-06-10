@@ -6,6 +6,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.9.0]
+
+-   Run `npm audix fix` because of found 11 vulnerabilities (1 low, 4 moderate, 6 high).
+
 ## [1.8.1]
 
 -   Prettier [1.17](https://prettier.io/blog/2019/04/12/1.17.0.html)
