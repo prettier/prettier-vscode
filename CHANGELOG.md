@@ -22,6 +22,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   Replace `assert.equal` to `assert.strictEqual` because `assert.equal` is deprecated.
 -   Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
 -   Minor refactor for `eslint`, `ignore` and `tslint` tests.
+-   Refactor and fix tslint config in `testTslint`.
 
 ## [1.8.1]
 
