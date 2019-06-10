@@ -18,6 +18,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   Add `glob` and `@types/glob` dependencies for `mocha` tests.
 -   Update all dependencies in `testEslint` and `testTslint` with `npm audit fix` because of found vulnerabilities.
 -   Remove `npm run vscode:prepublish` from Travis because of `pretest` script.
+-   Remove `cross-env` because it's unnecessary since we are using now `vscode-test`.
 
 ## [1.8.1]
 

@@ -233,7 +233,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
     "pretest": "npm run compile && cd testEslint && npm i && cd ../testTslint && npm i",
-    "test": "cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./out/test/runTest.js",
+    "test": "node ./out/test/runTest.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
@@ -242,7 +242,6 @@
     "@types/node": "^12.0.7",
     "@types/resolve": "^0.0.8",
     "@types/vscode": "^1.17.0",
-    "cross-env": "^5.2.0",
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
     "vscode-test": "^0.4.3"
