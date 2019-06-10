@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { Prettier } from '../src/types';
+import { Prettier } from '../../types';
 import { Uri } from 'vscode';
 const prettier = require('prettier') as Prettier;
 
@@ -11,22 +11,17 @@ const prettier = require('prettier') as Prettier;
  * @param base base URI
  * @returns source code and resulting code
  */
-export function format(
-    file: string,
-    base: Uri = vscode.workspace.workspaceFolders![0].uri
-) {
+export function format(file: string, base: Uri = vscode.workspace.workspaceFolders![0].uri) {
     const absPath = path.join(base.fsPath, file);
     return vscode.workspace.openTextDocument(absPath).then(doc => {
         const text = doc.getText();
         return vscode.window.showTextDocument(doc).then(
             () => {
                 console.time(file);
-                return vscode.commands
-                    .executeCommand('editor.action.formatDocument')
-                    .then(() => {
-                        console.timeEnd(file);
-                        return { result: doc.getText(), source: text };
-                    });
+                return vscode.commands.executeCommand('editor.action.formatDocument').then(() => {
+                    console.timeEnd(file);
+                    return { result: doc.getText(), source: text };
+                });
             },
             e => console.error(e)
         );
@@ -47,10 +42,8 @@ function formatSameAsPrettier(file: string) {
 }
 
 suite('Test format Document', function() {
-    test('it formats JavaScript', () =>
-        formatSameAsPrettier('formatTest/ugly.js'));
-    test('it formats TypeScript', () =>
-        formatSameAsPrettier('formatTest/ugly.ts'));
+    test('it formats JavaScript', () => formatSameAsPrettier('formatTest/ugly.js'));
+    test('it formats TypeScript', () => formatSameAsPrettier('formatTest/ugly.ts'));
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/ugly.json'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/package.json'));

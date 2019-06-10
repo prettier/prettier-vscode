@@ -10,7 +10,7 @@
             "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
             "stopOnEntry": false,
             "sourceMaps": true,
-            "outFiles": ["${workspaceRoot}/out/src/**/*.js"],
+            "outFiles": ["${workspaceRoot}/out/**/*.js"],
             "preLaunchTask": "npm: watch"
         },
         {
@@ -22,7 +22,7 @@
                 "${workspaceRoot}/testWorkspace.code-workspace",
                 "--extensions-dir=${workspaceRoot}/.", // no other extension loaded
                 "--extensionDevelopmentPath=${workspaceRoot}",
-                "--extensionTestsPath=${workspaceRoot}/out/test"
+                "--extensionTestsPath=${workspaceRoot}/out/test/suite"
             ],
             "stopOnEntry": false,
             "sourceMaps": true,
