@@ -8,22 +8,28 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [1.9.0]
 
--   Run `npm audit fix` because of found vulnerabilities.
--   Update all dependencies including Prettier to [1.18.2](https://prettier.io/blog/2019/06/06/1.18.0.html)
+### Dependencies
+
+-   Update all dependencies including Prettier to [1.18.2](https://prettier.io/blog/2019/06/06/1.18.0.html) and run `npm audit fix` because of found vulnerabilities.
+-   Update all dependencies in `testEslint` and `testTslint` with `npm audit fix` because of found vulnerabilities.
+-   Remove `vscode` dependency and add `@types/vscode` with `vscode-test`, this is a new approach for extension usage [#70175](https://github.com/microsoft/vscode/issues/70175).
+-   Add `glob` and `@types/glob` dependencies for `mocha` tests.
+-   Remove `cross-env` because it's unnecessary since we are using now `vscode-test`.
+
+### Scripts
+
 -   Create `watch` script for `tsc --watch` and use `compile` script only for compiling with `tsc` without `--watch` flag.
 -   Create `pretest` script to compile and install dependencies.
 -   Refactor `test` script to run `./out/test/runTest.js` instead of `./node_modules/vscode/bin/test`.
--   Remove `vscode` dependency and add `@types/vscode` with `vscode-test`, this is a new approach for extension usage [#70175](https://github.com/microsoft/vscode/issues/70175).
--   Change `rootDir` from `.` to `src`.
--   Add `glob` and `@types/glob` dependencies for `mocha` tests.
--   Update all dependencies in `testEslint` and `testTslint` with `npm audit fix` because of found vulnerabilities.
 -   Remove `npm run vscode:prepublish` from Travis because of `pretest` script.
--   Remove `cross-env` because it's unnecessary since we are using now `vscode-test`.
+-   Change `rootDir` from `.` to `src`.
+
+### Tests
+
 -   Replace `assert.equal` to `assert.strictEqual` because `assert.equal` is deprecated.
 -   Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
 -   Minor refactor for `eslint`, `ignore` and `tslint` tests.
--   Refactor and fix tslint config in `testTslint`.
--   Refactor and fix eslint config in `testEslint`.
+-   Refactor and fix tslint (`testTslint`) and eslint (`testEslint`) configs.
 -   Increase default `mocha` timeout.
 
 ## [1.8.1]
