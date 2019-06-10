@@ -8,7 +8,15 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [1.9.0]
 
--   Run `npm audix fix` because of found 11 vulnerabilities (1 low, 4 moderate, 6 high).
+-   Run `npm audit fix` because of found vulnerabilities.
+-   Update all dependencies including Prettier to [1.18.2](https://prettier.io/blog/2019/06/06/1.18.0.html)
+-   Create `watch` script for `tsc --watch` and use `compile` script only for compiling with `tsc` without `--watch` flag.
+-   Create `pretest` script to compile and install dependencies.
+-   Refactor `test` script to run `./out/test/runTest.js` instead of `./node_modules/vscode/bin/test`.
+-   Remove `vscode` dependency and add `@types/vscode` with `vscode-test`, this is a new approach for extension usage [#70175](https://github.com/microsoft/vscode/issues/70175).
+-   Change `rootDir` from `.` to `src`.
+-   Add `glob` and `@types/glob` dependencies for `mocha` tests.
+-   Update all dependencies in `testEslint` and `testTslint` with `npm audit fix` because of found vulnerabilities.
 
 ## [1.8.1]
 
