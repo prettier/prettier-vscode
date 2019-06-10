@@ -6,10 +6,8 @@ export function run(testsRoot: string, cb: (error: any, failures?: number) => vo
     // Create the mocha test
     const mocha = new Mocha({
         ui: 'tdd',
+        useColors: true,
     });
-
-    // Use any mocha API
-    mocha.useColors(true);
 
     glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
         if (err) {
@@ -21,6 +19,7 @@ export function run(testsRoot: string, cb: (error: any, failures?: number) => vo
 
         try {
             // Run the mocha test
+            mocha.timeout(10000);
             mocha.run(failures => cb(null, failures));
         } catch (err) {
             cb(err);

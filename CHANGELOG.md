@@ -24,6 +24,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   Minor refactor for `eslint`, `ignore` and `tslint` tests.
 -   Refactor and fix tslint config in `testTslint`.
 -   Refactor and fix eslint config in `testEslint`.
+-   Increase default `mocha` timeout.
 
 ## [1.8.1]
 
