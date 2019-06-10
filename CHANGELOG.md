@@ -23,6 +23,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
 -   Minor refactor for `eslint`, `ignore` and `tslint` tests.
 -   Refactor and fix tslint config in `testTslint`.
+-   Refactor and fix eslint config in `testEslint`.
 
 ## [1.8.1]
 
