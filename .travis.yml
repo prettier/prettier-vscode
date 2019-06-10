@@ -1,15 +1,14 @@
 language: node_js
 node_js:
- - lts/*
+    - lts/*
 
 before_install:
-  - export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
-  - sh -e /etc/init.d/xvfb start;
-  - sleep 3;
+    - export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
+    - sh -e /etc/init.d/xvfb start;
+    - sleep 3;
 
 install:
-  - npm ci
-  - npm run vscode:prepublish
+    - npm ci
 
 script:
-  - npm test --silent
+    - npm test
