@@ -19,6 +19,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   Update all dependencies in `testEslint` and `testTslint` with `npm audit fix` because of found vulnerabilities.
 -   Remove `npm run vscode:prepublish` from Travis because of `pretest` script.
 -   Remove `cross-env` because it's unnecessary since we are using now `vscode-test`.
+-   Replace `assert.equal` to `assert.strictEqual` because `assert.equal` is deprecated.
+-   Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
+-   Minor refactor for `eslint`, `ignore` and `tslint` tests.
 
 ## [1.8.1]
 
