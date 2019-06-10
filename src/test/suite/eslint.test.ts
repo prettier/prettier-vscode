@@ -15,5 +15,5 @@ suite('Test eslint', () => {
         return format('withEslint.js', workspaceFolder).then(({ result }) => {
             assert.strictEqual(result, expectedResult);
         });
-    }).timeout(3500);
+    }).timeout(6000);
 });

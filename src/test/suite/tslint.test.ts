@@ -15,5 +15,5 @@ suite('Test tslint', () => {
         return format('withTslint.ts', workspaceFolder).then(({ result }) => {
             assert.strictEqual(result, expectedResult);
         });
-    }).timeout(3500);
+    }).timeout(6000);
 });
