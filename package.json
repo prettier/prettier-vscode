@@ -246,7 +246,7 @@
   "dependencies": {
     "ignore": "^3.3.8",
     "prettier": "1.17.0",
-    "prettier-eslint": "^8.8.2",
+    "prettier-eslint": "^9.0.0",
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^4.0.0",
