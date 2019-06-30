@@ -10,7 +10,7 @@
   "license": "MIT",
   "devDependencies": {
     "prettier": "1.18.2",
-    "tslint": "^5.17.0",
+    "tslint": "^5.18.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.5.2"
   }
