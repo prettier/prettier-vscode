@@ -77,6 +77,11 @@ interface ExtensionConfig {
      */
     stylelintIntegration: boolean;
     /**
+     * Provide configuration options to 'prettier-eslint'.
+     * Requires `"prettier.eslintIntegration"` to be be `true`.
+     */
+    eslintIntegrationOptions: PrettierEslintOptions;
+    /**
      * Path to '.prettierignore' or similar.
      */
     ignorePath: string;

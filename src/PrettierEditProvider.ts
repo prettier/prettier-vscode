@@ -200,6 +200,7 @@ async function format(
                     text,
                     filePath: fileName,
                     fallbackPrettierOptions: prettierOptions,
+                    ...vscodeConfig.eslintIntegrationOptions,
                 });
             },
             text,

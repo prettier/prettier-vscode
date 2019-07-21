@@ -9,6 +9,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   New setting `quoteProps`. (prettier 1.17)
 
 -   Docs now explain how to lint TypeScript code with ESLint.
+-   New option: eslintIntegrationOptions (object) provide config options to `prettier-eslint`
 
 ## [1.8.0]
 

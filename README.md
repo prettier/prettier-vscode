@@ -129,6 +129,9 @@ Other settings will only be fallbacks in case they could not be inferred from TS
 Use *[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)* instead of *prettier*.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
 
+#### prettier.eslintIntegrationOptions (default: {}) - JavaScript and TypeScript only
+Provide configuration options to *[prettier-eslint](https://github.com/prettier/prettier-eslint#options)*. Requires `"prettier.eslintIntegration" `to be be `true`.
+
 #### prettier.requireConfig (default: false)
 Require a 'prettierconfig' to format
 

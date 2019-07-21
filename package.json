@@ -54,6 +54,12 @@
           "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
           "scope": "resource"
         },
+        "prettier.eslintIntegrationOptions": {
+          "type": "object",
+          "default": {},
+          "description": "Provide configuration options to 'prettier-eslint'. Requires 'prettier.eslintIntegration' to be be true.",
+          "scope": "resource"
+        },
         "prettier.tslintIntegration": {
           "type": "boolean",
           "default": false,
