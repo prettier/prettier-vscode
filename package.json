@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "1.8.1",
+  "version": "1.9.1",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.35.0"
   },
   "keywords": [
     "multi-root ready"
@@ -31,7 +31,7 @@
     "*"
   ],
   "icon": "icon.png",
-  "main": "./out/src/extension",
+  "main": "./dist/extension",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -229,28 +229,33 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc --watch -p ./",
+    "build": "vsce package --out dist/esbenp.prettier-vscode.vsix",
+    "vscode:prepublish": "node --max_old_space_size=8192 node_modules/webpack/bin/webpack --mode production",
+    "webpack": "node --max_old_space_size=8192 node_modules/webpack/bin/webpack --mode development",
+    "compile": "node --max_old_space_size=8192 node_modules/webpack/bin/webpack --mode development",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "cd testEslint && npm i && cd ../testTslint && npm i && cd .. && cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.1",
-    "@types/node": "^8.10.39",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.8",
     "@types/resolve": "0.0.8",
-    "cross-env": "^5.1.6",
-    "mocha": "^5.2.0",
-    "vscode": "^1.1.28"
-  },
-  "dependencies": {
-    "ignore": "^3.3.8",
-    "prettier": "1.17.0",
-    "prettier-eslint": "^8.8.2",
+    "cross-env": "^5.2.0",
+    "ignore": "^5.1.2",
+    "mocha": "^6.2.0",
+    "prettier-eslint": "^9.0.0",
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.2",
-    "read-pkg-up": "^4.0.0",
-    "resolve": "^1.10.0",
-    "typescript": "^2.9.2"
-  }
+    "prettier": "1.18.2",
+    "read-pkg-up": "^6.0.0",
+    "resolve": "^1.11.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "vsce": "^1.66.0",
+    "vscode": "^1.1.35",
+    "webpack-cli": "^3.3.6",
+    "webpack": "^4.38.0"
+  },
+  "dependencies": {}
 }

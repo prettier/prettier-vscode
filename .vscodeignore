@@ -18,7 +18,8 @@ tsconfig.json
 vsc-extension-quickstart.md
 package-lock.json
 CONTRIBUTORS.md
-
+node_modules/**
+out/**
 node_modules/**/*.yml
 node_modules/**/*.yaml
 node_modules/**/*.md
@@ -43,3 +44,4 @@ node_modules/**/*/examples/
 
 node_modules/**/*/.editorconfig
 node_modules/**/*/bower.json
+webpack.config.js
