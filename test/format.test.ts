@@ -3,8 +3,9 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { Prettier } from '../src/types';
 import { Uri } from 'vscode';
-const prettier = require('prettier') as Prettier;
 
+import * as _prettier from 'prettier';
+const prettier = _prettier as Prettier;
 /**
  * loads and format a file.
  * @param file path relative to base URI (a workspaceFolder's URI)
@@ -53,8 +54,10 @@ suite('Test format Document', function() {
         formatSameAsPrettier('formatTest/ugly.ts'));
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
     test('it formats JSON', () => formatSameAsPrettier('formatTest/ugly.json'));
-    test('it formats JSON', () => formatSameAsPrettier('formatTest/package.json'));
-    test('it formats HTML', () => formatSameAsPrettier('formatTest/index.html'));
+    test('it formats JSON', () =>
+        formatSameAsPrettier('formatTest/package.json'));
+    test('it formats HTML', () =>
+        formatSameAsPrettier('formatTest/index.html'));
     // one would need to register that language for it to work ...
     // test('it formats GraphQL', () => {
     //     return;

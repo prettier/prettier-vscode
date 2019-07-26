@@ -7,7 +7,10 @@ import {
     CancellationToken,
     TextEdit,
 } from 'vscode';
+import * as prettierTslint from 'prettier-tslint';
+import * as prettierEslint from 'prettier-eslint';
 
+import * as prettierStylelint from 'prettier-stylelint';
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
 import { getParsersFromLanguageId, getConfig } from './utils';
 import { requireLocalPkg } from './requirePkg';
@@ -22,7 +25,9 @@ import {
     PrettierConfig,
 } from './types.d';
 
-const bundledPrettier = require('prettier') as Prettier;
+import * as _prettier from 'prettier';
+const bundledPrettier = _prettier as Prettier;
+/**
 /**
  * HOLD style parsers (for stylelint integration)
  */
@@ -175,11 +180,10 @@ async function format(
     if (vscodeConfig.tslintIntegration && parser === 'typescript') {
         return safeExecution(
             () => {
-                const prettierTslint = require('prettier-tslint')
-                    .format as PrettierTslintFormat;
+                const prettierTslintformat = prettierTslint.format as PrettierTslintFormat;
                 setUsedModule('prettier-tslint', 'Unknown', true);
 
-                return prettierTslint({
+                return prettierTslintformat({
                     text,
                     filePath: fileName,
                     fallbackPrettierOptions: prettierOptions,
@@ -193,10 +197,10 @@ async function format(
     if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
         return safeExecution(
             () => {
-                const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
+                const prettierEslintFormat = prettierEslint as PrettierEslintFormat;
                 setUsedModule('prettier-eslint', 'Unknown', true);
 
-                return prettierEslint({
+                return prettierEslintFormat({
                     text,
                     filePath: fileName,
                     fallbackPrettierOptions: prettierOptions,
@@ -208,9 +212,9 @@ async function format(
     }
 
     if (vscodeConfig.stylelintIntegration && STYLE_PARSERS.includes(parser)) {
-        const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
+        const prettierStylelintFormat = prettierStylelint as PrettierStylelint;
         return safeExecution(
-            prettierStylelint.format({
+            prettierStylelintFormat.format({
                 text,
                 filePath: fileName,
                 prettierOptions,
@@ -224,12 +228,8 @@ async function format(
         return safeExecution(
             () => {
                 const warningMessage =
-                    `prettier@${
-                        localPrettier.version
-                    } doesn't support ${languageId}. ` +
-                    `Falling back to bundled prettier@${
-                        bundledPrettier.version
-                    }.`;
+                    `prettier@${localPrettier.version} doesn't support ${languageId}. ` +
+                    `Falling back to bundled prettier@${bundledPrettier.version}.`;
 
                 addToOutput(warningMessage);
 

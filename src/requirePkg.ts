@@ -2,7 +2,8 @@ import { addToOutput } from './errorHandler';
 
 import * as path from 'path';
 import * as resolve from 'resolve';
-const readPkgUp = require('read-pkg-up');
+import * as prettier from 'prettier';
+import * as readPkgUp from 'read-pkg-up';
 
 /**
  * Recursively search for a package.json upwards containing given package
@@ -12,7 +13,8 @@ const readPkgUp = require('read-pkg-up');
  * @returns {string} resolved path to prettier
  */
 function findPkg(fspath: string, pkgName: string): string | undefined {
-    const res = readPkgUp.sync({ cwd: fspath, normalize: false });
+    const res = <any>readPkgUp.sync({ cwd: fspath, normalize: false });
+
     const { root } = path.parse(fspath);
     if (
         res.pkg &&
@@ -39,6 +41,10 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
 function requireLocalPkg(fspath: string, pkgName: string): any {
     let modulePath;
     try {
+        switch (pkgName) {
+            case 'prettier':
+                return prettier;
+        }
         modulePath = findPkg(fspath, pkgName);
         if (modulePath !== void 0) {
             return require(modulePath);

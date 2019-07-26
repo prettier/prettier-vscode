@@ -7,8 +7,8 @@ import {
     ParserOption,
 } from './types.d';
 
-const bundledPrettier = require('prettier') as Prettier;
-
+import * as _prettier from 'prettier';
+const bundledPrettier = _prettier as Prettier;
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
     return workspace.getConfiguration('prettier', uri) as any;
 }

@@ -1,7 +1,7 @@
 import { workspace } from 'vscode';
 import { Prettier } from './types';
-
-const prettier = require('prettier') as Prettier;
+import * as _prettier from 'prettier';
+const prettier = _prettier as Prettier;
 /**
  * Prettier reads configuration from files
  */
