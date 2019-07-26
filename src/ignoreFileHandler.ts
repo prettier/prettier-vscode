@@ -3,7 +3,7 @@ import * as path from 'path';
 import { workspace, Uri, Disposable } from 'vscode';
 import { getConfig } from './utils';
 import { addToOutput } from './errorHandler';
- import * as ignore from 'ignore';
+import * as ignore from 'ignore';
 interface Ignorer {
     ignores(filePath: string): boolean;
 }
@@ -73,7 +73,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
         }
         if (existsSync(ignoreUri.fsPath)) {
             const ignoreFileContents = readFileSync(ignoreUri.fsPath, 'utf8');
-            ignorer =ignore.default().add(ignoreFileContents);
+            ignorer = ignore.default().add(ignoreFileContents);
         }
 
         ignorers.set(ignoreUri.fsPath, ignorer);

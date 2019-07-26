@@ -35,9 +35,14 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
         }
 
         const score = languages.match(allEnabledLanguages(), editor.document);
-        const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
+        const disabledLanguages: PrettierVSCodeConfig['disableLanguages'] = getConfig(
+            editor.document.uri
+        ).disableLanguages;
 
-        if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
+        if (
+            score > 0 &&
+            !disabledLanguages.includes(editor.document.languageId)
+        ) {
             statusBarItem.show();
         } else {
             statusBarItem.hide();
@@ -52,7 +57,7 @@ export function registerDisposables(): Disposable[] {
         // Keep track whether to show/hide the statusbar
         window.onDidChangeActiveTextEditor(editor => {
             toggleStatusBarItem(editor);
-        })
+        }),
     ];
 }
 

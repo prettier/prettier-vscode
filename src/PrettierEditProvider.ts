@@ -9,7 +9,6 @@ import {
 } from 'vscode';
 import * as prettierTslint from 'prettier-tslint';
 import * as prettierEslint from 'prettier-eslint';
-
 import * as prettierStylelint from 'prettier-stylelint';
 import { safeExecution, addToOutput, setUsedModule } from './errorHandler';
 import { getParsersFromLanguageId, getConfig } from './utils';
