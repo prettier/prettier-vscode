@@ -6,7 +6,7 @@
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
-    "color": "#ffe04b", 
+    "color": "#ffe04b",
     "theme": "light"
   },
   "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
