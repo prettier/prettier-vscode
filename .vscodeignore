@@ -11,7 +11,8 @@ scripts/**
 .github/**
 tsconfig.json
 package-lock.json
-CONTRIBUTORS.md
+.eslintignore
+azure-pipelines.yml
 
 node_modules/**/*.yml
 node_modules/**/*.yaml
