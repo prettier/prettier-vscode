@@ -294,7 +294,7 @@
     "vscode:prepublish": "yarn compile",
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
-    "pretest": "yarn compile && cd testEslint && yarn install && cd ../testTslint && yarn install && cd ../testStylelint && yarn install",
+    "pretest": "yarn compile && cd test/eslint && yarn install && cd ../tslint && yarn install && cd ../stylelint && yarn install",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {

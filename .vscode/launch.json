@@ -12,22 +12,6 @@
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/out/**/*.js"],
       "preLaunchTask": "npm: watch"
-    },
-    {
-      "name": "Launch tests",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "${workspaceRoot}/testWorkspace.code-workspace",
-        "--extensions-dir=${workspaceRoot}/.", // no other extension loaded
-        "--extensionDevelopmentPath=${workspaceRoot}",
-        "--extensionTestsPath=${workspaceRoot}/out/test/suite"
-      ],
-      "stopOnEntry": false,
-      "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/out/test/**/*.js"],
-      "preLaunchTask": "npm: watch"
     }
   ]
 }

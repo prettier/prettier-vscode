@@ -3,11 +3,6 @@
 out/test/**
 test/**
 src/**
-testEslint/**
-testProject/**
-testTslint/**
-testWorkspaceFolder/**
-testWorkspace.code-workspace
 .prettierignore
 .travis.yml
 scripts/**

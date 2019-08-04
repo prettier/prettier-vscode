@@ -32,3 +32,4 @@
 - Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
 - Minor refactor for `eslint`, `ignore` and `tslint` tests.
 - Refactor and fix tslint (`testTslint`) and eslint (`testEslint`) configs.
+- Move all `test*` directories to `test/*` directory.
