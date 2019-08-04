@@ -53,7 +53,8 @@ If you have both `"prettier.eslintIntegration"` and `"prettier.tslintIntegration
 
 ## Settings
 
-### Prettier settings
+<details>
+<summary><strong>Prettier settings</strong></summary>
 
 Settings will be read from (listed by priority):
 
@@ -187,7 +188,10 @@ Valid options:
 - `"consistent"` - If at least one property in an object requires quotes, quote all properties.
 - `"preserve"` - Respect the input use of quotes in object properties.
 
-### VS Code specific settings
+</details>
+
+<details>
+<summary><strong>VS Code specific settings</strong></summary>
 
 These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
@@ -215,6 +219,8 @@ Path to a `.prettierignore` or similar file such as `.gitignore`. Files which ma
 
 List of languages IDs to ignore. **Restart required.** _Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run._
 
+</details>
+
 ## Contributing
 
 Feel free to open issues or PRs!
@@ -231,4 +237,4 @@ Feel free to open issues or PRs!
 
 ## Credits
 
-All credits goes to the [prettier-vscode](https://github.com/prettier/prettier-vscode) and [prettier](https://github.com/prettier/prettier). To see what was changed you can take a look at the [CHANGELOG](https://github.com/svipas/vscode-prettier-plus/blob/master/CHANGELOG.md).
+All credits goes to the [prettier-vscode](https://github.com/prettier/prettier-vscode) and [prettier](https://github.com/prettier/prettier).
