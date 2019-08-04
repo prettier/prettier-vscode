@@ -6,7 +6,8 @@
 - Overall project cleanup.
 - Replace NPM with Yarn.
 - Change `rootDir` from `.` to `src` in `tsconfig.json`.
-- Refactor `package.json`, fix all descriptions, add more parsers to `prettier.parser` and set default parser to `none`.
+- Fix all descriptions and add more parsers to `prettier.parser` and set default parser to `none` in `package.json`.
+- Refactor `README.md`.
 
 ### Dependencies
 
