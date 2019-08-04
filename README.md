@@ -225,15 +225,21 @@ List of languages IDs to ignore. **Restart required.** _Disabling a language ena
 
 Feel free to open issues or PRs!
 
-### Debug extension
+<details>
+<summary><strong>Debug extension</strong></summary>
 
 - Open this repository inside VS Code.
 - Run `Debug: Select and Start Debugging` from command palette or open debug sidebar.
 - Select `Launch extension`.
 
-### Run tests
+</details>
+
+<details>
+<summary><strong>Run tests</strong></summary>
 
 - Run tests from terminal via `yarn test`
+
+</details>
 
 ## Credits
 
