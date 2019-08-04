@@ -1,109 +1,98 @@
-import {
-    languages,
-    ExtensionContext,
-    workspace,
-    DocumentFilter,
-    DocumentSelector,
-    Disposable,
-} from 'vscode';
-import EditProvider from './PrettierEditProvider';
-import { setupErrorHandler, registerDisposables } from './errorHandler';
-import {
-    allEnabledLanguages,
-    rangeSupportedLanguages,
-    getConfig,
-} from './utils';
-import configFileListener from './configCacheHandler';
-import ignoreFileHandler from './ignoreFileHandler';
+import { Disposable, DocumentFilter, DocumentSelector, ExtensionContext, languages, workspace } from 'vscode';
+import { configFileListener } from './configCacheHandler';
+import { registerDisposables, setupErrorHandler } from './errorHandler';
+import { ignoreFileHandler } from './ignoreFileHandler';
+import { PrettierEditProvider } from './PrettierEditProvider';
+import { allEnabledLanguages, getConfig, supportedLanguages } from './utils';
 
 interface Selectors {
-    rangeLanguageSelector: DocumentSelector;
-    languageSelector: DocumentSelector;
+  rangeLanguageSelector: DocumentSelector;
+  languageSelector: DocumentSelector;
 }
 
 let formatterHandler: undefined | Disposable;
 let rangeFormatterHandler: undefined | Disposable;
+
 /**
- * Dispose formatters
+ * Dispose formatters.
  */
 function disposeHandlers() {
-    if (formatterHandler) {
-        formatterHandler.dispose();
-    }
-    if (rangeFormatterHandler) {
-        rangeFormatterHandler.dispose();
-    }
+  if (formatterHandler) {
+    formatterHandler.dispose();
     formatterHandler = undefined;
+  }
+  if (rangeFormatterHandler) {
+    rangeFormatterHandler.dispose();
     rangeFormatterHandler = undefined;
+  }
 }
+
 /**
- * Build formatter selectors
+ * Build formatter selectors.
  */
 function selectors(): Selectors {
-    const allLanguages = allEnabledLanguages();
-    const allRangeLanguages = rangeSupportedLanguages();
-    const { disableLanguages } = getConfig();
-    const globalLanguageSelector = allLanguages.filter(
-        l => !disableLanguages.includes(l)
-    );
-    const globalRangeLanguageSelector = allRangeLanguages.filter(
-        l => !disableLanguages.includes(l)
-    );
-    if (workspace.workspaceFolders === undefined) {
-        // no workspace opened
-        return {
-            languageSelector: globalLanguageSelector,
-            rangeLanguageSelector: globalRangeLanguageSelector,
-        };
-    }
+  const { disableLanguages } = getConfig();
+  const globalLanguageSelector = allEnabledLanguages.filter(lang => !disableLanguages.includes(lang));
+  const globalRangeLanguageSelector = supportedLanguages.filter(lang => !disableLanguages.includes(lang));
 
-    // at least 1 workspace
-    const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-        l => ({ language: l, scheme: 'untitled' })
-    );
-    const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-        l => ({ language: l, scheme: 'untitled' })
-    );
-    const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-        l => ({ language: l, scheme: 'file' })
-    );
-    const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-        l => ({ language: l, scheme: 'file' })
-    );
+  // No workspace opened
+  if (!workspace.workspaceFolders) {
     return {
-        languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
-        rangeLanguageSelector: untitledRangeLanguageSelector.concat(
-            fileRangeLanguageSelector
-        ),
+      languageSelector: globalLanguageSelector,
+      rangeLanguageSelector: globalRangeLanguageSelector
     };
+  }
+
+  const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(lang => ({
+    language: lang,
+    scheme: 'untitled'
+  }));
+
+  const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(lang => ({
+    language: lang,
+    scheme: 'untitled'
+  }));
+
+  const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(lang => ({
+    language: lang,
+    scheme: 'file'
+  }));
+
+  const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(lang => ({
+    language: lang,
+    scheme: 'file'
+  }));
+
+  return {
+    languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
+    rangeLanguageSelector: untitledRangeLanguageSelector.concat(fileRangeLanguageSelector)
+  };
 }
 
 export function activate(context: ExtensionContext) {
-    const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
-    const editProvider = new EditProvider(fileIsIgnored);
-    function registerFormatter() {
-        disposeHandlers();
-        const { languageSelector, rangeLanguageSelector } = selectors();
-        rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
-            rangeLanguageSelector,
-            editProvider
-        );
-        formatterHandler = languages.registerDocumentFormattingEditProvider(
-            languageSelector,
-            editProvider
-        );
-    }
-    registerFormatter();
-    context.subscriptions.push(
-        workspace.onDidChangeWorkspaceFolders(registerFormatter),
-        {
-            dispose: disposeHandlers,
-        },
-        setupErrorHandler(),
-        configFileListener(),
-        ...registerDisposables()
+  const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
+  const prettierEditProvider = new PrettierEditProvider(fileIsIgnored);
+
+  const registerFormatter = () => {
+    disposeHandlers();
+
+    const { languageSelector, rangeLanguageSelector } = selectors();
+    rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
+      rangeLanguageSelector,
+      prettierEditProvider
     );
+    formatterHandler = languages.registerDocumentFormattingEditProvider(languageSelector, prettierEditProvider);
+  };
+
+  registerFormatter();
+
+  context.subscriptions.push(
+    workspace.onDidChangeWorkspaceFolders(registerFormatter),
+    { dispose: disposeHandlers },
+    setupErrorHandler(),
+    configFileListener(),
+    ...registerDisposables()
+  );
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
