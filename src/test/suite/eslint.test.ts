@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { format } from './format.test';
 import { workspace } from 'vscode';
 
-const expectedResult = `// Settings (eslint): single-quote, trailing-comma, no-semi
+const expectedResult = `// ESLint: single-quote, trailing-comma, no-semi
 function foo() {
     return 'bar'
 }
