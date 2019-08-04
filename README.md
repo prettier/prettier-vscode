@@ -33,7 +33,7 @@ Linux: Ctrl + Shift + I
 // Format all files on save
 "editor.formatOnSave": true,
 
-// Format per-language on save
+// Format per-language file on save
 "[javascript]": {
   "editor.formatOnSave": false
 }
@@ -43,7 +43,7 @@ Linux: Ctrl + Shift + I
 
 **Prettier (1.18.2)** copy is bundled with the extension so additionally you don't need to install prettier to format your code. _If extension detects local prettier dependency in your project it will use it from your project instead of bundled version in the extension._
 
-### ESLint, TSLint and stylelint integrations
+## ESLint, TSLint and stylelint integrations
 
 `prettier-eslint (9.0.0)`, `prettier-tslint (0.4.2)` and `prettier-stylelint (0.4.2)` are bundled with the extension. There is no need for a separate local or global install of either for functionality.
 
@@ -79,7 +79,7 @@ Use single quotes instead of double quotes. [Learn more here.](https://prettier.
 
 **prettier.trailingComma (default: 'none')**
 
-Print trailing commas wherever possible when multi-line. (A single-line array, for example, never gets trailing commas.). [Learn more here.](https://prettier.io/docs/en/options.html#trailing-commas)
+Print trailing commas wherever possible when multi-line. (A single-line array, for example, never gets trailing commas.) [Learn more here.](https://prettier.io/docs/en/options.html#trailing-commas)
 
 Valid options:
 
@@ -99,7 +99,7 @@ Put the `>` of a multi-line JSX element at the end of the last line instead of b
 
 Specify which parser to use. [Learn more here.](https://prettier.io/docs/en/options.html#parser)
 
-**Prettier automatically infers the parser from the input file path, so you shouldn't have to change this setting.**
+_Prettier automatically infers the parser from the input file path, so you shouldn't have to change this setting._
 
 Both the `babel` and `flow` parsers support the same set of JavaScript features (including Flow type annotations). They might differ in some edge cases, so if you run into one of those you can try `flow` instead of `babel`.
 
@@ -205,7 +205,7 @@ Use [prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint) inste
 
 **prettier.requireConfig (default: false)**
 
-Require a config to format.
+Require a config file to format code.
 
 **prettier.ignorePath (default: .prettierignore)**
 
@@ -231,4 +231,4 @@ Feel free to open issues or PRs!
 
 ## Credits
 
-All credits goes to the `https://github.com/prettier/prettier-vscode` and `https://github.com/prettier/prettier`. To see what was changed you can take a look at the [CHANGELOG.md](https://github.com/svipas/vscode-prettier-plus/blob/master/CHANGELOG.md).
+All credits goes to the [prettier-vscode](https://github.com/prettier/prettier-vscode) and [prettier](https://github.com/prettier/prettier). To see what was changed you can take a look at the [CHANGELOG](https://github.com/svipas/vscode-prettier-plus/blob/master/CHANGELOG.md).

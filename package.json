@@ -63,7 +63,7 @@
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
-          "description": "Require a config to format code.",
+          "description": "Require a config file to format code.",
           "scope": "resource"
         },
         "prettier.ignorePath": {
