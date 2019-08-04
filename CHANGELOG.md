@@ -8,6 +8,7 @@
 - Change `rootDir` from `.` to `src` in `tsconfig.json`.
 - Fix all descriptions and add more parsers to `prettier.parser` and set default parser to `none` in `package.json`.
 - Refactor `README.md`.
+- Refactor whole `src` directory.
 
 ### Dependencies
 
