@@ -37,15 +37,13 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
  * @returns module
  */
 export function requireLocalPkg(fspath: string, pkgName: string): any {
-  let modulePath;
   try {
-    modulePath = findPkg(fspath, pkgName);
+    const modulePath = findPkg(fspath, pkgName);
     if (modulePath) {
       return require(modulePath);
     }
   } catch (e) {
-    addToOutput(`Failed to load ${pkgName} from ${modulePath}. Using bundled.`);
+    addToOutput(`Failed to load local ${pkgName}. Using bundled version.`);
   }
-
   return require(pkgName);
 }
