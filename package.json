@@ -1,7 +1,7 @@
 {
   "name": "prettier-plus",
   "displayName": "Prettier+",
-  "description": "An opinionated code formatter.",
+  "description": "Prettier (code formatter) for the VS Code.",
   "version": "1.0.0",
   "publisher": "svipas",
   "icon": "icon.png",
@@ -39,7 +39,7 @@
           "default": [
             "vue"
           ],
-          "description": "A list of languages IDs to disable this extension on.",
+          "description": "A list of languages IDs to disable this extension on. Restart required.",
           "scope": "window"
         },
         "prettier.eslintIntegration": {
@@ -63,13 +63,13 @@
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
-          "description": "Require a config to format",
+          "description": "Require a config to format.",
           "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
-          "description": "Path to a '.prettierignore' or similar file",
+          "description": "Path to a '.prettierignore' or similar file such as '.gitignore'. Files which match will not be formatted. Set to 'null' to not read ignore files. Restart required.",
           "scope": "resource"
         },
         "prettier.printWidth": {
@@ -146,23 +146,23 @@
           "enumDescriptions": [
             "Automatically infers the parser from the input file path.",
             "Via '@babel/parser' named 'babylon' until v1.16.0",
-            "Same as 'babel' but enables Flow parsing explicitly to avoid ambiguity, first available in v1.16.0",
+            "Same as 'babel' but enables Flow parsing explicitly to avoid ambiguity. First available in v1.16.0",
             "Via 'flow-parser'",
-            "Via '@typescript-eslint/typescript-estree', first available in v1.4.0",
-            "Via 'postcss-scss' and 'postcss-less', autodetects which to use, first available in v1.7.1",
-            "Same parsers as 'css', prefers 'postcss-scss', first available in v1.7.1",
-            "Same parsers as 'css', prefers 'postcss-less', first available in v1.7.1",
-            "Via '@babel/parser parseExpression', fFirst available in v1.5.0",
-            "Same parser as 'json', but outputs as 'json5', first available in v1.13.0",
-            "Same parser as 'json', but outputs like 'JSON.stringify', first available in v1.13.0",
-            "Via 'graphql/language', first available in v1.5.0",
-            "Via 'remark-parse', first available in v1.8.0",
-            "Via 'remark-parse' and '@mdx-js/mdx', first available in v1.15.0",
-            "Via 'angular-html-parser', first available in 1.15.0",
-            "Same parser as 'html', but also formats vue-specific syntax, first available in 1.10.0",
-            "Same parser as 'html', but also formats angular-specific syntax via 'angular-estree-parser', first available in 1.15.0",
-            "Same parser as 'html', but also formats LWC-specific syntax for unquoted template attributes, first available in 1.17.0",
-            "Via 'yaml' and 'yaml-unist-parser', first available in 1.14.0"
+            "Via '@typescript-eslint/typescript-estree'. First available in v1.4.0",
+            "Via 'postcss-scss' and 'postcss-less', autodetects which to use. First available in v1.7.1",
+            "Same parsers as 'css', prefers 'postcss-scss'. First available in v1.7.1",
+            "Same parsers as 'css', prefers 'postcss-less'. First available in v1.7.1",
+            "Via '@babel/parser parseExpression'. First available in v1.5.0",
+            "Same parser as 'json', but outputs as 'json5'. First available in v1.13.0",
+            "Same parser as 'json', but outputs like 'JSON.stringify'. First available in v1.13.0",
+            "Via 'graphql/language'. First available in v1.5.0",
+            "Via 'remark-parse'. First available in v1.8.0",
+            "Via 'remark-parse' and '@mdx-js/mdx'. First available in v1.15.0",
+            "Via 'angular-html-parser'. First available in 1.15.0",
+            "Same parser as 'html', but also formats vue-specific syntax. First available in 1.10.0",
+            "Same parser as 'html', but also formats angular-specific syntax via 'angular-estree-parser'. First available in 1.15.0",
+            "Same parser as 'html', but also formats LWC-specific syntax for unquoted template attributes. First available in 1.17.0",
+            "Via 'yaml' and 'yaml-unist-parser'. First available in 1.14.0"
           ],
           "scope": "resource"
         },
