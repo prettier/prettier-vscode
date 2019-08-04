@@ -2,7 +2,7 @@
 
 ## 1.0.0 (August 4, 2019)
 
-- Fork `https://github.com/prettier/prettier-vscode` (1.8.1).
+- Fork [prettier-vscode](https://github.com/prettier/prettier-vscode) (1.8.1).
 - Overall project cleanup.
 - Replace NPM with Yarn.
 - Change `rootDir` from `.` to `src` in `tsconfig.json`.
