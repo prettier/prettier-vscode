@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+- Add `.eslintignore` and `azure-pipelines.yml` to `.vscodeignore`.
+- Update `README.md`.
+- Use better message if local Prettier wasn't found in `requireLocalPkg()`.
+
 ## 1.0.0 (August 4, 2019)
 
 - Fork [prettier-vscode](https://github.com/prettier/prettier-vscode) (1.8.1).
