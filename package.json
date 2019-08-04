@@ -1,41 +1,35 @@
 {
-  "name": "prettier-vscode",
-  "displayName": "Prettier - Code formatter",
-  "description": "VS Code plugin for prettier/prettier",
-  "version": "1.9.0",
-  "publisher": "esbenp",
-  "author": "Esben Petersen <@esbenp>",
+  "name": "prettier-plus",
+  "displayName": "Prettier+",
+  "description": "An opinionated code formatter.",
+  "version": "1.0.0",
+  "publisher": "svipas",
+  "icon": "icon.png",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "main": "./out/extension",
   "repository": {
     "type": "git",
-    "url": "https://github.com/prettier/prettier-vscode.git"
+    "url": "https://github.com/svipas/vscode-prettier-plus.git"
   },
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/prettier/prettier-vscode/issues"
+    "url": "https://github.com/svipas/vscode-prettier-plus/issues"
   },
   "engines": {
     "vscode": "^1.17.0"
   },
-  "keywords": [
-    "multi-root ready"
-  ],
   "categories": [
     "Formatters"
   ],
   "activationEvents": [
     "*"
   ],
-  "icon": "icon.png",
-  "main": "./out/extension",
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Prettier - Code formatter configuration",
+      "title": "Prettier+",
       "properties": {
         "prettier.disableLanguages": {
           "type": "array",
@@ -45,7 +39,7 @@
           "default": [
             "vue"
           ],
-          "description": "A list of languages IDs to disable this extension on",
+          "description": "A list of languages IDs to disable this extension on.",
           "scope": "window"
         },
         "prettier.eslintIntegration": {
@@ -69,31 +63,31 @@
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
-          "description": "Require a 'prettierconfig' to format",
+          "description": "Require a config to format",
           "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
-          "description": "Path to a .prettierignore or similar file",
+          "description": "Path to a '.prettierignore' or similar file",
           "scope": "resource"
         },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
-          "description": "Fit code within this line limit",
+          "description": "Specify the line length that the printer will wrap on.",
           "scope": "resource"
         },
         "prettier.tabWidth": {
           "type": "integer",
           "default": 2,
-          "description": "Number of spaces it should use per tab",
+          "description": "Specify the number of spaces per indentation-level.",
           "scope": "resource"
         },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "If true, will use single instead of double quotes",
+          "description": "Use single quotes instead of double quotes.",
           "scope": "resource"
         },
         "prettier.trailingComma": {
@@ -104,41 +98,84 @@
             "all"
           ],
           "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
+          "description": "Print trailing commas wherever possible when multi-line. (A single-line array, for example, never gets trailing commas.)",
+          "enumDescriptions": [
+            "No trailing commas.",
+            "Trailing commas where valid in ES5 (objects, arrays, etc.)",
+            "Trailing commas wherever possible (including function arguments). This requires node 8 or a transform."
+          ],
           "scope": "resource"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "Controls the printing of spaces inside object literals",
+          "description": "Print spaces between brackets in object literals.",
           "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
-          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line",
+          "description": "Put the '>' of a multi-line JSX element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).",
           "scope": "resource"
         },
         "prettier.parser": {
           "type": "string",
           "enum": [
-            "babylon",
-            "flow"
+            "none",
+            "babel",
+            "babel-flow",
+            "flow",
+            "typescript",
+            "css",
+            "scss",
+            "less",
+            "json",
+            "json5",
+            "json-stringify",
+            "graphql",
+            "markdown",
+            "mdx",
+            "html",
+            "vue",
+            "angular",
+            "lwc",
+            "yaml"
           ],
-          "default": "babylon",
-          "description": "Override the parser. You shouldn't have to change this setting.",
+          "default": "none",
+          "description": "Specify which parser to use.\nPrettier automatically infers the parser from the input file path, so you shouldn't have to change this setting.\nBoth the 'babel' and 'flow' parsers support the same set of JavaScript features (including Flow type annotations).\nThey might differ in some edge cases, so if you run into one of those you can try 'flow' instead of 'babel'.",
+          "enumDescriptions": [
+            "Automatically infers the parser from the input file path.",
+            "Via '@babel/parser' named 'babylon' until v1.16.0",
+            "Same as 'babel' but enables Flow parsing explicitly to avoid ambiguity, first available in v1.16.0",
+            "Via 'flow-parser'",
+            "Via '@typescript-eslint/typescript-estree', first available in v1.4.0",
+            "Via 'postcss-scss' and 'postcss-less', autodetects which to use, first available in v1.7.1",
+            "Same parsers as 'css', prefers 'postcss-scss', first available in v1.7.1",
+            "Same parsers as 'css', prefers 'postcss-less', first available in v1.7.1",
+            "Via '@babel/parser parseExpression', fFirst available in v1.5.0",
+            "Same parser as 'json', but outputs as 'json5', first available in v1.13.0",
+            "Same parser as 'json', but outputs like 'JSON.stringify', first available in v1.13.0",
+            "Via 'graphql/language', first available in v1.5.0",
+            "Via 'remark-parse', first available in v1.8.0",
+            "Via 'remark-parse' and '@mdx-js/mdx', first available in v1.15.0",
+            "Via 'angular-html-parser', first available in 1.15.0",
+            "Same parser as 'html', but also formats vue-specific syntax, first available in 1.10.0",
+            "Same parser as 'html', but also formats angular-specific syntax via 'angular-estree-parser', first available in 1.15.0",
+            "Same parser as 'html', but also formats LWC-specific syntax for unquoted template attributes, first available in 1.17.0",
+            "Via 'yaml' and 'yaml-unist-parser', first available in 1.14.0"
+          ],
           "scope": "resource"
         },
         "prettier.semi": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to add a semicolon at the end of every line",
+          "description": "Print semicolons at the ends of statements.",
           "scope": "resource"
         },
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
-          "description": "Indent lines with tabs",
+          "description": "Indent lines with tabs instead of spaces.",
           "scope": "resource"
         },
         "prettier.proseWrap": {
@@ -149,7 +186,12 @@
             "never"
           ],
           "default": "preserve",
-          "description": "(Markdown) wrap prose over multiple lines"
+          "description": "By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer, e.g. GitHub comment and BitBucket. In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out with 'never'.",
+          "enumDescriptions": [
+            "Wrap prose as-is. First available in v1.9.0",
+            "Wrap prose if it exceeds the print width.",
+            "Do not wrap prose."
+          ]
         },
         "prettier.arrowParens": {
           "type": "string",
@@ -158,13 +200,17 @@
             "always"
           ],
           "default": "avoid",
-          "description": "Include parentheses around a sole arrow function parameter",
+          "description": "Include parentheses around a sole arrow function parameter.",
+          "enumDescriptions": [
+            "Omit parens when possible. Example: x => x",
+            "Always include parens. Example: (x) => x"
+          ],
           "scope": "resource"
         },
         "prettier.jsxSingleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "Use single quotes instead of double quotes in JSX"
+          "description": "Use single quotes instead of double quotes in JSX."
         },
         "prettier.htmlWhitespaceSensitivity": {
           "type": "string",
@@ -174,7 +220,12 @@
             "ignore"
           ],
           "default": "css",
-          "description": "Specify the global whitespace sensitivity for HTML files.\n Valid options: \n'css' - Respect the default value of CSS display property. \n'strict' - Whitespaces are considered sensitive. \n'ignore' - Whitespaces are considered insensitive."
+          "description": "Specify the global whitespace sensitivity for HTML files.",
+          "enumDescriptions": [
+            "Respect the default value of CSS 'display' property.",
+            "Whitespaces are considered sensitive.",
+            "Whitespaces are considered insensitive."
+          ]
         },
         "prettier.endOfLine": {
           "type": "string",
@@ -185,7 +236,13 @@
             "cr"
           ],
           "default": "auto",
-          "description": "Specify the end of line used by prettier"
+          "description": "Specify the end of line used by Prettier.",
+          "enumDescriptions": [
+            "Maintain existing line endings (mixed values within one file are normalised by looking at what's used after the first line)",
+            "Line Feed only (\\n), common on Linux and macOS as well as inside git repos",
+            "Carriage Return + Line Feed characters (\\r\\n), common on Windows",
+            "Carriage Return character only (\\r), used very rarely"
+          ]
         },
         "prettier.quoteProps": {
           "type": "string",
@@ -195,7 +252,12 @@
             "preserve"
           ],
           "default": "as-needed",
-          "description": "Change when properties in objects are quoted"
+          "description": "Change when properties in objects are quoted.",
+          "enumDescriptions": [
+            "Only add quotes around object properties where required.",
+            "If at least one property in an object requires quotes, quote all properties.",
+            "Respect the input use of quotes in object properties."
+          ]
         }
       }
     },
@@ -238,12 +300,12 @@
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.8",
+    "@types/node": "^12.6.9",
     "@types/resolve": "^0.0.8",
     "@types/vscode": "^1.17.0",
     "glob": "^7.1.4",
     "mocha": "^6.2.0",
-    "vscode-test": "^1.0.2"
+    "vscode-test": "^1.1.0"
   },
   "dependencies": {
     "ignore": "^5.1.2",
@@ -252,7 +314,43 @@
     "prettier-stylelint": "^0.4.2",
     "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^6.0.0",
-    "resolve": "^1.11.1",
+    "resolve": "^1.12.0",
     "typescript": "^3.5.3"
-  }
+  },
+  "keywords": [
+    "prettier",
+    "opinionated",
+    "code",
+    "formatter",
+    "javascript",
+    "js",
+    "jsx",
+    "flow",
+    "typescript",
+    "ts",
+    "json",
+    "html",
+    "vue",
+    "angular",
+    "css",
+    "less",
+    "scss",
+    "styled-components",
+    "styled-jsx",
+    "graphql",
+    "markdown",
+    "md",
+    "commonmark",
+    "mdx",
+    "yaml",
+    "yml",
+    "elm",
+    "java",
+    "php",
+    "postgresql",
+    "sql",
+    "ruby",
+    "swift",
+    "toml"
+  ]
 }
