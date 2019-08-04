@@ -11,9 +11,9 @@ function foo() {
 const workspaceFolder = workspace.workspaceFolders![2].uri;
 
 suite('Test eslint', () => {
-    test('it formats with prettier-eslint', () => {
-        return format('withEslint.js', workspaceFolder).then(({ result }) => {
-            assert.strictEqual(result, expectedResult);
-        });
+  test('it formats with prettier-eslint', () => {
+    return format('withEslint.js', workspaceFolder).then(({ result }) => {
+      assert.strictEqual(result, expectedResult);
     });
+  });
 });

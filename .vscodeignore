@@ -15,7 +15,6 @@ scripts/**
 .gitignore
 .github/**
 tsconfig.json
-vsc-extension-quickstart.md
 package-lock.json
 CONTRIBUTORS.md
 

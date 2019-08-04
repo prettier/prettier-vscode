@@ -1,13 +1,6 @@
 {
-  "name": "testeslint",
-  "version": "1.0.0",
-  "description": "Test eslint integration on this dummy project",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "cigit",
-  "license": "MIT",
+  "description": "Test ESLint integration",
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-prettier": "^3.1.0"

@@ -1,13 +1,6 @@
 {
-  "name": "testtslint",
-  "version": "1.0.0",
-  "description": "Test tslint integration on this dummy project",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "faultless",
-  "license": "MIT",
+  "description": "Test TSLint integration",
   "devDependencies": {
     "prettier": "1.18.2",
     "tslint": "^5.18.0",

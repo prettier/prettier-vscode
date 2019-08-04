@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "outDir": "out",
-        "strict": true,
-        "noUnusedLocals": true,
-        "forceConsistentCasingInFileNames": true,
-        "removeComments": true,
-        "lib": ["es2016"],
-        "sourceMap": true,
-        "rootDir": "src"
-    },
-    "exclude": ["node_modules", ".vscode-test", "testProject", "testTslint"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "out",
+    "strict": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "lib": ["es2016"],
+    "sourceMap": true,
+    "rootDir": "src"
+  },
+  "exclude": ["node_modules", ".vscode-test", "testProject", "testTslint"]
 }

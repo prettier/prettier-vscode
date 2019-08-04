@@ -1,42 +1,42 @@
 {
-    "folders": [
-        {
-            "path": "testProject"
-        },
-        {
-            "path": "testWorkspaceFolder"
-        },
-        {
-            "path": "testEslint"
-        },
-        {
-            "path": "testTslint"
-        }
-    ],
-    "settings": {
-        "prettier.eslintIntegration": false,
-        "prettier.printWidth": 80,
-        "prettier.tabWidth": 2,
-        "prettier.singleQuote": false,
-        "prettier.trailingComma": "none",
-        "prettier.bracketSpacing": true,
-        "prettier.jsxBracketSameLine": false,
-        "prettier.parser": "babylon",
-        "prettier.semi": true,
-        "prettier.useTabs": false,
-        "prettier.disableLanguages": [],
-        "prettier.endOfLine": "auto",
-        "prettier.htmlWhitespaceSensitivity": "css",
-        "prettier.jsxSingleQuote": false,
-        "prettier.quoteProps": "as-needed",
-        "[typescript]": {
-            "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "[json]": {
-            "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "[javascript]": {
-            "editor.defaultFormatter": "esbenp.prettier-vscode"
-        }
+  "folders": [
+    {
+      "path": "testProject"
+    },
+    {
+      "path": "testWorkspaceFolder"
+    },
+    {
+      "path": "testEslint"
+    },
+    {
+      "path": "testTslint"
     }
+  ],
+  "settings": {
+    "prettier.eslintIntegration": false,
+    "prettier.printWidth": 80,
+    "prettier.tabWidth": 2,
+    "prettier.singleQuote": false,
+    "prettier.trailingComma": "none",
+    "prettier.bracketSpacing": true,
+    "prettier.jsxBracketSameLine": false,
+    "prettier.parser": "babylon",
+    "prettier.semi": true,
+    "prettier.useTabs": false,
+    "prettier.disableLanguages": [],
+    "prettier.endOfLine": "auto",
+    "prettier.htmlWhitespaceSensitivity": "css",
+    "prettier.jsxSingleQuote": false,
+    "prettier.quoteProps": "as-needed",
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
 }

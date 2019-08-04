@@ -1,12 +1,12 @@
 import {
-    Disposable,
-    StatusBarItem,
-    OutputChannel,
-    StatusBarAlignment,
-    TextEditor,
-    commands,
-    window,
-    languages,
+  Disposable,
+  StatusBarItem,
+  OutputChannel,
+  StatusBarAlignment,
+  TextEditor,
+  commands,
+  window,
+  languages
 } from 'vscode';
 
 import { allEnabledLanguages, getConfig } from './utils';
@@ -17,43 +17,39 @@ let outputChannel: OutputChannel;
 let prettierInformation: string;
 
 function toggleStatusBarItem(editor: TextEditor | undefined): void {
-    if (statusBarItem === undefined) {
-        return;
+  if (statusBarItem === undefined) {
+    return;
+  }
+
+  if (editor !== undefined) {
+    // The function will be triggered everytime the active "editor" instance changes
+    // It also triggers when we focus on the output panel or on the debug panel
+    // Both are seen as an "editor".
+    // The following check will ignore such panels
+    if (['debug', 'output'].some(part => editor.document.uri.scheme === part)) {
+      return;
     }
 
-    if (editor !== undefined) {
-        // The function will be triggered everytime the active "editor" instance changes
-        // It also triggers when we focus on the output panel or on the debug panel
-        // Both are seen as an "editor".
-        // The following check will ignore such panels
-        if (
-            ['debug', 'output'].some(
-                part => editor.document.uri.scheme === part
-            )
-        ) {
-            return;
-        }
+    const score = languages.match(allEnabledLanguages(), editor.document);
+    const disabledLanguages: PrettierVSCodeConfig['disableLanguages'] = getConfig(editor.document.uri).disableLanguages;
 
-        const score = languages.match(allEnabledLanguages(), editor.document);
-        const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
-
-        if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
-            statusBarItem.show();
-        } else {
-            statusBarItem.hide();
-        }
+    if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
+      statusBarItem.show();
     } else {
-        statusBarItem.hide();
+      statusBarItem.hide();
     }
+  } else {
+    statusBarItem.hide();
+  }
 }
 
 export function registerDisposables(): Disposable[] {
-    return [
-        // Keep track whether to show/hide the statusbar
-        window.onDidChangeActiveTextEditor(editor => {
-            toggleStatusBarItem(editor);
-        })
-    ];
+  return [
+    // Keep track whether to show/hide the statusbar
+    window.onDidChangeActiveTextEditor(editor => {
+      toggleStatusBarItem(editor);
+    })
+  ];
 }
 
 /**
@@ -62,9 +58,9 @@ export function registerDisposables(): Disposable[] {
  * @param message The message to put inside the statusBarItem
  */
 function updateStatusBar(message: string): void {
-    statusBarItem.text = message;
-    statusBarItem.tooltip = prettierInformation;
-    statusBarItem.show();
+  statusBarItem.text = message;
+  statusBarItem.tooltip = prettierInformation;
+  statusBarItem.show();
 }
 
 /**
@@ -73,12 +69,8 @@ function updateStatusBar(message: string): void {
  * @param version the version of the module
  * @param bundled is it bundled with the extension or not
  */
-export function setUsedModule(
-    module: string,
-    version: string,
-    bundled: boolean
-) {
-    prettierInformation = `${module}@${version}${bundled ? ' (bundled)' : ''}`;
+export function setUsedModule(module: string, version: string, bundled: boolean) {
+  prettierInformation = `${module}@${version}${bundled ? ' (bundled)' : ''}`;
 }
 
 /**
@@ -89,13 +81,13 @@ export function setUsedModule(
  * @returns {string} enhanced message with the filename
  */
 function addFilePath(msg: string, fileName: string): string {
-    const lines = msg.split('\n');
-    if (lines.length > 0) {
-        lines[0] = lines[0].replace(/(\d*):(\d*)/g, `${fileName}:$1:$2`);
-        return lines.join('\n');
-    }
+  const lines = msg.split('\n');
+  if (lines.length > 0) {
+    lines[0] = lines[0].replace(/(\d*):(\d*)/g, `${fileName}:$1:$2`);
+    return lines.join('\n');
+  }
 
-    return msg;
+  return msg;
 }
 
 /**
@@ -104,14 +96,14 @@ function addFilePath(msg: string, fileName: string): string {
  * @param message The message to append to the output channel
  */
 export function addToOutput(message: string): void {
-    const title = `${new Date().toLocaleString()}:`;
+  const title = `${new Date().toLocaleString()}:`;
 
-    // Create a sort of title, to differentiate between messages
-    outputChannel.appendLine(title);
-    outputChannel.appendLine('-'.repeat(title.length));
+  // Create a sort of title, to differentiate between messages
+  outputChannel.appendLine(title);
+  outputChannel.appendLine('-'.repeat(title.length));
 
-    // Append actual output
-    outputChannel.appendLine(`${message}\n`);
+  // Append actual output
+  outputChannel.appendLine(`${message}\n`);
 }
 
 /**
@@ -123,35 +115,35 @@ export function addToOutput(message: string): void {
  * @returns {string} formatted text or defaultText
  */
 export function safeExecution(
-    cb: (() => string) | Promise<string>,
-    defaultText: string,
-    fileName: string
+  cb: (() => string) | Promise<string>,
+  defaultText: string,
+  fileName: string
 ): string | Promise<string> {
-    if (cb instanceof Promise) {
-        return cb
-            .then(returnValue => {
-                updateStatusBar('Prettier: $(check)');
-                return returnValue;
-            })
-            .catch((err: Error) => {
-                addToOutput(addFilePath(err.message, fileName));
-                updateStatusBar('Prettier: $(x)');
-
-                return defaultText;
-            });
-    }
-    try {
-        const returnValue = cb();
-
+  if (cb instanceof Promise) {
+    return cb
+      .then(returnValue => {
         updateStatusBar('Prettier: $(check)');
-
         return returnValue;
-    } catch (err) {
+      })
+      .catch((err: Error) => {
         addToOutput(addFilePath(err.message, fileName));
         updateStatusBar('Prettier: $(x)');
 
         return defaultText;
-    }
+      });
+  }
+  try {
+    const returnValue = cb();
+
+    updateStatusBar('Prettier: $(check)');
+
+    return returnValue;
+  } catch (err) {
+    addToOutput(addFilePath(err.message, fileName));
+    updateStatusBar('Prettier: $(x)');
+
+    return defaultText;
+  }
 }
 /**
  * Setup the output channel and the statusBarItem.
@@ -160,17 +152,17 @@ export function safeExecution(
  * @returns {Disposable} The command to open the output channel
  */
 export function setupErrorHandler(): Disposable {
-    // Setup the statusBarItem
-    statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
-    statusBarItem.text = 'Prettier';
-    statusBarItem.command = 'prettier.open-output';
+  // Setup the statusBarItem
+  statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right, -1);
+  statusBarItem.text = 'Prettier';
+  statusBarItem.command = 'prettier.open-output';
 
-    toggleStatusBarItem(window.activeTextEditor);
+  toggleStatusBarItem(window.activeTextEditor);
 
-    // Setup the outputChannel
-    outputChannel = window.createOutputChannel('Prettier');
+  // Setup the outputChannel
+  outputChannel = window.createOutputChannel('Prettier');
 
-    return commands.registerCommand('prettier.open-output', () => {
-        outputChannel.show();
-    });
+  return commands.registerCommand('prettier.open-output', () => {
+    outputChannel.show();
+  });
 }

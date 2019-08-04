@@ -1,4 +1,4 @@
-// Settings (tslint): single-quote, trailing-comma, no-semi
+// TSLint: single-quote, trailing-comma, no-semi
 function foo(){
-    return "bar";
+  return "bar";
 }
