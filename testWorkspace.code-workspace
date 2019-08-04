@@ -30,13 +30,13 @@
     "prettier.jsxSingleQuote": false,
     "prettier.quoteProps": "as-needed",
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "svipas.prettier-plus"
     },
     "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "svipas.prettier-plus"
     },
     "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "svipas.prettier-plus"
     }
   }
 }
