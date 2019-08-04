@@ -229,10 +229,10 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "yarn compile",
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
-    "pretest": "npm run compile && cd testEslint && npm i && cd ../testTslint && npm i",
+    "pretest": "yarn compile && cd testEslint && yarn install && cd ../testTslint && yarn install",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
