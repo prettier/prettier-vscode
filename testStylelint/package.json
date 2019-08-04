@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "description": "Test stylelint integration",
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "stylelint": "^10.1.0",
+    "stylelint-prettier": "^1.1.1"
+  }
+}

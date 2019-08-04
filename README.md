@@ -213,7 +213,7 @@ Path to a `.prettierignore` or similar file such as `.gitignore`. Files which ma
 
 **prettier.disableLanguages (default: ["vue"])**
 
-A list of languages IDs to disable this extension on. **Restart required.** _Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run._
+List of languages IDs to ignore. **Restart required.** _Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run._
 
 ## Contributing
 
@@ -227,13 +227,7 @@ Feel free to open issues or PRs!
 
 ### Run tests
 
-- Open new VSCode instance and load `./testProject` as root workspace.
-- Run `Debug: Select and Start Debugging` from command palette or open debug sidebar.
-- Select `Launch tests`.
-
-OR
-
-Run tests from terminal via `yarn test`
+- Run tests from terminal via `yarn test`
 
 ## Credits
 

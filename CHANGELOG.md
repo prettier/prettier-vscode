@@ -26,6 +26,7 @@
 ### Tests
 
 - Replace Travis with Azure Pipelines.
+- Add tests for `stylelint`.
 - Replace `assert.equal` (deprecated) to `assert.strictEqual`.
 - Refactor `format()` in `format.test.ts` to properly reject if Thenable rejected.
 - Minor refactor for `eslint`, `ignore` and `tslint` tests.
