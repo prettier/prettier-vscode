@@ -40,7 +40,16 @@ function disposeHandlers() {
  * Build formatter selectors
  */
 function selectors(): Selectors {
-    const allLanguages = allEnabledLanguages();
+    let allLanguages: string[];
+    if (workspace.workspaceFolders === undefined) {
+        allLanguages = allEnabledLanguages();
+    } else {
+        allLanguages = [];
+        for (const folder of workspace.workspaceFolders) {
+            allLanguages.push(...allEnabledLanguages(folder.uri.fsPath));
+        }
+    }
+
     const allRangeLanguages = rangeSupportedLanguages();
     const { disableLanguages } = getConfig();
     const globalLanguageSelector = allLanguages.filter(

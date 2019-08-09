@@ -11,6 +11,9 @@
         },
         {
             "path": "tslint"
+        },
+        {
+            "path": "plugins"
         }
     ],
     "settings": {
@@ -36,6 +39,9 @@
             "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[php]": {
             "editor.defaultFormatter": "esbenp.prettier-vscode"
         }
     }
