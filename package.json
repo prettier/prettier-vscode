@@ -232,15 +232,16 @@
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "cd testEslint && npm i && cd ../testTslint && npm i && cd .. && cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
+    "pretest": "yarn compile && cd testEslint && yarn install && cd ../testTslint && yarn install",
+    "test": "cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.1",
-    "@types/node": "^8.10.39",
+    "@types/node": "^12.7.1",
     "@types/resolve": "0.0.8",
     "cross-env": "^5.1.6",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.0",
     "vscode": "^1.1.28"
   },
   "dependencies": {

@@ -9,8 +9,9 @@
   "author": "cigit",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-plugin-prettier": "^2.6.0"
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
   },
   "dependencies": {}
 }
