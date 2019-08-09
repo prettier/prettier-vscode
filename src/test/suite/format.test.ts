@@ -60,4 +60,4 @@ suite('Test format Document', () => {
     // test('it formats GraphQL', () => {
     //     return;
     // });
-}).timeout(3000);
+});

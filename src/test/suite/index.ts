@@ -9,6 +9,8 @@ export function run(
     // Create the mocha test
     const mocha = new Mocha({
         ui: 'tdd',
+        useColors: true,
+        timeout: 10000,
     });
     mocha.useColors(true);
 
