@@ -1,67 +1,44 @@
 jobs:
-  - job: Windows
-    pool:
-      name: Hosted VS2017
-    steps:
-      - task: NodeTool@0
-        displayName: 'Use Node 10.x'
-        inputs:
-          versionSpec: 10.x
-<<<<<<< HEAD
-      - script: 'npm install'
-        displayName: 'Install dependencies'
-      - script: 'npm run test'
-=======
-      - script: 'yarn install'
-        displayName: 'Install dependencies'
-      - script: 'yarn test'
->>>>>>> 4dbca56aeab65dcaa35a46031dabbf83aa06f80d
-        displayName: 'Run tests'
-  - job: macOS
-    pool:
-      name: Hosted macOS
-    steps:
-      - task: NodeTool@0
-        displayName: 'Use Node 10.x'
-        inputs:
-          versionSpec: 10.x
-<<<<<<< HEAD
-      - script: 'npm install'
-        displayName: 'Install dependencies'
-      - script: 'npm run test'
-=======
-      - script: 'yarn install'
-        displayName: 'Install dependencies'
-      - script: 'yarn test'
->>>>>>> 4dbca56aeab65dcaa35a46031dabbf83aa06f80d
-        displayName: 'Run tests'
-  - job: Linux
-    pool:
-      name: Hosted Ubuntu 1604
-    steps:
-      - task: NodeTool@0
-        displayName: 'Use Node 10.x'
-        inputs:
-          versionSpec: 10.x
-<<<<<<< HEAD
-      - script: 'npm install'
-=======
-      - script: 'yarn install'
->>>>>>> 4dbca56aeab65dcaa35a46031dabbf83aa06f80d
-        displayName: 'Install dependencies'
-      - script: |
-          set -e
-          /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-          disown -ar
-        displayName: 'Start xvfb'
-<<<<<<< HEAD
-      - script: 'npm run test'
-        displayName: 'Run tests'
-        env:
-          DISPLAY: :10
-=======
-      - script: 'yarn test'
-        displayName: 'Run tests'
-        env:
-          DISPLAY: :10
->>>>>>> 4dbca56aeab65dcaa35a46031dabbf83aa06f80d
+    - job: Windows
+      pool:
+          name: Hosted VS2017
+      steps:
+          - task: NodeTool@0
+            displayName: 'Use Node 10.x'
+            inputs:
+                versionSpec: 10.x
+          - script: 'yarn install'
+            displayName: 'Install dependencies'
+          - script: 'yarn test'
+            displayName: 'Run tests'
+    - job: macOS
+      pool:
+          name: Hosted macOS
+      steps:
+          - task: NodeTool@0
+            displayName: 'Use Node 10.x'
+            inputs:
+                versionSpec: 10.x
+          - script: 'yarn install'
+            displayName: 'Install dependencies'
+          - script: 'yarn test'
+            displayName: 'Run tests'
+    - job: Linux
+      pool:
+          name: Hosted Ubuntu 1604
+      steps:
+          - task: NodeTool@0
+            displayName: 'Use Node 10.x'
+            inputs:
+                versionSpec: 10.x
+          - script: 'yarn install'
+            displayName: 'Install dependencies'
+          - script: |
+                set -e
+                /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+                disown -ar
+            displayName: 'Start xvfb'
+          - script: 'yarn test'
+            displayName: 'Run tests'
+            env:
+                DISPLAY: :10
