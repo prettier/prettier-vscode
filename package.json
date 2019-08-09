@@ -31,7 +31,7 @@
     "*"
   ],
   "icon": "icon.png",
-  "main": "./out/src/extension",
+  "main": "./out/extension",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -229,20 +229,23 @@
     ]
   },
   "scripts": {
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "pretest": "yarn compile && cd testEslint && yarn install && cd ../testTslint && yarn install",
-    "test": "cross-env CODE_TESTS_WORKSPACE=testWorkspace.code-workspace node ./node_modules/vscode/bin/test",
+    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install",
+    "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.1",
     "@types/node": "^12.7.1",
     "@types/resolve": "0.0.8",
+    "@types/vscode": "^1.37.0",
     "cross-env": "^5.1.6",
+    "glob": "^7.1.4",
     "mocha": "^6.2.0",
-    "vscode": "^1.1.28"
+    "vscode-test": "^1.2.0"
   },
   "dependencies": {
     "ignore": "^3.3.8",
