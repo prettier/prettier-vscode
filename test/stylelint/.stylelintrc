@@ -1,0 +1,8 @@
+{
+  "plugins": ["stylelint-prettier"],
+  "rules": {
+    "no-extra-semicolons": true,
+    "shorthand-property-no-redundant-values": true,
+    "color-hex-case": true
+  }
+}

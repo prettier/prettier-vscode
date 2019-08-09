@@ -1,30 +1,22 @@
-# Prettier formatter for Visual Studio Code
+# Prettier+ &middot; [![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/svipas.prettier-plus.svg)](https://marketplace.visualstudio.com/items?itemName=svipas.prettier-plus) [![Build Status](https://dev.azure.com/svipas/svipas/_apis/build/status/svipas.vscode-prettier-plus?branchName=master)](https://dev.azure.com/svipas/svipas/_build/latest?definitionId=4&branchName=master)
 
 VS Code package to format your code using [Prettier](https://github.com/prettier/prettier).
 
+Works with JavaScript, JSX, Flow, TypeScript, JSON, HTML, Vue, Angular, CSS, Less, SCSS, `styled-components`, `styled-jsx`, GraphQL, Markdown, CommonMark, GitHub-Flavored Markdown, MDX, Yaml, Elm (via `elm-format`), Java, PHP, PostgreSQL, Ruby, Swift, TOML.
+
 ## Installation
 
-Install through VS Code extensions. Search for `Prettier - Code formatter`
+Install through VS Code extensions, search for `Prettier+` by `Benas Svipas`.
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
-
-```
-ext install esbenp.prettier-vscode
-```
-
-&#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
+&#x26a0; A word of warning-if you have any other code formatting extensions installed they might take precedence and format your code instead of Prettier leading to unexpected results.
 
 ## Usage
 
-### Using Command Palette (CMD/CTRL + Shift + P)
+### Command palette
 
 ```
-1. CMD + Shift + P -> Format Document
-OR
-1. Select the text you want to Prettify
-2. CMD + Shift + P -> Format Selection
+1. Format Document With... -> Prettier+
+2. Format Selection With... -> Prettier+
 ```
 
 ### Keyboard Shortcuts
@@ -37,160 +29,220 @@ If you don't like the defaults, you can rebind `editor.action.formatDocument` an
 
 Respects `editor.formatOnSave` setting.
 
-You can turn on format-on-save on a per-language basis by scoping the setting:
+### Format a file on save
 
 ```json
-// Set the default
-"editor.formatOnSave": false,
-// Enable per-language
+// Format all files on save
+"editor.formatOnSave": true,
+
+// Format per-language file on save
 "[javascript]": {
-    "editor.formatOnSave": true
+  "editor.formatOnSave": false
 }
 ```
 
-### VSCode ESLint and TSLint Integration
+## Prettier resolution
 
-`prettier-eslint` and `prettier-tslint` are included with the installation of this extension. There is no need for a separate local or global install of either for functionality.
+**Prettier (1.18.2)** copy is bundled with the extension so additionally you don't need to install prettier to format your code. _If extension detects local prettier dependency in your project it will use it from your project instead of bundled version in the extension._
 
-`eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally. Global installations will not be recognized.
+## ESLint, TSLint and stylelint integrations
 
-If you have both `"prettier.tslintIntegration"` and `"prettier.eslintIntegration"` enabled in your Visual Studio Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
+`prettier-eslint (9.0.0)`, `prettier-tslint (0.4.2)` and `prettier-stylelint (0.4.2)` are bundled with the extension. There is no need for a separate local or global install of either for functionality.
+
+`eslint`, `tslint`, `stylelint` and all required dependencies by your specific configuration must be installed locally. **Global installations will not be recognized.**
+
+If you have both `"prettier.eslintIntegration"` and `"prettier.tslintIntegration"` enabled in your VS Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
 
 ## Settings
 
-### Prettier's Settings
+<details>
+<summary><strong>Prettier settings</strong></summary>
 
 Settings will be read from (listed by priority):
 
-1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
+1. [Prettier config file](https://prettier.io/docs/en/configuration.html)
+2. `.editorconfig`
+
+Or if there's no Prettier config file:
+
 1. `.editorconfig`
+2. VS Code settings (described below with their defaults)
 
-Or if no prettier configuration file exist
+**prettier.printWidth (default: 80)**
 
-1. `.editorconfig`
-1. VSCode prettier's settings (described below with their default)
+Specify the line length that the printer will wrap on. [Learn more here.](https://prettier.io/docs/en/options.html#print-width)
 
-#### prettier.printWidth (default: 80)
+**prettier.tabWidth (default: 2)**
 
-Fit code within this line limit
+Specify the number of spaces per indentation-level. [Learn more here.](https://prettier.io/docs/en/options.html#tab-width)
 
-#### prettier.tabWidth (default: 2)
+**prettier.singleQuote (default: false)**
 
-Number of spaces it should use per tab
+Use single quotes instead of double quotes. [Learn more here.](https://prettier.io/docs/en/options.html#quotes)
 
-#### prettier.singleQuote (default: false)
+**prettier.trailingComma (default: 'none')**
 
-If true, will use single instead of double quotes
+Print trailing commas wherever possible when multi-line. (A single-line array, for example, never gets trailing commas.) [Learn more here.](https://prettier.io/docs/en/options.html#trailing-commas)
 
-#### prettier.trailingComma (default: 'none')
+Valid options:
 
-Controls the printing of trailing commas wherever possible. Valid options:
+- `"none"` - No trailing commas.
+- `"es5"` - Trailing commas where valid in ES5 (objects, arrays, etc.)
+- `"all"` - Trailing commas wherever possible (including function arguments). This requires node 8 or a transform.
 
--   "none" - No trailing commas
--   "es5" - Trailing commas where valid in ES5 (objects, arrays, etc)
--   "all" - Trailing commas wherever possible (function arguments)
+**prettier.bracketSpacing (default: true)**
 
-#### prettier.bracketSpacing (default: true)
+Print spaces between brackets in object literals. [Learn more here.](https://prettier.io/docs/en/options.html#bracket-spacing)
 
-Controls the printing of spaces inside object literals
+**prettier.jsxBracketSameLine (default: false)**
 
-#### prettier.jsxBracketSameLine (default: false)
+Put the `>` of a multi-line JSX element at the end of the last line instead of being alone on the next line (does not apply to self closing elements). [Learn more here.](https://prettier.io/docs/en/options.html#jsx-brackets)
 
-If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
+**prettier.parser (default: 'none')**
 
-#### prettier.parser (default: 'babylon') - JavaScript only
+Specify which parser to use. [Learn more here.](https://prettier.io/docs/en/options.html#parser)
 
-Which parser to use. Valid options are 'flow' and 'babylon'.
+_Prettier automatically infers the parser from the input file path, so you shouldn't have to change this setting._
 
-#### prettier.semi (default: true)
+Both the `babel` and `flow` parsers support the same set of JavaScript features (including Flow type annotations). They might differ in some edge cases, so if you run into one of those you can try `flow` instead of `babel`.
 
-Whether to add a semicolon at the end of every line (semi: true),
-or only at the beginning of lines that may introduce ASI failures (semi: false)
+Valid options:
 
-#### prettier.useTabs (default: false)
+- `"none"` - Automatically infers the parser from the input file path.
+- `"babel"` - Via `@babel/parser` named `babylon` until v1.16.0
+- `"babel-flow"` - Same as `babel` but enables Flow parsing explicitly to avoid ambiguity. First available in v1.16.0
+- `"flow"` - Via `flow-parser`
+- `"typescript"` - Via `@typescript-eslint/typescript-estree`. First available in v1.4.0
+- `"css"` - Via `postcss-scss` and `postcss-less`, autodetects which to use. First available in v1.7.1
+- `"scss"` - Same parsers as `css`, prefers `postcss-scss`. First available in v1.7.1
+- `"less"` - Same parsers as `css`, prefers `postcss-less`. First available in v1.7.1
+- `"json"` - Via `@babel/parser parseExpression`. First available in v1.5.0
+- `"json5"` - Same parser as `json`, but outputs as `json5`. First available in v1.13.0
+- `"json-stringify"` - Same parser as `json`, but outputs like `JSON.stringify`. First available in v1.13.0
+- `"graphql"` - Via `graphql/language`. First available in v1.5.0
+- `"markdown"` - Via `remark-parse`. First available in v1.8.0
+- `"mdx"` - Via `remark-parse` and `@mdx-js/mdx`. First available in v1.15.0
+- `"html"` - Via `angular-html-parser`. First available in 1.15.0
+- `"vue"` - Same parser as `html`, but also formats vue-specific syntax. First available in 1.10.0
+- `"angular"` - Same parser as `html`, but also formats angular-specific syntax via `angular-estree-parser`. First available in 1.15.0
+- `"lwc"` - Same parser as `html`, but also formats LWC-specific syntax for unquoted template attributes. First available in 1.17.0
+- `"yaml` - Via `yaml` and `yaml-unist-parser`. First available in 1.14.0
 
-If true, indent lines with tabs
+**prettier.semi (default: true)**
 
-#### prettier.proseWrap (default: 'preserve')
+Print semicolons at the ends of statements. [Learn more here.](https://prettier.io/docs/en/options.html#semicolons)
 
-(Markdown) wrap prose over multiple lines.
+**prettier.useTabs (default: false)**
 
-#### prettier.arrowParens (default: 'avoid')
+Indent lines with tabs instead of spaces. [Learn more here.](https://prettier.io/docs/en/options.html#tabs)
 
-Include parentheses around a sole arrow function parameter
+**prettier.proseWrap (default: 'preserve')**
 
-#### prettier.jsxSingleQuote (default: false)
+By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer, e.g. GitHub comment and BitBucket. In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out with `"never"`. [Learn more here.](https://prettier.io/docs/en/options.html#prose-wrap)
 
-Use single quotes instead of double quotes in JSX.
+Valid options:
 
-#### prettier.htmlWhitespaceSensitivity (default: 'css')
+- `"preserve"` - Wrap prose as-is. First available in v1.9.0
+- `"always"` - Wrap prose if it exceeds the print width.
+- `"never"` - Do not wrap prose.
 
-Specify the global whitespace sensitivity for HTML files. [Learn more here](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
+**prettier.arrowParens (default: 'avoid')**
 
-#### prettier.endOfLine (default: 'auto')
+Include parentheses around a sole arrow function parameter. [Learn more here.](https://prettier.io/docs/en/options.html#arrow-function-parentheses)
 
-Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
+Valid options:
 
-#### prettier.quoteProps (default: 'as-needed')
+- `"avoid"` - Omit parens when possible. Example: `x => x`
+- `"always"` - Always include parens. Example: `(x) => x`
 
-Change when properties in objects are quoted. [Learn more here](https://prettier.io/docs/en/options.html#quote-props)
+**prettier.jsxSingleQuote (default: false)**
 
-### VSCode specific settings
+Use single quotes instead of double quotes in JSX. [Learn more here.](https://prettier.io/docs/en/options.html#jsx-quotes)
 
-These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
+**prettier.htmlWhitespaceSensitivity (default: 'css')**
 
-#### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
+Specify the global whitespace sensitivity for HTML files. [Learn more here.](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
 
-Use _[prettier-eslint](https://github.com/prettier/prettier-eslint)_ instead of _prettier_.
-Other settings will only be fallbacks in case they could not be inferred from ESLint rules.
+Valid options:
 
-#### prettier.tslintIntegration (default: false) - JavaScript and TypeScript only
+- `"css"` - Respect the default value of CSS `display` property.
+- `"strict"` - Whitespaces are considered sensitive.
+- `"ignore"` - Whitespaces are considered insensitive.
 
-Use _[prettier-tslint](https://github.com/azz/prettier-tslint)_ instead of _prettier_.
-Other settings will only be fallbacks in case they could not be inferred from TSLint rules.
+**prettier.endOfLine (default: 'auto')**
 
-#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only
+Specify the end of line used by Prettier. [Learn more here.](https://prettier.io/docs/en/options.html#end-of-line)
 
-Use _[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)_ instead of _prettier_.
-Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
+Valid options:
 
-#### prettier.requireConfig (default: false)
+- `"auto"` - Maintain existing line endings (mixed values within one file are normalised by looking at what's used after the first line)
+- `"lf"` - Line Feed only (`\n`), common on Linux and macOS as well as inside git repos
+- `"crlf"` - Carriage Return + Line Feed characters (`\r\n`), common on Windows
+- `"cr"` - Carriage Return character only (`\r`), used very rarely
 
-Require a 'prettierconfig' to format
+**prettier.quoteProps (default: 'as-needed')**
 
-#### prettier.ignorePath (default: .prettierignore)
+Change when properties in objects are quoted. [Learn more here.](https://prettier.io/docs/en/options.html#quote-props)
 
-Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
-Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
+Valid options:
 
-#### prettier.disableLanguages (default: ["vue"])
+- `"as-needed"` - Only add quotes around object properties where required.
+- `"consistent"` - If at least one property in an object requires quotes, quote all properties.
+- `"preserve"` - Respect the input use of quotes in object properties.
 
-A list of languages IDs to disable this extension on. Restart required.
-_Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run_
+</details>
 
-## Prettier resolution
+<details>
+<summary><strong>VS Code specific settings</strong></summary>
 
-This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
+These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
-## Contribute
+**prettier.eslintIntegration (default: false) - JavaScript and TypeScript only**
+
+Use [prettier-eslint](https://github.com/prettier/prettier-eslint) instead of _prettier_. Other settings will only be fallbacks in case they could not be inferred from eslint rules.
+
+**prettier.tslintIntegration (default: false) - JavaScript and TypeScript only**
+
+Use [prettier-tslint](https://github.com/azz/prettier-tslint) instead of _prettier_. Other settings will only be fallbacks in case they could not be inferred from tslint rules.
+
+**prettier.stylelintIntegration (default: false) - CSS, SCSS and Less only**
+
+Use [prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint) instead of _prettier_. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
+
+**prettier.requireConfig (default: false)**
+
+Require a config file to format code.
+
+**prettier.ignorePath (default: .prettierignore)**
+
+Path to a `.prettierignore` or similar file such as `.gitignore`. Files which match will not be formatted. Set to `null` to not read ignore files. **Restart required.**
+
+**prettier.disableLanguages (default: ["vue"])**
+
+List of languages IDs to ignore. **Restart required.** _Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run._
+
+</details>
+
+## Contributing
 
 Feel free to open issues or PRs!
 
-### Running extension
+<details>
+<summary><strong>Debug extension</strong></summary>
 
--   Open this repository inside VSCode
--   Debug sidebar
--   `Launch Extension`
+- Open this repository inside VS Code.
+- Run `Debug: Select and Start Debugging` from command palette or open debug sidebar.
+- Select `Launch extension`.
 
-### Running tests
+</details>
 
-Tests open a VSCode instance and load `./testProject` as root workspace.
+<details>
+<summary><strong>Run tests</strong></summary>
 
--   Open this repository inside VSCode
--   Debug sidebar
--   `Launch Tests`
+- Run tests from terminal via `yarn test`
 
-OR
+</details>
 
-Without having an instance VSCode running (or it won't start)
-`npm run test`
+## Credits
+
+All credits goes to the [prettier-vscode](https://github.com/prettier/prettier-vscode) and [prettier](https://github.com/prettier/prettier).

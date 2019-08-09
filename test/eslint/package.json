@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "description": "Test ESLint integration",
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.1.0"
+  }
+}
