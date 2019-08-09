@@ -2,13 +2,15 @@ import * as assert from 'assert';
 import { format } from './format.test';
 import { workspace } from 'vscode';
 
-suite('Test plugins', function() {
-    test('it formats with plugins', () => {
-        return format('index.php', workspace.workspaceFolders![4].uri).then(
-            ({ result, source }) => {
-                assert.equal(
-                    result,
-                    `<?php
+suite('Test plugins', () => {
+    test('it formats with plugins', async () => {
+        const { result } = await format(
+            'index.php',
+            workspace.workspaceFolders![4].uri
+        );
+        assert.equal(
+            result,
+            `<?php
 
 array_map(
   function ($arg1, $arg2) use ($var1, $var2) {
@@ -23,8 +25,6 @@ array_map(
   )
 );
 `
-                );
-            }
         );
-    });
+    }).timeout(5000);
 });

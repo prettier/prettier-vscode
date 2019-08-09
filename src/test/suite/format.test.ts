@@ -47,7 +47,7 @@ async function formatSameAsPrettier(file: string) {
 
 suite('Test format Document', () => {
     test('it formats JavaScript', () =>
-        formatSameAsPrettier('formatTest/ugly.js'));
+        formatSameAsPrettier('formatTest/ugly.js')).timeout(3000);
     test('it formats TypeScript', () =>
         formatSameAsPrettier('formatTest/ugly.ts'));
     test('it formats CSS', () => formatSameAsPrettier('formatTest/ugly.css'));
@@ -60,4 +60,4 @@ suite('Test format Document', () => {
     // test('it formats GraphQL', () => {
     //     return;
     // });
-}).timeout(3000);
+});
