@@ -232,7 +232,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
-    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install",
+    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },

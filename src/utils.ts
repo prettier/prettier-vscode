@@ -8,6 +8,7 @@ import {
 } from './types.d';
 
 const bundledPrettier = require('prettier') as Prettier;
+import { requireLocalPkg } from './requirePkg';
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
     return workspace.getConfiguration('prettier', uri) as any;
@@ -15,10 +16,10 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
 
 export function getParsersFromLanguageId(
     languageId: string,
-    prettierInstance: Prettier,
-    path?: string
+    path?: string,
+    useBundled: boolean = false
 ): ParserOption[] {
-    const language = getSupportLanguages(prettierInstance).find(
+    const language = getSupportLanguages(useBundled ? undefined : path).find(
         lang =>
             Array.isArray(lang.vscodeLanguageIds) &&
             lang.vscodeLanguageIds.includes(languageId) &&
@@ -34,8 +35,8 @@ export function getParsersFromLanguageId(
     return language.parsers;
 }
 
-export function allEnabledLanguages(): string[] {
-    return getSupportLanguages().reduce(
+export function allEnabledLanguages(path?: string): string[] {
+    return getSupportLanguages(path).reduce(
         (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
         [] as string[]
     );
@@ -52,11 +53,18 @@ export function rangeSupportedLanguages(): string[] {
     ];
 }
 
-export function getGroup(group: string): PrettierSupportInfo['languages'] {
-    return getSupportLanguages().filter(language => language.group === group);
+export function getGroup(group: string, path?: string): PrettierSupportInfo['languages'] {
+    return getSupportLanguages(path).filter(language => language.group === group);
 }
 
-function getSupportLanguages(prettierInstance: Prettier = bundledPrettier) {
+function getSupportLanguages(path?: string) {
+    let prettierInstance: Prettier;
+    if (path) {
+        prettierInstance = requireLocalPkg(path, 'prettier');
+    } else {
+        prettierInstance = bundledPrettier;
+    }
+
     // prettier.getSupportInfo was added in prettier@1.8.0
     if (prettierInstance.getSupportInfo) {
         return prettierInstance.getSupportInfo(prettierInstance.version).languages;

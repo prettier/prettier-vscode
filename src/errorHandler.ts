@@ -34,7 +34,8 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
             return;
         }
 
-        const score = languages.match(allEnabledLanguages(), editor.document);
+        const filePath = editor.document.isUntitled ? undefined : editor.document.fileName;
+        const score = languages.match(allEnabledLanguages(filePath), editor.document);
         const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
 
         if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
