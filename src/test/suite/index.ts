@@ -9,10 +9,14 @@ export function run(
     // Create the mocha test
     const mocha = new Mocha({
         ui: 'tdd',
-        useColors: true,
-        timeout: 10000,
     });
     mocha.useColors(true);
+
+    if (process.env.AZURE_PIPELINES) {
+        mocha.reporter('mocha-junit-reporter', {
+            mochaFile: './test-results.xml',
+        });
+    }
 
     glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
         if (err) {

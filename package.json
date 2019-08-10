@@ -242,9 +242,9 @@
     "@types/node": "^12.7.1",
     "@types/resolve": "0.0.8",
     "@types/vscode": "^1.37.0",
-    "cross-env": "^5.1.6",
     "glob": "^7.1.4",
     "mocha": "^6.2.0",
+    "mocha-junit-reporter": "^1.23.1",
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
