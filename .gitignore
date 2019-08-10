@@ -4,3 +4,4 @@ node_modules
 *.vsix
 .DS_STORE
 *.log
+test-results.xml

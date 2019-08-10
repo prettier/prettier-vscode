@@ -1,3 +1,6 @@
+variables:
+    azure_pipelines: true
+
 trigger:
     - '*'
 pr:
@@ -27,13 +30,14 @@ steps:
       displayName: Start xvfb
       condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
-    - bash: |
-          echo ">>> Compile vscode-test"
-          yarn && yarn compile
-          echo ">>> Compiled vscode-test"
-          cd sample
-          echo ">>> Run sample integration test"
-          yarn && yarn compile && yarn test
-      displayName: Run Tests
-      env:
-          DISPLAY: ':99.0'
+    - script: 'yarn install'
+      displayName: 'Install dependencies'
+    - script: 'yarn test'
+      displayName: 'Run tests'
+
+      # Publish Test Results
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+          testRunner: JUnit
+          testResultsFiles: '**/test-results.xml'

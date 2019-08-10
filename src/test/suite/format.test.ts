@@ -45,7 +45,8 @@ async function formatSameAsPrettier(file: string) {
     assert.equal(result, prettierFormatted);
 }
 
-suite('Test format Document', () => {
+suite('Test format Document', function() {
+    this.timeout(10000);
     test('it formats JavaScript', () =>
         formatSameAsPrettier('formatTest/ugly.js'));
     test('it formats TypeScript', () =>
