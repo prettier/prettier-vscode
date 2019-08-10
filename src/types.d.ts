@@ -1,62 +1,7 @@
-export type ParserOption =
-    | 'babylon'
-    | 'flow'
-    | 'postcss' // deprecated, but may be found in getSupportInfo
-    | 'css'
-    | 'less'
-    | 'scss'
-    | 'typescript'
-    | 'json'
-    | 'json-stringify'
-    | 'graphql'
-    | 'markdown';
+import * as prettier from 'prettier';
 
 type TrailingCommaOption = 'none' | 'es5' | 'all';
 
-interface PrettierSupportInfo {
-    languages: {
-        name: string;
-        since: string;
-        parsers: ParserOption[];
-        group?: string;
-        tmScope: string;
-        aceMode: string;
-        codemirrorMode: string;
-        codemirrorMimeType: string;
-        aliases?: string[];
-        extensions: string[];
-        filenames?: string[];
-        linguistLanguageId: number;
-        /**
-         * Optional since prettier 1.14.0
-         */
-        vscodeLanguageIds?: string[];
-    }[];
-}
-
-/**
- * Prettier configuration
- */
-export interface PrettierConfig {
-    printWidth: number;
-    tabWidth: number;
-    singleQuote: boolean;
-    trailingComma: TrailingCommaOption;
-    bracketSpacing: boolean;
-    jsxBracketSameLine: boolean;
-    parser: ParserOption;
-    semi: boolean;
-    useTabs: boolean;
-    proseWrap: 'preserve' | 'always' | 'never';
-    arrowParens: 'avoid' | 'always';
-    rangeStart: number;
-    rangeEnd: number;
-    filepath: string;
-    jsxSingleQuote: boolean;
-    htmlWhitespaceSensitivity: 'css' | 'strict' | 'ignore';
-    endOfLine: 'auto' | 'lf' | 'crlf' | 'cr';
-    quoteProps: 'as-needed' | 'consistent' | 'preserve';
-}
 /**
  * prettier-vscode specific configuration
  */
@@ -93,26 +38,8 @@ interface ExtensionConfig {
 /**
  * Configuration for prettier-vscode
  */
-export type PrettierVSCodeConfig = ExtensionConfig & PrettierConfig;
-export interface Prettier {
-    format: (text: string, options?: Partial<PrettierConfig>) => string;
-    resolveConfig: (
-        filePath: string,
-        options?: {
-            /**
-             * Use cache, defaults to true.
-             */
-            useCache?: boolean;
-            /**
-             * read editorconfig, defaults to false.
-             */
-            editorconfig?: boolean;
-        }
-    ) => Promise<PrettierConfig>;
-    clearConfigCache: () => void;
-    getSupportInfo(version?: string): PrettierSupportInfo;
-    readonly version: string;
-}
+export type PrettierVSCodeConfig = ExtensionConfig & prettier.Options;
+
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
 interface PrettierEslintOptions {
     /**
@@ -141,13 +68,13 @@ interface PrettierEslintOptions {
      * formatting with `prettier`. If not provided, prettier-eslint will attempt
      * to create the options based on the eslintConfig
      */
-    prettierOptions?: Partial<PrettierConfig>;
+    prettierOptions?: Partial<prettier.Options>;
     /**
      * The options to pass for
      * formatting with `prettier` if the given option is not inferrable from the
      * eslintConfig.
      */
-    fallbackPrettierOptions?: Partial<PrettierConfig>;
+    fallbackPrettierOptions?: Partial<prettier.Options>;
     /**
      * The level for the logs
      */
@@ -193,13 +120,13 @@ interface PrettierTslintOptions {
      * formatting with `prettier`. If not provided, prettier-tslint will attempt
      * to create the options based on the tslintConfig
      */
-    prettierOptions?: Partial<PrettierConfig>;
+    prettierOptions?: Partial<prettier.Options>;
     /**
      * The options to pass for
      * formatting with `prettier` if the given option is not inferrable from the
      * tslintConfig.
      */
-    fallbackPrettierOptions?: Partial<PrettierConfig>;
+    fallbackPrettierOptions?: Partial<prettier.Options>;
     /**
      * The level for the logs
      */
@@ -225,5 +152,5 @@ export interface PrettierStylelint {
         options?: {
             useCache: boolean;
         }
-    ) => Promise<[PrettierConfig, Object]>;
+    ) => Promise<[prettier.Options, Object]>;
 }

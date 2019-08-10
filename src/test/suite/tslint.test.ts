@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { format } from './format.test';
 import { workspace } from 'vscode';
+import { format } from './format.test';
 
 suite('Test tslint', function() {
     this.timeout(10000);

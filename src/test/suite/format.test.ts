@@ -1,9 +1,7 @@
 import * as assert from 'assert';
 import * as path from 'path';
+import * as prettier from 'prettier';
 import * as vscode from 'vscode';
-import { Prettier } from '../../types';
-import { Uri } from 'vscode';
-const prettier = require('prettier') as Prettier;
 
 /**
  * loads and format a file.
@@ -13,7 +11,7 @@ const prettier = require('prettier') as Prettier;
  */
 export async function format(
     file: string,
-    base: Uri = vscode.workspace.workspaceFolders![0].uri
+    base: vscode.Uri = vscode.workspace.workspaceFolders![0].uri
 ) {
     const absPath = path.join(base.fsPath, file);
     const doc = await vscode.workspace.openTextDocument(absPath);
@@ -40,7 +38,7 @@ export async function format(
 async function formatSameAsPrettier(file: string) {
     const { result, source } = await format(file);
     const prettierFormatted = prettier.format(source, {
-        filepath: file,
+        filepath: file
     });
     assert.equal(result, prettierFormatted);
 }

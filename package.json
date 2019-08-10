@@ -32,6 +32,39 @@
   ],
   "icon": "icon.png",
   "main": "./out/extension",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc --watch -p ./",
+    "lint": "tslint --project .",
+    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
+    "test": "node ./out/test/runTests.js",
+    "version": "node ./scripts/version.js && git add CHANGELOG.md"
+  },
+  "devDependencies": {
+    "@salesforce/dev-config": "^1.5.0",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.1",
+    "@types/node": "^12.7.1",
+    "@types/prettier": "^1.18.1",
+    "@types/resolve": "0.0.8",
+    "@types/vscode": "^1.37.0",
+    "glob": "^7.1.4",
+    "mocha": "^6.2.0",
+    "mocha-junit-reporter": "^1.23.1",
+    "tslint": "^5.18.0",
+    "vscode-test": "^1.2.0"
+  },
+  "dependencies": {
+    "ignore": "^5.1.2",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
+    "prettier-stylelint": "^0.4.2",
+    "prettier-tslint": "^0.4.2",
+    "read-pkg-up": "^6.0.0",
+    "resolve": "^1.10.0",
+    "typescript": "^3.5.3"
+  },
   "contributes": {
     "configuration": {
       "type": "object",
@@ -227,34 +260,5 @@
         ]
       }
     ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc --watch -p ./",
-    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
-    "test": "node ./out/test/runTests.js",
-    "version": "node ./scripts/version.js && git add CHANGELOG.md"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/mocha": "^5.2.1",
-    "@types/node": "^12.7.1",
-    "@types/resolve": "0.0.8",
-    "@types/vscode": "^1.37.0",
-    "glob": "^7.1.4",
-    "mocha": "^6.2.0",
-    "mocha-junit-reporter": "^1.23.1",
-    "vscode-test": "^1.2.0"
-  },
-  "dependencies": {
-    "ignore": "^3.3.8",
-    "prettier": "^1.18.2",
-    "prettier-eslint": "^9.0.0",
-    "prettier-stylelint": "^0.4.2",
-    "prettier-tslint": "^0.4.2",
-    "read-pkg-up": "^4.0.0",
-    "resolve": "^1.10.0",
-    "typescript": "^2.9.2"
   }
 }

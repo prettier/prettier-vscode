@@ -1,8 +1,8 @@
 import { addToOutput } from './errorHandler';
 
 import * as path from 'path';
+import * as readPkgUp from 'read-pkg-up';
 import * as resolve from 'resolve';
-const readPkgUp = require('read-pkg-up');
 
 /**
  * Recursively search for a package.json upwards containing given package
@@ -15,12 +15,14 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
     const res = readPkgUp.sync({ cwd: fspath, normalize: false });
     const { root } = path.parse(fspath);
     if (
-        res.pkg &&
-        ((res.pkg.dependencies && res.pkg.dependencies[pkgName]) ||
-            (res.pkg.devDependencies && res.pkg.devDependencies[pkgName]))
+        res &&
+        res.package &&
+        ((res.package.dependencies && res.package.dependencies[pkgName]) ||
+            (res.package.devDependencies &&
+                res.package.devDependencies[pkgName]))
     ) {
         return resolve.sync(pkgName, { basedir: res.path });
-    } else if (res.path) {
+    } else if (res && res.path) {
         const parent = path.resolve(path.dirname(res.path), '..');
         if (parent !== root) {
             return findPkg(parent, pkgName);

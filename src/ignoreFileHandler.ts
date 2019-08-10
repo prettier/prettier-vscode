@@ -1,10 +1,9 @@
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
+import ignore from 'ignore';
 import * as path from 'path';
-import { workspace, Uri, Disposable } from 'vscode';
-import { getConfig } from './utils';
+import { Disposable, Uri, workspace } from 'vscode';
 import { addToOutput } from './errorHandler';
-
-const ignore = require('ignore');
+import { getConfig } from './utils';
 
 interface Ignorer {
     ignores(filePath: string): boolean;
@@ -26,7 +25,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
             return ignorer.ignores(
                 path.relative(path.dirname(ignoreFilePath), filePath)
             );
-        },
+        }
     };
 
     function getIgnorerForFile(
@@ -56,7 +55,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
         }
         return {
             ignoreFilePath: absolutePath,
-            ignorer: ignorers.get(absolutePath)!,
+            ignorer: ignorers.get(absolutePath)!
         };
     }
 

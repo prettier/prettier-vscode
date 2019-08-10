@@ -1,20 +1,20 @@
 import {
-    languages,
-    ExtensionContext,
-    workspace,
+    Disposable,
     DocumentFilter,
     DocumentSelector,
-    Disposable,
+    ExtensionContext,
+    languages,
+    workspace
 } from 'vscode';
+import configFileListener from './configCacheHandler';
+import { registerDisposables, setupErrorHandler } from './errorHandler';
+import ignoreFileHandler from './ignoreFileHandler';
 import EditProvider from './PrettierEditProvider';
-import { setupErrorHandler, registerDisposables } from './errorHandler';
 import {
     allEnabledLanguages,
-    rangeSupportedLanguages,
     getConfig,
+    rangeSupportedLanguages
 } from './utils';
-import configFileListener from './configCacheHandler';
-import ignoreFileHandler from './ignoreFileHandler';
 
 interface Selectors {
     rangeLanguageSelector: DocumentSelector;
@@ -62,7 +62,7 @@ function selectors(): Selectors {
         // no workspace opened
         return {
             languageSelector: globalLanguageSelector,
-            rangeLanguageSelector: globalRangeLanguageSelector,
+            rangeLanguageSelector: globalRangeLanguageSelector
         };
     }
 
@@ -83,7 +83,7 @@ function selectors(): Selectors {
         languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
         rangeLanguageSelector: untitledRangeLanguageSelector.concat(
             fileRangeLanguageSelector
-        ),
+        )
     };
 }
 
@@ -106,7 +106,7 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         workspace.onDidChangeWorkspaceFolders(registerFormatter),
         {
-            dispose: disposeHandlers,
+            dispose: disposeHandlers
         },
         setupErrorHandler(),
         configFileListener(),

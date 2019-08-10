@@ -1,16 +1,15 @@
 import {
+    commands,
     Disposable,
-    StatusBarItem,
+    languages,
     OutputChannel,
     StatusBarAlignment,
+    StatusBarItem,
     TextEditor,
-    commands,
-    window,
-    languages,
+    window
 } from 'vscode';
-
-import { allEnabledLanguages, getConfig } from './utils';
 import { PrettierVSCodeConfig } from './types';
+import { allEnabledLanguages, getConfig } from './utils';
 
 let statusBarItem: StatusBarItem;
 let outputChannel: OutputChannel;
@@ -34,11 +33,21 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
             return;
         }
 
-        const filePath = editor.document.isUntitled ? undefined : editor.document.fileName;
-        const score = languages.match(allEnabledLanguages(filePath), editor.document);
-        const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(editor.document.uri).disableLanguages;
+        const filePath = editor.document.isUntitled
+            ? undefined
+            : editor.document.fileName;
+        const score = languages.match(
+            allEnabledLanguages(filePath),
+            editor.document
+        );
+        const disabledLanguages: PrettierVSCodeConfig['disableLanguages'] = getConfig(
+            editor.document.uri
+        ).disableLanguages;
 
-        if (score > 0 && !disabledLanguages.includes(editor.document.languageId)) {
+        if (
+            score > 0 &&
+            !disabledLanguages.includes(editor.document.languageId)
+        ) {
             statusBarItem.show();
         } else {
             statusBarItem.hide();

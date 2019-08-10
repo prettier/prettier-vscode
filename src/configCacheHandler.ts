@@ -1,7 +1,6 @@
+import * as prettier from 'prettier';
 import { workspace } from 'vscode';
-import { Prettier } from './types';
 
-const prettier = require('prettier') as Prettier;
 /**
  * Prettier reads configuration from files
  */
@@ -12,7 +11,7 @@ const PRETTIER_CONFIG_FILES = [
     '.prettierrc.yml',
     '.prettierrc.js',
     'package.json',
-    'prettier.config.js',
+    'prettier.config.js'
 ];
 
 /**

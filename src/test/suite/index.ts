@@ -1,6 +1,6 @@
-import * as path from 'path';
-import * as Mocha from 'mocha';
 import * as glob from 'glob';
+import * as Mocha from 'mocha';
+import * as path from 'path';
 
 export function run(
     testsRoot: string,
@@ -8,13 +8,13 @@ export function run(
 ): void {
     // Create the mocha test
     const mocha = new Mocha({
-        ui: 'tdd',
+        ui: 'tdd'
     });
     mocha.useColors(true);
 
     if (process.env.AZURE_PIPELINES) {
         mocha.reporter('mocha-junit-reporter', {
-            mochaFile: './test-results.xml',
+            mochaFile: './test-results.xml'
         });
     }
 
