@@ -1,4 +1,4 @@
-import * as bundledPrettier from 'prettier';
+import * as prettier from 'prettier';
 import {
     CancellationToken,
     DocumentFormattingEditProvider,
@@ -32,7 +32,7 @@ async function checkHasPrettierConfig(filePath: string) {
 }
 
 type ResolveConfigResult = {
-    config: bundledPrettier.Options | null;
+    config: prettier.Options | null;
     error?: Error;
 };
 
@@ -46,10 +46,10 @@ async function resolveConfig(
     options?: { editorconfig?: boolean }
 ): Promise<ResolveConfigResult> {
     try {
-        const config = (await bundledPrettier.resolveConfig(
+        const config = (await prettier.resolveConfig(
             filePath,
             options
-        )) as bundledPrettier.Options;
+        )) as prettier.Options;
         return { config };
     } catch (error) {
         return { config: null, error };
@@ -71,9 +71,9 @@ async function resolveConfig(
  */
 function mergeConfig(
     hasPrettierConfig: boolean,
-    additionalConfig: Partial<bundledPrettier.Options>,
-    prettierConfig: Partial<bundledPrettier.Options>,
-    vscodeConfig: Partial<bundledPrettier.Options>
+    additionalConfig: Partial<prettier.Options>,
+    prettierConfig: Partial<prettier.Options>,
+    vscodeConfig: Partial<prettier.Options>
 ) {
     return hasPrettierConfig
         ? Object.assign(
@@ -92,13 +92,13 @@ function mergeConfig(
 async function format(
     text: string,
     { fileName, languageId, uri, isUntitled }: TextDocument,
-    customOptions: Partial<bundledPrettier.Options>
+    customOptions: Partial<prettier.Options>
 ): Promise<string> {
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
     const localPrettier = requireLocalPkg(
         fileName,
         'prettier'
-    ) as typeof bundledPrettier;
+    ) as typeof prettier;
 
     // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
     // wf1  (with "lang") -> glob: "wf1/**"
@@ -112,7 +112,7 @@ async function format(
         isUntitled ? undefined : fileName
     );
     let useBundled = false;
-    let parser: bundledPrettier.BuiltInParserName | string;
+    let parser: prettier.BuiltInParserName | string;
 
     if (!dynamicParsers.length) {
         const bundledParsers = getParsersFromLanguageId(
@@ -125,11 +125,11 @@ async function format(
     } else if (
         vscodeConfig.parser &&
         dynamicParsers.includes(
-            vscodeConfig.parser as bundledPrettier.BuiltInParserName
+            vscodeConfig.parser as prettier.BuiltInParserName
         )
     ) {
         // handle deprecated parser option (parser: "flow")
-        parser = vscodeConfig.parser as bundledPrettier.BuiltInParserName;
+        parser = vscodeConfig.parser as prettier.BuiltInParserName;
     } else {
         parser = dynamicParsers[0];
     }
@@ -168,7 +168,7 @@ async function format(
             trailingComma: vscodeConfig.trailingComma,
             bracketSpacing: vscodeConfig.bracketSpacing,
             jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
-            parser: parser as bundledPrettier.BuiltInParserName,
+            parser: parser as prettier.BuiltInParserName,
             semi: vscodeConfig.semi,
             useTabs: vscodeConfig.useTabs,
             proseWrap: vscodeConfig.proseWrap,
@@ -233,13 +233,13 @@ async function format(
             () => {
                 const warningMessage =
                     `prettier@${localPrettier.version} doesn't support ${languageId}. ` +
-                    `Falling back to bundled prettier@${bundledPrettier.version}.`;
+                    `Falling back to bundled prettier@${prettier.version}.`;
 
                 addToOutput(warningMessage);
 
-                setUsedModule('prettier', bundledPrettier.version, true);
+                setUsedModule('prettier', prettier.version, true);
 
-                return bundledPrettier.format(text, prettierOptions);
+                return prettier.format(text, prettierOptions);
             },
             text,
             fileName
@@ -288,7 +288,7 @@ class PrettierEditProvider
 
     private _provideEdits(
         document: TextDocument,
-        options: Partial<bundledPrettier.Options>
+        options: Partial<prettier.Options>
     ) {
         if (!document.isUntitled && this._fileIsIgnored(document.fileName)) {
             return Promise.resolve([]);
