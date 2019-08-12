@@ -7,12 +7,6 @@
       "path": "workspace"
     },
     {
-      "path": "eslint"
-    },
-    {
-      "path": "tslint"
-    },
-    {
       "path": "plugins"
     },
     {
@@ -35,17 +29,6 @@
     "prettier.htmlWhitespaceSensitivity": "css",
     "prettier.jsxSingleQuote": false,
     "prettier.quoteProps": "as-needed",
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[php]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

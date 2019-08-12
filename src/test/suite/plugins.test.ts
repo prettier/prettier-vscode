@@ -7,7 +7,7 @@ suite('Test plugins', function() {
     test('it formats with plugins', async () => {
         const { result } = await format(
             'index.php',
-            workspace.workspaceFolders![4].uri
+            workspace.workspaceFolders![2].uri
         );
         assert.equal(
             result,

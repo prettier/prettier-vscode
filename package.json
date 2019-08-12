@@ -37,7 +37,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc --watch -p ./",
     "lint": "tslint --project .",
-    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
+    "pretest": "yarn compile && cd test-fixtures/plugins && yarn install",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md"
   },
@@ -58,9 +58,6 @@
   "dependencies": {
     "ignore": "^5.1.2",
     "prettier": "^1.18.2",
-    "prettier-eslint": "^9.0.0",
-    "prettier-stylelint": "^0.4.2",
-    "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^6.0.0",
     "resolve": "^1.10.0",
     "typescript": "^3.5.3"
@@ -80,24 +77,6 @@
           ],
           "description": "A list of languages IDs to disable this extension on",
           "scope": "window"
-        },
-        "prettier.eslintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
-          "scope": "resource"
-        },
-        "prettier.tslintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
-          "scope": "resource"
-        },
-        "prettier.stylelintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
-          "scope": "resource"
         },
         "prettier.requireConfig": {
           "type": "boolean",

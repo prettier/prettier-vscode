@@ -6,7 +6,7 @@ const testConfig = (filePath: string) => {
     return async () => {
         const { result } = await format(
             filePath,
-            workspace.workspaceFolders![5].uri
+            workspace.workspaceFolders![3].uri
         );
         assert.equal(
             result,

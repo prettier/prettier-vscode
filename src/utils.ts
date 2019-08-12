@@ -1,8 +1,8 @@
 import { basename } from 'path';
 import * as prettier from 'prettier';
 import { Uri, workspace } from 'vscode';
+import { PrettierVSCodeConfig } from './PrettierVSCodeConfig';
 import { requireLocalPkg } from './requirePkg';
-import { PrettierVSCodeConfig } from './types.d';
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
     return workspace.getConfiguration('prettier', uri) as any;

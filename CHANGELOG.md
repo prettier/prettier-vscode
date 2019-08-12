@@ -8,8 +8,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 -   Prettier [1.18](https://prettier.io/blog/2019/06/06/1.18.0.html)
 -   New setting `quoteProps`. (prettier 1.17)
--   Docs now explain how to lint TypeScript code with ESLint.
 -   Improve supported language resolution with local Prettier instances and plugins
+-   Removed support for ESLint, TSLint, and Stylelint. [See documentation](https://github.com/prettier/prettier-vscode#vscode-eslint-and-tslint-integration)
 
 ## [1.8.0]
 

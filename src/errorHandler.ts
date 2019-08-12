@@ -8,7 +8,7 @@ import {
     TextEditor,
     window
 } from 'vscode';
-import { PrettierVSCodeConfig } from './types';
+import { PrettierVSCodeConfig } from './PrettierVSCodeConfig';
 import { allEnabledLanguages, getConfig } from './utils';
 
 let statusBarItem: StatusBarItem;
