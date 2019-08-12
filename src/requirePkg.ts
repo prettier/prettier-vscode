@@ -1,8 +1,7 @@
-import { addToOutput } from './errorHandler';
-
 import * as path from 'path';
 import * as readPkgUp from 'read-pkg-up';
 import * as resolve from 'resolve';
+import { addToOutput } from './errorHandler';
 
 /**
  * Recursively search for a package.json upwards containing given package

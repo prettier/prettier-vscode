@@ -1,5 +1,5 @@
 import { basename } from 'path';
-import * as bundledPrettier from 'prettier';
+import * as prettier from 'prettier';
 import { Uri, workspace } from 'vscode';
 import { requireLocalPkg } from './requirePkg';
 import { PrettierVSCodeConfig } from './types.d';
@@ -12,7 +12,7 @@ export function getParsersFromLanguageId(
     languageId: string,
     path?: string,
     useBundled: boolean = false
-): bundledPrettier.BuiltInParserName[] | string[] {
+): prettier.BuiltInParserName[] | string[] {
     const language = getSupportLanguages(useBundled ? undefined : path).find(
         lang =>
             lang &&
@@ -52,18 +52,18 @@ export function rangeSupportedLanguages(): string[] {
 export function getGroup(
     group: string,
     path?: string
-): bundledPrettier.SupportInfo['languages'] {
+): prettier.SupportInfo['languages'] {
     return getSupportLanguages(path).filter(
         language => language.group === group
     );
 }
 
 function getSupportLanguages(path?: string) {
-    let prettierInstance: typeof bundledPrettier;
+    let prettierInstance: typeof prettier;
     if (path) {
         prettierInstance = requireLocalPkg(path, 'prettier');
     } else {
-        prettierInstance = bundledPrettier;
+        prettierInstance = prettier;
     }
 
     // prettier.getSupportInfo was added in prettier@1.8.0
@@ -71,7 +71,7 @@ function getSupportLanguages(path?: string) {
         return prettierInstance.getSupportInfo(prettierInstance.version)
             .languages;
     } else {
-        return bundledPrettier.getSupportInfo(prettierInstance.version)
+        return prettier.getSupportInfo(prettierInstance.version)
             .languages;
     }
 }
