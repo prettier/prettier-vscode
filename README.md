@@ -218,26 +218,3 @@ _Note: Disabling a language enabled in a parent folder will prevent formatting i
 ## Prettier resolution
 
 This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
-
-## Contribute
-
-Feel free to open issues or PRs!
-
-### Running extension
-
--   Open this repository inside VSCode
--   Debug sidebar
--   `Launch Extension`
-
-### Running tests
-
-Tests open a VSCode instance and load `./testProject` as root workspace.
-
--   Open this repository inside VSCode
--   Debug sidebar
--   `Launch Tests`
-
-OR
-
-Without having an instance VSCode running (or it won't start)
-`npm run test`
