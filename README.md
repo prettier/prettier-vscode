@@ -1,6 +1,53 @@
-# Prettier formatter for Visual Studio Code
+# Prettier Formatter for Visual Studio Code
 
-VS Code package to format your code using [Prettier](https://github.com/prettier/prettier).
+[Prettier](https://prettier.io/) is an opinionated code formatter. It enforces a consistent style by parsing your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.
+
+<p align="center">
+  <em>
+    JavaScript
+    · TypeScript
+    · Flow
+    · JSX
+    · JSON
+  </em>
+  <br />
+  <em>
+    CSS
+    · SCSS
+    · Less
+  </em>
+  <br />
+  <em>
+    HTML
+    · Vue
+    · Angular
+  </em>
+  <br />
+  <em>
+    GraphQL
+    · Markdown
+    · YAML
+  </em>
+  <br />
+  <em>
+    <a href="https://prettier.io/docs/en/plugins.html">
+      Your favorite language?
+    </a>
+  </em>
+</p>
+
+<p align="center">
+  <a href="https://dev.azure.com/prettier/prettier/_build/latest?definitionId=5">
+    <img alt="Azure Pipelines Build Status" src="https://dev.azure.com/prettier/prettier-vscode/_apis/build/status/prettier.prettier-vscode?branchName=master"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/esbenp.prettier-vscode"></a>
+  <a href="#badge">
+    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
+  <a href="https://twitter.com/PrettierCode">
+    <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
+</p>
 
 ## Installation
 
