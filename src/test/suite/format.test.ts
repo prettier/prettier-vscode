@@ -4,15 +4,24 @@ import * as prettier from 'prettier';
 import * as vscode from 'vscode';
 
 /**
+ * gets the workspace folder by name
+ * @param name Workspace folder name
+ */
+const getWorkspaceFolderUri = (workspaceFolderName: string) => {
+    const workspaceFolder = vscode.workspace.workspaceFolders!.find(folder => {
+        return folder.name === workspaceFolderName;
+    });
+    return workspaceFolder!.uri;
+};
+
+/**
  * loads and format a file.
  * @param file path relative to base URI (a workspaceFolder's URI)
  * @param base base URI
  * @returns source code and resulting code
  */
-export async function format(
-    file: string,
-    base: vscode.Uri = vscode.workspace.workspaceFolders![0].uri
-) {
+export async function format(workspaceFolderName: string, file: string) {
+    const base = getWorkspaceFolderUri(workspaceFolderName);
     const absPath = path.join(base.fsPath, file);
     const doc = await vscode.workspace.openTextDocument(absPath);
     const text = doc.getText();
@@ -36,7 +45,7 @@ export async function format(
  * @param file path relative to workspace root
  */
 async function formatSameAsPrettier(file: string) {
-    const { result, source } = await format(file);
+    const { result, source } = await format('project', file);
     const prettierFormatted = prettier.format(source, {
         filepath: file
     });

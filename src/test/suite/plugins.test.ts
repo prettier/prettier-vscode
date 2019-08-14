@@ -1,14 +1,10 @@
 import * as assert from 'assert';
-import { workspace } from 'vscode';
 import { format } from './format.test';
 
 suite('Test plugins', function() {
     this.timeout(10000);
     test('it formats with plugins', async () => {
-        const { result } = await format(
-            'index.php',
-            workspace.workspaceFolders![4].uri
-        );
+        const { result } = await format('plugins', 'index.php');
         assert.equal(
             result,
             `<?php

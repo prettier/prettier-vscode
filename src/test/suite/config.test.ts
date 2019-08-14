@@ -1,13 +1,9 @@
 import * as assert from 'assert';
-import { workspace } from 'vscode';
 import { format } from './format.test';
 
 const testConfig = (filePath: string) => {
     return async () => {
-        const { result } = await format(
-            filePath,
-            workspace.workspaceFolders![5].uri
-        );
+        const { result } = await format('config', filePath);
         assert.equal(
             result,
             `function foo() {
