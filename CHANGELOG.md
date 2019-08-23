@@ -4,6 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [Unreleased]
+-   Localization support for `zh-cn` and `zh-tw`
+
 ## [1.10.0]
 
 -   Prettier [1.18](https://prettier.io/blog/2019/06/06/1.18.0.html)

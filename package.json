@@ -54,6 +54,7 @@
     "mocha": "^6.2.0",
     "mocha-junit-reporter": "^1.23.1",
     "tslint": "^5.19.0",
+    "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
@@ -64,12 +65,13 @@
     "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^6.0.0",
     "resolve": "^1.10.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "vscode-nls": "^4.1.1"
   },
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Prettier - Code formatter configuration",
+      "title": "%ext.config.title%",
       "properties": {
         "prettier.disableLanguages": {
           "type": "array",
@@ -79,55 +81,55 @@
           "default": [
             "vue"
           ],
-          "description": "A list of languages IDs to disable this extension on",
+          "description": "%ext.config.disableLanguages%",
           "scope": "window"
         },
         "prettier.eslintIntegration": {
           "type": "boolean",
           "default": false,
-          "description": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
+          "description": "%ext.config.eslintIntegration%",
           "scope": "resource"
         },
         "prettier.tslintIntegration": {
           "type": "boolean",
           "default": false,
-          "description": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
+          "description": "%ext.config.tslintIntegration%",
           "scope": "resource"
         },
         "prettier.stylelintIntegration": {
           "type": "boolean",
           "default": false,
-          "description": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
+          "description": "%ext.config.stylelintIntegration%",
           "scope": "resource"
         },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
-          "description": "Require a 'prettierconfig' to format",
+          "description": "%ext.config.requireConfig%",
           "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
-          "description": "Path to a .prettierignore or similar file",
+          "description": "%ext.config.ignorePath%",
           "scope": "resource"
         },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
-          "description": "Fit code within this line limit",
+          "description": "%ext.config.printWidth%",
           "scope": "resource"
         },
         "prettier.tabWidth": {
           "type": "integer",
           "default": 2,
-          "description": "Number of spaces it should use per tab",
+          "description": "%ext.config.tabWidth%",
           "scope": "resource"
         },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "If true, will use single instead of double quotes",
+          "description": "%ext.config.singleQuote%",
           "scope": "resource"
         },
         "prettier.trailingComma": {
@@ -138,19 +140,19 @@
             "all"
           ],
           "default": "none",
-          "description": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
+          "description": "%ext.config.trailingComma%",
           "scope": "resource"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "Controls the printing of spaces inside object literals",
+          "description": "%ext.config.bracketSpacing%",
           "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
-          "description": "If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line",
+          "description": "%ext.config.jsxBracketSameLine%",
           "scope": "resource"
         },
         "prettier.parser": {
@@ -160,19 +162,19 @@
             "flow"
           ],
           "default": "babylon",
-          "description": "Override the parser. You shouldn't have to change this setting.",
+          "description": "%ext.config.parser%",
           "scope": "resource"
         },
         "prettier.semi": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to add a semicolon at the end of every line",
+          "description": "%ext.config.semi%",
           "scope": "resource"
         },
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
-          "description": "Indent lines with tabs",
+          "description": "%ext.config.useTabs%",
           "scope": "resource"
         },
         "prettier.proseWrap": {
@@ -183,7 +185,7 @@
             "never"
           ],
           "default": "preserve",
-          "description": "(Markdown) wrap prose over multiple lines"
+          "description": "%ext.config.proseWrap%"
         },
         "prettier.arrowParens": {
           "type": "string",
@@ -192,13 +194,13 @@
             "always"
           ],
           "default": "avoid",
-          "description": "Include parentheses around a sole arrow function parameter",
+          "description": "%ext.config.arrowParens%",
           "scope": "resource"
         },
         "prettier.jsxSingleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "Use single quotes instead of double quotes in JSX"
+          "description": "%ext.config.jsxSingleQuote%"
         },
         "prettier.htmlWhitespaceSensitivity": {
           "type": "string",
@@ -208,7 +210,7 @@
             "ignore"
           ],
           "default": "css",
-          "description": "Specify the global whitespace sensitivity for HTML files.\n Valid options: \n'css' - Respect the default value of CSS display property. \n'strict' - Whitespaces are considered sensitive. \n'ignore' - Whitespaces are considered insensitive."
+          "description": "%ext.config.htmlWhitespaceSensitivity%"
         },
         "prettier.endOfLine": {
           "type": "string",
@@ -219,7 +221,7 @@
             "cr"
           ],
           "default": "auto",
-          "description": "Specify the end of line used by prettier"
+          "description": "%ext.config.endOfLine%"
         },
         "prettier.quoteProps": {
           "type": "string",
@@ -229,7 +231,7 @@
             "preserve"
           ],
           "default": "as-needed",
-          "description": "Change when properties in objects are quoted"
+          "description": "%ext.config.quoteProps%"
         }
       }
     },
