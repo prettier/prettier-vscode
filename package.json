@@ -34,8 +34,6 @@
   "main": "./out/extension",
   "scripts": {
     "clean": "rm -rf out",
-    "package": "vsce package",
-    "publish": "vsce publish",
     "vscode:prepublish": "yarn compile",
     "compile": "yarn clean && tsc -p ./",
     "watch": "tsc --watch -p ./",
