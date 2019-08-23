@@ -95,6 +95,9 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 }
 ```
 
+### Plugins
+This extension support [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
+
 ### VSCode ESLint and TSLint Integration
 
 `prettier-eslint` and `prettier-tslint` are included with the installation of this extension. There is no need for a separate local or global install of either for functionality.
