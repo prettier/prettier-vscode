@@ -56,7 +56,7 @@
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
-    "ignore": "^5.1.2",
+    "ignore": "^5.1.4",
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
     "prettier-stylelint": "^0.4.2",
