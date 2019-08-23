@@ -17,6 +17,6 @@ import { runTests } from 'vscode-test';
     await runTests({
         extensionDevelopmentPath,
         extensionTestsPath,
-        launchArgs: [workspace]
+        launchArgs: [workspace, "--disable-extensions"]
     });
 })().catch(err => console.log(err));
