@@ -47,7 +47,7 @@ p-is-promise@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-is-promise/-/p-is-promise-2.1.0.tgz#918cebaea248a62cf7ffab8e3bca8c5f882fc42e"
   integrity sha512-Y3W0wlRPK8ZMRbNq97l4M5otioeA5lm1z7bkNkxCka8HSPjR0xRWmpCmc9utiaLP9Jb1eD8BgeIxTW4AIF45Pg==
 
-"php-parser@github:glayzzle/php-parser#71485979b688d12fb130d3e853fdc00348671e00":
+php-parser@glayzzle/php-parser#71485979b688d12fb130d3e853fdc00348671e00:
   version "3.0.0-prerelease.8"
   resolved "https://codeload.github.com/glayzzle/php-parser/tar.gz/71485979b688d12fb130d3e853fdc00348671e00"
 
