@@ -1,9 +1,6 @@
 {
   "ext.config.title": "Prettier - Code formatter configuration",
   "ext.config.disableLanguages": "A list of languages IDs to disable this extension on",
-  "ext.config.eslintIntegration": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
-  "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
-  "ext.config.stylelintIntegration": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
   "ext.config.requireConfig": "Require a 'prettierconfig' to format",
   "ext.config.ignorePath": "Path to a .prettierignore or similar file",
   "ext.config.printWidth": "Fit code within this line limit",

@@ -11,17 +11,10 @@ import {
 import { addToOutput, safeExecution, setUsedModule } from './errorHandler';
 import { requireLocalPkg } from './requirePkg';
 import {
-    PrettierEslintFormat,
-    PrettierStylelint,
-    PrettierTslintFormat,
     PrettierVSCodeConfig
 } from './types.d';
 import { getConfig, getParsersFromLanguageId } from './utils';
 
-/**
- * HOLD style parsers (for stylelint integration)
- */
-const STYLE_PARSERS: string[] = ['postcss', 'css', 'less', 'scss'];
 /**
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
@@ -133,13 +126,6 @@ async function format(
     } else {
         parser = dynamicParsers[0];
     }
-    const doesParserSupportEslint = [
-        'javascript',
-        'javascriptreact',
-        'typescript',
-        'typescriptreact',
-        'vue'
-    ].includes(languageId);
 
     const hasConfig = await checkHasPrettierConfig(fileName);
 
@@ -179,56 +165,9 @@ async function format(
             quoteProps: vscodeConfig.quoteProps
         }
     );
+   
 
-    if (vscodeConfig.tslintIntegration && parser === 'typescript') {
-        return safeExecution(
-            () => {
-                const prettierTslint = require('prettier-tslint')
-                    .format as PrettierTslintFormat;
-                setUsedModule('prettier-tslint', 'Unknown', true);
-
-                return prettierTslint({
-                    text,
-                    filePath: fileName,
-                    fallbackPrettierOptions: prettierOptions
-                });
-            },
-            text,
-            fileName
-        );
-    }
-
-    if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
-        return safeExecution(
-            () => {
-                const prettierEslint = require('prettier-eslint') as PrettierEslintFormat;
-                setUsedModule('prettier-eslint', 'Unknown', true);
-
-                return prettierEslint({
-                    text,
-                    filePath: fileName,
-                    fallbackPrettierOptions: prettierOptions
-                });
-            },
-            text,
-            fileName
-        );
-    }
-
-    if (vscodeConfig.stylelintIntegration && STYLE_PARSERS.includes(parser)) {
-        const prettierStylelint = require('prettier-stylelint') as PrettierStylelint;
-        return safeExecution(
-            prettierStylelint.format({
-                text,
-                filePath: fileName,
-                prettierOptions
-            }),
-            text,
-            fileName
-        );
-    }
-
-    if (!doesParserSupportEslint && useBundled) {
+    if (useBundled) {
         return safeExecution(
             () => {
                 const warningMessage =

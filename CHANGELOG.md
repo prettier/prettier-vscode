@@ -4,10 +4,13 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [2.0.0]
+
+-   Removed support for ESLint, TSLint, and Stylelint. [See documentation](https://github.com/prettier/prettier-vscode#vscode-eslint-and-tslint-integration)
 
 ## [1.12.0]
--  Fixed issue where error output was used before inialized (#918)
+
+-   Fixed issue where error output was used before inialized (#918)
 
 ## [1.11.0]
 

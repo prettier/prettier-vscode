@@ -1,9 +1,6 @@
 {
   "ext.config.title": "Prettier - 代码格式化配置",
   "ext.config.disableLanguages": "用于禁用此扩展的语言ID列表",
-  "ext.config.eslintIntegration": "使用 'prettier-eslint' 而不是 'prettier'。 其他设置只会是备选方案，以防无法从 eslint 规则中推断出来。",
-  "ext.config.tslintIntegration": "使用 'prettier-tslint' 而不是 'prettier'。 其他设置只会是备选方案，以防无法从 tslint 规则推断出来。",
-  "ext.config.stylelintIntegration": "使用 'prettier-stylelint' 而不是 'prettier'。 其他设置只会是备选方案，以防无法从 stylelint 规则推断出来。",
   "ext.config.requireConfig": "需要 'prettierconfig' 来格式化",
   "ext.config.ignorePath": ".prettierignore或类似文件的路径",
   "ext.config.printWidth": "指定每行代码的最佳长度， 如果超出长度则换行。",
