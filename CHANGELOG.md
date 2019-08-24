@@ -5,7 +5,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
+
 -   Localization support for `zh-cn` and `zh-tw`
+-   Fixed issue where text-fixtures were bundled in the extension.
 
 ## [1.10.0]
 
@@ -16,6 +18,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 -   prettier-eslint 9.0.0
 
 ## [1.9.0]
+
 -   Prettier [1.17](https://prettier.io/blog/2019/04/12/1.17.0.html)
 -   New setting `quoteProps`. (prettier 1.17)
 
