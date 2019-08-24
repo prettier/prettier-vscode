@@ -7,6 +7,12 @@
       "path": "workspace"
     },
     {
+      "path": "eslint"
+    },
+    {
+      "path": "tslint"
+    },
+    {
       "path": "plugins"
     },
     {
@@ -14,6 +20,7 @@
     }
   ],
   "settings": {
+    "prettier.eslintIntegration": false,
     "prettier.printWidth": 80,
     "prettier.tabWidth": 2,
     "prettier.singleQuote": false,

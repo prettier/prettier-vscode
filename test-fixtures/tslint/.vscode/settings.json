@@ -1,0 +1,4 @@
+{
+    "prettier.tslintIntegration": true,
+    "prettier.singleQuote": false
+}

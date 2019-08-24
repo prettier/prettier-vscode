@@ -101,7 +101,7 @@ This extension support [Prettier plugins](https://prettier.io/docs/en/plugins.ht
 
 ### VSCode ESLint and TSLint Integration
 
-Previous versions of this extension included ESLint, and TSLint integrations out of the box. This functionality was extremely error prone and counter to the best practices of what Prettier is [now recommending for integrating with linters](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
+The prefered way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here.](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
 
 You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
 
@@ -111,6 +111,15 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
+
+**Legacy Configuration**
+The legacy approach is to use the linters bundled in this project. `prettier-eslint` and `prettier-tslint` are included with the installation of this extension. There is no need for a separate local or global install of either for functionality.
+
+`eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally. Global installations will not be recognized.
+
+If you have both `"prettier.tslintIntegration"` and `"prettier.eslintIntegration"` enabled in your Visual Studio Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
+
+> WARNING: Due to a bug in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
 ## Settings
 
@@ -194,6 +203,21 @@ Change when properties in objects are quoted. [Learn more here](https://prettier
 ### VSCode specific settings
 
 These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
+
+#### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only **DEPRECATED**
+
+Use _[prettier-eslint](https://github.com/prettier/prettier-eslint)_ instead of _prettier_.
+Other settings will only be fallbacks in case they could not be inferred from ESLint rules.
+
+#### prettier.tslintIntegration (default: false) - JavaScript and TypeScript only **DEPRECATED**
+
+Use _[prettier-tslint](https://github.com/azz/prettier-tslint)_ instead of _prettier_.
+Other settings will only be fallbacks in case they could not be inferred from TSLint rules.
+
+#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only **DEPRECATED**
+
+Use _[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)_ instead of _prettier_.
+Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
 
 #### prettier.requireConfig (default: false)
 

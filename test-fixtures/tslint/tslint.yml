@@ -1,0 +1,19 @@
+env:
+  es6: true
+  node: true
+extends: 'tslint:recommended'
+plugins: 
+  - prettier
+rules:
+  prettier/prettier:
+    - 2
+    - singleQuote: true
+      trailingComma: es5
+      semi: false
+  semicolon:
+    severity: error
+    options:
+      - never
+  quotemark:
+    options:
+      - single  

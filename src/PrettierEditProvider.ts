@@ -1,4 +1,4 @@
-import * as prettier from 'prettier';
+import * as prettier from "prettier";
 import {
   CancellationToken,
   DocumentFormattingEditProvider,
@@ -8,12 +8,21 @@ import {
   TextDocument,
   TextEdit
   // tslint:disable-next-line: no-implicit-dependencies
-} from 'vscode';
-import { addToOutput, safeExecution, setUsedModule } from './errorHandler';
-import { requireLocalPkg } from './requirePkg';
-import { PrettierVSCodeConfig } from './types.d';
-import { getConfig, getParsersFromLanguageId } from './utils';
+} from "vscode";
+import { addToOutput, safeExecution, setUsedModule } from "./errorHandler";
+import { requireLocalPkg } from "./requirePkg";
+import {
+  IPrettierStylelint,
+  PrettierEslintFormat,
+  PrettierTslintFormat,
+  PrettierVSCodeConfig
+} from "./types.d";
+import { getConfig, getParsersFromLanguageId } from "./utils";
 
+/**
+ * HOLD style parsers (for stylelint integration)
+ */
+const STYLE_PARSERS: string[] = ["postcss", "css", "less", "scss"];
 /**
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
@@ -89,7 +98,7 @@ async function format(
   const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
   const localPrettier = requireLocalPkg(
     fileName,
-    'prettier'
+    "prettier"
   ) as typeof prettier;
 
   // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
@@ -112,7 +121,7 @@ async function format(
       isUntitled ? undefined : fileName,
       true
     );
-    parser = bundledParsers[0] || 'babylon';
+    parser = bundledParsers[0] || "babylon";
     useBundled = true;
   } else if (
     vscodeConfig.parser &&
@@ -123,6 +132,13 @@ async function format(
   } else {
     parser = dynamicParsers[0];
   }
+  const doesParserSupportEslint = [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ].includes(languageId);
 
   const hasConfig = await checkHasPrettierConfig(fileName);
 
@@ -163,7 +179,55 @@ async function format(
     }
   );
 
-  if (useBundled) {
+  if (vscodeConfig.tslintIntegration && parser === "typescript") {
+    return safeExecution(
+      () => {
+        const prettierTslint = require("prettier-tslint")
+          .format as PrettierTslintFormat;
+        setUsedModule("prettier-tslint", "Unknown", true);
+
+        return prettierTslint({
+          fallbackPrettierOptions: prettierOptions,
+          filePath: fileName,
+          text
+        });
+      },
+      text,
+      fileName
+    );
+  }
+
+  if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
+    return safeExecution(
+      () => {
+        const prettierEslint = require("prettier-eslint") as PrettierEslintFormat;
+        setUsedModule("prettier-eslint", "Unknown", true);
+
+        return prettierEslint({
+          fallbackPrettierOptions: prettierOptions,
+          filePath: fileName,
+          text
+        });
+      },
+      text,
+      fileName
+    );
+  }
+
+  if (vscodeConfig.stylelintIntegration && STYLE_PARSERS.includes(parser)) {
+    const prettierStylelint = require("prettier-stylelint") as IPrettierStylelint;
+    return safeExecution(
+      prettierStylelint.format({
+        filePath: fileName,
+        prettierOptions,
+        text
+      }),
+      text,
+      fileName
+    );
+  }
+
+  if (!doesParserSupportEslint && useBundled) {
     return safeExecution(
       () => {
         const warningMessage =
@@ -172,7 +236,7 @@ async function format(
 
         addToOutput(warningMessage);
 
-        setUsedModule('prettier', prettier.version, true);
+        setUsedModule("prettier", prettier.version, true);
 
         return prettier.format(text, prettierOptions);
       },
@@ -181,7 +245,7 @@ async function format(
     );
   }
 
-  setUsedModule('prettier', localPrettier.version, false);
+  setUsedModule("prettier", localPrettier.version, false);
 
   return safeExecution(
     () => localPrettier.format(text, prettierOptions),

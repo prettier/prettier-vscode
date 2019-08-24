@@ -38,7 +38,7 @@
     "compile": "yarn clean && tsc -p ./",
     "watch": "tsc --watch -p ./",
     "lint": "tslint --project .",
-    "pretest": "yarn compile && yarn install  && cd test-fixtures/plugins && yarn install",
+    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
     "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'"
@@ -52,8 +52,8 @@
     "**/*.{ts,json,md,yml,js}": [
       "prettier --write"
     ],
-    "**/*.ts": [
-      "tslint"
+    "src/**/*.ts": [
+      "tslint --project ."
     ],
     "*": [
       "git add"
@@ -79,6 +79,9 @@
   "dependencies": {
     "ignore": "^5.1.4",
     "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
+    "prettier-stylelint": "^0.4.2",
+    "prettier-tslint": "^0.4.2",
     "read-pkg-up": "^6.0.0",
     "resolve": "^1.10.0",
     "typescript": "^3.5.3",
