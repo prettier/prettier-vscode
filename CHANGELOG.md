@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [1.11.0]
+
 -   Localization support for `zh-cn` and `zh-tw`
 -   Fixed issue where text-fixtures were bundled in the extension.
 
