@@ -40,10 +40,26 @@
     "lint": "tslint --project .",
     "pretest": "yarn compile && yarn install  && cd test-fixtures/plugins && yarn install",
     "test": "node ./out/test/runTests.js",
-    "version": "node ./scripts/version.js && git add CHANGELOG.md"
+    "version": "node ./scripts/version.js && git add CHANGELOG.md",
+    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,json,md,yml,js}": [
+      "prettier --write"
+    ],
+    "**/*.ts": [
+      "tslint"
+    ],
+    "*": [
+      "git add"
+    ]
   },
   "devDependencies": {
-    "@salesforce/dev-config": "^1.5.0",
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.1",
     "@types/node": "^12.7.2",
@@ -51,9 +67,12 @@
     "@types/resolve": "0.0.8",
     "@types/vscode": "1.17.0",
     "glob": "^7.1.4",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
     "mocha": "^6.2.0",
     "mocha-junit-reporter": "^1.23.1",
     "tslint": "^5.19.0",
+    "tslint-config-prettier": "^1.18.0",
     "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.2.0"
   },
@@ -81,24 +100,24 @@
           "description": "%ext.config.disableLanguages%",
           "scope": "window"
         },
-        "prettier.eslintIntegration": {	
-          "type": "boolean",	
-          "default": false,	
-          "description": "%ext.config.eslintIntegration%",	
+        "prettier.eslintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.eslintIntegration%",
           "scope": "resource",
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },	
-        "prettier.tslintIntegration": {	
-          "type": "boolean",	
-          "default": false,	
-          "description": "%ext.config.tslintIntegration%",	
+        },
+        "prettier.tslintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.tslintIntegration%",
           "scope": "resource",
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },	
-        "prettier.stylelintIntegration": {	
-          "type": "boolean",	
-          "default": false,	
-          "description": "%ext.config.stylelintIntegration%",	
+        },
+        "prettier.stylelintIntegration": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.stylelintIntegration%",
           "scope": "resource",
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
         },

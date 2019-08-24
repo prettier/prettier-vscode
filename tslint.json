@@ -1,14 +1,6 @@
 {
-    "extends": "@salesforce/dev-config/tslint",
-    "linterOptions": {
-        "exclude": ["text-fixtures/**"]
-    },
-    "rules": {
-        "no-reserved-keywords": false,
-        "no-any": false,
-        "quotemark": [true, "single", "avoid-escape"],
-        "member-ordering": false,
-        "no-string-based-set-timeout": false,
-        "semicolon": [true, "always", "ignore-bound-class-methods"]
-    }
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["text-fixtures/**"]
+  }
 }

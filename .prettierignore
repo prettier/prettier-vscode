@@ -1,3 +1,4 @@
-package.json
-package-lock.json
-text-fixtures/
+.vscode-test/
+out/
+test-fixtures/
+node_modules/
