@@ -81,6 +81,27 @@
           "description": "%ext.config.disableLanguages%",
           "scope": "window"
         },
+        "prettier.eslintIntegration": {	
+          "type": "boolean",	
+          "default": false,	
+          "description": "%ext.config.eslintIntegration%",	
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },	
+        "prettier.tslintIntegration": {	
+          "type": "boolean",	
+          "default": false,	
+          "description": "%ext.config.tslintIntegration%",	
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },	
+        "prettier.stylelintIntegration": {	
+          "type": "boolean",	
+          "default": false,	
+          "description": "%ext.config.stylelintIntegration%",	
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
