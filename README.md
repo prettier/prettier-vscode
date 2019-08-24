@@ -113,13 +113,14 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
 **Legacy Configuration**
+
+> WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
+
 The legacy approach is to use the linters bundled in this project. `prettier-eslint` and `prettier-tslint` are included with the installation of this extension. There is no need for a separate local or global install of either for functionality.
 
 `eslint`, `tslint`, and all peer dependencies required by your specific configuration must be installed locally. Global installations will not be recognized.
 
 If you have both `"prettier.tslintIntegration"` and `"prettier.eslintIntegration"` enabled in your Visual Studio Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
-
-> WARNING: Due to a bug in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
 ## Settings
 
