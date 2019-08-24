@@ -20,4 +20,4 @@ Tests open a VSCode instance and load `./testProject` as root workspace.
 OR
 
 Without having an instance VSCode running (or it won't start)
-`npm run test`
+`yarn test`
