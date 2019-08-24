@@ -88,6 +88,7 @@ function selectors(): Selectors {
 }
 
 export function activate(context: ExtensionContext) {
+    console.log('activating');
     const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
     const editProvider = new EditProvider(fileIsIgnored);
     function registerFormatter() {

@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.35.0"
   },
   "keywords": [
     "multi-root ready"
@@ -31,12 +31,15 @@
     "*"
   ],
   "icon": "icon.png",
-  "main": "./out/extension",
+  "main": "./dist/extension.js",
   "scripts": {
     "clean": "rm -rf out",
-    "vscode:prepublish": "yarn compile",
     "compile": "yarn clean && tsc -p ./",
     "watch": "tsc --watch -p ./",
+    "vscode:prepublish": "yarn webpack",
+    "webpack": "yarn clean && webpack --mode development",
+    "webpack-dev": "yarn clean && webpack --mode development --watch",
+    "test-compile": "tsc -p ./",
     "lint": "tslint --project .",
     "pretest": "yarn compile && yarn install  && cd test-fixtures/plugins && yarn install",
     "test": "node ./out/test/runTests.js",
@@ -49,13 +52,16 @@
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.18.2",
     "@types/resolve": "0.0.8",
-    "@types/vscode": "1.17.0",
+    "@types/vscode": "1.35.0",
     "glob": "^7.1.4",
     "mocha": "^6.2.0",
     "mocha-junit-reporter": "^1.23.1",
-    "tslint": "^5.19.0",
+    "ts-loader": "^6.0.4",
+    "tslint": "^5.18.0",
     "vscode-nls-dev": "^3.3.1",
-    "vscode-test": "^1.2.0"
+    "vscode-test": "^1.2.0",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
   },
   "dependencies": {
     "ignore": "^5.1.4",
