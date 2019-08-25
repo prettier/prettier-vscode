@@ -7,6 +7,7 @@ import {
   workspace
   // tslint:disable-next-line: no-implicit-dependencies
 } from 'vscode';
+import TelemetryReporter from 'vscode-extension-telemetry';
 import configFileListener from './configCacheHandler';
 import { registerDisposables, setupErrorHandler } from './errorHandler';
 import ignoreFileHandler from './ignoreFileHandler';
@@ -16,6 +17,12 @@ import {
   getConfig,
   rangeSupportedLanguages
 } from './utils';
+
+// the application insights key (also known as instrumentation key)
+const telemetryKey = '59a68833-73f0-40b1-8969-e65fb2512e1d';
+
+// telemetry reporter
+let reporter: TelemetryReporter;
 
 interface ISelectors {
   rangeLanguageSelector: DocumentSelector;
@@ -89,6 +96,23 @@ function selectors(): ISelectors {
 }
 
 export function activate(context: ExtensionContext) {
+  const extensionPackage = require(context.asAbsolutePath('./package.json'));
+  // create telemetry reporter on extension activation
+  reporter = new TelemetryReporter(
+    'prettier-vscode',
+    extensionPackage.version,
+    telemetryKey
+  );
+
+  const config = getConfig();
+  reporter.sendTelemetryEvent('integration_usage', undefined, {
+    eslint: config.eslintIntegration ? 1 : 0,
+    stylelint: config.stylelintIntegration ? 1 : 0,
+    tslint: config.tslintIntegration ? 1 : 0
+  });
+
+  context.subscriptions.push(reporter);
+
   const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
   const editProvider = new EditProvider(fileIsIgnored);
   function registerFormatter() {
@@ -113,4 +137,9 @@ export function activate(context: ExtensionContext) {
     configFileListener(),
     ...registerDisposables()
   );
+}
+
+export function deactivate() {
+  // This will ensure all pending events get flushed
+  reporter.dispose();
 }

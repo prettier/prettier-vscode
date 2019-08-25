@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "publisher": "esbenp",
   "author": "Esben Petersen <@esbenp>",
   "galleryBanner": {
@@ -85,6 +85,7 @@
     "read-pkg-up": "^6.0.0",
     "resolve": "^1.10.0",
     "typescript": "^3.5.3",
+    "vscode-extension-telemetry": "^0.1.2",
     "vscode-nls": "^4.1.1"
   },
   "contributes": {
