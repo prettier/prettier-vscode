@@ -122,6 +122,12 @@ The legacy approach is to use the linters bundled in this project. `prettier-esl
 
 If you have both `"prettier.tslintIntegration"` and `"prettier.eslintIntegration"` enabled in your Visual Studio Code settings, then TSLint will be used to lint your TypeScript code. If you would rather use ESLint, disable the TSLint integration by setting `"prettier.tslintIntegration"` to `false`.
 
+## Telemetry
+
+This extension uses Application Insights to track anonymous feature usage and version info. We don't record IP addresses or any other personally identifyable information. The reason we track this data is simply to help with priotization of features.
+
+This extension respects the VS Code telemetry setting so if you have telemetry disabled in VS Code we will also no collect telemtry. See the [Visual Studio Code docs](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting) for information on how to disable telemetry.
+
 ## Settings
 
 ### Prettier's Settings
