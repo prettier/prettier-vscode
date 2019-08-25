@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [2.2.0]
+
+- Added App Insights telemetry to track feature usage.
+
 ## [2.1.0]
 
 - Deprecated support for ESLint, TSLint, and Stylelint. [See documentation](https://github.com/prettier/prettier-vscode#vscode-eslint-and-tslint-integration)
