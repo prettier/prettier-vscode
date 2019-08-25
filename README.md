@@ -205,17 +205,17 @@ Change when properties in objects are quoted. [Learn more here](https://prettier
 
 These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
-#### prettier.eslintIntegration (default: false) - JavaScript and TypeScript only **DEPRECATED**
+#### [_DEPRECATED_] prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
 
 Use _[prettier-eslint](https://github.com/prettier/prettier-eslint)_ instead of _prettier_.
 Other settings will only be fallbacks in case they could not be inferred from ESLint rules.
 
-#### prettier.tslintIntegration (default: false) - JavaScript and TypeScript only **DEPRECATED**
+#### [_DEPRECATED_] prettier.tslintIntegration (default: false) - JavaScript and TypeScript only
 
 Use _[prettier-tslint](https://github.com/azz/prettier-tslint)_ instead of _prettier_.
 Other settings will only be fallbacks in case they could not be inferred from TSLint rules.
 
-#### prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only **DEPRECATED**
+#### [_DEPRECATED_] prettier.stylelintIntegration (default: false) - CSS, SCSS and LESS only
 
 Use _[prettier-stylelint](https://github.com/hugomrdias/prettier-stylelint)_ instead of _prettier_.
 Other settings will only be fallbacks in case they could not be inferred from stylelint rules.
