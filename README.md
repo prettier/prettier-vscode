@@ -99,7 +99,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 This extension support [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
 
-### VSCode ESLint and TSLint Integration
+### VS Code ESLint and TSLint Integration
 
 The prefered way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here.](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
 
@@ -140,7 +140,7 @@ Settings will be read from (listed by priority):
 Or if no prettier configuration file exist
 
 1. `.editorconfig`
-1. VSCode prettier's settings (described below with their default)
+1. VS Code prettier's settings (described below with their default)
 
 #### prettier.printWidth (default: 80)
 
@@ -207,9 +207,9 @@ Specify the end of line used by prettier. [Learn more here](https://prettier.io/
 
 Change when properties in objects are quoted. [Learn more here](https://prettier.io/docs/en/options.html#quote-props)
 
-### VSCode specific settings
+### VS Code specific settings
 
-These settings are specific to VSCode and need to be set in the VSCode settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
+These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
 #### [_DEPRECATED_] prettier.eslintIntegration (default: false) - JavaScript and TypeScript only
 
