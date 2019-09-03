@@ -67,7 +67,7 @@
     "@types/resolve": "0.0.8",
     "@types/vscode": "1.17.0",
     "glob": "^7.1.4",
-    "husky": "^3.0.4",
+    "husky": "^3.0.5",
     "lint-staged": "^9.2.5",
     "mocha": "^6.2.0",
     "mocha-junit-reporter": "^1.23.1",
