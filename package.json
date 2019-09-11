@@ -62,7 +62,7 @@
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.1",
-    "@types/node": "^12.7.4",
+    "@types/node": "^12.7.5",
     "@types/prettier": "^1.18.2",
     "@types/resolve": "0.0.8",
     "@types/vscode": "1.17.0",
