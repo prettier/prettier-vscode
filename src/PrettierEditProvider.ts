@@ -178,6 +178,7 @@ async function format(
       useTabs: vscodeConfig.useTabs
     }
   );
+  prettierOptions.filepath = fileName;
 
   if (vscodeConfig.tslintIntegration && parser === 'typescript') {
     return safeExecution(
