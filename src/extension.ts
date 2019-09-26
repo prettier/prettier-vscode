@@ -19,7 +19,7 @@ import {
 } from './utils';
 
 // the application insights key (also known as instrumentation key)
-const telemetryKey = '59a68833-73f0-40b1-8969-e65fb2512e1d';
+const telemetryKey = '93c48152-e880-42c1-8652-30ad62ce8b49';
 
 // telemetry reporter
 let reporter: TelemetryReporter;

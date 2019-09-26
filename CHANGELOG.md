@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [2.3.0]
+
+- Updated VS Code Version to 1.34.0
+- Changed App Insights api key
+
 ## [2.2.0]
 
 - Added App Insights telemetry to track feature usage.
