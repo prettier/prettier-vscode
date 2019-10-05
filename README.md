@@ -65,6 +65,8 @@ ext install esbenp.prettier-vscode
 
 ## Usage
 
+![prettier-demo](./prettier-demo.gif)
+
 ### Using Command Palette (CMD/CTRL + Shift + P)
 
 ```
