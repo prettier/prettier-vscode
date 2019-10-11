@@ -120,10 +120,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/vscode@1.34.0":
-  version "1.34.0"
-  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.34.0.tgz#5abdd8b548be08c8fe3fff7c3e3b2d532e325741"
-  integrity sha512-t81rGr6aFw8TMap7UJdikC5ilOtL0yNr/pkovyyTy31fZ4XJehrxLMRh8nJuoOF3+g4rG9ljmtQo7tm6wyoaYA==
+"@types/vscode@1.39.0":
+  version "1.39.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.39.0.tgz#46c257df4833ff4c1e6806f0406a873fb79672dd"
+  integrity sha512-rlg0okXDt7NjAyHXbZ2nO1I/VY/8y9w67ltLRrOxXQ46ayvrYZavD4A6zpYrGbs2+ZOEQzcUs+QZOqcVGQIxXQ==
 
 "@typescript-eslint/experimental-utils@1.13.0":
   version "1.13.0"
