@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [2.4.0]
+
+- Set filepath config on format to assist with parser resolution
+
 ## [2.3.0]
 
 - Updated VS Code Version to 1.34.0
