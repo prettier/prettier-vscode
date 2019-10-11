@@ -1,7 +1,7 @@
-import * as path from 'path';
-import * as readPkgUp from 'read-pkg-up';
-import * as resolve from 'resolve';
-import { addToOutput } from './errorHandler';
+import * as path from "path";
+import * as readPkgUp from "read-pkg-up";
+import * as resolve from "resolve";
+import { addToOutput } from "./errorHandler";
 
 /**
  * Recursively search for a package.json upwards containing given package
@@ -15,13 +15,14 @@ function findPkg(fspath: string, pkgName: string): string | undefined {
   const { root } = path.parse(fspath);
   if (
     res &&
-    res.package &&
-    ((res.package.dependencies && res.package.dependencies[pkgName]) ||
-      (res.package.devDependencies && res.package.devDependencies[pkgName]))
+    res.packageJson &&
+    ((res.packageJson.dependencies && res.packageJson.dependencies[pkgName]) ||
+      (res.packageJson.devDependencies &&
+        res.packageJson.devDependencies[pkgName]))
   ) {
     return resolve.sync(pkgName, { basedir: res.path });
   } else if (res && res.path) {
-    const parent = path.resolve(path.dirname(res.path), '..');
+    const parent = path.resolve(path.dirname(res.path), "..");
     if (parent !== root) {
       return findPkg(parent, pkgName);
     }
