@@ -66,5 +66,7 @@ suite('Test format Document', function() {
   test('it formats JSON', () => formatSameAsPrettier('formatTest/ugly.json'));
   test('it formats JSON', () =>
     formatSameAsPrettier('formatTest/package.json'));
-  test('it formats HTML', () => formatSameAsPrettier('formatTest/index.html'));
+  test('it formats HTML', () => formatSameAsPrettier('formatTest/ugly.html'));
+  test('it formats TSX', () => formatSameAsPrettier('formatTest/ugly.tsx'));
+  test('it formats SCSS', () => formatSameAsPrettier('formatTest/ugly.scss'));
 });
