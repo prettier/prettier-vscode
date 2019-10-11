@@ -1,10 +1,10 @@
-import { existsSync, readFileSync } from 'fs';
-import ignore from 'ignore';
-import * as path from 'path';
+import { existsSync, readFileSync } from "fs";
+import ignore from "ignore";
+import * as path from "path";
 // tslint:disable-next-line: no-implicit-dependencies
-import { Disposable, Uri, workspace } from 'vscode';
-import { addToOutput } from './errorHandler';
-import { getConfig } from './utils';
+import { Disposable, Uri, workspace } from "vscode";
+import { addToOutput } from "./errorHandler";
+import { getConfig } from "./utils";
 
 interface IIgnorer {
   ignores(filePath: string): boolean;
@@ -38,7 +38,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
     );
 
     if (!absolutePath) {
-      return { ignoreFilePath: '', ignorer: nullIgnorer };
+      return { ignoreFilePath: "", ignorer: nullIgnorer };
     }
 
     if (!ignorers.has(absolutePath)) {
@@ -47,12 +47,12 @@ function ignoreFileHandler(disposables: Disposable[]) {
     if (!existsSync(absolutePath)) {
       // Don't log default value.
       const ignorePath = getConfig(Uri.file(fsPath)).ignorePath;
-      if (ignorePath !== '.prettierignore') {
+      if (ignorePath !== ".prettierignore") {
         addToOutput(
           `Wrong prettier.ignorePath provided in your settings. The path (${ignorePath}) does not exist.`
         );
       }
-      return { ignoreFilePath: '', ignorer: nullIgnorer };
+      return { ignoreFilePath: "", ignorer: nullIgnorer };
     }
     return {
       ignoreFilePath: absolutePath,
@@ -72,7 +72,7 @@ function ignoreFileHandler(disposables: Disposable[]) {
       fileWatcher.onDidDelete(unloadIgnorer, null, disposables);
     }
     if (existsSync(ignoreUri.fsPath)) {
-      const ignoreFileContents = readFileSync(ignoreUri.fsPath, 'utf8');
+      const ignoreFileContents = readFileSync(ignoreUri.fsPath, "utf8");
       ignorer = ignore().add(ignoreFileContents);
     }
 

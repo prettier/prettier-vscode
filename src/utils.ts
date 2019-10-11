@@ -1,12 +1,12 @@
-import { basename } from 'path';
-import * as prettier from 'prettier';
+import { basename } from "path";
+import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
-import { Uri, workspace } from 'vscode';
-import { requireLocalPkg } from './requirePkg';
-import { PrettierVSCodeConfig } from './types.d';
+import { Uri, workspace } from "vscode";
+import { requireLocalPkg } from "./requirePkg";
+import { PrettierVSCodeConfig } from "./types.d";
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
-  return workspace.getConfiguration('prettier', uri) as any;
+  return workspace.getConfiguration("prettier", uri) as any;
 }
 
 export function getParsersFromLanguageId(
@@ -41,25 +41,25 @@ export function allEnabledLanguages(path?: string): string[] {
 
 export function rangeSupportedLanguages(): string[] {
   return [
-    'javascript',
-    'javascriptreact',
-    'typescript',
-    'typescriptreact',
-    'json',
-    'graphql'
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "graphql"
   ];
 }
 
 export function getGroup(
   group: string,
   path?: string
-): prettier.SupportInfo['languages'] {
+): prettier.SupportInfo["languages"] {
   return getSupportLanguages(path).filter(language => language.group === group);
 }
 
 function getSupportLanguages(path?: string) {
   let prettierInstance: typeof prettier;
-  prettierInstance = path ? requireLocalPkg(path, 'prettier') : prettier;
+  prettierInstance = path ? requireLocalPkg(path, "prettier") : prettier;
 
   // prettier.getSupportInfo was added in prettier@1.8.0
   if (prettierInstance.getSupportInfo) {

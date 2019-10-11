@@ -6,20 +6,20 @@ import {
   languages,
   workspace
   // tslint:disable-next-line: no-implicit-dependencies
-} from 'vscode';
-import TelemetryReporter from 'vscode-extension-telemetry';
-import configFileListener from './configCacheHandler';
-import { registerDisposables, setupErrorHandler } from './errorHandler';
-import ignoreFileHandler from './ignoreFileHandler';
-import EditProvider from './PrettierEditProvider';
+} from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
+import configFileListener from "./configCacheHandler";
+import { registerDisposables, setupErrorHandler } from "./errorHandler";
+import ignoreFileHandler from "./ignoreFileHandler";
+import EditProvider from "./PrettierEditProvider";
 import {
   allEnabledLanguages,
   getConfig,
   rangeSupportedLanguages
-} from './utils';
+} from "./utils";
 
 // the application insights key (also known as instrumentation key)
-const telemetryKey = '93c48152-e880-42c1-8652-30ad62ce8b49';
+const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
 
 // telemetry reporter
 let reporter: TelemetryReporter;
@@ -76,16 +76,16 @@ function selectors(): ISelectors {
 
   // at least 1 workspace
   const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-    l => ({ language: l, scheme: 'untitled' })
+    l => ({ language: l, scheme: "untitled" })
   );
   const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-    l => ({ language: l, scheme: 'untitled' })
+    l => ({ language: l, scheme: "untitled" })
   );
   const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-    l => ({ language: l, scheme: 'file' })
+    l => ({ language: l, scheme: "file" })
   );
   const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-    l => ({ language: l, scheme: 'file' })
+    l => ({ language: l, scheme: "file" })
   );
   return {
     languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
@@ -96,16 +96,16 @@ function selectors(): ISelectors {
 }
 
 export function activate(context: ExtensionContext) {
-  const extensionPackage = require(context.asAbsolutePath('./package.json'));
+  const extensionPackage = require(context.asAbsolutePath("./package.json"));
   // create telemetry reporter on extension activation
   reporter = new TelemetryReporter(
-    'prettier-vscode',
+    "prettier-vscode",
     extensionPackage.version,
     telemetryKey
   );
 
   const config = getConfig();
-  reporter.sendTelemetryEvent('integration_usage', undefined, {
+  reporter.sendTelemetryEvent("integration_usage", undefined, {
     eslint: config.eslintIntegration ? 1 : 0,
     stylelint: config.stylelintIntegration ? 1 : 0,
     tslint: config.tslintIntegration ? 1 : 0

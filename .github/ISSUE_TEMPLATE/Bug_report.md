@@ -10,6 +10,7 @@ about: Create a report to help us improve
 _Short summary of what is going on or to provide context_.
 
 ### Github Repository to Reproduce Issue
+
 Link to a Github repo that can be used to reproduce the issue.
 
 ### Steps To Reproduce:

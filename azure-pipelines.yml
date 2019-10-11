@@ -2,18 +2,18 @@ variables:
   azure_pipelines: true
 
 trigger:
-  - '*'
+  - "*"
 pr:
-  - '*'
+  - "*"
 
 strategy:
   matrix:
     linux:
-      imageName: 'ubuntu-16.04' 
+      imageName: "ubuntu-16.04"
     mac:
-      imageName: 'macos-10.13'
+      imageName: "macos-10.13"
     windows:
-      imageName: 'vs2017-win2016'
+      imageName: "vs2017-win2016"
 
 pool:
   vmImage: $(imageName)
@@ -21,8 +21,8 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
-    displayName: 'Install Node.js'
+      versionSpec: "10.x"
+    displayName: "Install Node.js"
 
   - bash: |
       /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
@@ -30,16 +30,16 @@ steps:
     displayName: Start xvfb
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
-  - script: 'yarn install'
-    displayName: 'Install dependencies'
-  - script: 'yarn test'
-    displayName: 'Run tests'
+  - script: "yarn install"
+    displayName: "Install dependencies"
+  - script: "yarn test"
+    displayName: "Run tests"
     env:
-      DISPLAY: ':99.0'
+      DISPLAY: ":99.0"
 
     # Publish Test Results
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '**/test-results.xml'
+      testResultsFiles: "**/test-results.xml"

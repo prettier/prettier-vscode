@@ -1,8 +1,8 @@
 // tslint:disable-next-line: no-implicit-dependencies
-import * as glob from 'glob';
+import * as glob from "glob";
 // tslint:disable-next-line: no-implicit-dependencies
-import * as Mocha from 'mocha';
-import * as path from 'path';
+import * as Mocha from "mocha";
+import * as path from "path";
 
 export function run(
   testsRoot: string,
@@ -10,17 +10,17 @@ export function run(
 ): void {
   // Create the mocha test
   const mocha = new Mocha({
-    ui: 'tdd'
+    ui: "tdd"
   });
   mocha.useColors(true);
 
   if (process.env.AZURE_PIPELINES) {
-    mocha.reporter('mocha-junit-reporter', {
-      mochaFile: './test-results.xml'
+    mocha.reporter("mocha-junit-reporter", {
+      mochaFile: "./test-results.xml"
     });
   }
 
-  glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+  glob("**/**.test.js", { cwd: testsRoot }, (err, files) => {
     if (err) {
       return cb(err);
     }

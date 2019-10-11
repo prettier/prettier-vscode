@@ -1,18 +1,18 @@
-import * as prettier from 'prettier';
+import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
-import { workspace } from 'vscode';
+import { workspace } from "vscode";
 
 /**
  * Prettier reads configuration from files
  */
 const PRETTIER_CONFIG_FILES = [
-  '.prettierrc',
-  '.prettierrc.json',
-  '.prettierrc.yaml',
-  '.prettierrc.yml',
-  '.prettierrc.js',
-  'package.json',
-  'prettier.config.js'
+  ".prettierrc",
+  ".prettierrc.json",
+  ".prettierrc.yaml",
+  ".prettierrc.yml",
+  ".prettierrc.js",
+  "package.json",
+  "prettier.config.js"
 ];
 
 /**
@@ -22,7 +22,7 @@ const PRETTIER_CONFIG_FILES = [
  */
 function fileListener() {
   const fileWatcher = workspace.createFileSystemWatcher(
-    `**/{${PRETTIER_CONFIG_FILES.join(',')}}`
+    `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
   );
   fileWatcher.onDidChange(prettier.clearConfigCache);
   fileWatcher.onDidCreate(prettier.clearConfigCache);
