@@ -3,7 +3,7 @@ import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Uri, workspace } from "vscode";
 import { requireLocalPkg } from "./requirePkg";
-import { PrettierVSCodeConfig } from "./types.d";
+import { PrettierModule, PrettierVSCodeConfig } from "./types.d";
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   return workspace.getConfiguration("prettier", uri) as any;
@@ -58,7 +58,7 @@ export function getGroup(
 }
 
 function getSupportLanguages(path?: string) {
-  let prettierInstance: typeof prettier;
+  let prettierInstance: PrettierModule;
   prettierInstance = path ? requireLocalPkg(path, "prettier") : prettier;
 
   // prettier.getSupportInfo was added in prettier@1.8.0

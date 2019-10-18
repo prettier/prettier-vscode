@@ -1,5 +1,7 @@
 import * as prettier from "prettier";
 
+type PrettierModule = typeof prettier;
+
 type TrailingCommaOption = "none" | "es5" | "all";
 
 /**

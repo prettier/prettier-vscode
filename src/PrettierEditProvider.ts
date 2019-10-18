@@ -14,6 +14,7 @@ import { requireLocalPkg } from "./requirePkg";
 import {
   IPrettierStylelint,
   PrettierEslintFormat,
+  PrettierModule,
   PrettierTslintFormat,
   PrettierVSCodeConfig
 } from "./types.d";
@@ -96,10 +97,7 @@ async function format(
   customOptions: Partial<prettier.Options>
 ): Promise<string> {
   const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
-  const localPrettier = requireLocalPkg(
-    fileName,
-    "prettier"
-  ) as typeof prettier;
+  const localPrettier = requireLocalPkg(fileName, "prettier") as PrettierModule;
 
   // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
   // wf1  (with "lang") -> glob: "wf1/**"
