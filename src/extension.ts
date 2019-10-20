@@ -11,6 +11,7 @@ import TelemetryReporter from "vscode-extension-telemetry";
 import configFileListener from "./configCacheHandler";
 import { getConfig } from "./ConfigResolver";
 import { registerDisposables, setupErrorHandler } from "./errorHandler";
+import { IgnorerResolver } from "./IgnorerResolver";
 // import ignoreFileHandler from "./ignoreFileHandler";
 import { LanguageResolver } from "./LanguageResolver";
 import { ModuleResolver } from "./ModuleResolver";
@@ -45,9 +46,8 @@ function disposeHandlers() {
 /**
  * Build formatter selectors
  */
-function selectors(): ISelectors {
+function selectors(moduleResolver: ModuleResolver): ISelectors {
   let allLanguages: string[];
-  const moduleResolver = new ModuleResolver();
   const bundledPrettierInstance = moduleResolver.getPrettierInstance();
   const bundledLanguageResolver = new LanguageResolver(bundledPrettierInstance);
   if (workspace.workspaceFolders === undefined) {
@@ -118,11 +118,14 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(reporter);
 
-  // const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
-  const editProvider = new EditProvider();
+  const moduleResolver = new ModuleResolver();
+  const ignoreReslver = new IgnorerResolver();
+  const editProvider = new EditProvider(moduleResolver, ignoreReslver);
   function registerFormatter() {
     disposeHandlers();
-    const { languageSelector, rangeLanguageSelector } = selectors();
+    const { languageSelector, rangeLanguageSelector } = selectors(
+      moduleResolver
+    );
     rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
       rangeLanguageSelector,
       editProvider
