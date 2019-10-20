@@ -172,57 +172,76 @@ async function format(
   );
 
   if (vscodeConfig.tslintIntegration && parser === "typescript") {
-    return safeExecution(
-      () => {
-        const prettierTslint = require("prettier-tslint")
-          .format as PrettierTslintFormat;
-        setUsedModule("prettier-tslint", "Unknown", true);
-
-        return prettierTslint({
-          fallbackPrettierOptions: prettierOptions,
-          filePath: fileName,
-          text
-        });
-      },
-      text,
-      fileName
+    const prettierTslintModule = moduleResolver.requireLocalPkg(
+      fileName,
+      "prettier-tslint"
     );
+
+    if (prettierTslintModule) {
+      return safeExecution(
+        () => {
+          const prettierTslintFormat = prettierTslintModule.format as PrettierTslintFormat;
+
+          setUsedModule("prettier-tslint", "Unknown", true);
+
+          return prettierTslintFormat({
+            fallbackPrettierOptions: prettierOptions,
+            filePath: fileName,
+            text
+          });
+        },
+        text,
+        fileName
+      );
+    }
   }
 
   if (
     vscodeConfig.eslintIntegration &&
     languageResolver.doesLanguageSupportESLint(languageId)
   ) {
-    return safeExecution(
-      () => {
-        const prettierEslint = require("prettier-eslint") as PrettierEslintFormat;
-        setUsedModule("prettier-eslint", "Unknown", true);
-
-        return prettierEslint({
-          fallbackPrettierOptions: prettierOptions,
-          filePath: fileName,
-          text
-        });
-      },
-      text,
-      fileName
+    const prettierEslintModule = moduleResolver.requireLocalPkg(
+      fileName,
+      "prettier-eslint"
     );
+    if (prettierEslintModule) {
+      return safeExecution(
+        () => {
+          const prettierEslintFormat = prettierEslintModule as PrettierEslintFormat;
+          setUsedModule("prettier-eslint", "Unknown", true);
+
+          return prettierEslintFormat({
+            fallbackPrettierOptions: prettierOptions,
+            filePath: fileName,
+            text
+          });
+        },
+        text,
+        fileName
+      );
+    }
   }
 
   if (
     vscodeConfig.stylelintIntegration &&
     languageResolver.doesParserSupportStylelint(parser)
   ) {
-    const prettierStylelint = require("prettier-stylelint") as IPrettierStylelint;
-    return safeExecution(
-      prettierStylelint.format({
-        filePath: fileName,
-        prettierOptions,
-        text
-      }),
-      text,
-      fileName
+    const prettierStylelintModule = moduleResolver.requireLocalPkg(
+      fileName,
+      "prettier-stylelint"
     );
+    if (prettierStylelintModule) {
+      const prettierStylelint = prettierStylelintModule as IPrettierStylelint;
+      return safeExecution(
+        prettierStylelint.format({
+          filePath: fileName,
+          prettierOptions,
+          text
+        }),
+        text,
+        fileName
+      );
+    }
   }
 
   setUsedModule("prettier", prettierInstance.version, false);
