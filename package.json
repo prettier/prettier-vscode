@@ -2,14 +2,14 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "2.3.0",
-  "publisher": "esbenp",
-  "author": "Esben Petersen <@esbenp>",
+  "version": "3.0.0",
+  "publisher": "prettier",
+  "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"
