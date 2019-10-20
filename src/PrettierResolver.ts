@@ -1,7 +1,9 @@
 import * as path from "path";
+import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import { addToOutput } from "./errorHandler";
+import { PrettierModule } from "./types.d";
 
 /**
  * Recursively search for a package.json upwards containing given package
@@ -50,4 +52,29 @@ function requireLocalPkg(fspath: string, pkgName: string): any {
 
   return require(pkgName);
 }
-export { requireLocalPkg };
+
+export class PrettierResolver {
+  // public static setInstancePath(instancePath: string) {
+  //   PrettierResolver.instancePath = instancePath;
+  // }
+
+  // public static clearInstanceCache() {
+  //   PrettierResolver.instancePath = undefined;
+  //   PrettierResolver.instance = undefined;
+  // }
+
+  public static getPrettierInstance(instancePath?: string): PrettierModule {
+    if (PrettierResolver.instance) {
+      return PrettierResolver.instance;
+    }
+
+    const prettierInstance: PrettierModule = instancePath
+      ? requireLocalPkg(instancePath, "prettier")
+      : prettier;
+
+    return prettierInstance;
+  }
+
+  private static instance: PrettierModule | undefined;
+  // private static instancePath: string | undefined;
+}

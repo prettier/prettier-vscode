@@ -2,7 +2,7 @@ import { basename } from "path";
 import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Uri, workspace } from "vscode";
-import { requireLocalPkg } from "./requirePkg";
+import { PrettierResolver } from "./PrettierResolver";
 import { PrettierModule, PrettierVSCodeConfig } from "./types.d";
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
@@ -58,13 +58,8 @@ export function getGroup(
 }
 
 function getSupportLanguages(path?: string) {
-  let prettierInstance: PrettierModule;
-  prettierInstance = path ? requireLocalPkg(path, "prettier") : prettier;
-
-  // prettier.getSupportInfo was added in prettier@1.8.0
-  if (prettierInstance.getSupportInfo) {
-    return prettierInstance.getSupportInfo(prettierInstance.version).languages;
-  } else {
-    return prettier.getSupportInfo(prettierInstance.version).languages;
-  }
+  const prettierInstance: PrettierModule = PrettierResolver.getPrettierInstance(
+    path
+  );
+  return prettierInstance.getSupportInfo(prettierInstance.version).languages;
 }

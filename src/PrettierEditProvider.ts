@@ -10,11 +10,10 @@ import {
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { addToOutput, safeExecution, setUsedModule } from "./errorHandler";
-import { requireLocalPkg } from "./requirePkg";
+import { PrettierResolver } from "./PrettierResolver";
 import {
   IPrettierStylelint,
   PrettierEslintFormat,
-  PrettierModule,
   PrettierTslintFormat,
   PrettierVSCodeConfig
 } from "./types.d";
@@ -97,7 +96,7 @@ async function format(
   customOptions: Partial<prettier.Options>
 ): Promise<string> {
   const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
-  const localPrettier = requireLocalPkg(fileName, "prettier") as PrettierModule;
+  const prettierInstance = PrettierResolver.getPrettierInstance(fileName);
 
   // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
   // wf1  (with "lang") -> glob: "wf1/**"
@@ -230,7 +229,7 @@ async function format(
     return safeExecution(
       () => {
         const warningMessage =
-          `prettier@${localPrettier.version} doesn't support ${languageId}. ` +
+          `prettier@${prettierInstance.version} doesn't support ${languageId}. ` +
           `Falling back to bundled prettier@${prettier.version}.`;
 
         addToOutput(warningMessage);
@@ -244,10 +243,10 @@ async function format(
     );
   }
 
-  setUsedModule("prettier", localPrettier.version, false);
+  setUsedModule("prettier", prettierInstance.version, false);
 
   return safeExecution(
-    () => localPrettier.format(text, prettierOptions),
+    () => prettierInstance.format(text, prettierOptions),
     text,
     fileName
   );
