@@ -54,27 +54,34 @@ function requireLocalPkg(fspath: string, pkgName: string): any {
 }
 
 export class PrettierResolver {
-  // public static setInstancePath(instancePath: string) {
-  //   PrettierResolver.instancePath = instancePath;
-  // }
-
-  // public static clearInstanceCache() {
-  //   PrettierResolver.instancePath = undefined;
-  //   PrettierResolver.instance = undefined;
-  // }
-
   public static getPrettierInstance(instancePath?: string): PrettierModule {
-    if (PrettierResolver.instance) {
-      return PrettierResolver.instance;
+    if (!instancePath) {
+      return prettier;
     }
 
-    const prettierInstance: PrettierModule = instancePath
-      ? requireLocalPkg(instancePath, "prettier")
-      : prettier;
+    if (PrettierResolver.instances.has(instancePath)) {
+      const instance = PrettierResolver.instances.get(instancePath);
+      if (instance) {
+        return instance;
+      }
+    }
+
+    const prettierInstance: PrettierModule = requireLocalPkg(
+      instancePath,
+      "prettier"
+    );
+
+    if (!prettierInstance) {
+      throw new Error("Instance not found.");
+    }
+
+    this.instances.set(instancePath, prettierInstance);
 
     return prettierInstance;
   }
 
-  private static instance: PrettierModule | undefined;
-  // private static instancePath: string | undefined;
+  private static instances: Map<string, PrettierModule> = new Map<
+    string,
+    PrettierModule
+  >();
 }

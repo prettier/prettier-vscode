@@ -8,8 +8,10 @@ import {
   window
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
+import { getConfig } from "./ConfigResolver";
+import { LanguageResolver } from "./LanguageResolver";
+import { PrettierResolver } from "./PrettierResolver";
 import { PrettierVSCodeConfig } from "./types";
-import { allEnabledLanguages, getConfig } from "./utils";
 
 let statusBarItem: StatusBarItem;
 const outputChannel = window.createOutputChannel("Prettier");
@@ -32,8 +34,11 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
     const filePath = editor.document.isUntitled
       ? undefined
       : editor.document.fileName;
+    const prettierInstance = PrettierResolver.getPrettierInstance(filePath);
+    const languageResolver = new LanguageResolver(prettierInstance);
+
     const score = languages.match(
-      allEnabledLanguages(filePath),
+      languageResolver.allEnabledLanguages(),
       editor.document
     );
     const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(

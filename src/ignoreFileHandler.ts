@@ -3,8 +3,8 @@ import ignore from "ignore";
 import * as path from "path";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Disposable, Uri, workspace } from "vscode";
+import { getConfig } from "./ConfigResolver";
 import { addToOutput } from "./errorHandler";
-import { getConfig } from "./utils";
 
 interface IIgnorer {
   ignores(filePath: string): boolean;

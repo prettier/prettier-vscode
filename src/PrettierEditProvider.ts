@@ -9,7 +9,9 @@ import {
   TextEdit
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
+import { getConfig } from "./ConfigResolver";
 import { addToOutput, safeExecution, setUsedModule } from "./errorHandler";
+import { LanguageResolver } from "./LanguageResolver";
 import { PrettierResolver } from "./PrettierResolver";
 import {
   IPrettierStylelint,
@@ -17,12 +19,7 @@ import {
   PrettierTslintFormat,
   PrettierVSCodeConfig
 } from "./types.d";
-import { getConfig, getParsersFromLanguageId } from "./utils";
 
-/**
- * HOLD style parsers (for stylelint integration)
- */
-const STYLE_PARSERS: string[] = ["postcss", "css", "less", "scss"];
 /**
  * Check if a given file has an associated prettierconfig.
  * @param filePath file's path
@@ -97,6 +94,7 @@ async function format(
 ): Promise<string> {
   const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
   const prettierInstance = PrettierResolver.getPrettierInstance(fileName);
+  const languageResolver = new LanguageResolver(prettierInstance);
 
   // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
   // wf1  (with "lang") -> glob: "wf1/**"
@@ -105,37 +103,24 @@ async function format(
     return text;
   }
 
-  const dynamicParsers = getParsersFromLanguageId(
-    languageId,
-    isUntitled ? undefined : fileName
-  );
-  let useBundled = false;
-  let parser: prettier.BuiltInParserName | string;
+  let fileInfo: prettier.FileInfoResult | undefined;
+  let parser: prettier.BuiltInParserName | string | undefined;
 
-  if (!dynamicParsers.length) {
-    const bundledParsers = getParsersFromLanguageId(
-      languageId,
-      isUntitled ? undefined : fileName,
-      true
-    );
-    parser = bundledParsers[0] || "babylon";
-    useBundled = true;
-  } else if (
-    vscodeConfig.parser &&
-    dynamicParsers.includes(vscodeConfig.parser as prettier.BuiltInParserName)
-  ) {
-    // handle deprecated parser option (parser: "flow")
-    parser = vscodeConfig.parser as prettier.BuiltInParserName;
-  } else {
-    parser = dynamicParsers[0];
+  if (fileName) {
+    fileInfo = await prettierInstance.getFileInfo(fileName);
   }
-  const doesParserSupportEslint = [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ].includes(languageId);
+
+  const dynamicParsers = languageResolver.getParsersFromLanguageId(languageId);
+  if (dynamicParsers.length > 0) {
+    parser = dynamicParsers[0];
+  } else if (fileInfo && fileInfo.inferredParser) {
+    parser = fileInfo.inferredParser;
+  }
+
+  if (!parser) {
+    addToOutput(`Failed to resolve config for ${fileName}.`);
+    return text;
+  }
 
   const hasConfig = await checkHasPrettierConfig(fileName);
 
@@ -161,6 +146,7 @@ async function format(
       arrowParens: vscodeConfig.arrowParens,
       bracketSpacing: vscodeConfig.bracketSpacing,
       endOfLine: vscodeConfig.endOfLine,
+      filepath: fileName,
       htmlWhitespaceSensitivity: vscodeConfig.htmlWhitespaceSensitivity,
       jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
       jsxSingleQuote: vscodeConfig.jsxSingleQuote,
@@ -175,7 +161,6 @@ async function format(
       useTabs: vscodeConfig.useTabs
     }
   );
-  prettierOptions.filepath = fileName;
 
   if (vscodeConfig.tslintIntegration && parser === "typescript") {
     return safeExecution(
@@ -195,7 +180,10 @@ async function format(
     );
   }
 
-  if (vscodeConfig.eslintIntegration && doesParserSupportEslint) {
+  if (
+    vscodeConfig.eslintIntegration &&
+    languageResolver.doesLanguageSupportESLint(languageId)
+  ) {
     return safeExecution(
       () => {
         const prettierEslint = require("prettier-eslint") as PrettierEslintFormat;
@@ -212,7 +200,10 @@ async function format(
     );
   }
 
-  if (vscodeConfig.stylelintIntegration && STYLE_PARSERS.includes(parser)) {
+  if (
+    vscodeConfig.stylelintIntegration &&
+    languageResolver.doesParserSupportStylelint(parser)
+  ) {
     const prettierStylelint = require("prettier-stylelint") as IPrettierStylelint;
     return safeExecution(
       prettierStylelint.format({
@@ -220,24 +211,6 @@ async function format(
         prettierOptions,
         text
       }),
-      text,
-      fileName
-    );
-  }
-
-  if (!doesParserSupportEslint && useBundled) {
-    return safeExecution(
-      () => {
-        const warningMessage =
-          `prettier@${prettierInstance.version} doesn't support ${languageId}. ` +
-          `Falling back to bundled prettier@${prettier.version}.`;
-
-        addToOutput(warningMessage);
-
-        setUsedModule("prettier", prettier.version, true);
-
-        return prettier.format(text, prettierOptions);
-      },
       text,
       fileName
     );

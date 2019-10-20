@@ -9,14 +9,12 @@ import {
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
 import configFileListener from "./configCacheHandler";
+import { getConfig } from "./ConfigResolver";
 import { registerDisposables, setupErrorHandler } from "./errorHandler";
 import ignoreFileHandler from "./ignoreFileHandler";
+import { LanguageResolver } from "./LanguageResolver";
 import EditProvider from "./PrettierEditProvider";
-import {
-  allEnabledLanguages,
-  getConfig,
-  rangeSupportedLanguages
-} from "./utils";
+import { PrettierResolver } from "./PrettierResolver";
 
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
@@ -49,16 +47,22 @@ function disposeHandlers() {
  */
 function selectors(): ISelectors {
   let allLanguages: string[];
+  const bundledPrettierInstance = PrettierResolver.getPrettierInstance();
+  const bundledLanguageResolver = new LanguageResolver(bundledPrettierInstance);
   if (workspace.workspaceFolders === undefined) {
-    allLanguages = allEnabledLanguages();
+    allLanguages = bundledLanguageResolver.allEnabledLanguages();
   } else {
     allLanguages = [];
     for (const folder of workspace.workspaceFolders) {
-      allLanguages.push(...allEnabledLanguages(folder.uri.fsPath));
+      const prettierInstance = PrettierResolver.getPrettierInstance(
+        folder.uri.fsPath
+      );
+      const languageResolver = new LanguageResolver(prettierInstance);
+      allLanguages.push(...languageResolver.allEnabledLanguages());
     }
   }
 
-  const allRangeLanguages = rangeSupportedLanguages();
+  const allRangeLanguages = bundledLanguageResolver.rangeSupportedLanguages();
   const { disableLanguages } = getConfig();
   const globalLanguageSelector = allLanguages.filter(
     l => !disableLanguages.includes(l)
