@@ -11,8 +11,9 @@ import {
 } from "vscode";
 import { getConfig } from "./ConfigResolver";
 import { addToOutput, safeExecution, setUsedModule } from "./errorHandler";
+import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
-import { PrettierResolver } from "./PrettierResolver";
+import { ModuleResolver } from "./ModuleResolver";
 import {
   IPrettierStylelint,
   PrettierEslintFormat,
@@ -93,8 +94,10 @@ async function format(
   customOptions: Partial<prettier.Options>
 ): Promise<string> {
   const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
-  const prettierInstance = PrettierResolver.getPrettierInstance(fileName);
+  const moduleResolver = new ModuleResolver();
+  const prettierInstance = moduleResolver.getPrettierInstance(fileName);
   const languageResolver = new LanguageResolver(prettierInstance);
+  const ignoreReslver = new IgnorerResolver();
 
   // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
   // wf1  (with "lang") -> glob: "wf1/**"
@@ -106,8 +109,14 @@ async function format(
   let fileInfo: prettier.FileInfoResult | undefined;
   let parser: prettier.BuiltInParserName | string | undefined;
 
+  const ignorePath = ignoreReslver.getIgnorePath(fileName);
+
   if (fileName) {
-    fileInfo = await prettierInstance.getFileInfo(fileName);
+    fileInfo = await prettierInstance.getFileInfo(fileName, { ignorePath });
+  }
+
+  if (fileInfo && fileInfo.ignored) {
+    return text;
   }
 
   const dynamicParsers = languageResolver.getParsersFromLanguageId(languageId);
@@ -234,8 +243,6 @@ class PrettierEditProvider
   implements
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider {
-  constructor(private fileIsIgnored: (filePath: string) => boolean) {}
-
   public provideDocumentRangeFormattingEdits(
     document: TextDocument,
     range: Range,
@@ -260,9 +267,9 @@ class PrettierEditProvider
     document: TextDocument,
     options: Partial<prettier.Options>
   ) {
-    if (!document.isUntitled && this.fileIsIgnored(document.fileName)) {
-      return Promise.resolve([]);
-    }
+    // if (!document.isUntitled && this.fileIsIgnored(document.fileName)) {
+    //   return Promise.resolve([]);
+    // }
     return format(document.getText(), document, options).then(code => [
       TextEdit.replace(fullDocumentRange(document), code)
     ]);

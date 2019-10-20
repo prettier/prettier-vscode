@@ -11,10 +11,10 @@ import TelemetryReporter from "vscode-extension-telemetry";
 import configFileListener from "./configCacheHandler";
 import { getConfig } from "./ConfigResolver";
 import { registerDisposables, setupErrorHandler } from "./errorHandler";
-import ignoreFileHandler from "./ignoreFileHandler";
+// import ignoreFileHandler from "./ignoreFileHandler";
 import { LanguageResolver } from "./LanguageResolver";
+import { ModuleResolver } from "./ModuleResolver";
 import EditProvider from "./PrettierEditProvider";
-import { PrettierResolver } from "./PrettierResolver";
 
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
@@ -47,14 +47,15 @@ function disposeHandlers() {
  */
 function selectors(): ISelectors {
   let allLanguages: string[];
-  const bundledPrettierInstance = PrettierResolver.getPrettierInstance();
+  const moduleResolver = new ModuleResolver();
+  const bundledPrettierInstance = moduleResolver.getPrettierInstance();
   const bundledLanguageResolver = new LanguageResolver(bundledPrettierInstance);
   if (workspace.workspaceFolders === undefined) {
     allLanguages = bundledLanguageResolver.allEnabledLanguages();
   } else {
     allLanguages = [];
     for (const folder of workspace.workspaceFolders) {
-      const prettierInstance = PrettierResolver.getPrettierInstance(
+      const prettierInstance = moduleResolver.getPrettierInstance(
         folder.uri.fsPath
       );
       const languageResolver = new LanguageResolver(prettierInstance);
@@ -117,8 +118,8 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(reporter);
 
-  const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
-  const editProvider = new EditProvider(fileIsIgnored);
+  // const { fileIsIgnored } = ignoreFileHandler(context.subscriptions);
+  const editProvider = new EditProvider();
   function registerFormatter() {
     disposeHandlers();
     const { languageSelector, rangeLanguageSelector } = selectors();

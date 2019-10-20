@@ -3,7 +3,7 @@ import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import { addToOutput } from "./errorHandler";
-import { PrettierModule } from "./types.d";
+import { PrettierModule } from "./types";
 
 /**
  * Recursively search for a package.json upwards containing given package
@@ -53,14 +53,19 @@ function requireLocalPkg(fspath: string, pkgName: string): any {
   return require(pkgName);
 }
 
-export class PrettierResolver {
-  public static getPrettierInstance(instancePath?: string): PrettierModule {
+export class ModuleResolver {
+  private instances: Map<string, PrettierModule> = new Map<
+    string,
+    PrettierModule
+  >();
+
+  public getPrettierInstance(instancePath?: string): PrettierModule {
     if (!instancePath) {
       return prettier;
     }
 
-    if (PrettierResolver.instances.has(instancePath)) {
-      const instance = PrettierResolver.instances.get(instancePath);
+    if (this.instances.has(instancePath)) {
+      const instance = this.instances.get(instancePath);
       if (instance) {
         return instance;
       }
@@ -79,9 +84,4 @@ export class PrettierResolver {
 
     return prettierInstance;
   }
-
-  private static instances: Map<string, PrettierModule> = new Map<
-    string,
-    PrettierModule
-  >();
 }

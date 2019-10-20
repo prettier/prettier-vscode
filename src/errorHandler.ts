@@ -10,7 +10,7 @@ import {
 } from "vscode";
 import { getConfig } from "./ConfigResolver";
 import { LanguageResolver } from "./LanguageResolver";
-import { PrettierResolver } from "./PrettierResolver";
+import { ModuleResolver } from "./ModuleResolver";
 import { PrettierVSCodeConfig } from "./types";
 
 let statusBarItem: StatusBarItem;
@@ -34,7 +34,8 @@ function toggleStatusBarItem(editor: TextEditor | undefined): void {
     const filePath = editor.document.isUntitled
       ? undefined
       : editor.document.fileName;
-    const prettierInstance = PrettierResolver.getPrettierInstance(filePath);
+    const moduleResolver = new ModuleResolver();
+    const prettierInstance = moduleResolver.getPrettierInstance(filePath);
     const languageResolver = new LanguageResolver(prettierInstance);
 
     const score = languages.match(
