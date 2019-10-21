@@ -8,8 +8,8 @@ import { PrettierModule } from "./types";
 export class ModuleResolver {
   constructor(private loggingService: LoggingService) {}
 
-  public getPrettierInstance(instancePath?: string): PrettierModule {
-    if (!instancePath) {
+  public getPrettierInstance(fileName?: string): PrettierModule {
+    if (!fileName) {
       this.loggingService.appendLine(
         "No path provided, using bundled prettier.",
         "INFO"
@@ -18,7 +18,7 @@ export class ModuleResolver {
     }
 
     const prettierInstance: PrettierModule = this.requireLocalPkg(
-      instancePath,
+      fileName,
       "prettier"
     );
 

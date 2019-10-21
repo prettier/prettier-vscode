@@ -1,3 +1,4 @@
+import { clearConfigCache } from "prettier";
 import {
   Disposable,
   DocumentFilter,
@@ -8,10 +9,8 @@ import {
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
-import configFileListener from "./configCacheHandler";
 import { ConfigResolver, getConfig } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
-// import ignoreFileHandler from "./ignoreFileHandler";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
@@ -20,16 +19,29 @@ import EditProvider from "./PrettierEditProvider";
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
 
-// telemetry reporter
-let reporter: TelemetryReporter;
+/**
+ * Prettier reads configuration from files
+ */
+const PRETTIER_CONFIG_FILES = [
+  ".prettierrc",
+  ".prettierrc.json",
+  ".prettierrc.yaml",
+  ".prettierrc.yml",
+  ".prettierrc.js",
+  "package.json",
+  "prettier.config.js"
+];
 
 interface ISelectors {
   rangeLanguageSelector: DocumentSelector;
   languageSelector: DocumentSelector;
 }
 
+// telemetry reporter
+let reporter: TelemetryReporter;
 let formatterHandler: undefined | Disposable;
 let rangeFormatterHandler: undefined | Disposable;
+
 /**
  * Dispose formatters
  */
@@ -113,8 +125,8 @@ function selectors(
 }
 
 export function activate(context: ExtensionContext) {
-  const extensionPackage = require(context.asAbsolutePath("./package.json"));
   // create telemetry reporter on extension activation
+  const extensionPackage = require(context.asAbsolutePath("./package.json"));
   reporter = new TelemetryReporter(
     "prettier-vscode",
     extensionPackage.version,
@@ -158,12 +170,36 @@ export function activate(context: ExtensionContext) {
     );
   }
   registerFormatter();
+
+  // Watch for package changes as it could be a prettier plugin which adds more languages
+  const packageWatcher = workspace.createFileSystemWatcher("**/package.json");
+  packageWatcher.onDidChange(registerFormatter);
+  packageWatcher.onDidCreate(registerFormatter);
+  packageWatcher.onDidDelete(registerFormatter);
+
+  // Watch for changes to prettier config files
+  const fileWatcher = workspace.createFileSystemWatcher(
+    `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
+  );
+  fileWatcher.onDidChange(clearConfigCache);
+  fileWatcher.onDidCreate(clearConfigCache);
+  fileWatcher.onDidDelete(clearConfigCache);
+
+  // Listen for changes that disable/enable languages
+  const configListener = workspace.onDidChangeConfiguration(event => {
+    if (event.affectsConfiguration("prettier.disableLanguages")) {
+      registerFormatter();
+    }
+  });
+
   context.subscriptions.push(
     workspace.onDidChangeWorkspaceFolders(registerFormatter),
+    configListener,
+    fileWatcher,
+    packageWatcher,
     {
       dispose: disposeHandlers
-    },
-    configFileListener()
+    }
   );
 }
 

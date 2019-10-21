@@ -25,7 +25,7 @@ import {
   PrettierVSCodeConfig
 } from "./types.d";
 
-class PrettierEditProvider
+export default class PrettierEditProvider
   implements
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider {
@@ -36,7 +36,7 @@ class PrettierEditProvider
     private loggingService: LoggingService
   ) {}
 
-  public provideDocumentRangeFormattingEdits(
+  public async provideDocumentRangeFormattingEdits(
     document: TextDocument,
     range: Range,
     options: FormattingOptions,
@@ -48,7 +48,7 @@ class PrettierEditProvider
     });
   }
 
-  public provideDocumentFormattingEdits(
+  public async provideDocumentFormattingEdits(
     document: TextDocument,
     options: FormattingOptions,
     token: CancellationToken
@@ -56,13 +56,16 @@ class PrettierEditProvider
     return this.provideEdits(document);
   }
 
-  private provideEdits(
+  private async provideEdits(
     document: TextDocument,
     options?: RangeFormattingOptions
-  ) {
-    return this.format(document.getText(), document, options).then(code => [
-      TextEdit.replace(this.fullDocumentRange(document), code)
-    ]);
+  ): Promise<TextEdit[]> {
+    const result = await this.format(document.getText(), document, options);
+    if (!result) {
+      // No edits happened, return never so VS Code can try other formatters
+      return [];
+    }
+    return [TextEdit.replace(this.fullDocumentRange(document), result)];
   }
 
   /**
@@ -73,9 +76,9 @@ class PrettierEditProvider
    */
   private async format(
     text: string,
-    { fileName, languageId, uri, isUntitled }: TextDocument,
+    { fileName, languageId, uri }: TextDocument,
     rangeFormattingOptions?: RangeFormattingOptions
-  ): Promise<string> {
+  ): Promise<string | undefined> {
     this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
 
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
@@ -86,7 +89,7 @@ class PrettierEditProvider
     // wf1  (with "lang") -> glob: "wf1/**"
     // wf1/wf2  (without "lang") -> match "wf1/**"
     if (vscodeConfig.disableLanguages.includes(languageId)) {
-      return text;
+      return;
     }
 
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
@@ -99,7 +102,7 @@ class PrettierEditProvider
     }
 
     if (fileInfo && fileInfo.ignored) {
-      return text;
+      return;
     }
 
     let parser: prettier.BuiltInParserName | string | undefined;
@@ -128,7 +131,7 @@ class PrettierEditProvider
         `Failed to resolve a parser, skipping file.`,
         "ERROR"
       );
-      return text;
+      return;
     }
 
     const hasConfig = await this.configResolver.checkHasPrettierConfig(
@@ -136,7 +139,7 @@ class PrettierEditProvider
     );
 
     if (!hasConfig && vscodeConfig.requireConfig) {
-      return text;
+      return;
     }
 
     const prettierOptions = await this.configResolver.getPrettierOptions(
@@ -265,5 +268,3 @@ class PrettierEditProvider
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
   }
 }
-
-export default PrettierEditProvider;
