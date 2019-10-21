@@ -9,11 +9,11 @@ import {
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
 import configFileListener from "./configCacheHandler";
-import { getConfig } from "./ConfigResolver";
-import { registerDisposables, setupErrorHandler } from "./errorHandler";
+import { ConfigResolver, getConfig } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 // import ignoreFileHandler from "./ignoreFileHandler";
 import { LanguageResolver } from "./LanguageResolver";
+import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import EditProvider from "./PrettierEditProvider";
 
@@ -46,7 +46,10 @@ function disposeHandlers() {
 /**
  * Build formatter selectors
  */
-function selectors(moduleResolver: ModuleResolver): ISelectors {
+function selectors(
+  moduleResolver: ModuleResolver,
+  loggingService: LoggingService
+): ISelectors {
   let allLanguages: string[];
   const bundledPrettierInstance = moduleResolver.getPrettierInstance();
   const bundledLanguageResolver = new LanguageResolver(bundledPrettierInstance);
@@ -63,7 +66,16 @@ function selectors(moduleResolver: ModuleResolver): ISelectors {
     }
   }
 
+  loggingService.appendLine("Enabling prettier for languages:", "INFO");
+  loggingService.appendObject(allLanguages);
+
   const allRangeLanguages = bundledLanguageResolver.rangeSupportedLanguages();
+  loggingService.appendLine(
+    "Enabling prettier for range supported languages:",
+    "INFO"
+  );
+  loggingService.appendObject(allRangeLanguages);
+
   const { disableLanguages } = getConfig();
   const globalLanguageSelector = allLanguages.filter(
     l => !disableLanguages.includes(l)
@@ -118,13 +130,23 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(reporter);
 
-  const moduleResolver = new ModuleResolver();
-  const ignoreReslver = new IgnorerResolver();
-  const editProvider = new EditProvider(moduleResolver, ignoreReslver);
+  const loggingService = new LoggingService();
+  const moduleResolver = new ModuleResolver(loggingService);
+  const ignoreReslver = new IgnorerResolver(loggingService);
+  const configResolver = new ConfigResolver(loggingService);
+
+  const editProvider = new EditProvider(
+    moduleResolver,
+    ignoreReslver,
+    configResolver,
+    loggingService
+  );
+
   function registerFormatter() {
     disposeHandlers();
     const { languageSelector, rangeLanguageSelector } = selectors(
-      moduleResolver
+      moduleResolver,
+      loggingService
     );
     rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
       rangeLanguageSelector,
@@ -141,9 +163,7 @@ export function activate(context: ExtensionContext) {
     {
       dispose: disposeHandlers
     },
-    setupErrorHandler(),
-    configFileListener(),
-    ...registerDisposables()
+    configFileListener()
   );
 }
 

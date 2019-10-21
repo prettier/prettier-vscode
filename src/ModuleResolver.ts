@@ -2,25 +2,19 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
-import { addToOutput } from "./errorHandler";
+import { LoggingService } from "./LoggingService";
 import { PrettierModule } from "./types";
 
 export class ModuleResolver {
-  private instances: Map<string, PrettierModule> = new Map<
-    string,
-    PrettierModule
-  >();
+  constructor(private loggingService: LoggingService) {}
 
   public getPrettierInstance(instancePath?: string): PrettierModule {
     if (!instancePath) {
+      this.loggingService.appendLine(
+        "No path provided, using bundled prettier.",
+        "INFO"
+      );
       return prettier;
-    }
-
-    if (this.instances.has(instancePath)) {
-      const instance = this.instances.get(instancePath);
-      if (instance) {
-        return instance;
-      }
     }
 
     const prettierInstance: PrettierModule = this.requireLocalPkg(
@@ -29,12 +23,13 @@ export class ModuleResolver {
     );
 
     if (!prettierInstance) {
-      throw new Error("Instance not found.");
+      this.loggingService.appendLine(
+        "Falling back to bundled version of prettier.",
+        "WARN"
+      );
     }
 
-    this.instances.set(instancePath, prettierInstance);
-
-    return prettierInstance;
+    return prettierInstance || prettier;
   }
 
   /**
@@ -49,15 +44,18 @@ export class ModuleResolver {
     try {
       modulePath = this.findPkg(fspath, pkgName);
       if (modulePath !== void 0) {
+        this.loggingService.appendLine(
+          `Loaded module '${pkgName}' from '${modulePath}'.`,
+          "INFO"
+        );
         return require(modulePath);
       }
     } catch (e) {
-      addToOutput(
-        `Failed to load ${pkgName} from ${modulePath}. Using bundled.`
+      this.loggingService.appendLine(
+        `Failed to load ${pkgName} from ${modulePath}.`,
+        "INFO"
       );
     }
-
-    return require(pkgName);
   }
 
   /**
@@ -65,7 +63,7 @@ export class ModuleResolver {
    * as a dependency or devDependency.
    * @param {string} fspath file system path to start searching from
    * @param {string} pkgName package's name to search for
-   * @returns {string} resolved path to prettier
+   * @returns {string} resolved path to module
    */
   private findPkg(fspath: string, pkgName: string): string | undefined {
     const res = readPkgUp.sync({ cwd: fspath, normalize: false });

@@ -9,10 +9,14 @@ import {
   TextEdit
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
-import { getConfig } from "./ConfigResolver";
-import { addToOutput, safeExecution, setUsedModule } from "./errorHandler";
+import {
+  ConfigResolver,
+  getConfig,
+  RangeFormattingOptions
+} from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
+import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import {
   IPrettierStylelint,
@@ -21,18 +25,15 @@ import {
   PrettierVSCodeConfig
 } from "./types.d";
 
-interface IResolveConfigResult {
-  config: prettier.Options | null;
-  error?: Error;
-}
-
 class PrettierEditProvider
   implements
     DocumentRangeFormattingEditProvider,
     DocumentFormattingEditProvider {
   constructor(
     private moduleResolver: ModuleResolver,
-    private ignoreResolver: IgnorerResolver
+    private ignoreResolver: IgnorerResolver,
+    private configResolver: ConfigResolver,
+    private loggingService: LoggingService
   ) {}
 
   public provideDocumentRangeFormattingEdits(
@@ -52,12 +53,12 @@ class PrettierEditProvider
     options: FormattingOptions,
     token: CancellationToken
   ): Promise<TextEdit[]> {
-    return this.provideEdits(document, {});
+    return this.provideEdits(document);
   }
 
   private provideEdits(
     document: TextDocument,
-    options: Partial<prettier.Options>
+    options?: RangeFormattingOptions
   ) {
     return this.format(document.getText(), document, options).then(code => [
       TextEdit.replace(this.fullDocumentRange(document), code)
@@ -73,8 +74,10 @@ class PrettierEditProvider
   private async format(
     text: string,
     { fileName, languageId, uri, isUntitled }: TextDocument,
-    customOptions: Partial<prettier.Options>
+    rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<string> {
+    this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
+
     const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
     const prettierInstance = this.moduleResolver.getPrettierInstance(fileName);
     const languageResolver = new LanguageResolver(prettierInstance);
@@ -86,72 +89,64 @@ class PrettierEditProvider
       return text;
     }
 
-    let fileInfo: prettier.FileInfoResult | undefined;
-    let parser: prettier.BuiltInParserName | string | undefined;
-
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
 
+    let fileInfo: prettier.FileInfoResult | undefined;
     if (fileName) {
       fileInfo = await prettierInstance.getFileInfo(fileName, { ignorePath });
+      this.loggingService.appendLine("File Info:", "INFO");
+      this.loggingService.appendObject(fileInfo);
     }
 
     if (fileInfo && fileInfo.ignored) {
       return text;
     }
 
-    const dynamicParsers = languageResolver.getParsersFromLanguageId(
-      languageId
-    );
-    if (dynamicParsers.length > 0) {
-      parser = dynamicParsers[0];
-    } else if (fileInfo && fileInfo.inferredParser) {
+    let parser: prettier.BuiltInParserName | string | undefined;
+    if (fileInfo && fileInfo.inferredParser) {
       parser = fileInfo.inferredParser;
+    } else {
+      this.loggingService.appendLine(
+        "Parser not inferred, using VS Code language.",
+        "WARN"
+      );
+      const dynamicParsers = languageResolver.getParsersFromLanguageId(
+        languageId
+      );
+      this.loggingService.appendObject(dynamicParsers);
+      if (dynamicParsers.length > 0) {
+        parser = dynamicParsers[0];
+        this.loggingService.appendLine(
+          `Resolved parser to '${parser}'.`,
+          "INFO"
+        );
+      }
     }
 
     if (!parser) {
-      addToOutput(`Failed to resolve config for ${fileName}.`);
+      this.loggingService.appendLine(
+        `Failed to resolve a parser, skipping file.`,
+        "ERROR"
+      );
       return text;
     }
 
-    const hasConfig = await this.checkHasPrettierConfig(fileName);
+    const hasConfig = await this.configResolver.checkHasPrettierConfig(
+      fileName
+    );
 
     if (!hasConfig && vscodeConfig.requireConfig) {
       return text;
     }
 
-    const { config: fileOptions, error } = await this.resolveConfig(fileName, {
-      editorconfig: true
-    });
-
-    if (error) {
-      addToOutput(
-        `Failed to resolve config for ${fileName}. Falling back to the default config settings.`
-      );
-    }
-
-    const prettierOptions = this.mergeConfig(
-      hasConfig,
-      customOptions,
-      fileOptions || {},
-      {
-        arrowParens: vscodeConfig.arrowParens,
-        bracketSpacing: vscodeConfig.bracketSpacing,
-        endOfLine: vscodeConfig.endOfLine,
-        filepath: fileName,
-        htmlWhitespaceSensitivity: vscodeConfig.htmlWhitespaceSensitivity,
-        jsxBracketSameLine: vscodeConfig.jsxBracketSameLine,
-        jsxSingleQuote: vscodeConfig.jsxSingleQuote,
-        parser: parser as prettier.BuiltInParserName,
-        printWidth: vscodeConfig.printWidth,
-        proseWrap: vscodeConfig.proseWrap,
-        quoteProps: vscodeConfig.quoteProps,
-        semi: vscodeConfig.semi,
-        singleQuote: vscodeConfig.singleQuote,
-        tabWidth: vscodeConfig.tabWidth,
-        trailingComma: vscodeConfig.trailingComma,
-        useTabs: vscodeConfig.useTabs
-      }
+    const prettierOptions = await this.configResolver.getPrettierOptions(
+      fileName,
+      parser as prettier.BuiltInParserName,
+      rangeFormattingOptions
     );
+
+    this.loggingService.appendLine("Prettier Options:", "INFO");
+    this.loggingService.appendObject(prettierOptions);
 
     if (vscodeConfig.tslintIntegration && parser === "typescript") {
       const prettierTslintModule = this.moduleResolver.requireLocalPkg(
@@ -160,11 +155,9 @@ class PrettierEditProvider
       );
 
       if (prettierTslintModule) {
-        return safeExecution(
+        return this.safeExecution(
           () => {
             const prettierTslintFormat = prettierTslintModule.format as PrettierTslintFormat;
-
-            setUsedModule("prettier-tslint", "Unknown", true);
 
             return prettierTslintFormat({
               fallbackPrettierOptions: prettierOptions,
@@ -187,10 +180,9 @@ class PrettierEditProvider
         "prettier-eslint"
       );
       if (prettierEslintModule) {
-        return safeExecution(
+        return this.safeExecution(
           () => {
             const prettierEslintFormat = prettierEslintModule as PrettierEslintFormat;
-            setUsedModule("prettier-eslint", "Unknown", true);
 
             return prettierEslintFormat({
               fallbackPrettierOptions: prettierOptions,
@@ -214,7 +206,7 @@ class PrettierEditProvider
       );
       if (prettierStylelintModule) {
         const prettierStylelint = prettierStylelintModule as IPrettierStylelint;
-        return safeExecution(
+        return this.safeExecution(
           prettierStylelint.format({
             filePath: fileName,
             prettierOptions,
@@ -226,9 +218,7 @@ class PrettierEditProvider
       }
     }
 
-    setUsedModule("prettier", prettierInstance.version, false);
-
-    return safeExecution(
+    return this.safeExecution(
       () => prettierInstance.format(text, prettierOptions),
       text,
       fileName
@@ -236,65 +226,43 @@ class PrettierEditProvider
   }
 
   /**
-   * Check if a given file has an associated prettierconfig.
-   * @param filePath file's path
+   * Execute a callback safely, if it doesn't work, return default and log messages.
+   *
+   * @param cb The function to be executed,
+   * @param defaultText The default value if execution of the cb failed
+   * @param fileName The filename of the current document
+   * @returns {string} formatted text or defaultText
    */
-  private async checkHasPrettierConfig(filePath: string) {
-    const { config } = await this.resolveConfig(filePath);
-    return config !== null;
+  private safeExecution(
+    cb: (() => string) | Promise<string>,
+    defaultText: string,
+    fileName: string
+  ): string | Promise<string> {
+    if (cb instanceof Promise) {
+      return cb
+        .then(returnValue => {
+          return returnValue;
+        })
+        .catch((err: Error) => {
+          this.loggingService.logError(err, fileName);
+
+          return defaultText;
+        });
+    }
+    try {
+      const returnValue = cb();
+
+      return returnValue;
+    } catch (err) {
+      this.loggingService.logError(err, fileName);
+
+      return defaultText;
+    }
   }
 
   private fullDocumentRange(document: TextDocument): Range {
     const lastLineId = document.lineCount - 1;
     return new Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length);
-  }
-
-  /**
-   * Resolves the prettierconfig for the given file.
-   *
-   * @param filePath file's path
-   */
-  private async resolveConfig(
-    filePath: string,
-    options?: { editorconfig?: boolean }
-  ): Promise<IResolveConfigResult> {
-    try {
-      const config = (await prettier.resolveConfig(
-        filePath,
-        options
-      )) as prettier.Options;
-      return { config };
-    } catch (error) {
-      return { config: null, error };
-    }
-  }
-
-  /**
-   * Define which config should be used.
-   * If a prettierconfig exists, it returns itself.
-   * It merges prettierconfig into vscode's config (editorconfig).
-   * Priority:
-   * - additionalConfig
-   * - prettierConfig
-   * - vscodeConfig
-   * @param hasPrettierConfig a prettierconfig exists
-   * @param additionalConfig config we really want to see in. (range)
-   * @param prettierConfig prettier's file config
-   * @param vscodeConfig our config
-   */
-  private mergeConfig(
-    hasPrettierConfig: boolean,
-    additionalConfig: Partial<prettier.Options>,
-    prettierConfig: Partial<prettier.Options>,
-    vscodeConfig: Partial<prettier.Options>
-  ) {
-    return hasPrettierConfig
-      ? {
-          parser: vscodeConfig.parser, // always merge our inferred parser in
-          ...prettierConfig,
-          ...additionalConfig
-        }
-      : { ...vscodeConfig, ...prettierConfig, ...additionalConfig };
   }
 }
 

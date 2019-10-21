@@ -2,12 +2,19 @@ import * as path from "path";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Uri, workspace } from "vscode";
 import { getConfig } from "./ConfigResolver";
+import { LoggingService } from "./LoggingService";
 
 export class IgnorerResolver {
+  constructor(private loggingService: LoggingService) {}
+
   public getIgnorePath(fsPath: string): string | undefined {
     const absolutePath = this.getIgnorePathForFile(
       fsPath,
       getConfig(Uri.file(fsPath)).ignorePath
+    );
+    this.loggingService.appendLine(
+      `Resolved ignore file to ${absolutePath}.`,
+      "INFO"
     );
     return absolutePath;
   }

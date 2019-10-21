@@ -15,6 +15,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Support for formatting of untitled files when the language is set by VS Code
 - Set filepath config on format to assist with parser resolution
 - Less fallbacks - if you have local prettier installed it will always use that. Before if your local prettier didn't support things we would fall back to bundled prettier - this caused many errors and inconsistent behavior.
+- Removed toolbar button
+- Enhanced logging
 
 ## [2.3.0]
 
