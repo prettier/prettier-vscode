@@ -4,9 +4,17 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [2.4.0]
+## [3.0.0-beta1]
 
+**NOTE: 3.0.0 has a number of breaking changes**
+
+- Removed support for Prettier versions older than 1.10.0
+- No longer bundling linters with extension - to use install them in your package.json
+- Use Prettier as default resolver of formatter instead of VS Code (will allow formatting of things like graphql)
+- Use Prettier to determine if a file is igored or not instead of custom logic
+- Support for formatting of untitled files when the language is set by VS Code
 - Set filepath config on format to assist with parser resolution
+- Less fallbacks - if you have local prettier installed it will always use that. Before if your local prettier didn't support things we would fall back to bundled prettier - this caused many errors and inconsistent behavior.
 
 ## [2.3.0]
 
