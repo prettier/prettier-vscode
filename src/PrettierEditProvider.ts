@@ -19,10 +19,10 @@ import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import {
+  IExtensionConfig,
   IPrettierStylelint,
   PrettierEslintFormat,
-  PrettierTslintFormat,
-  PrettierVSCodeConfig
+  PrettierTslintFormat
 } from "./types.d";
 
 export default class PrettierEditProvider
@@ -81,7 +81,7 @@ export default class PrettierEditProvider
   ): Promise<string | undefined> {
     this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
 
-    const vscodeConfig: PrettierVSCodeConfig = getConfig(uri);
+    const vscodeConfig: IExtensionConfig = getConfig(uri);
     const prettierInstance = this.moduleResolver.getPrettierInstance(fileName);
     const languageResolver = new LanguageResolver(prettierInstance);
 
