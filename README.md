@@ -2,6 +2,8 @@
 
 [Prettier](https://prettier.io/) is an opinionated code formatter. It enforces a consistent style by parsing your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.
 
+**NOTE: This is the version 3.0 preview release of the official Prettier VS Code extension. It is still a work in progress. If you are looking for the stable extension use [version 2.x](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)**
+
 <p align="center">
   <em>
     JavaScript
@@ -63,6 +65,20 @@ ext install prettier.prettier-vscode
 
 &#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
 
+### Prettier Resolution
+
+This extension will use prettier from your project's local dependencies (recommended). Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
+
+To install prettier in your project run:
+
+```
+npm install prettier -D
+```
+
+### Plugins
+
+This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
+
 ## Usage
 
 ### Using Command Palette (CMD/CTRL + Shift + P)
@@ -94,10 +110,6 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
     "editor.formatOnSave": true
 }
 ```
-
-### Plugins
-
-This extension support [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
 
 ### VS Code ESLint and TSLint Integration
 
@@ -137,76 +149,6 @@ Settings will be read from (listed by priority):
 1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
 1. `.editorconfig`
 
-Or if no prettier configuration file exist
-
-1. `.editorconfig`
-1. VS Code prettier's settings (described below with their default)
-
-#### prettier.printWidth (default: 80)
-
-Fit code within this line limit
-
-#### prettier.tabWidth (default: 2)
-
-Number of spaces it should use per tab
-
-#### prettier.singleQuote (default: false)
-
-If true, will use single instead of double quotes
-
-#### prettier.trailingComma (default: 'none')
-
-Controls the printing of trailing commas wherever possible. Valid options:
-
-- "none" - No trailing commas
-- "es5" - Trailing commas where valid in ES5 (objects, arrays, etc)
-- "all" - Trailing commas wherever possible (function arguments)
-
-#### prettier.bracketSpacing (default: true)
-
-Controls the printing of spaces inside object literals
-
-#### prettier.jsxBracketSameLine (default: false)
-
-If true, puts the `>` of a multi-line jsx element at the end of the last line instead of being alone on the next line
-
-#### prettier.parser (default: 'babylon') - JavaScript only
-
-Which parser to use. Valid options are 'flow' and 'babylon'.
-
-#### prettier.semi (default: true)
-
-Whether to add a semicolon at the end of every line (semi: true),
-or only at the beginning of lines that may introduce ASI failures (semi: false)
-
-#### prettier.useTabs (default: false)
-
-If true, indent lines with tabs
-
-#### prettier.proseWrap (default: 'preserve')
-
-(Markdown) wrap prose over multiple lines.
-
-#### prettier.arrowParens (default: 'avoid')
-
-Include parentheses around a sole arrow function parameter
-
-#### prettier.jsxSingleQuote (default: false)
-
-Use single quotes instead of double quotes in JSX.
-
-#### prettier.htmlWhitespaceSensitivity (default: 'css')
-
-Specify the global whitespace sensitivity for HTML files. [Learn more here](https://prettier.io/docs/en/options.html#html-whitespace-sensitivity)
-
-#### prettier.endOfLine (default: 'auto')
-
-Specify the end of line used by prettier. [Learn more here](https://prettier.io/docs/en/options.html#end-of-line)
-
-#### prettier.quoteProps (default: 'as-needed')
-
-Change when properties in objects are quoted. [Learn more here](https://prettier.io/docs/en/options.html#quote-props)
-
 ### VS Code specific settings
 
 These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
@@ -239,7 +181,3 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 
 A list of languages IDs to disable this extension on. Restart required.
 _Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run_
-
-## Prettier resolution
-
-This extension will use prettier from your project's local dependencies. Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
