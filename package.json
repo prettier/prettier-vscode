@@ -3,6 +3,7 @@
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
   "version": "3.0.0",
+  "preview": true,
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
