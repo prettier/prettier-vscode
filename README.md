@@ -105,9 +105,18 @@ The prefered way of integrating with linters is to let Prettier do the formattin
 
 You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
 
+ESLint:
+
 ```
 "eslint.autoFixOnSave": true,
-"tslint.autoFixOnSave": true,
+```
+
+TSLint:
+
+```json
+"editor.codeActionsOnSave": {
+  "source.fixAll.tslint": true
+}
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
