@@ -57,7 +57,7 @@ async function formatSameAsPrettier(file: string) {
 }
 
 suite("Test format Document", function() {
-  this.timeout(20000);
+  this.timeout(10000);
   test("it formats JavaScript", () =>
     formatSameAsPrettier("formatTest/ugly.js"));
   test("it formats TypeScript", () =>
