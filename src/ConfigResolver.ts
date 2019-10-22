@@ -20,12 +20,13 @@ export class ConfigResolver {
   public async getPrettierOptions(
     fileName: string,
     parser: prettier.BuiltInParserName,
-    rangeFormattingOptions?: RangeFormattingOptions
+    rangeFormattingOptions?: RangeFormattingOptions,
+    editorconfig?: boolean
   ): Promise<Partial<prettier.Options>> {
     const { config: configOptions, error } = await this.resolveConfig(
       fileName,
       {
-        editorconfig: true
+        editorconfig
       }
     );
 
@@ -37,12 +38,12 @@ export class ConfigResolver {
     }
 
     const prettierOptions: prettier.Options = {
-      ...(rangeFormattingOptions || {}),
-      ...(configOptions || {}),
       ...{
         filepath: fileName,
         parser: parser as prettier.BuiltInParserName
-      }
+      },
+      ...(rangeFormattingOptions || {}),
+      ...(configOptions || {})
     };
 
     return prettierOptions;

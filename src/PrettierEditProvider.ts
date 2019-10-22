@@ -145,7 +145,8 @@ export default class PrettierEditProvider
     const prettierOptions = await this.configResolver.getPrettierOptions(
       fileName,
       parser as prettier.BuiltInParserName,
-      rangeFormattingOptions
+      rangeFormattingOptions,
+      true /* use editorconfig */
     );
 
     this.loggingService.appendLine("Prettier Options:", "INFO");
