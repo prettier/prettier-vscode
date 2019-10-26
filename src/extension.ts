@@ -19,16 +19,22 @@ import {
 
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
+const extensionName = process.env.EXTENSION_NAME || "prettier.prettier-vscode";
+const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 
 // telemetry reporter
 let reporter: TelemetryReporter;
 
 export function activate(context: ExtensionContext) {
+  const loggingService = new LoggingService();
+
+  loggingService.appendLine(`Extension Name: ${extensionName}.`, "INFO");
+  loggingService.appendLine(`Extension Version: ${extensionVersion}.`, "INFO");
+
   // create telemetry reporter on extension activation
-  const extensionPackage = require(context.asAbsolutePath("./package.json"));
   reporter = new TelemetryReporter(
-    extensionPackage.name,
-    extensionPackage.version,
+    extensionName,
+    extensionVersion,
     telemetryKey
   );
 
@@ -39,7 +45,6 @@ export function activate(context: ExtensionContext) {
     tslint: config.tslintIntegration ? 1 : 0
   });
 
-  const loggingService = new LoggingService();
   const moduleResolver = new ModuleResolver(loggingService);
   const ignoreReslver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);

@@ -5,6 +5,9 @@ import * as resolve from "resolve";
 import { LoggingService } from "./LoggingService";
 import { PrettierModule } from "./types";
 
+declare const __webpack_require__: typeof require;
+declare const __non_webpack_require__: typeof require;
+
 export class ModuleResolver {
   constructor(private loggingService: LoggingService) {}
 
@@ -48,7 +51,7 @@ export class ModuleResolver {
           `Loaded module '${pkgName}' from '${modulePath}'.`,
           "INFO"
         );
-        return require(modulePath);
+        return this.loadNodeModule(modulePath);
       }
     } catch (e) {
       this.loggingService.appendLine(
@@ -56,6 +59,20 @@ export class ModuleResolver {
         "INFO"
       );
     }
+  }
+
+  // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209
+  private loadNodeModule(moduleName: string): any | undefined {
+    const r =
+      typeof __webpack_require__ === "function"
+        ? __non_webpack_require__
+        : require;
+    try {
+      return r(moduleName);
+    } catch (err) {
+      this.loggingService.appendObject(err.stack);
+    }
+    return undefined;
   }
 
   /**

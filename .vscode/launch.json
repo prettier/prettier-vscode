@@ -14,8 +14,8 @@
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "npm: compile"
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: webpack"
     },
     {
       "name": "Run Extension (With Other Extensions)",
@@ -23,16 +23,14 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "npm: compile"
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: webpack"
     },
     {
       "name": "Extension Tests",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "stopOnEntry": false,
-      "sourceMaps": true,
       "args": [
         "${workspaceFolder}/test-fixtures/test.code-workspace",
         "--disable-extensions",
@@ -40,7 +38,7 @@
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "npm: compile"
+      "preLaunchTask": "npm: test-compile"
     }
   ]
 }

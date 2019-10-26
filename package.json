@@ -32,17 +32,19 @@
     "*"
   ],
   "icon": "icon.png",
-  "main": "./out/extension",
+  "main": "./dist/extension",
   "scripts": {
-    "clean": "rm -rf out",
-    "vscode:prepublish": "yarn compile",
-    "compile": "yarn clean && tsc -p ./",
-    "watch": "tsc --watch -p ./",
+    "clean": "rm -rf out && rm -rf dist",
     "lint": "tslint --project .",
-    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
+    "pretest": "yarn test-compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
+    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
+    "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
-    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'"
+    "vscode:prepublish": "webpack --mode production",
+    "watch": "tsc --watch -p ./",
+    "webpack-dev": "webpack --mode development --watch",
+    "webpack": "webpack --mode development"
   },
   "husky": {
     "hooks": {
@@ -72,10 +74,13 @@
     "lint-staged": "^9.4.2",
     "mocha": "^6.2.1",
     "mocha-junit-reporter": "^1.23.1",
+    "ts-loader": "^6.2.1",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "vscode-nls-dev": "^3.3.1",
-    "vscode-test": "^1.2.0"
+    "vscode-test": "^1.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
   },
   "dependencies": {
     "ignore": "^5.1.4",
