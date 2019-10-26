@@ -19,6 +19,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Deprecated all VS Code prettier settings.
 - Enhanced logging
 - Extension built with webpack
+- Memoize package path lookup to improve perf of repeated calls to same file
 
 ## [2.3.0]
 

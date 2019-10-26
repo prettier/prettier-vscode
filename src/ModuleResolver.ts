@@ -1,3 +1,4 @@
+import * as mem from "mem";
 import * as path from "path";
 import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
@@ -9,7 +10,10 @@ declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
 
 export class ModuleResolver {
-  constructor(private loggingService: LoggingService) {}
+  private findPkgMem: (fspath: string, pkgName: string) => string | undefined;
+  constructor(private loggingService: LoggingService) {
+    this.findPkgMem = mem(this.findPkg);
+  }
 
   public getPrettierInstance(fileName?: string): PrettierModule {
     if (!fileName) {
@@ -45,7 +49,7 @@ export class ModuleResolver {
   public requireLocalPkg(fspath: string, pkgName: string): any {
     let modulePath;
     try {
-      modulePath = this.findPkg(fspath, pkgName);
+      modulePath = this.findPkgMem(fspath, pkgName);
       if (modulePath !== void 0) {
         this.loggingService.appendLine(
           `Loaded module '${pkgName}' from '${modulePath}'.`,

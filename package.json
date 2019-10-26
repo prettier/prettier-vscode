@@ -84,6 +84,7 @@
   },
   "dependencies": {
     "ignore": "^5.1.4",
+    "mem": "^5.1.1",
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
     "prettier-stylelint": "^0.4.2",
