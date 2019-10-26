@@ -22,5 +22,6 @@
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.stylelintIntegration": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
   "ext.config.lintDeprecationMessage": "This setting has been deprecated. See: https://github.com/prettier/prettier-vscode#vscode-eslint-and-tslint-integration",
-  "ext.config.prettierSettingsDeprecatedMessage": "This extension no longer supports setting Prettier options using VS Code configuration. Use the prettier configuration file instead. https://prettier.io/docs/en/configuration.html"
+  "ext.config.prettierSettingsDeprecatedMessage": "This extension no longer supports setting Prettier options using VS Code configuration. Use the prettier configuration file instead. https://prettier.io/docs/en/configuration.html",
+  "ext.config.outdatedPrettiereVersion": "Your project is configured to use version {{version}} of prettier. You may encounter issues. It is recommended you upgrade to the latest version of prettier."
 }

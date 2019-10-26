@@ -9,6 +9,7 @@ import { Formatter } from "./Formatter";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
+import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
 import {
   configWatcher,
@@ -45,7 +46,11 @@ export function activate(context: ExtensionContext) {
     tslint: config.tslintIntegration ? 1 : 0
   });
 
-  const moduleResolver = new ModuleResolver(loggingService);
+  const notificationService = new NotificationService();
+  const moduleResolver = new ModuleResolver(
+    loggingService,
+    notificationService
+  );
   const ignoreReslver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
 

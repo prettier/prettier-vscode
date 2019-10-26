@@ -4,14 +4,22 @@ import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import { LoggingService } from "./LoggingService";
+import { NotificationService } from "./NotificationService";
 import { PrettierModule } from "./types";
 
 declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
 
+interface ModuleResult {
+  moduleInstance: any | undefined;
+  modulePath: string | undefined;
+}
 export class ModuleResolver {
   private findPkgMem: (fspath: string, pkgName: string) => string | undefined;
-  constructor(private loggingService: LoggingService) {
+  constructor(
+    private loggingService: LoggingService,
+    private notificationService: NotificationService
+  ) {
     this.findPkgMem = mem(this.findPkg);
   }
 
@@ -24,19 +32,29 @@ export class ModuleResolver {
       return prettier;
     }
 
-    const prettierInstance: PrettierModule = this.requireLocalPkg(
+    const { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
       fileName,
       "prettier"
     );
 
-    if (!prettierInstance) {
+    if (!moduleInstance) {
       this.loggingService.appendLine(
         "Falling back to bundled version of prettier.",
         "WARN"
       );
     }
 
-    return prettierInstance || prettier;
+    this.notificationService.assertValidPrettierVersion(
+      moduleInstance,
+      modulePath
+    );
+
+    return moduleInstance || prettier;
+  }
+
+  public getModuleInstance(fspath: string, pkgName: string): any {
+    const { moduleInstance } = this.requireLocalPkg<any>(fspath, pkgName);
+    return moduleInstance;
   }
 
   /**
@@ -46,16 +64,17 @@ export class ModuleResolver {
    * @param {string} pkgName package's name to require
    * @returns module
    */
-  public requireLocalPkg(fspath: string, pkgName: string): any {
-    let modulePath;
+  private requireLocalPkg<T>(fspath: string, pkgName: string): ModuleResult {
+    let modulePath: string | undefined;
     try {
       modulePath = this.findPkgMem(fspath, pkgName);
       if (modulePath !== void 0) {
+        const moduleInstance = this.loadNodeModule(modulePath);
         this.loggingService.appendLine(
-          `Loaded module '${pkgName}' from '${modulePath}'.`,
+          `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'.`,
           "INFO"
         );
-        return this.loadNodeModule(modulePath);
+        return { moduleInstance, modulePath };
       }
     } catch (e) {
       this.loggingService.appendLine(
@@ -63,6 +82,7 @@ export class ModuleResolver {
         "INFO"
       );
     }
+    return { moduleInstance: undefined, modulePath };
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209

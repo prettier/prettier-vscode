@@ -153,7 +153,7 @@ export default class PrettierEditProvider
     this.loggingService.appendObject(prettierOptions);
 
     if (vscodeConfig.tslintIntegration && parser === "typescript") {
-      const prettierTslintModule = this.moduleResolver.requireLocalPkg(
+      const prettierTslintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-tslint"
       );
@@ -179,7 +179,7 @@ export default class PrettierEditProvider
       vscodeConfig.eslintIntegration &&
       languageResolver.doesLanguageSupportESLint(languageId)
     ) {
-      const prettierEslintModule = this.moduleResolver.requireLocalPkg(
+      const prettierEslintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-eslint"
       );
@@ -204,7 +204,7 @@ export default class PrettierEditProvider
       vscodeConfig.stylelintIntegration &&
       languageResolver.doesParserSupportStylelint(parser)
     ) {
-      const prettierStylelintModule = this.moduleResolver.requireLocalPkg(
+      const prettierStylelintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-stylelint"
       );

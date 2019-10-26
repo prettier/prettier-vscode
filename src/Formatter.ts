@@ -27,7 +27,7 @@ export class Formatter implements Disposable {
     private loggingService: LoggingService
   ) {}
 
-  public registerFormatter() {
+  public registerFormatter = () => {
     this.dispose();
     const { languageSelector, rangeLanguageSelector } = this.selectors(
       this.moduleResolver,
@@ -41,9 +41,9 @@ export class Formatter implements Disposable {
       languageSelector,
       this.editProvider
     );
-  }
+  };
 
-  public dispose() {
+  public dispose = () => {
     if (this.formatterHandler) {
       this.formatterHandler.dispose();
     }
@@ -52,15 +52,15 @@ export class Formatter implements Disposable {
     }
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
-  }
+  };
 
   /**
    * Build formatter selectors
    */
-  private selectors(
+  private selectors = (
     moduleResolver: ModuleResolver,
     loggingService: LoggingService
-  ): ISelectors {
+  ): ISelectors => {
     let allLanguages: string[];
     const bundledPrettierInstance = this.moduleResolver.getPrettierInstance();
     const bundledLanguageResolver = new LanguageResolver(
@@ -123,5 +123,5 @@ export class Formatter implements Disposable {
         fileRangeLanguageSelector
       )
     };
-  }
+  };
 }
