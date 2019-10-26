@@ -30,10 +30,14 @@ export class LanguageResolver {
   }
 
   public allEnabledLanguages(): string[] {
-    return this.getSupportLanguages().reduce(
-      (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
-      [] as string[]
-    );
+    return this.getSupportLanguages()
+      .reduce(
+        (ids, language) => [...ids, ...(language.vscodeLanguageIds || [])],
+        [] as string[]
+      )
+      .filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
   }
 
   public rangeSupportedLanguages(): string[] {
