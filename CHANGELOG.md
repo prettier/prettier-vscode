@@ -18,6 +18,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Removed toolbar button
 - Deprecated all VS Code prettier settings.
 - Enhanced logging
+- Extension built with webpack
 
 ## [2.3.0]
 
