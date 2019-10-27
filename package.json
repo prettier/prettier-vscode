@@ -316,6 +316,12 @@
         "filenames": [
           ".prettierignore"
         ]
+      },
+      {
+        "id": "graphql",
+        "extensions": [
+          ".graphql"
+        ]
       }
     ],
     "commands": [

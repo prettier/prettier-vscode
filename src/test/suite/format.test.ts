@@ -78,4 +78,5 @@ suite("Test format Document", function() {
     formatSameAsPrettier("formatTest/lwc.html", { parser: "lwc" }));
   test("it formats TSX", () => formatSameAsPrettier("formatTest/ugly.tsx"));
   test("it formats SCSS", () => formatSameAsPrettier("formatTest/ugly.scss"));
+  test("it formats GraphQL", () => formatSameAsPrettier("formatTest/ugly.graphql"));
 });

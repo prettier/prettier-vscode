@@ -22,6 +22,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Memoize package path lookup to improve perf of repeated calls to same file.
 - Shows error message when outdated versions of prettier are used.
 - Refreshes modules without restart for cases where prettier version or plugins are installed locally.
+- Registers `.graphql` files as `graphql` language in order to provide formatting. (#989)
 
 ## [2.3.0]
 
