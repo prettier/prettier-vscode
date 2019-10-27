@@ -82,7 +82,10 @@ export default class PrettierEditProvider
     this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
 
     const vscodeConfig: IExtensionConfig = getConfig(uri);
-    const prettierInstance = this.moduleResolver.getPrettierInstance(fileName);
+    const prettierInstance = this.moduleResolver.getPrettierInstance(
+      fileName,
+      true /* warn if outdated */
+    );
     const languageResolver = new LanguageResolver(prettierInstance);
 
     // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.

@@ -3,10 +3,12 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
+import * as semver from "semver";
 import { LoggingService } from "./LoggingService";
 import { NotificationService } from "./NotificationService";
 import { PrettierModule } from "./types";
 
+const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
 
@@ -23,7 +25,14 @@ export class ModuleResolver {
     this.findPkgMem = mem(this.findPkg);
   }
 
-  public getPrettierInstance(fileName?: string): PrettierModule {
+  /**
+   * Returns an instance of the prettier module.
+   * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
+   */
+  public getPrettierInstance(
+    fileName?: string,
+    warnIfOutdated: boolean = false
+  ): PrettierModule {
     if (!fileName) {
       this.loggingService.appendLine(
         "No path provided, using bundled prettier.",
@@ -32,7 +41,8 @@ export class ModuleResolver {
       return prettier;
     }
 
-    const { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
+    // tslint:disable-next-line: prefer-const
+    let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
       fileName,
       "prettier"
     );
@@ -44,10 +54,31 @@ export class ModuleResolver {
       );
     }
 
-    this.notificationService.assertValidPrettierVersion(
-      moduleInstance,
-      modulePath
-    );
+    if (moduleInstance) {
+      const isValidVersion =
+        moduleInstance.version &&
+        !!moduleInstance.getSupportInfo &&
+        !!moduleInstance.getFileInfo &&
+        !!moduleInstance.resolveConfig &&
+        semver.gte(moduleInstance.version, minPrettierVersion);
+
+      if (!isValidVersion) {
+        if (warnIfOutdated) {
+          // We only warn on format. If we did it on load there could be lots of
+          // these notifications which would be annoying.
+          this.notificationService.warnOutdatedPrettierVersion(
+            moduleInstance,
+            modulePath
+          );
+        }
+        this.loggingService.appendLine(
+          "Outdated version of prettier installed. Falling back to bundled version of prettier.",
+          "ERROR"
+        );
+        // Invalid version, force bundled
+        moduleInstance = undefined;
+      }
+    }
 
     return moduleInstance || prettier;
   }

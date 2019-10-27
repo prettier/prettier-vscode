@@ -17,6 +17,9 @@
     },
     {
       "path": "config"
+    },
+    {
+      "path": "outdated"
     }
   ],
   "settings": {
