@@ -92,6 +92,7 @@ export class Formatter implements Disposable {
     loggingService.appendObject(allRangeLanguages);
 
     const { disableLanguages } = getConfig();
+
     const globalLanguageSelector = allLanguages.filter(
       l => !disableLanguages.includes(l)
     );

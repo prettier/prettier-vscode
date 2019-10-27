@@ -32,7 +32,7 @@ export class ModuleResolver {
    */
   public getPrettierInstance(
     fileName?: string,
-    warnIfOutdated: boolean = false
+    promptIfOutdated: boolean = false
   ): PrettierModule {
     if (!fileName) {
       this.loggingService.appendLine(
@@ -64,9 +64,9 @@ export class ModuleResolver {
         semver.gte(moduleInstance.version, minPrettierVersion);
 
       if (!isValidVersion) {
-        if (warnIfOutdated) {
-          // We only warn on format. If we did it on load there could be lots of
-          // these notifications which would be annoying.
+        if (promptIfOutdated) {
+          // We only prompt when formatting a file. If we did it on load there
+          // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(
             moduleInstance,
             modulePath

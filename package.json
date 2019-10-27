@@ -230,6 +230,7 @@
           ],
           "default": "preserve",
           "description": "%ext.config.proseWrap%",
+          "scope": "resource",
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.arrowParens": {
@@ -247,6 +248,7 @@
           "type": "boolean",
           "default": false,
           "description": "%ext.config.jsxSingleQuote%",
+          "scope": "resource",
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.htmlWhitespaceSensitivity": {
@@ -258,6 +260,7 @@
           ],
           "default": "css",
           "description": "%ext.config.htmlWhitespaceSensitivity%",
+          "scope": "resource",
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.endOfLine": {
@@ -270,6 +273,7 @@
           ],
           "default": "auto",
           "description": "%ext.config.endOfLine%",
+          "scope": "resource",
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.quoteProps": {
@@ -281,6 +285,7 @@
           ],
           "default": "as-needed",
           "description": "%ext.config.quoteProps%",
+          "scope": "resource",
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         }
       }

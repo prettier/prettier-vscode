@@ -50,7 +50,14 @@ export function activate(context: ExtensionContext) {
   });
 
   const templateService = new TemplateService(loggingService);
-  const notificationService = new NotificationService();
+
+  const createConfigFileFunc = createConfigFile(templateService);
+  const createConfigFileCommand = commands.registerCommand(
+    "prettier.createConfigFile",
+    createConfigFileFunc
+  );
+
+  const notificationService = new NotificationService(createConfigFileFunc);
   const moduleResolver = new ModuleResolver(
     loggingService,
     notificationService
@@ -62,16 +69,12 @@ export function activate(context: ExtensionContext) {
     moduleResolver,
     ignoreReslver,
     configResolver,
-    loggingService
+    loggingService,
+    notificationService
   );
 
   const formatter = new Formatter(moduleResolver, editProvider, loggingService);
   formatter.registerFormatter();
-
-  const writeConfigFileCommand = commands.registerCommand(
-    "prettier.createConfigFile",
-    createConfigFile(templateService)
-  );
 
   context.subscriptions.push(
     workspaceFolderWatcher(formatter.registerFormatter),
@@ -80,7 +83,7 @@ export function activate(context: ExtensionContext) {
     packageWatcher(formatter.registerFormatter),
     formatter,
     reporter,
-    writeConfigFileCommand
+    createConfigFileCommand
   );
 }
 

@@ -14,22 +14,28 @@ const writeFileAsync: (
 
 export class TemplateService {
   constructor(private loggingService: LoggingService) {}
-  public async writeConfigFile(folderPath: Uri, options?: Options) {
-    const config = options || {
-      tabWidth: 2,
-      useTabs: false
-    };
+  public async writeConfigFile(folderPath: Uri, options?: Map<string, any>) {
+    const migratedOptions: { [key: string]: any } = {};
+    if (options && options.size > 0) {
+      options.forEach((value, key) => {
+        migratedOptions[key] = value;
+      });
+    } else {
+      // A simple default config
+      migratedOptions.tabWidth = 2;
+      migratedOptions.useTabs = false;
+    }
 
     const outputPath = path.join(folderPath.fsPath, ".prettierrc");
 
     const formatterOptions: Options = {
       filepath: outputPath,
-      tabWidth: config.tabWidth,
-      useTabs: config.useTabs
+      tabWidth: migratedOptions.tabWidth,
+      useTabs: migratedOptions.useTabs
     };
 
     const templateSource = format(
-      JSON.stringify(config, null, 2),
+      JSON.stringify(migratedOptions, null, 2),
       formatterOptions
     );
 

@@ -18,6 +18,7 @@ import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
+import { NotificationService } from "./NotificationService";
 import {
   IExtensionConfig,
   IPrettierStylelint,
@@ -33,7 +34,8 @@ export default class PrettierEditProvider
     private moduleResolver: ModuleResolver,
     private ignoreResolver: IgnorerResolver,
     private configResolver: ConfigResolver,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private notificationService: NotificationService
   ) {}
 
   public async provideDocumentRangeFormattingEdits(
@@ -80,6 +82,9 @@ export default class PrettierEditProvider
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<string | undefined> {
     this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
+
+    // LEGACY: Remove in version 4.x
+    this.notificationService.warnIfLegacyConfiguration(uri);
 
     const vscodeConfig: IExtensionConfig = getConfig(uri);
     const prettierInstance = this.moduleResolver.getPrettierInstance(

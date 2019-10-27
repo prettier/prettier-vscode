@@ -37,12 +37,8 @@ interface IExtensionConfig {
   disableLanguages: string[];
 }
 
-/**
- * Configuration for prettier-vscode
- */
-export type PrettierVSCodeConfig = IExtensionConfig & prettier.Options;
-
 type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
+
 interface IPrettierEslintOptions {
   /**
    * The path of the file being formatted
