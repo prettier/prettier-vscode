@@ -312,6 +312,12 @@
           ".prettierignore"
         ]
       }
+    ],
+    "commands": [
+      {
+        "command": "prettier.createConfigFile",
+        "title": "%ext.createConfigFile.title%"
+      }
     ]
   }
 }
