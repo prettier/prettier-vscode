@@ -18,6 +18,7 @@ interface ModuleResult {
 }
 export class ModuleResolver {
   private findPkgMem: (fspath: string, pkgName: string) => string | undefined;
+  private resolvedModules = new Array<string>();
   constructor(
     private loggingService: LoggingService,
     private notificationService: NotificationService
@@ -89,6 +90,23 @@ export class ModuleResolver {
   }
 
   /**
+   * Clears the module cache
+   */
+  public clearModuleCache() {
+    this.resolvedModules.forEach(modulePath => {
+      const r =
+        typeof __webpack_require__ === "function"
+          ? __non_webpack_require__
+          : require;
+      try {
+        delete r.cache[r.resolve(modulePath)];
+      } catch (err) {
+        this.loggingService.appendObject(err.stack);
+      }
+    });
+  }
+
+  /**
    * Require package explicitly installed relative to given path.
    * Fallback to bundled one if no pacakge was found bottom up.
    * @param {string} fspath file system path starting point to resolve package
@@ -101,6 +119,9 @@ export class ModuleResolver {
       modulePath = this.findPkgMem(fspath, pkgName);
       if (modulePath !== void 0) {
         const moduleInstance = this.loadNodeModule(modulePath);
+        if (this.resolvedModules.indexOf(modulePath) === -1) {
+          this.resolvedModules.push(modulePath);
+        }
         this.loggingService.appendLine(
           `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'.`,
           "INFO"

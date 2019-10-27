@@ -44,6 +44,8 @@ export class Formatter implements Disposable {
   };
 
   public dispose = () => {
+    // Clear the module cache in order to reload if there was a change in package.json, etc.
+    this.moduleResolver.clearModuleCache();
     if (this.formatterHandler) {
       this.formatterHandler.dispose();
     }
