@@ -80,4 +80,6 @@ suite("Test format Document", function() {
   test("it formats SCSS", () => formatSameAsPrettier("formatTest/ugly.scss"));
   test("it formats GraphQL", () =>
     formatSameAsPrettier("formatTest/ugly.graphql"));
+  test("it formats HTML with literals", () =>
+    formatSameAsPrettier("formatTest/htmlWithLiterals.html"));
 });
