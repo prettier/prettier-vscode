@@ -11,7 +11,8 @@ const PRETTIER_CONFIG_FILES = [
   ".prettierrc.yml",
   ".prettierrc.js",
   "package.json",
-  "prettier.config.js"
+  "prettier.config.js",
+  ".editorconfig"
 ];
 
 // Watch for package changes as it could be a prettier plugin which adds more languages
