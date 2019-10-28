@@ -82,4 +82,5 @@ suite("Test format Document", function() {
     formatSameAsPrettier("formatTest/ugly.graphql"));
   test("it formats HTML with literals", () =>
     formatSameAsPrettier("formatTest/htmlWithLiterals.html"));
+  test("it formats Vue", () => formatSameAsPrettier("formatTest/ugly.vue"));
 });

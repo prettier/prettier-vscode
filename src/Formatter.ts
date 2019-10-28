@@ -77,7 +77,8 @@ export class Formatter implements Disposable {
           folder.uri.fsPath
         );
         const languageResolver = new LanguageResolver(prettierInstance);
-        allLanguages.push(...languageResolver.allEnabledLanguages());
+        const allWorkspaceLanguages = languageResolver.allEnabledLanguages();
+        allLanguages.push(...allWorkspaceLanguages);
       }
     }
 

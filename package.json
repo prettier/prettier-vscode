@@ -23,7 +23,35 @@
     "vscode": "^1.34.0"
   },
   "keywords": [
-    "multi-root ready"
+    "multi-root ready",
+    "prettier",
+    "formatter",
+    "javascript",
+    "js",
+    "jsx",
+    "flow",
+    "typescript",
+    "ts",
+    "json",
+    "css",
+    "less",
+    "scss",
+    "styled-components",
+    "styled-jsx",
+    "markdown",
+    "md",
+    "commonmark",
+    "mdx",
+    "php",
+    "pug",
+    "ruby",
+    "swift",
+    "html",
+    "vue",
+    "angular",
+    "graphql",
+    "yaml",
+    "yml"
   ],
   "categories": [
     "Formatters"
@@ -109,9 +137,6 @@
           "items": {
             "type": "string"
           },
-          "default": [
-            "vue"
-          ],
           "description": "%ext.config.disableLanguages%",
           "scope": "window"
         },
@@ -321,6 +346,12 @@
         "id": "graphql",
         "extensions": [
           ".graphql"
+        ]
+      },
+      {
+        "id": "vue",
+        "extensions": [
+          ".vue"
         ]
       }
     ],
