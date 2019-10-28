@@ -24,5 +24,6 @@
   "ext.config.lintDeprecationMessage": "This setting has been deprecated. See: https://github.com/prettier/prettier-vscode#vscode-eslint-and-tslint-integration",
   "ext.config.prettierSettingsDeprecatedMessage": "This extension no longer supports setting Prettier options using VS Code configuration. Use the prettier configuration file instead. https://prettier.io/docs/en/configuration.html",
   "ext.config.outdatedPrettiereVersion": "Your project is configured to use version {{version}} of prettier. You may encounter issues. It is recommended you upgrade to the latest version of prettier.",
-  "ext.createConfigFile.title": "Prettier: Create Configuration File"
+  "ext.createConfigFile.title": "Prettier: Create Configuration File",
+  "ext.config.failedToLoadModule": "Failed to load module. If you are referencing prettier in your package.json, ensure you have run `npm install`"
 }

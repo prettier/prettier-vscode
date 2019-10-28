@@ -133,6 +133,11 @@ export class ModuleResolver {
         `Failed to load ${pkgName} from ${modulePath}.`,
         "INFO"
       );
+      this.notificationService.showErrorMessage(
+        "ext.config.failedToLoadModule",
+        `Failed to load module.`,
+        [`Attempted to load ${pkgName} from ${modulePath || "package.json"}.`]
+      );
     }
     return { moduleInstance: undefined, modulePath };
   }

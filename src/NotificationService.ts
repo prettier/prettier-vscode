@@ -85,4 +85,20 @@ export class NotificationService {
       }
     }
   }
+
+  public async showErrorMessage(
+    label: string,
+    message: string,
+    extraLines?: string[]
+  ) {
+    const localizedMessage = localize(label, message);
+
+    if (extraLines) {
+      const lines = [localizedMessage];
+      lines.push(...extraLines);
+      return window.showErrorMessage(lines.join(" "));
+    } else {
+      return window.showErrorMessage(localizedMessage);
+    }
+  }
 }
