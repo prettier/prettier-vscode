@@ -1,4 +1,6 @@
 import * as assert from "assert";
+import * as fs from "fs";
+import * as path from "path";
 import { format } from "./format.test";
 
 const testConfig = (filePath: string) => {
@@ -14,6 +16,9 @@ const testConfig = (filePath: string) => {
   };
 };
 
+const prettierrcFileNormal = path.join(__dirname, "../../../.prettierrc");
+const prettierrcFileTemp = path.join(__dirname, "../../../.prettierrc");
+
 suite("Test configurations", function() {
   this.timeout(10000);
   test("it uses config from .prettierrc file ", testConfig("rcfile/test.js"));
@@ -25,4 +30,11 @@ suite("Test configurations", function() {
     "it uses config from .prettierrc.js file ",
     testConfig("jsfile/test.js")
   );
+  test("it uses config from .editorconfig file ", () => {
+    // Rename .prettierrc so we dont override config of the .editorconfig test
+    fs.renameSync(prettierrcFileNormal, prettierrcFileTemp);
+    testConfig("editorconfig/test.js");
+    // Move back
+    fs.renameSync(prettierrcFileTemp, prettierrcFileNormal);
+  });
 });
