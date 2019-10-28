@@ -46,7 +46,8 @@ export function rangeSupportedLanguages(): string[] {
     "typescript",
     "typescriptreact",
     "json",
-    "graphql"
+    "graphql",
+    "mongo"
   ];
 }
 
