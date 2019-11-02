@@ -1,8 +1,7 @@
-import * as path from "path";
 // tslint:disable-next-line: no-implicit-dependencies
-import { Uri, workspace } from "vscode";
-import { getConfig } from "./ConfigResolver";
+import { Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
+import { getConfig, getWorkspaceRelativePath } from "./util";
 
 export class IgnorerResolver {
   constructor(private loggingService: LoggingService) {}
@@ -27,15 +26,6 @@ export class IgnorerResolver {
     if (!ignorePath) {
       return;
     }
-    if (workspace.workspaceFolders) {
-      const folder = workspace.getWorkspaceFolder(Uri.file(filePath));
-      return folder ? getPath(ignorePath, folder.uri.fsPath) : undefined;
-    }
-
-    return;
+    return getWorkspaceRelativePath(filePath, ignorePath);
   }
-}
-
-function getPath(fsPath: string, relativeTo: string) {
-  return path.isAbsolute(fsPath) ? fsPath : path.join(relativeTo, fsPath);
 }

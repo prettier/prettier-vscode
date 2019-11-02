@@ -6,7 +6,7 @@ import {
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
 import { createConfigFile } from "./Commands";
-import { ConfigResolver, getConfig } from "./ConfigResolver";
+import { ConfigResolver } from "./ConfigResolver";
 import { Formatter } from "./Formatter";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LoggingService } from "./LoggingService";
@@ -14,6 +14,7 @@ import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
 import { TemplateService } from "./TemplateService";
+import { getConfig } from "./util";
 import {
   configWatcher,
   fileWatcher,

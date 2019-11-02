@@ -28,6 +28,11 @@ interface IExtensionConfig {
    */
   ignorePath: string;
   /**
+   * Path to prettier module.
+   */
+  prettierPath: string;
+
+  /**
    * If true will skip formatting if a prettierconfig isn't found.
    */
   requireConfig: boolean;

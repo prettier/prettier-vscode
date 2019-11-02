@@ -24,6 +24,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Refreshes modules without restart for cases where prettier version or plugins are installed locally.
 - Registers `.graphql` files as `graphql` language in order to provide formatting. (#989)
 - Ignore files are only read from the workspace root folder to behave the [same as prettier](https://github.com/prettier/prettier/issues/4081).
+- Added configuration option `prettier.prettierPath` to override module resolution.
 
 ## [2.3.0]
 

@@ -3,6 +3,7 @@
   "ext.config.disableLanguages": "A list of languages IDs to disable this extension on",
   "ext.config.requireConfig": "Require a 'prettierconfig' to format",
   "ext.config.ignorePath": "Path to a .prettierignore or similar file",
+  "ext.config.prettierPath": "Path to the prettier module",
   "ext.config.printWidth": "Fit code within this line limit",
   "ext.config.tabWidth": "Number of spaces it should use per tab",
   "ext.config.singleQuote": "If true, will use single instead of double quotes",

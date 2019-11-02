@@ -88,6 +88,7 @@ export default class PrettierEditProvider
 
     const vscodeConfig: IExtensionConfig = getConfig(uri);
     const prettierInstance = this.moduleResolver.getPrettierInstance(
+      vscodeConfig.prettierPath,
       fileName,
       true /* warn if outdated */
     );

@@ -7,6 +7,7 @@ import * as semver from "semver";
 import { LoggingService } from "./LoggingService";
 import { NotificationService } from "./NotificationService";
 import { PrettierModule } from "./types";
+import { getWorkspaceRelativePath } from "./util";
 
 const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
@@ -31,6 +32,7 @@ export class ModuleResolver {
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public getPrettierInstance(
+    prettierPath?: string,
     fileName?: string,
     promptIfOutdated: boolean = false
   ): PrettierModule {
@@ -45,7 +47,8 @@ export class ModuleResolver {
     // tslint:disable-next-line: prefer-const
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
       fileName,
-      "prettier"
+      "prettier",
+      prettierPath
     );
 
     if (!moduleInstance) {
@@ -113,10 +116,16 @@ export class ModuleResolver {
    * @param {string} pkgName package's name to require
    * @returns module
    */
-  private requireLocalPkg<T>(fspath: string, pkgName: string): ModuleResult {
-    let modulePath: string | undefined;
+  private requireLocalPkg<T>(
+    fspath: string,
+    pkgName: string,
+    modulePath?: string
+  ): ModuleResult {
     try {
-      modulePath = this.findPkgMem(fspath, pkgName);
+      modulePath = modulePath
+        ? getWorkspaceRelativePath(fspath, modulePath)
+        : this.findPkgMem(fspath, pkgName);
+
       if (modulePath !== void 0) {
         const moduleInstance = this.loadNodeModule(modulePath);
         if (this.resolvedModules.indexOf(modulePath) === -1) {

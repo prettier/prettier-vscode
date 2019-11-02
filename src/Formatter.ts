@@ -63,8 +63,12 @@ export class Formatter implements Disposable {
     moduleResolver: ModuleResolver,
     loggingService: LoggingService
   ): ISelectors => {
+    const { disableLanguages, prettierPath } = getConfig();
+
     let allLanguages: string[];
-    const bundledPrettierInstance = this.moduleResolver.getPrettierInstance();
+    const bundledPrettierInstance = this.moduleResolver.getPrettierInstance(
+      prettierPath
+    );
     const bundledLanguageResolver = new LanguageResolver(
       bundledPrettierInstance
     );
@@ -74,6 +78,7 @@ export class Formatter implements Disposable {
       allLanguages = [];
       for (const folder of workspace.workspaceFolders) {
         const prettierInstance = moduleResolver.getPrettierInstance(
+          prettierPath,
           folder.uri.fsPath
         );
         const languageResolver = new LanguageResolver(prettierInstance);
@@ -91,8 +96,6 @@ export class Formatter implements Disposable {
       "INFO"
     );
     loggingService.appendObject(allRangeLanguages);
-
-    const { disableLanguages } = getConfig();
 
     const globalLanguageSelector = allLanguages.filter(
       l => !disableLanguages.includes(l)

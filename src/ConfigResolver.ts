@@ -1,8 +1,5 @@
 import * as prettier from "prettier";
-// tslint:disable-next-line: no-implicit-dependencies
-import { Uri, workspace } from "vscode";
 import { LoggingService } from "./LoggingService";
-import { IExtensionConfig } from "./types";
 
 interface IResolveConfigResult {
   config: prettier.Options | null;
@@ -77,8 +74,4 @@ export class ConfigResolver {
       return { config: null, error };
     }
   }
-}
-
-export function getConfig(uri?: Uri): IExtensionConfig {
-  return workspace.getConfiguration("prettier", uri) as any;
 }
