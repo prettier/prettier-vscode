@@ -30,8 +30,11 @@ interface IExtensionConfig {
   /**
    * Path to prettier module.
    */
-  prettierPath: string;
-
+  prettierPath: string | undefined;
+  /**
+   * Path to prettier configuration file.
+   */
+  configPath: string | undefined;
   /**
    * If true will skip formatting if a prettierconfig isn't found.
    */

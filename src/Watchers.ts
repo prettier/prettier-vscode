@@ -38,7 +38,7 @@ const fileWatcher = (listener: () => any) => {
 // Listen for changes that disable/enable languages
 const configWatcher = (listener: () => any) =>
   workspace.onDidChangeConfiguration(event => {
-    if (event.affectsConfiguration("prettier.disableLanguages")) {
+    if (event.affectsConfiguration("prettier")) {
       listener();
     }
   });

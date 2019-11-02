@@ -172,10 +172,14 @@ Other settings will only be fallbacks in case they could not be inferred from st
 
 Require a 'prettierconfig' to format
 
-#### prettier.ignorePath (default: .prettierignore)
+#### prettier.ignorePath
 
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
+
+#### prettier.configPath
+
+Supply a custom path to the prettier configuration file.
 
 #### prettier.prettierPath
 

@@ -6,11 +6,11 @@ import {
   workspace
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
-import { getConfig } from "./ConfigResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import EditProvider from "./PrettierEditProvider";
+import { getConfig } from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: DocumentSelector;

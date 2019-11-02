@@ -9,11 +9,7 @@ import {
   TextEdit
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
-import {
-  ConfigResolver,
-  getConfig,
-  RangeFormattingOptions
-} from "./ConfigResolver";
+import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
@@ -25,6 +21,7 @@ import {
   PrettierEslintFormat,
   PrettierTslintFormat
 } from "./types.d";
+import { getConfig, getWorkspaceRelativePath } from "./util";
 
 export default class PrettierEditProvider
   implements
@@ -154,8 +151,13 @@ export default class PrettierEditProvider
     const prettierOptions = await this.configResolver.getPrettierOptions(
       fileName,
       parser as prettier.BuiltInParserName,
-      rangeFormattingOptions,
-      true /* use editorconfig */
+      {
+        config: vscodeConfig.configPath
+          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+          : undefined,
+        editorconfig: true
+      },
+      rangeFormattingOptions
     );
 
     this.loggingService.appendLine("Prettier Options:", "INFO");

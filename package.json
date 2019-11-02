@@ -179,6 +179,11 @@
           "description": "%ext.config.prettierPath%",
           "scope": "resource"
         },
+        "prettier.configPath": {
+          "type": "string",
+          "description": "%ext.config.configPath%",
+          "scope": "resource"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
