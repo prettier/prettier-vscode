@@ -18,9 +18,11 @@ export class LoggingService {
   }
 
   public logObject(obj: object, level: LogLevel): void {
-    const message = prettier.format(JSON.stringify(obj, null, 2), {
-      parser: "json"
-    });
+    const message = prettier
+      .format(JSON.stringify(obj, null, 2), {
+        parser: "json"
+      })
+      .trim();
     this.outputChannel.appendLine(message);
   }
 
