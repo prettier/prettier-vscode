@@ -32,14 +32,7 @@ let reporter: TelemetryReporter;
 export function activate(context: ExtensionContext) {
   const hrstart = process.hrtime();
 
-  // create telemetry reporter on extension activation
-  reporter = new TelemetryReporter(
-    extensionName,
-    extensionVersion,
-    telemetryKey
-  );
-
-  const loggingService = new LoggingService(reporter);
+  const loggingService = new LoggingService();
 
   loggingService.logMessage(`Extension Name: ${extensionName}.`, "INFO");
   loggingService.logMessage(`Extension Version: ${extensionVersion}.`, "INFO");
@@ -50,6 +43,13 @@ export function activate(context: ExtensionContext) {
   const createConfigFileCommand = commands.registerCommand(
     "prettier.createConfigFile",
     createConfigFileFunc
+  );
+
+  // create telemetry reporter on extension activation
+  reporter = new TelemetryReporter(
+    extensionName,
+    extensionVersion,
+    telemetryKey
   );
 
   const notificationService = new NotificationService(

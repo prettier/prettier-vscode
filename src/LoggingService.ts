@@ -1,14 +1,12 @@
 import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
 import { window } from "vscode";
-import TelemetryReporter from "vscode-extension-telemetry";
 
 type LogLevel = "INFO" | "WARN" | "ERROR";
 
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
 
-  constructor(private telemetryReporter: TelemetryReporter) {}
   /**
    * Append messages to the output channel and format it with a title
    *
