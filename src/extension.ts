@@ -43,13 +43,6 @@ export function activate(context: ExtensionContext) {
     telemetryKey
   );
 
-  const config = getConfig();
-  reporter.sendTelemetryEvent("integration_usage", undefined, {
-    eslint: config.eslintIntegration ? 1 : 0,
-    stylelint: config.stylelintIntegration ? 1 : 0,
-    tslint: config.tslintIntegration ? 1 : 0
-  });
-
   const templateService = new TemplateService(loggingService);
 
   const createConfigFileFunc = createConfigFile(templateService);
