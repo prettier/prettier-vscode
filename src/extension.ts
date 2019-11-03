@@ -74,7 +74,12 @@ export function activate(context: ExtensionContext) {
     notificationService
   );
 
-  const formatter = new Formatter(moduleResolver, editProvider, loggingService);
+  const formatter = new Formatter(
+    moduleResolver,
+    editProvider,
+    loggingService,
+    notificationService
+  );
   formatter.registerFormatter();
 
   context.subscriptions.push(

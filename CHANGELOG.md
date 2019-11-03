@@ -17,6 +17,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Less fallbacks - if you have local prettier installed it will always use that. Before if your local prettier didn't support things we would fall back to bundled prettier - this caused many errors and inconsistent behavior.
 - Removed toolbar button.
 - Deprecated all VS Code prettier settings.
+- Deprecated linter configuration settings.
 - Enhanced logging.
 - Extension built with webpack.
 - Memoize package path lookup to improve perf of repeated calls to same file.

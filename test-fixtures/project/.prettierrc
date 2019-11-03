@@ -1,9 +1,9 @@
 {
-    "overrides": [
-      {
-        "files": "**/lwc.html",
-        "options": { "parser": "lwc" }
-      }
-    ]
-  }
+  "overrides": [
+    {
+      "files": "**/lwc.html",
+      "options": { "parser": "lwc" }
+    }
+  ]
+}
   

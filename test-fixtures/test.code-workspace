@@ -24,7 +24,6 @@
   ],
   "settings": {
     "editor.defaultFormatter": "prettier.prettier-vscode",
-    "prettier.eslintIntegration": false,
     "[javascript]": {
       "editor.defaultFormatter": "prettier.prettier-vscode"
     },

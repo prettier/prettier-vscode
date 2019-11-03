@@ -59,11 +59,17 @@ export default class PrettierEditProvider
     document: TextDocument,
     options?: RangeFormattingOptions
   ): Promise<TextEdit[]> {
+    const hrstart = process.hrtime();
     const result = await this.format(document.getText(), document, options);
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
     }
+    const hrend = process.hrtime(hrstart);
+    this.loggingService.appendLine(
+      `Formatting completed in ${hrend[1] / 1000000}ms.`,
+      "INFO"
+    );
     return [TextEdit.replace(this.fullDocumentRange(document), result)];
   }
 
@@ -163,7 +169,7 @@ export default class PrettierEditProvider
     this.loggingService.appendLine("Prettier Options:", "INFO");
     this.loggingService.appendObject(prettierOptions);
 
-    if (vscodeConfig.tslintIntegration && parser === "typescript") {
+    if (parser === "typescript") {
       const prettierTslintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-tslint"
@@ -186,10 +192,7 @@ export default class PrettierEditProvider
       }
     }
 
-    if (
-      vscodeConfig.eslintIntegration &&
-      languageResolver.doesLanguageSupportESLint(languageId)
-    ) {
+    if (languageResolver.doesLanguageSupportESLint(languageId)) {
       const prettierEslintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-eslint"
@@ -211,10 +214,7 @@ export default class PrettierEditProvider
       }
     }
 
-    if (
-      vscodeConfig.stylelintIntegration &&
-      languageResolver.doesParserSupportStylelint(parser)
-    ) {
+    if (languageResolver.doesParserSupportStylelint(parser)) {
       const prettierStylelintModule = this.moduleResolver.getModuleInstance(
         fileName,
         "prettier-stylelint"

@@ -9,6 +9,7 @@ import {
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
+import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
 import { getConfig } from "./util";
 
@@ -24,7 +25,8 @@ export class Formatter implements Disposable {
   constructor(
     private moduleResolver: ModuleResolver,
     private editProvider: EditProvider,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private notificationService: NotificationService
   ) {}
 
   public registerFormatter = () => {
@@ -46,6 +48,8 @@ export class Formatter implements Disposable {
   public dispose = () => {
     // Clear the module cache in order to reload if there was a change in package.json, etc.
     this.moduleResolver.clearModuleCache();
+    this.notificationService.clearCache();
+    this.moduleResolver.getPrettierInstance().clearConfigCache();
     if (this.formatterHandler) {
       this.formatterHandler.dispose();
     }

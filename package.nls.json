@@ -27,5 +27,7 @@
   "ext.config.trailingComma": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.useTabs": "Indent lines with tabs",
-  "ext.createConfigFile.title": "Prettier: Create Configuration File"
+  "ext.create.ConfigFile.title": "Prettier: Create Configuration File",
+  "ext.config.legacyLinterConfigInUse": "You have legacy linter settings in your VS Code config. They are no longer being used. See documentation for migration information.",
+  "ext.config.legacyPrettierConfigInUse": "You have legacy settings in your VS Code config. They are being ignored Would you like to migrate them to '.prettierrc'?."
 }
