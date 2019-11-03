@@ -1,31 +1,36 @@
 import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
 import { window } from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
+
+type LogLevel = "INFO" | "WARN" | "ERROR";
 
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
+
+  constructor(private telemetryReporter: TelemetryReporter) {}
   /**
    * Append messages to the output channel and format it with a title
    *
    * @param message The message to append to the output channel
    */
-  public appendLine(message: string, level: "INFO" | "WARN" | "ERROR"): void {
+  public logMessage(message: string, level: LogLevel): void {
     const title = new Date().toLocaleTimeString();
     this.outputChannel.appendLine(`[${level} - ${title}] ${message}`);
   }
 
-  public appendObject(obj: object): void {
+  public logObject(obj: object, level: LogLevel): void {
     const message = prettier.format(JSON.stringify(obj, null, 2), {
       parser: "json"
     });
     this.outputChannel.appendLine(message);
   }
 
-  public logError(err: Error, fileName: string) {
-    this.appendLine(err.name, "ERROR");
-    if (fileName) {
-      this.outputChannel.appendLine(fileName);
+  public logError(error: Error) {
+    this.logMessage(error.name, "ERROR");
+    this.outputChannel.appendLine(error.message);
+    if (error.stack) {
+      this.outputChannel.appendLine(error.stack);
     }
-    this.outputChannel.appendLine(err.message);
   }
 }

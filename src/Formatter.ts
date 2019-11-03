@@ -91,15 +91,15 @@ export class Formatter implements Disposable {
       }
     }
 
-    loggingService.appendLine("Enabling prettier for languages:", "INFO");
-    loggingService.appendObject(allLanguages);
+    loggingService.logMessage("Enabling prettier for languages:", "INFO");
+    loggingService.logObject(allLanguages, "INFO");
 
     const allRangeLanguages = bundledLanguageResolver.rangeSupportedLanguages();
-    loggingService.appendLine(
+    loggingService.logMessage(
       "Enabling prettier for range supported languages:",
       "INFO"
     );
-    loggingService.appendObject(allRangeLanguages);
+    loggingService.logObject(allRangeLanguages, "INFO");
 
     const globalLanguageSelector = allLanguages.filter(
       l => !disableLanguages.includes(l)

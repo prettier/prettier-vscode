@@ -37,7 +37,7 @@ export class ModuleResolver {
     promptIfOutdated: boolean = false
   ): PrettierModule {
     if (!fileName) {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         "No path provided, using bundled prettier.",
         "INFO"
       );
@@ -52,7 +52,7 @@ export class ModuleResolver {
     );
 
     if (!moduleInstance) {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         "Falling back to bundled version of prettier.",
         "WARN"
       );
@@ -75,7 +75,7 @@ export class ModuleResolver {
             modulePath
           );
         }
-        this.loggingService.appendLine(
+        this.loggingService.logMessage(
           "Outdated version of prettier installed. Falling back to bundled version of prettier.",
           "ERROR"
         );
@@ -104,7 +104,7 @@ export class ModuleResolver {
       try {
         delete r.cache[r.resolve(modulePath)];
       } catch (error) {
-        this.loggingService.appendObject(error.stack);
+        this.loggingService.logError(error);
       }
     });
   }
@@ -131,14 +131,14 @@ export class ModuleResolver {
         if (this.resolvedModules.indexOf(modulePath) === -1) {
           this.resolvedModules.push(modulePath);
         }
-        this.loggingService.appendLine(
+        this.loggingService.logMessage(
           `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'.`,
           "INFO"
         );
         return { moduleInstance, modulePath };
       }
     } catch (error) {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         `Failed to load ${pkgName} from ${modulePath}.`,
         "INFO"
       );
@@ -160,7 +160,7 @@ export class ModuleResolver {
     try {
       return r(moduleName);
     } catch (error) {
-      this.loggingService.appendObject(error.stack);
+      this.loggingService.logError(error);
     }
     return undefined;
   }

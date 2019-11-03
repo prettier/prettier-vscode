@@ -66,7 +66,7 @@ export default class PrettierEditProvider
       return [];
     }
     const hrend = process.hrtime(hrstart);
-    this.loggingService.appendLine(
+    this.loggingService.logMessage(
       `Formatting completed in ${hrend[1] / 1000000}ms.`,
       "INFO"
     );
@@ -84,7 +84,7 @@ export default class PrettierEditProvider
     { fileName, languageId, uri }: TextDocument,
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<string | undefined> {
-    this.loggingService.appendLine(`Formatting ${fileName}.`, "INFO");
+    this.loggingService.logMessage(`Formatting ${fileName}.`, "INFO");
 
     // LEGACY: Remove in version 4.x
     this.notificationService.warnIfLegacyConfiguration(uri);
@@ -109,8 +109,8 @@ export default class PrettierEditProvider
     let fileInfo: prettier.FileInfoResult | undefined;
     if (fileName) {
       fileInfo = await prettierInstance.getFileInfo(fileName, { ignorePath });
-      this.loggingService.appendLine("File Info:", "INFO");
-      this.loggingService.appendObject(fileInfo);
+      this.loggingService.logMessage("File Info:", "INFO");
+      this.loggingService.logObject(fileInfo, "INFO");
     }
 
     if (fileInfo && fileInfo.ignored) {
@@ -121,17 +121,17 @@ export default class PrettierEditProvider
     if (fileInfo && fileInfo.inferredParser) {
       parser = fileInfo.inferredParser;
     } else {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         "Parser not inferred, using VS Code language.",
         "WARN"
       );
       const dynamicParsers = languageResolver.getParsersFromLanguageId(
         languageId
       );
-      this.loggingService.appendObject(dynamicParsers);
+      this.loggingService.logObject(dynamicParsers, "INFO");
       if (dynamicParsers.length > 0) {
         parser = dynamicParsers[0];
-        this.loggingService.appendLine(
+        this.loggingService.logMessage(
           `Resolved parser to '${parser}'.`,
           "INFO"
         );
@@ -139,7 +139,7 @@ export default class PrettierEditProvider
     }
 
     if (!parser) {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         `Failed to resolve a parser, skipping file.`,
         "ERROR"
       );
@@ -166,8 +166,8 @@ export default class PrettierEditProvider
       rangeFormattingOptions
     );
 
-    this.loggingService.appendLine("Prettier Options:", "INFO");
-    this.loggingService.appendObject(prettierOptions);
+    this.loggingService.logMessage("Prettier Options:", "INFO");
+    this.loggingService.logObject(prettierOptions, "INFO");
 
     if (parser === "typescript") {
       const prettierTslintModule = this.moduleResolver.getModuleInstance(
@@ -259,7 +259,7 @@ export default class PrettierEditProvider
           return returnValue;
         })
         .catch((error: Error) => {
-          this.loggingService.logError(error, fileName);
+          this.loggingService.logError(error);
 
           return defaultText;
         });
@@ -269,7 +269,7 @@ export default class PrettierEditProvider
 
       return returnValue;
     } catch (error) {
-      this.loggingService.logError(error, fileName);
+      this.loggingService.logError(error);
 
       return defaultText;
     }

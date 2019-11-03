@@ -26,7 +26,7 @@ export class ConfigResolver {
     );
 
     if (error) {
-      this.loggingService.appendLine(
+      this.loggingService.logMessage(
         `Failed to resolve config for ${fileName}. Falling back to the default config settings.`,
         "ERROR"
       );

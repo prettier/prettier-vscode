@@ -31,10 +31,6 @@ let reporter: TelemetryReporter;
 
 export function activate(context: ExtensionContext) {
   const hrstart = process.hrtime();
-  const loggingService = new LoggingService();
-
-  loggingService.appendLine(`Extension Name: ${extensionName}.`, "INFO");
-  loggingService.appendLine(`Extension Version: ${extensionVersion}.`, "INFO");
 
   // create telemetry reporter on extension activation
   reporter = new TelemetryReporter(
@@ -42,6 +38,11 @@ export function activate(context: ExtensionContext) {
     extensionVersion,
     telemetryKey
   );
+
+  const loggingService = new LoggingService(reporter);
+
+  loggingService.logMessage(`Extension Name: ${extensionName}.`, "INFO");
+  loggingService.logMessage(`Extension Version: ${extensionVersion}.`, "INFO");
 
   const templateService = new TemplateService(loggingService);
 

@@ -11,7 +11,7 @@ export class IgnorerResolver {
       fsPath,
       getConfig(Uri.file(fsPath)).ignorePath
     );
-    this.loggingService.appendLine(
+    this.loggingService.logMessage(
       `Resolved ignore file to ${absolutePath}.`,
       "INFO"
     );

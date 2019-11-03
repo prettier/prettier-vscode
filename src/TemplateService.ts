@@ -39,7 +39,7 @@ export class TemplateService {
       formatterOptions
     );
 
-    this.loggingService.appendLine(outputPath, "INFO");
+    this.loggingService.logMessage(outputPath, "INFO");
     await writeFileAsync(outputPath, templateSource, "utf8");
   }
 }
