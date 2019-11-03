@@ -21,7 +21,7 @@ async function main() {
       extensionTestsPath,
       launchArgs: [workspace, "--disable-extensions"]
     });
-  } catch (err) {
+  } catch (error) {
     // tslint:disable-next-line: no-console
     console.error("Failed to run tests");
     process.exit(1);

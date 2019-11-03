@@ -6,6 +6,7 @@ import {
   WorkspaceConfiguration
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
 import * as nls from "vscode-nls";
 import { createConfigFileFunction } from "./Commands";
 import {
@@ -21,7 +22,11 @@ const localize = nls.config()();
 export class NotificationService {
   public noLegacyConfigWorkspaces: string[] = [];
 
-  constructor(private createConfigFileCommand: createConfigFileFunction) {}
+  constructor(
+    private telemetryReporter: TelemetryReporter,
+    private createConfigFileCommand: createConfigFileFunction
+  ) {}
+
   public warnOutdatedPrettierVersion(
     prettierInstance?: PrettierModule,
     prettierPath?: string
@@ -40,10 +45,19 @@ export class NotificationService {
       return;
     }
     const vscodeConfig = workspace.getConfiguration("prettier", uri);
-    const hasLegacyConfig =
-      (await this.warnIfLegacyPrettierConfiguration(vscodeConfig)) ||
-      (await this.warnIfLegacyLinterConfiguration(vscodeConfig));
-    if (!hasLegacyConfig) {
+    const hasLegacyPrettierConfig = await this.warnIfLegacyPrettierConfiguration(
+      vscodeConfig
+    );
+    const hasLegacyLinterConfig = await this.warnIfLegacyLinterConfiguration(
+      vscodeConfig
+    );
+
+    this.telemetryReporter.sendTelemetryEvent("hasLegacyConfig", undefined, {
+      linters: hasLegacyLinterConfig ? 1 : 0,
+      prettier: hasLegacyPrettierConfig ? 1 : 0
+    });
+
+    if (!hasLegacyPrettierConfig && !hasLegacyLinterConfig) {
       // No legacy configs, add to cache
       this.noLegacyConfigWorkspaces.push(cacheKey);
     }

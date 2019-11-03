@@ -258,8 +258,8 @@ export default class PrettierEditProvider
         .then(returnValue => {
           return returnValue;
         })
-        .catch((err: Error) => {
-          this.loggingService.logError(err, fileName);
+        .catch((error: Error) => {
+          this.loggingService.logError(error, fileName);
 
           return defaultText;
         });
@@ -268,8 +268,8 @@ export default class PrettierEditProvider
       const returnValue = cb();
 
       return returnValue;
-    } catch (err) {
-      this.loggingService.logError(err, fileName);
+    } catch (error) {
+      this.loggingService.logError(error, fileName);
 
       return defaultText;
     }

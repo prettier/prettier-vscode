@@ -103,8 +103,8 @@ export class ModuleResolver {
           : require;
       try {
         delete r.cache[r.resolve(modulePath)];
-      } catch (err) {
-        this.loggingService.appendObject(err.stack);
+      } catch (error) {
+        this.loggingService.appendObject(error.stack);
       }
     });
   }
@@ -137,7 +137,7 @@ export class ModuleResolver {
         );
         return { moduleInstance, modulePath };
       }
-    } catch (e) {
+    } catch (error) {
       this.loggingService.appendLine(
         `Failed to load ${pkgName} from ${modulePath}.`,
         "INFO"
@@ -159,8 +159,8 @@ export class ModuleResolver {
         : require;
     try {
       return r(moduleName);
-    } catch (err) {
-      this.loggingService.appendObject(err.stack);
+    } catch (error) {
+      this.loggingService.appendObject(error.stack);
     }
     return undefined;
   }

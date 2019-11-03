@@ -14,7 +14,6 @@ import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
 import { TemplateService } from "./TemplateService";
-import { getConfig } from "./util";
 import {
   configWatcher,
   fileWatcher,
@@ -31,6 +30,7 @@ const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 let reporter: TelemetryReporter;
 
 export function activate(context: ExtensionContext) {
+  const hrstart = process.hrtime();
   const loggingService = new LoggingService();
 
   loggingService.appendLine(`Extension Name: ${extensionName}.`, "INFO");
@@ -51,7 +51,10 @@ export function activate(context: ExtensionContext) {
     createConfigFileFunc
   );
 
-  const notificationService = new NotificationService(createConfigFileFunc);
+  const notificationService = new NotificationService(
+    reporter,
+    createConfigFileFunc
+  );
   const moduleResolver = new ModuleResolver(
     loggingService,
     notificationService
@@ -84,6 +87,11 @@ export function activate(context: ExtensionContext) {
     reporter,
     createConfigFileCommand
   );
+
+  const hrend = process.hrtime(hrstart);
+  reporter.sendTelemetryEvent("extensionActivated", undefined, {
+    activationTime: hrend[1] / 1000000
+  });
 }
 
 export function deactivate() {
