@@ -419,7 +419,7 @@
     "commands": [
       {
         "command": "prettier.createConfigFile",
-        "title": "%ext.createConfigFile.title%"
+        "title": "%ext.command.createConfigFile.title%"
       }
     ]
   }

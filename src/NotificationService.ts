@@ -17,7 +17,7 @@ import {
 } from "./Consts";
 import { PrettierModule } from "./types";
 
-const localize = nls.config()();
+const localize = nls.loadMessageBundle();
 
 export class NotificationService {
   public noLegacyConfigWorkspaces: string[] = [];
@@ -32,7 +32,7 @@ export class NotificationService {
     prettierPath?: string
   ) {
     const message = localize(
-      "ext.config.outdatedPrettiereVersion",
+      "ext.message.outdatedPrettierVersion",
       OUTDATED_PRETTIER_VERSION_MESSAGE
     ).replace("{{path}}", prettierPath || "unknown");
     window.showErrorMessage(message);
@@ -96,7 +96,7 @@ export class NotificationService {
       vscodeConfig.get("stylelintIntegration") !== null;
     if (hasLegacyConfig) {
       const message = localize(
-        "ext.config.legacyLinterConfigInUse",
+        "ext.message.legacyLinterConfigInUse",
         LEGACY_VSCODE_LINTER_CONFIG_MESSAGE
       );
 
@@ -139,7 +139,7 @@ export class NotificationService {
     const hasLegacyConfig = migratedOptions.size > 0;
     if (hasLegacyConfig) {
       const message = localize(
-        "ext.config.legacyPrettierConfigInUse",
+        "ext.message.legacyPrettierConfigInUse",
         LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
       );
 
