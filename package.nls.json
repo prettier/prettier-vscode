@@ -28,6 +28,6 @@
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.useTabs": "Indent lines with tabs",
   "ext.create.ConfigFile.title": "Prettier: Create Configuration File",
-  "ext.config.legacyLinterConfigInUse": "You have legacy linter settings in your VS Code config. They are no longer being used. See documentation for migration information.",
+  "ext.config.legacyLinterConfigInUse": "You have legacy linter settings in your VS Code config. They are no longer being used. See [documentation for migration information](https://github.com/prettier/prettier-vscode#vs-code-eslint-and-tslint-integration).",
   "ext.config.legacyPrettierConfigInUse": "You have legacy settings in your VS Code config. They are being ignored Would you like to migrate them to '.prettierrc'?."
 }
