@@ -110,9 +110,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.4",
     "vscode-nls-dev": "^3.3.1",
-    "vscode-test": "^1.2.0",
+    "vscode-test": "^1.2.2",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
     "ignore": "^5.1.4",
