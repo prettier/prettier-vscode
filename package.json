@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "preview": true,
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
