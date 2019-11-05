@@ -74,7 +74,7 @@
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "vscode-nls-dev": "^3.3.1",
-    "vscode-test": "^1.2.0"
+    "vscode-test": "^1.2.2"
   },
   "dependencies": {
     "ignore": "^5.1.4",
