@@ -2,7 +2,7 @@ import * as assert from "assert";
 // tslint:disable-next-line: no-implicit-dependencies
 import * as sinon from "sinon";
 // tslint:disable-next-line: no-implicit-dependencies
-import { window } from "vscode";
+import { MessageItem, MessageOptions, window } from "vscode";
 import {
   LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE
@@ -10,7 +10,10 @@ import {
 import { format } from "./format.test";
 
 suite("Test notifications", function() {
-  let showInputBox: sinon.SinonStub;
+  let showInputBox: sinon.SinonStub<
+    [string, MessageOptions, ...MessageItem[]],
+    Thenable<MessageItem | undefined>
+  >;
   this.timeout(10000);
   this.beforeEach(() => {
     showInputBox = sinon.stub(window, "showErrorMessage");
