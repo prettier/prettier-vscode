@@ -33,4 +33,8 @@ export class LoggingService {
       this.outputChannel.appendLine(error.stack);
     }
   }
+
+  public show() {
+    this.outputChannel.show();
+  }
 }

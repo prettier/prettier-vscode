@@ -10,27 +10,35 @@ import {
 import { format } from "./format.test";
 
 suite("Test notifications", function() {
-  let showInputBox: sinon.SinonStub<
+  let showWarningMessage: sinon.SinonStub<
+    [string, MessageOptions, ...MessageItem[]],
+    Thenable<MessageItem | undefined>
+  >;
+  let showErrorMessage: sinon.SinonStub<
     [string, MessageOptions, ...MessageItem[]],
     Thenable<MessageItem | undefined>
   >;
   this.timeout(10000);
   this.beforeEach(() => {
-    showInputBox = sinon.stub(window, "showErrorMessage");
+    showWarningMessage = sinon.stub(window, "showWarningMessage");
+    showErrorMessage = sinon.stub(window, "showErrorMessage");
   });
   this.afterEach(() => {
-    showInputBox.restore();
+    showWarningMessage.restore();
+    showErrorMessage.restore();
   });
   test("shows error for outdated prettier instance", async () => {
     await format("outdated", "ugly.js");
-    assert(showInputBox.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
+    assert(showErrorMessage.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
   });
   test("shows error for legacy vscode config", async () => {
     await format("outdated", "ugly.js");
-    assert(showInputBox.calledWith(LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE));
+    assert(
+      showWarningMessage.calledWith(LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE)
+    );
   });
   test("does not show error with valid project", async () => {
     await format("plugins", "index.php");
-    assert(showInputBox.notCalled);
+    assert(showWarningMessage.notCalled);
   });
 });

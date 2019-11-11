@@ -54,6 +54,7 @@ export function activate(context: ExtensionContext) {
 
   const notificationService = new NotificationService(
     reporter,
+    loggingService,
     createConfigFileFunc
   );
   const moduleResolver = new ModuleResolver(
