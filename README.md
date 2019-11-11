@@ -63,15 +63,7 @@ ext install esbenp.prettier-vscode
 
 &#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
 
-## Migrating from Versions 2.x
-
-Version 3.0 has a number of breaking changes. The main thing to be aware of is that this extension no longer supports adding prettier specific settings to the VS Code configuration. If you previously had settings like `prettier.tabWidth` or anthing else from the [Prettier Configuration](https://prettier.io/docs/en/options.html) those VS Code settings will be ignored. Version 3.0 of the extension will attempt to find and warn you if it detects those settings as well as help you migrate to a `.prettierrc` file. See also [Error Messages](#error-messages)
-
-Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#vs-code-eslint-and-tslint-integration). See also [Error Messages](#error-messages)
-
-Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
-
-## Prettier Resolution
+### Prettier Resolution
 
 This extension will use prettier from your project's local dependencies (recommended). Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
 
@@ -81,9 +73,17 @@ To install prettier in your project run:
 npm install prettier -D
 ```
 
-## Plugins
+### Plugins
 
 This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
+
+## Migrating from Versions 2.x
+
+Version 3.0 has a number of breaking changes. The main thing to be aware of is that this extension no longer supports adding prettier specific settings to the VS Code configuration. If you previously had settings like `prettier.tabWidth` or anthing else from the [Prettier Configuration](https://prettier.io/docs/en/options.html) those VS Code settings will be ignored. Version 3.0 of the extension will attempt to find and warn you if it detects those settings as well as help you migrate to a `.prettierrc` file. See also [Error Messages](#error-messages)
+
+Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#vs-code-eslint-and-tslint-integration). See also [Error Messages](#error-messages)
+
+Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
 ## Usage
 
