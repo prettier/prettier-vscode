@@ -40,7 +40,7 @@
 
 <p align="center">
   <a href="https://dev.azure.com/prettier/prettier-vscode/_build?definitionId=6">
-    <img alt="Azure Pipelines Build Status" src="https://dev.azure.com/prettier/prettier-vscode/_apis/build/status/esbenp.prettier-vscode?branchName=master"></a>
+    <img alt="Azure Pipelines Build Status" src="https://dev.azure.com/prettier/prettier-vscode/_apis/build/status/prettier.prettier-vscode?branchName=master"></a>
   <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
     <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
   <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
