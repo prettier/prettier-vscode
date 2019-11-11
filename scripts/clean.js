@@ -1,5 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 
-fs.rmdirSync(path.join(__dirname, "../dist"), { recursive: true });
-fs.rmdirSync(path.join(__dirname, "../out"), { recursive: true });
+const folders = ["../dist", "../out"];
+
+folders.forEach(folder => {
+  const dir = path.join(__dirname, folder);
+  if (fs.existsSync(dir)) {
+    fs.rmdirSync(dir, { recursive: true });
+  }
+});
