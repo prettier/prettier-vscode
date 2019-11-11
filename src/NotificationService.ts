@@ -151,23 +151,15 @@ export class NotificationService {
         await this.createConfigFileCommand(migratedOptions);
         legacyConfigOptions.forEach(key => {
           const inspected = vscodeConfig.inspect(key);
-          if (
-            (inspected?.workspaceFolderValue)
-          ) {
+          if (inspected?.workspaceFolderValue) {
             vscodeConfig.update(
               key,
               undefined,
-              ConfigurationTarget.WorkspaceFolder 
+              ConfigurationTarget.WorkspaceFolder
             );
           }
-          if (
-            (inspected?.workspaceValue)
-          ) {
-            vscodeConfig.update(
-              key,
-              undefined,
-              ConfigurationTarget.Workspace 
-            );
+          if (inspected?.workspaceValue) {
+            vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
           }
         });
       }
