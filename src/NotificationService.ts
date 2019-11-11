@@ -94,43 +94,59 @@ export class NotificationService {
     vscodeConfig: WorkspaceConfiguration
   ): Promise<boolean> {
     const legacyConfigOptions = [
-      'eslintIntegration',
+      "eslintIntegration",
       "tslintIntegration",
       "stylelintIntegration"
-    ]
-      const migratedOptions = new Map<string, any>();
-      legacyConfigOptions.forEach(key => {
-        const val = vscodeConfig.get(key);
-        if (val !== null) {
-          migratedOptions.set(key, val);
-        }
-      });
-      const hasLegacyConfig = migratedOptions.size > 0;
+    ];
+    const migratedOptions = new Map<string, any>();
+    legacyConfigOptions.forEach(key => {
+      const val = vscodeConfig.get(key);
+      if (val !== null) {
+        migratedOptions.set(key, val);
+      }
+    });
+    const hasLegacyConfig = migratedOptions.size > 0;
     if (hasLegacyConfig) {
       const message = localize(
         "ext.message.legacyLinterConfigInUse",
         LEGACY_VSCODE_LINTER_CONFIG_MESSAGE
       );
 
-      const result = await window.showWarningMessage(message, VIEW_LOGS_ACTION_TEXT);
+      const result = await window.showWarningMessage(
+        message,
+        VIEW_LOGS_ACTION_TEXT
+      );
       this.logLegacyConfigOptions(result, legacyConfigOptions, vscodeConfig);
     }
     return hasLegacyConfig;
   }
 
-  private logLegacyConfigOptions(result: string | undefined, legacyConfigOptions: string[], vscodeConfig: WorkspaceConfiguration) {
+  private logLegacyConfigOptions(
+    result: string | undefined,
+    legacyConfigOptions: string[],
+    vscodeConfig: WorkspaceConfiguration
+  ) {
     if (result && result === VIEW_LOGS_ACTION_TEXT) {
       legacyConfigOptions.forEach(key => {
         const inspected = vscodeConfig.inspect(key);
         if (inspected) {
           if (inspected.globalValue) {
-            this.loggingService.logMessage(`Configuration value 'prettier.${key}' found in global configuration.`, 'WARN');
+            this.loggingService.logMessage(
+              `Configuration value 'prettier.${key}' found in global configuration.`,
+              "WARN"
+            );
           }
           if (inspected.workspaceFolderValue) {
-            this.loggingService.logMessage(`Configuration value 'prettier.${key}' found in workspace folder configuration.`, 'WARN');
+            this.loggingService.logMessage(
+              `Configuration value 'prettier.${key}' found in workspace folder configuration.`,
+              "WARN"
+            );
           }
           if (inspected.workspaceValue) {
-            this.loggingService.logMessage(`Configuration value 'prettier.${key}' found in workspace configuration.`, 'WARN');
+            this.loggingService.logMessage(
+              `Configuration value 'prettier.${key}' found in workspace configuration.`,
+              "WARN"
+            );
           }
         }
       });
@@ -143,7 +159,7 @@ export class NotificationService {
    * @param vscodeConfig The configuration
    */
   private async warnIfLegacyPrettierConfiguration(
-    vscodeConfig: WorkspaceConfiguration,
+    vscodeConfig: WorkspaceConfiguration
   ): Promise<boolean> {
     const legacyConfigOptions = [
       "printWidth",
@@ -171,7 +187,6 @@ export class NotificationService {
     });
     const hasLegacyConfig = migratedOptions.size > 0;
     if (hasLegacyConfig) {
-      
       const message = localize(
         "ext.message.legacyPrettierConfigInUse",
         LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
