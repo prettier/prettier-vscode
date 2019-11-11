@@ -2,8 +2,6 @@
 
 [Prettier](https://prettier.io/) is an opinionated code formatter. It enforces a consistent style by parsing your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.
 
-**NOTE: This is the version 3.0 preview release of the official Prettier VS Code extension. It is still a work in progress. If you are looking for the stable extension use [version 2.x](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)**
-
 <p align="center">
   <em>
     JavaScript
@@ -64,6 +62,14 @@ ext install esbenp.prettier-vscode
 ```
 
 &#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
+
+## Migrating from Versions 2.x
+
+Version 3.0 has a number of breaking changes. The main thing to be aware of is that this extension no longer supports adding prettier specific settings to the VS Code configuration. If you previously had settings like `prettier.tabWidth` or anthing else from the [Prettier Configuration](https://prettier.io/docs/en/options.html) those VS Code settings will be ignored. Version 3.0 of the extension will attempt to find and warn you if it detects those settings as well as help you migrate to a `.prettierrc` file.
+
+Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#vs-code-eslint-and-tslint-integration).
+
+Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
 ### Prettier Resolution
 
