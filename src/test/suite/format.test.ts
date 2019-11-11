@@ -71,6 +71,8 @@ suite("Test format Document", function() {
     formatSameAsPrettier("formatTest/ugly.ts"));
   test("it formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));
   test("it formats JSON", () => formatSameAsPrettier("formatTest/ugly.json"));
+  test("it formats JSONC", () =>
+    formatSameAsPrettier("formatTest/ugly.jsonc", { parser: "json" }));
   test("it formats JSON", () =>
     formatSameAsPrettier("formatTest/package.json"));
   test("it formats HTML", () => formatSameAsPrettier("formatTest/ugly.html"));

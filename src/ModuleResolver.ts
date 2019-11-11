@@ -28,7 +28,7 @@ export class ModuleResolver {
   }
 
   /**
-   * Returns an instance of the prettier module.
+   * Returns an instance of thge prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public getPrettierInstance(
