@@ -71,6 +71,28 @@ Additionally, the settings for Linters have been removed. Linters are still supp
 
 Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
+### You have legacy settings in your VS Code config. They are being ignored Would you like to migrate them to '.prettierrc'?.
+If you recieve this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings.
+
+Remove any of the following configurations by moving them to the [Prettier Configuration](https://prettier.io/docs/en/options.html).
+
+```
+prettier.printWidth
+prettier.tabWidth
+prettier.singleQuote
+prettier.trailingComma
+prettier.bracketSpacing
+prettier.jsxBracketSameLine
+prettier.semi
+prettier.useTabs
+prettier.proseWrap
+prettier.arrowParens
+prettier.jsxSingleQuote
+prettier.htmlWhitespaceSensitivity
+prettier.endOfLine
+prettier.quoteProps
+```
+
 ### Prettier Resolution
 
 This extension will use prettier from your project's local dependencies (recommended). Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
