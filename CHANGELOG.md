@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [3.0.x] **BETA**
+## [3.2.0]
 
 **NOTE: 3.0 has a number of breaking changes**
 
