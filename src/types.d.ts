@@ -1,5 +1,7 @@
 import * as prettier from "prettier";
 
+type PrettierModule = typeof prettier;
+
 type TrailingCommaOption = "none" | "es5" | "all";
 
 /**
@@ -26,6 +28,14 @@ interface IExtensionConfig {
    */
   ignorePath: string;
   /**
+   * Path to prettier module.
+   */
+  prettierPath: string | undefined;
+  /**
+   * Path to prettier configuration file.
+   */
+  configPath: string | undefined;
+  /**
    * If true will skip formatting if a prettierconfig isn't found.
    */
   requireConfig: boolean;
@@ -35,12 +45,8 @@ interface IExtensionConfig {
   disableLanguages: string[];
 }
 
-/**
- * Configuration for prettier-vscode
- */
-export type PrettierVSCodeConfig = IExtensionConfig & prettier.Options;
-
 type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
+
 interface IPrettierEslintOptions {
   /**
    * The path of the file being formatted

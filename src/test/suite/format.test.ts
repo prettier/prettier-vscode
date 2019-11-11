@@ -28,10 +28,10 @@ export async function format(workspaceFolderName: string, file: string) {
   const text = doc.getText();
   try {
     await vscode.window.showTextDocument(doc);
-  } catch (err) {
+  } catch (error) {
     // tslint:disable-next-line: no-console
-    console.log(err);
-    throw err;
+    console.log(error);
+    throw error;
   }
   // tslint:disable-next-line: no-console
   console.time(file);
@@ -48,11 +48,18 @@ export async function format(workspaceFolderName: string, file: string) {
  * with the output from extension.
  * @param file path relative to workspace root
  */
-async function formatSameAsPrettier(file: string) {
+async function formatSameAsPrettier(
+  file: string,
+  options?: Partial<prettier.Options>
+) {
+  const prettierOptions: prettier.Options = {
+    ...options,
+    ...{
+      filepath: file
+    }
+  };
   const { result, source } = await format("project", file);
-  const prettierFormatted = prettier.format(source, {
-    filepath: file
-  });
+  const prettierFormatted = prettier.format(source, prettierOptions);
   assert.equal(result, prettierFormatted);
 }
 
@@ -64,9 +71,18 @@ suite("Test format Document", function() {
     formatSameAsPrettier("formatTest/ugly.ts"));
   test("it formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));
   test("it formats JSON", () => formatSameAsPrettier("formatTest/ugly.json"));
+  test("it formats JSONC", () =>
+    formatSameAsPrettier("formatTest/ugly.jsonc", { parser: "json" }));
   test("it formats JSON", () =>
     formatSameAsPrettier("formatTest/package.json"));
   test("it formats HTML", () => formatSameAsPrettier("formatTest/ugly.html"));
+  test("it formats LWC", () =>
+    formatSameAsPrettier("formatTest/lwc.html", { parser: "lwc" }));
   test("it formats TSX", () => formatSameAsPrettier("formatTest/ugly.tsx"));
   test("it formats SCSS", () => formatSameAsPrettier("formatTest/ugly.scss"));
+  test("it formats GraphQL", () =>
+    formatSameAsPrettier("formatTest/ugly.graphql"));
+  test("it formats HTML with literals", () =>
+    formatSameAsPrettier("formatTest/htmlWithLiterals.html"));
+  test("it formats Vue", () => formatSameAsPrettier("formatTest/ugly.vue"));
 });

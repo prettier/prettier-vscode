@@ -2,14 +2,15 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "VS Code plugin for prettier/prettier",
-  "version": "2.3.0",
-  "publisher": "esbenp",
-  "author": "Esben Petersen <@esbenp>",
+  "version": "3.1.1",
+  "preview": true,
+  "publisher": "prettier",
+  "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"
@@ -22,7 +23,35 @@
     "vscode": "^1.34.0"
   },
   "keywords": [
-    "multi-root ready"
+    "multi-root ready",
+    "prettier",
+    "formatter",
+    "javascript",
+    "js",
+    "jsx",
+    "flow",
+    "typescript",
+    "ts",
+    "json",
+    "css",
+    "less",
+    "scss",
+    "styled-components",
+    "styled-jsx",
+    "markdown",
+    "md",
+    "commonmark",
+    "mdx",
+    "php",
+    "pug",
+    "ruby",
+    "swift",
+    "html",
+    "vue",
+    "angular",
+    "graphql",
+    "yaml",
+    "yml"
   ],
   "categories": [
     "Formatters"
@@ -31,17 +60,19 @@
     "*"
   ],
   "icon": "icon.png",
-  "main": "./out/extension",
+  "main": "./dist/extension",
   "scripts": {
-    "clean": "rm -rf out",
-    "vscode:prepublish": "yarn compile",
-    "compile": "yarn clean && tsc -p ./",
-    "watch": "tsc --watch -p ./",
+    "clean": "node ./scripts/clean.js",
     "lint": "tslint --project .",
-    "pretest": "yarn compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install",
+    "pretest": "yarn test-compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install && cd ../outdated && yarn install",
+    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
+    "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
-    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'"
+    "vscode:prepublish": "webpack --mode production",
+    "watch": "tsc --watch -p ./",
+    "webpack-dev": "webpack --mode development --watch",
+    "webpack": "webpack --mode development"
   },
   "husky": {
     "hooks": {
@@ -62,29 +93,34 @@
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.1",
-    "@types/node": "10",
+    "@types/node": "12.x",
     "@types/prettier": "^1.18.3",
     "@types/resolve": "0.0.8",
+    "@types/semver": "^6.2.0",
+    "@types/sinon": "^7.5.0",
     "@types/vscode": "1.34.0",
-    "glob": "^7.1.4",
-    "husky": "^3.0.8",
+    "glob": "^7.1.6",
+    "husky": "^3.0.9",
     "lint-staged": "^9.4.2",
-    "mocha": "^6.2.1",
+    "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
-    "tslint": "^5.20.0",
+    "sinon": "^7.5.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2",
     "vscode-nls-dev": "^3.3.1",
-    "vscode-test": "^1.2.0"
+    "vscode-test": "^1.2.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
     "ignore": "^5.1.4",
-    "prettier": "^1.18.2",
-    "prettier-eslint": "^9.0.0",
-    "prettier-stylelint": "^0.4.2",
-    "prettier-tslint": "^0.4.2",
+    "mem": "^5.1.1",
+    "prettier": "^1.19.1",
     "read-pkg-up": "^7.0.0",
     "resolve": "^1.10.0",
-    "typescript": "^3.6.4",
+    "semver": "^6.3.0",
     "vscode-extension-telemetry": "^0.1.2",
     "vscode-nls": "^4.1.1"
   },
@@ -98,38 +134,15 @@
           "items": {
             "type": "string"
           },
-          "default": [
-            "vue"
-          ],
           "description": "%ext.config.disableLanguages%",
           "scope": "window"
-        },
-        "prettier.eslintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "%ext.config.eslintIntegration%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.tslintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "%ext.config.tslintIntegration%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.stylelintIntegration": {
-          "type": "boolean",
-          "default": false,
-          "description": "%ext.config.stylelintIntegration%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
         },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
           "description": "%ext.config.requireConfig%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.ignorePath": {
           "type": "string",
@@ -137,124 +150,229 @@
           "description": "%ext.config.ignorePath%",
           "scope": "resource"
         },
-        "prettier.printWidth": {
-          "type": "integer",
-          "default": 80,
-          "description": "%ext.config.printWidth%",
+        "prettier.prettierPath": {
+          "type": "string",
+          "description": "%ext.config.prettierPath%",
           "scope": "resource"
+        },
+        "prettier.configPath": {
+          "type": "string",
+          "description": "%ext.config.configPath%",
+          "scope": "resource"
+        },
+        "prettier.eslintIntegration": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "%ext.config.eslintIntegration%",
+          "scope": "resource",
+          "default": null,
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },
+        "prettier.tslintIntegration": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "%ext.config.tslintIntegration%",
+          "scope": "resource",
+          "default": null,
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },
+        "prettier.stylelintIntegration": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "%ext.config.stylelintIntegration%",
+          "default": null,
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
+        },
+        "prettier.printWidth": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "%ext.config.printWidth%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.tabWidth": {
-          "type": "integer",
-          "default": 2,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.tabWidth%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.singleQuote": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.singleQuote%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.trailingComma": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "none",
             "es5",
             "all"
           ],
-          "default": "none",
+          "default": null,
           "description": "%ext.config.trailingComma%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.bracketSpacing": {
-          "type": "boolean",
-          "default": true,
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.bracketSpacing%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.jsxBracketSameLine": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.jsxBracketSameLine%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.parser": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "babylon",
             "flow"
           ],
-          "default": "babylon",
+          "default": null,
           "description": "%ext.config.parser%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.semi": {
-          "type": "boolean",
-          "default": true,
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.semi%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.useTabs": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
           "description": "%ext.config.useTabs%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.proseWrap": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "preserve",
             "always",
             "never"
           ],
-          "default": "preserve",
-          "description": "%ext.config.proseWrap%"
+          "default": null,
+          "description": "%ext.config.proseWrap%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.arrowParens": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "avoid",
             "always"
           ],
-          "default": "avoid",
+          "default": null,
           "description": "%ext.config.arrowParens%",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.jsxSingleQuote": {
-          "type": "boolean",
-          "default": false,
-          "description": "%ext.config.jsxSingleQuote%"
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
+          "description": "%ext.config.jsxSingleQuote%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.htmlWhitespaceSensitivity": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "css",
             "strict",
             "ignore"
           ],
-          "default": "css",
-          "description": "%ext.config.htmlWhitespaceSensitivity%"
+          "default": null,
+          "description": "%ext.config.htmlWhitespaceSensitivity%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.endOfLine": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "auto",
             "lf",
             "crlf",
             "cr"
           ],
-          "default": "auto",
-          "description": "%ext.config.endOfLine%"
+          "default": null,
+          "description": "%ext.config.endOfLine%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.quoteProps": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "as-needed",
             "consistent",
             "preserve"
           ],
-          "default": "as-needed",
-          "description": "%ext.config.quoteProps%"
+          "default": null,
+          "description": "%ext.config.quoteProps%",
+          "scope": "resource",
+          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         }
       }
     },
@@ -284,6 +402,24 @@
         "filenames": [
           ".prettierignore"
         ]
+      },
+      {
+        "id": "graphql",
+        "extensions": [
+          ".graphql"
+        ]
+      },
+      {
+        "id": "vue",
+        "extensions": [
+          ".vue"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "prettier.createConfigFile",
+        "title": "%ext.command.createConfigFile.title%"
       }
     ]
   }

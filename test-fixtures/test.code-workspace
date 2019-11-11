@@ -17,35 +17,66 @@
     },
     {
       "path": "config"
+    },
+    {
+      "path": "outdated"
     }
   ],
   "settings": {
-    "prettier.eslintIntegration": false,
-    "prettier.printWidth": 80,
-    "prettier.tabWidth": 2,
-    "prettier.singleQuote": false,
-    "prettier.trailingComma": "none",
-    "prettier.bracketSpacing": true,
-    "prettier.jsxBracketSameLine": false,
-    "prettier.parser": "babylon",
-    "prettier.semi": true,
-    "prettier.useTabs": false,
-    "prettier.disableLanguages": [],
-    "prettier.endOfLine": "auto",
-    "prettier.htmlWhitespaceSensitivity": "css",
-    "prettier.jsxSingleQuote": false,
-    "prettier.quoteProps": "as-needed",
+    "editor.defaultFormatter": "prettier.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
     },
     "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "prettier.prettier-vscode"
     },
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "[jsonc]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[json5]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[postcss]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[less]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[scss]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[graphql]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[mdx]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "prettier.prettier-vscode"
     },
     "[php]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "prettier.prettier-vscode"
     }
   }
 }
