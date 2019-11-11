@@ -40,11 +40,11 @@
 
 <p align="center">
   <a href="https://dev.azure.com/prettier/prettier-vscode/_build?definitionId=6">
-    <img alt="Azure Pipelines Build Status" src="https://dev.azure.com/prettier/prettier-vscode/_apis/build/status/prettier.prettier-vscode?branchName=master"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
-    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/prettier.prettier-vscode"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
-    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/prettier.prettier-vscode"></a>
+    <img alt="Azure Pipelines Build Status" src="https://dev.azure.com/prettier/prettier-vscode/_apis/build/status/esbenp.prettier-vscode?branchName=master"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/esbenp.prettier-vscode"></a>
   <a href="#badge">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
   <a href="https://twitter.com/PrettierCode">
@@ -55,12 +55,12 @@
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install prettier.prettier-vscode
+ext install esbenp.prettier-vscode
 ```
 
 &#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.

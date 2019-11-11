@@ -4,13 +4,13 @@
   "description": "VS Code plugin for prettier/prettier",
   "version": "3.1.1",
   "preview": true,
-  "publisher": "prettier",
+  "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"

@@ -23,7 +23,7 @@ import {
 
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
-const extensionName = process.env.EXTENSION_NAME || "prettier.prettier-vscode";
+const extensionName = process.env.EXTENSION_NAME || "esbenp.prettier-vscode";
 const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 
 // telemetry reporter
