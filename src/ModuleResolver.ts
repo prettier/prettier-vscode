@@ -39,10 +39,6 @@ export class ModuleResolver {
     promptIfOutdated: boolean = false
   ): PrettierModule {
     if (!fileName) {
-      this.loggingService.logMessage(
-        "No path provided, using bundled prettier.",
-        "INFO"
-      );
       return prettier;
     }
 

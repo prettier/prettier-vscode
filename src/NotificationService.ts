@@ -113,7 +113,7 @@ export class NotificationService {
   private async warnIfLegacyLinterConfiguration(
     vscodeConfig: WorkspaceConfiguration
   ): Promise<boolean> {
-    const { hasLegacyConfig } = this.hasLegacyConfig(
+    const { hasLegacyConfig } = this.hasLegacyConfiguration(
       vscodeConfig,
       LEGACY_LINTER_OPTIONS
     );
@@ -127,16 +127,12 @@ export class NotificationService {
         VIEW_LOGS_ACTION_TEXT,
         REMOVE_LEGACY_OPTIONS_ACTION_TEXT
       );
-      this.logLegacyConfigOptionsIfSelected(
-        result,
-        LEGACY_LINTER_OPTIONS,
-        vscodeConfig
-      );
-      this.removeLegacyConfigurationOptionsIfSelected(
-        result,
-        LEGACY_LINTER_OPTIONS,
-        vscodeConfig
-      );
+      if (result && result === VIEW_LOGS_ACTION_TEXT) {
+        this.loggingService.show();
+      }
+      if (result && result === REMOVE_LEGACY_OPTIONS_ACTION_TEXT) {
+        this.removeLegacyConfiguration(LEGACY_LINTER_OPTIONS, vscodeConfig);
+      }
     }
     return hasLegacyConfig;
   }
@@ -148,7 +144,7 @@ export class NotificationService {
   private async warnIfLegacyPrettierConfiguration(
     vscodeConfig: WorkspaceConfiguration
   ): Promise<boolean> {
-    const { hasLegacyConfig, foundOptions } = this.hasLegacyConfig(
+    const { hasLegacyConfig, foundOptions } = this.hasLegacyConfiguration(
       vscodeConfig,
       LEGACY_PRETTIER_OPTIONS
     );
@@ -164,42 +160,41 @@ export class NotificationService {
         REMOVE_LEGACY_OPTIONS_ACTION_TEXT,
         MIGRATE_CONFIG_ACTION_TEXT
       );
-      this.logLegacyConfigOptionsIfSelected(
-        result,
-        LEGACY_PRETTIER_OPTIONS,
-        vscodeConfig
-      );
-      this.removeLegacyConfigurationOptionsIfSelected(
-        result,
-        LEGACY_PRETTIER_OPTIONS,
-        vscodeConfig
-      );
       if (result && result === MIGRATE_CONFIG_ACTION_TEXT) {
         await this.createConfigFileCommand(foundOptions);
-        LEGACY_PRETTIER_OPTIONS.forEach(key => {
-          const inspected = vscodeConfig.inspect(key);
-          if (inspected?.workspaceFolderValue) {
-            vscodeConfig.update(
-              key,
-              undefined,
-              ConfigurationTarget.WorkspaceFolder
-            );
-          }
-          if (inspected?.workspaceValue) {
-            vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
-          }
-        });
+        this.removeLegacyConfiguration(LEGACY_PRETTIER_OPTIONS, vscodeConfig);
+      }
+      if (result && result === VIEW_LOGS_ACTION_TEXT) {
+        this.loggingService.show();
+      }
+      if (result && result === REMOVE_LEGACY_OPTIONS_ACTION_TEXT) {
+        this.removeLegacyConfiguration(LEGACY_PRETTIER_OPTIONS, vscodeConfig);
       }
     }
     return hasLegacyConfig;
   }
 
-  private hasLegacyConfig(
+  private hasLegacyConfiguration(
     vscodeConfig: WorkspaceConfiguration,
     legacyConfigOptions: string[]
   ) {
     const foundOptions = new Map<string, any>();
     legacyConfigOptions.forEach(key => {
+      const inspected = vscodeConfig.inspect(key);
+      if (inspected) {
+        if (inspected.globalValue) {
+          this.loggingService.logMessage(
+            `Configuration value 'prettier.${key}' found in global configuration.`,
+            "WARN"
+          );
+        }
+        if (inspected.workspaceValue || inspected.workspaceFolderValue) {
+          this.loggingService.logMessage(
+            `Configuration value 'prettier.${key}' found in workspace configuration.`,
+            "WARN"
+          );
+        }
+      }
       const val = vscodeConfig.get(key);
       if (val !== null) {
         foundOptions.set(key, val);
@@ -209,73 +204,37 @@ export class NotificationService {
     return { hasLegacyConfig, foundOptions };
   }
 
-  private async removeLegacyConfigurationOptionsIfSelected(
-    actionResult: string | undefined,
+  private removeLegacyConfiguration(
     legacyConfigOptions: string[],
     vscodeConfig: WorkspaceConfiguration
   ) {
-    if (actionResult && actionResult === REMOVE_LEGACY_OPTIONS_ACTION_TEXT) {
-      legacyConfigOptions.forEach(key => {
-        const inspected = vscodeConfig.inspect(key);
-        if (inspected?.globalValue) {
-          vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
-          this.loggingService.logMessage(
-            `Removed setting 'prettier.${key}' from global configuration.`,
-            "INFO"
-          );
-        }
-        if (inspected?.workspaceFolderValue) {
-          vscodeConfig.update(
-            key,
-            undefined,
-            ConfigurationTarget.WorkspaceFolder
-          );
-          this.loggingService.logMessage(
-            `Removed setting 'prettier.${key}' from workspace folder configuration.`,
-            "INFO"
-          );
-        }
-        if (inspected?.workspaceValue) {
-          vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
-          this.loggingService.logMessage(
-            `Removed setting 'prettier.${key}' from workspace configuration.`,
-            "INFO"
-          );
-        }
-      });
-    }
-  }
-
-  private logLegacyConfigOptionsIfSelected(
-    actionResult: string | undefined,
-    legacyConfigOptions: string[],
-    vscodeConfig: WorkspaceConfiguration
-  ) {
-    if (actionResult && actionResult === VIEW_LOGS_ACTION_TEXT) {
-      legacyConfigOptions.forEach(key => {
-        const inspected = vscodeConfig.inspect(key);
-        if (inspected) {
-          if (inspected.globalValue) {
-            this.loggingService.logMessage(
-              `Configuration value 'prettier.${key}' found in global configuration.`,
-              "WARN"
-            );
-          }
-          if (inspected.workspaceFolderValue) {
-            this.loggingService.logMessage(
-              `Configuration value 'prettier.${key}' found in workspace folder configuration.`,
-              "WARN"
-            );
-          }
-          if (inspected.workspaceValue) {
-            this.loggingService.logMessage(
-              `Configuration value 'prettier.${key}' found in workspace configuration.`,
-              "WARN"
-            );
-          }
-        }
-      });
-      this.loggingService.show();
-    }
+    legacyConfigOptions.forEach(key => {
+      const inspected = vscodeConfig.inspect(key);
+      if (inspected?.globalValue) {
+        vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
+        this.loggingService.logMessage(
+          `Removed setting 'prettier.${key}' from global configuration.`,
+          "INFO"
+        );
+      }
+      if (inspected?.workspaceValue) {
+        vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
+        this.loggingService.logMessage(
+          `Removed setting 'prettier.${key}' from workspace configuration.`,
+          "INFO"
+        );
+      }
+      if (inspected?.workspaceFolderValue) {
+        vscodeConfig.update(
+          key,
+          undefined,
+          ConfigurationTarget.WorkspaceFolder
+        );
+        this.loggingService.logMessage(
+          `Removed setting 'prettier.${key}' from workspace folder configuration.`,
+          "INFO"
+        );
+      }
+    });
   }
 }
