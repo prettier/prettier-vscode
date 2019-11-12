@@ -181,21 +181,24 @@ export class NotificationService {
     const foundOptions = new Map<string, any>();
     legacyConfigOptions.forEach(key => {
       const inspected = vscodeConfig.inspect(key);
+      const val = vscodeConfig.get(key);
       if (inspected) {
-        if (inspected.globalValue) {
+        if (inspected.globalValue !== undefined) {
           this.loggingService.logMessage(
-            `Configuration value 'prettier.${key}' found in global configuration.`,
+            `Configuration value 'prettier.${key}' set to '${val}' found in global configuration.`,
             "WARN"
           );
         }
-        if (inspected.workspaceValue || inspected.workspaceFolderValue) {
+        if (
+          inspected.workspaceValue !== undefined ||
+          inspected.workspaceFolderValue !== undefined
+        ) {
           this.loggingService.logMessage(
-            `Configuration value 'prettier.${key}' found in workspace configuration.`,
+            `Configuration value 'prettier.${key}' set to '${val}' found in workspace configuration.`,
             "WARN"
           );
         }
       }
-      const val = vscodeConfig.get(key);
       if (val !== null) {
         foundOptions.set(key, val);
       }
@@ -209,32 +212,13 @@ export class NotificationService {
     vscodeConfig: WorkspaceConfiguration
   ) {
     legacyConfigOptions.forEach(key => {
-      const inspected = vscodeConfig.inspect(key);
-      if (inspected?.globalValue) {
-        vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
-        this.loggingService.logMessage(
-          `Removed setting 'prettier.${key}' from global configuration.`,
-          "INFO"
-        );
-      }
-      if (inspected?.workspaceValue) {
-        vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
-        this.loggingService.logMessage(
-          `Removed setting 'prettier.${key}' from workspace configuration.`,
-          "INFO"
-        );
-      }
-      if (inspected?.workspaceFolderValue) {
-        vscodeConfig.update(
-          key,
-          undefined,
-          ConfigurationTarget.WorkspaceFolder
-        );
-        this.loggingService.logMessage(
-          `Removed setting 'prettier.${key}' from workspace folder configuration.`,
-          "INFO"
-        );
-      }
+      vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
+      vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
+      vscodeConfig.update(key, undefined, ConfigurationTarget.WorkspaceFolder);
+      this.loggingService.logMessage(
+        `Removed setting 'prettier.${key}' from any configurations.`,
+        "INFO"
+      );
     });
   }
 }
