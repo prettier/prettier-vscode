@@ -20,7 +20,7 @@ const config = {
     devtoolModuleFilenameTemplate: "../[resource-path]"
   },
   plugins: [
-    new webpack.DefinePlugin({
+    new webpack.EnvironmentPlugin({
       EXTENSION_NAME: JSON.stringify(extensionPackage.name),
       EXTENSION_VERSION: JSON.stringify(extensionPackage.version)
     })
