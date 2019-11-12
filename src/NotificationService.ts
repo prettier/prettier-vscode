@@ -19,6 +19,29 @@ import {
 import { LoggingService } from "./LoggingService";
 import { PrettierModule } from "./types";
 
+const LEGACY_LINTER_OPTIONS = [
+  "eslintIntegration",
+  "tslintIntegration",
+  "stylelintIntegration"
+];
+
+const LEGACY_PRETTIER_OPTIONS = [
+  "printWidth",
+  "tabWidth",
+  "singleQuote",
+  "trailingComma",
+  "bracketSpacing",
+  "jsxBracketSameLine",
+  "semi",
+  "useTabs",
+  "proseWrap",
+  "arrowParens",
+  "jsxSingleQuote",
+  "htmlWhitespaceSensitivity",
+  "endOfLine",
+  "quoteProps"
+];
+
 const localize = nls.loadMessageBundle();
 
 export class NotificationService {
@@ -93,32 +116,84 @@ export class NotificationService {
   private async warnIfLegacyLinterConfiguration(
     vscodeConfig: WorkspaceConfiguration
   ): Promise<boolean> {
-    const legacyConfigOptions = [
-      "eslintIntegration",
-      "tslintIntegration",
-      "stylelintIntegration"
-    ];
-    const migratedOptions = new Map<string, any>();
-    legacyConfigOptions.forEach(key => {
-      const val = vscodeConfig.get(key);
-      if (val !== null) {
-        migratedOptions.set(key, val);
-      }
-    });
-    const hasLegacyConfig = migratedOptions.size > 0;
+    const { hasLegacyConfig } = this.hasLegacyConfig(
+      vscodeConfig,
+      LEGACY_LINTER_OPTIONS
+    );
     if (hasLegacyConfig) {
       const message = localize(
         "ext.message.legacyLinterConfigInUse",
         LEGACY_VSCODE_LINTER_CONFIG_MESSAGE
       );
-
       const result = await window.showWarningMessage(
         message,
         VIEW_LOGS_ACTION_TEXT
       );
-      this.logLegacyConfigOptions(result, legacyConfigOptions, vscodeConfig);
+      this.logLegacyConfigOptions(result, LEGACY_LINTER_OPTIONS, vscodeConfig);
     }
     return hasLegacyConfig;
+  }
+
+  /**
+   * Check if the resource has legacy config. Returns true if legacy config is found.
+   * @param vscodeConfig The configuration
+   */
+  private async warnIfLegacyPrettierConfiguration(
+    vscodeConfig: WorkspaceConfiguration
+  ): Promise<boolean> {
+    const { hasLegacyConfig, foundOptions } = this.hasLegacyConfig(
+      vscodeConfig,
+      LEGACY_PRETTIER_OPTIONS
+    );
+    if (hasLegacyConfig) {
+      const message = localize(
+        "ext.message.legacyPrettierConfigInUse",
+        LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
+      );
+
+      const result = await window.showWarningMessage(
+        message,
+        VIEW_LOGS_ACTION_TEXT,
+        MIGRATE_CONFIG_ACTION_TEXT
+      );
+      this.logLegacyConfigOptions(
+        result,
+        LEGACY_PRETTIER_OPTIONS,
+        vscodeConfig
+      );
+      if (result && result === MIGRATE_CONFIG_ACTION_TEXT) {
+        await this.createConfigFileCommand(foundOptions);
+        LEGACY_PRETTIER_OPTIONS.forEach(key => {
+          const inspected = vscodeConfig.inspect(key);
+          if (inspected?.workspaceFolderValue) {
+            vscodeConfig.update(
+              key,
+              undefined,
+              ConfigurationTarget.WorkspaceFolder
+            );
+          }
+          if (inspected?.workspaceValue) {
+            vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
+          }
+        });
+      }
+    }
+    return hasLegacyConfig;
+  }
+
+  private hasLegacyConfig(
+    vscodeConfig: WorkspaceConfiguration,
+    legacyConfigOptions: string[]
+  ) {
+    const foundOptions = new Map<string, any>();
+    legacyConfigOptions.forEach(key => {
+      const val = vscodeConfig.get(key);
+      if (val !== null) {
+        foundOptions.set(key, val);
+      }
+    });
+    const hasLegacyConfig = foundOptions.size > 0;
+    return { hasLegacyConfig, foundOptions };
   }
 
   private logLegacyConfigOptions(
@@ -152,69 +227,5 @@ export class NotificationService {
       });
       this.loggingService.show();
     }
-  }
-
-  /**
-   * Check if the resource has legacy config. Returns true if legacy config is found.
-   * @param vscodeConfig The configuration
-   */
-  private async warnIfLegacyPrettierConfiguration(
-    vscodeConfig: WorkspaceConfiguration
-  ): Promise<boolean> {
-    const legacyConfigOptions = [
-      "printWidth",
-      "tabWidth",
-      "singleQuote",
-      "trailingComma",
-      "bracketSpacing",
-      "jsxBracketSameLine",
-      "semi",
-      "useTabs",
-      "proseWrap",
-      "arrowParens",
-      "jsxSingleQuote",
-      "htmlWhitespaceSensitivity",
-      "endOfLine",
-      "quoteProps"
-    ];
-
-    const migratedOptions = new Map<string, any>();
-    legacyConfigOptions.forEach(key => {
-      const val = vscodeConfig.get(key);
-      if (val !== null) {
-        migratedOptions.set(key, val);
-      }
-    });
-    const hasLegacyConfig = migratedOptions.size > 0;
-    if (hasLegacyConfig) {
-      const message = localize(
-        "ext.message.legacyPrettierConfigInUse",
-        LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
-      );
-
-      const result = await window.showWarningMessage(
-        message,
-        VIEW_LOGS_ACTION_TEXT,
-        MIGRATE_CONFIG_ACTION_TEXT
-      );
-      this.logLegacyConfigOptions(result, legacyConfigOptions, vscodeConfig);
-      if (result && result === MIGRATE_CONFIG_ACTION_TEXT) {
-        await this.createConfigFileCommand(migratedOptions);
-        legacyConfigOptions.forEach(key => {
-          const inspected = vscodeConfig.inspect(key);
-          if (inspected?.workspaceFolderValue) {
-            vscodeConfig.update(
-              key,
-              undefined,
-              ConfigurationTarget.WorkspaceFolder
-            );
-          }
-          if (inspected?.workspaceValue) {
-            vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
-          }
-        });
-      }
-    }
-    return hasLegacyConfig;
   }
 }
