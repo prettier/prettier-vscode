@@ -61,7 +61,18 @@ Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the 
 ext install esbenp.prettier-vscode
 ```
 
-&#x26a0; A word of warning-if you have any other code formatting extensions installed such as for example hugely popular `HookyQR.beautify` or `taichi.react-beautify` they might take precedence and format your code instead of Prettier leading to unexpected results.
+### Default Formatter
+
+To ensure that this extension is used over other extensions you may have installed, be sure to set it as the default formatter in your VS Code settings. This setting can be set for all languages or by a specific language.
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[javascript]": {
+     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
 
 ### Prettier Resolution
 
