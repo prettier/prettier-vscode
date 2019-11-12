@@ -24,7 +24,9 @@ export class ModuleResolver {
     private loggingService: LoggingService,
     private notificationService: NotificationService
   ) {
-    this.findPkgMem = mem(this.findPkg);
+    this.findPkgMem = mem(this.findPkg, {
+      cacheKey: args => `${args[0]}:${args[1]}`
+    });
   }
 
   /**
