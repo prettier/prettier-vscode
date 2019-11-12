@@ -27,7 +27,7 @@
   "ext.config.trailingComma": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.useTabs": "Indent lines with tabs",
-  "ext.message.legacyLinterConfigInUse": "You have legacy linter settings in your VS Code config. They are no longer being used. See [documentation for migration information](https://github.com/prettier/prettier-vscode#vs-code-eslint-and-tslint-integration).",
-  "ext.message.legacyPrettierConfigInUse": "You have legacy settings in your VS Code config. They are being ignored Would you like to migrate them to '.prettierrc'?.",
-  "ext.message.outdatedPrettierVersion": "Your project is configured to use version {{version}} of prettier. You may encounter issues. It is recommended you upgrade to the latest version of prettier."
+  "ext.message.legacyLinterConfigInUse": "You have legacy linter options in your VS Code settings. They are no longer being used. See [documentation for migration information](https://github.com/prettier/prettier-vscode#vs-code-eslint-and-tslint-integration). Would you like to remove them or view the logs?",
+  "ext.message.legacyPrettierConfigInUse": "You have legacy options in your VS Code settings. They are being ignored. Would you like to migrate them to '.prettierrc', remove them, or view the logs?.",
+  "ext.message.outdatedPrettierVersion": "Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier."
 }

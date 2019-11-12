@@ -6,7 +6,7 @@ import { MessageItem, MessageOptions, window } from "vscode";
 import {
   LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE
-} from "../../messages";
+} from "../../message";
 import { format } from "./format.test";
 
 suite("Test notifications", function() {
