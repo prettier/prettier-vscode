@@ -39,7 +39,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [2.1.0]
 
-- Deprecated support for ESLint, TSLint, and Stylelint. [See documentation](https://github.com/prettier/prettier-vscode#vs-code-eslint-and-tslint-integration)
+- Deprecated support for ESLint, TSLint, and Stylelint. [See documentation](https://github.com/prettier/prettier-vscode#linter-integration)
 
 ## [1.12.0]
 

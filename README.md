@@ -102,7 +102,9 @@ You can also use the setting [`prettier.configPath`](https://github.com/prettier
 
 Version 3.0 has a number of breaking changes. The main thing to be aware of is that this extension no longer supports adding prettier specific settings to the VS Code configuration. If you previously had settings like `prettier.tabWidth` or anthing else from the [Prettier Configuration](https://prettier.io/docs/en/options.html) those VS Code settings will be ignored. Version 3.0 of the extension will attempt to find and warn you if it detects those settings as well as help you migrate to a `.prettierrc` file. See also [Error Messages](#error-messages)
 
-Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#vs-code-eslint-and-tslint-integration). See also [Error Messages](#error-messages)
+Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#linter-integration). See also [Error Messages](#error-messages)
+
+> NOTE: If you are seeing messages about legacy configuration settings, double check that you dont have any settings for `prettier.*` in your workspace or global settings. You must remove these.
 
 Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
@@ -138,7 +140,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 }
 ```
 
-### VS Code ESLint and TSLint Integration
+## Linter Integration
 
 The prefered way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
 
@@ -153,19 +155,13 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
-**Prettier Linter Integration (advanced)**
+### Prettier Linter Integration (advanced)
 
 > WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
 The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependancies like `prettier`, `eslint`, `tslint`, etc.
 
 This extension will automatically detect when you have these extensions installed and use them instead of `prettier` by itself. For configuration of these linter integrations, see their respective documentation.
-
-## Telemetry
-
-This extension uses Application Insights to track anonymous feature usage and version info. We don't record IP addresses or any other personally identifiable information. The reason we track this data is simply to help with prioritization of features.
-
-This extension respects the VS Code telemetry setting so if you have telemetry disabled in VS Code we will also not collect telemetry. See the [Visual Studio Code docs](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting) for information on how to disable telemetry.
 
 ## Settings
 
@@ -233,10 +229,16 @@ prettier.quoteProps
 
 **You have legacy linter settings in your VS Code config. They are no longer being used.**
 
-If you recieve this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted. See [these instructions for linter configuration](#vs-code-eslint-and-tslint-integration).
+If you recieve this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted. See [these instructions for linter configuration](#linter-integration).
 
 ```
 prettier.eslintIntegration
 prettier.tslintIntegration
 prettier.stylelintIntegration
 ```
+
+## Telemetry
+
+This extension uses Application Insights to track anonymous feature usage and version info. We don't record IP addresses or any other personally identifiable information. The reason we track this data is simply to help with prioritization of features.
+
+This extension respects the VS Code telemetry setting so if you have telemetry disabled in VS Code we will also not collect telemetry. See the [Visual Studio Code docs](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting) for information on how to disable telemetry.
