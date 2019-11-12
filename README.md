@@ -67,7 +67,7 @@ To ensure that this extension is used over other extensions you may have install
 
 ```json
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
      "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
