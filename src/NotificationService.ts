@@ -9,15 +9,14 @@ import {
 import TelemetryReporter from "vscode-extension-telemetry";
 import * as nls from "vscode-nls";
 import { createConfigFileFunction } from "./Commands";
+import { LoggingService } from "./LoggingService";
 import {
   LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
   LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE,
   MIGRATE_CONFIG_ACTION_TEXT,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   VIEW_LOGS_ACTION_TEXT
-} from "./Consts";
-import { LoggingService } from "./LoggingService";
-import { PrettierModule } from "./types";
+} from "./messages";
 
 const LEGACY_LINTER_OPTIONS = [
   "eslintIntegration",
@@ -53,10 +52,7 @@ export class NotificationService {
     private createConfigFileCommand: createConfigFileFunction
   ) {}
 
-  public warnOutdatedPrettierVersion(
-    prettierInstance?: PrettierModule,
-    prettierPath?: string
-  ) {
+  public warnOutdatedPrettierVersion(prettierPath?: string) {
     const message = localize(
       "ext.message.outdatedPrettierVersion",
       OUTDATED_PRETTIER_VERSION_MESSAGE

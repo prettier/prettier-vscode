@@ -72,10 +72,7 @@ export class ModuleResolver {
         if (promptIfOutdated) {
           // We only prompt when formatting a file. If we did it on load there
           // could be lots of these notifications which would be annoying.
-          this.notificationService.warnOutdatedPrettierVersion(
-            moduleInstance,
-            modulePath
-          );
+          this.notificationService.warnOutdatedPrettierVersion(modulePath);
         }
         this.loggingService.logMessage(
           "Outdated version of prettier installed. Falling back to bundled version of prettier.",
