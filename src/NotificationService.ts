@@ -75,9 +75,9 @@ export class NotificationService {
       vscodeConfig
     );
 
-    this.telemetryReporter.sendTelemetryEvent("hasLegacyConfig", undefined, {
-      linters: hasLegacyLinterConfig ? 1 : 0,
-      prettier: hasLegacyPrettierConfig ? 1 : 0
+    this.telemetryReporter.sendTelemetryEvent("legacyConfig", undefined, {
+      "legacyConfig.linters": hasLegacyLinterConfig ? 1 : 0,
+      "legacyConfig.prettier": hasLegacyPrettierConfig ? 1 : 0
     });
 
     if (!hasLegacyPrettierConfig && !hasLegacyLinterConfig) {
@@ -153,7 +153,6 @@ export class NotificationService {
         "ext.message.legacyPrettierConfigInUse",
         LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
       );
-
       const result = await window.showWarningMessage(
         message,
         VIEW_LOGS_ACTION_TEXT,
@@ -188,6 +187,7 @@ export class NotificationService {
             `Configuration value 'prettier.${key}' set to '${val}' found in global configuration.`,
             "WARN"
           );
+          foundOptions.set(key, val);
         }
         if (
           inspected.workspaceValue !== undefined ||
@@ -197,10 +197,8 @@ export class NotificationService {
             `Configuration value 'prettier.${key}' set to '${val}' found in workspace configuration.`,
             "WARN"
           );
+          foundOptions.set(key, val);
         }
-      }
-      if (val !== null) {
-        foundOptions.set(key, val);
       }
     });
     const hasLegacyConfig = foundOptions.size > 0;

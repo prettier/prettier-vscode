@@ -69,7 +69,7 @@ To ensure that this extension is used over other extensions you may have install
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-     "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 ```
@@ -87,6 +87,16 @@ npm install prettier -D
 ### Plugins
 
 This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
+
+## Configuration
+
+This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root.
+
+### Configuring Default Options
+
+Some users may not wish to create a new Prettier config for every project. Because Prettier searches recursively up the filepath, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
+
+You can also use the setting [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath) to provide a global configuration. However, be careful, if this is set this value will always be used and local configuration files will be ignored.
 
 ## Migrating from Versions 2.x
 
@@ -177,11 +187,15 @@ Require a 'prettierconfig' to format
 #### prettier.ignorePath
 
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
-Files which match will not be formatted. Set to `null` to not read ignore files. Restart required.
+Files which match will not be formatted. Set to `null` to not read ignore files.
+
+> Note that this is set, this value will always be used and local ignore files will be ignored.
 
 #### prettier.configPath
 
 Supply a custom path to the prettier configuration file.
+
+> Note that this is set, this value will always be used and local configuration files will be ignored. A better option for global defaults is to put a `~/.prettierrc` file in your home directory.
 
 #### prettier.prettierPath
 
@@ -189,7 +203,7 @@ Supply a custom path to the prettier module.
 
 #### prettier.disableLanguages
 
-A list of languages IDs to disable this extension on. Restart required.
+A list of languages IDs to disable this extension on.
 _Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run_
 
 ## Error Messages
