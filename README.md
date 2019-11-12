@@ -185,13 +185,13 @@ Require a 'prettierconfig' to format
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files.
 
-> Note that this is set, this value will always be used and local ignore files will be ignored.
+**Note, if this is set, this value will always be used and local ignore files will be ignored.**
 
 #### prettier.configPath
 
 Supply a custom path to the prettier configuration file.
 
-> Note that this is set, this value will always be used and local configuration files will be ignored. A better option for global defaults is to put a `~/.prettierrc` file in your home directory.
+**Note, if this is set, this value will always be used and local configuration files will be ignored. A better option for global defaults is to put a `~/.prettierrc` file in your home directory.**
 
 #### prettier.prettierPath
 
@@ -200,7 +200,8 @@ Supply a custom path to the prettier module.
 #### prettier.disableLanguages
 
 A list of languages IDs to disable this extension on.
-_Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run_
+
+**Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
 
 ## Error Messages
 
