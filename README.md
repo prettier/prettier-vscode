@@ -90,7 +90,7 @@ This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.h
 
 ## Configuration
 
-This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root.
+This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not will running prettier through the command line.
 
 ### Configuring Default Options
 
@@ -100,11 +100,9 @@ You can also use the setting [`prettier.configPath`](https://github.com/prettier
 
 ## Migrating from Versions 2.x
 
-Version 3.0 has a number of breaking changes. The main thing to be aware of is that this extension no longer supports adding prettier specific settings to the VS Code configuration. If you previously had settings like `prettier.tabWidth` or anthing else from the [Prettier Configuration](https://prettier.io/docs/en/options.html) those VS Code settings will be ignored. Version 3.0 of the extension will attempt to find and warn you if it detects those settings as well as help you migrate to a `.prettierrc` file. See also [Error Messages](#error-messages)
+Version 3.0 has a number of breaking changes. The settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#linter-integration). See also [Error Messages](#error-messages)
 
-Additionally, the settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#linter-integration). See also [Error Messages](#error-messages)
-
-> NOTE: If you are seeing messages about legacy configuration settings, double check that you dont have any settings for `prettier.*` in your workspace or global settings. You must remove these.
+> NOTE: If you are seeing messages about legacy configuration settings, double check that you dont have any settings for the linters in your workspace or global settings. You must remove these. See also [Error Messages](#error-messages)
 
 Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
