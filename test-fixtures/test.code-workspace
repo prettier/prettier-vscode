@@ -19,9 +19,6 @@
       "path": "config"
     },
     {
-      "path": "vscodeconfig"
-    },
-    {
       "path": "outdated"
     }
   ],
@@ -80,6 +77,7 @@
     },
     "[php]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "prettier.trailingComma": "all"
   }
 }

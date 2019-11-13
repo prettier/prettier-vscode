@@ -44,7 +44,6 @@ interface IExtensionConfig {
    */
   disableLanguages: string[];
 }
-
 /**
  * Configuration for prettier-vscode
  */

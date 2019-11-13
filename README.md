@@ -90,7 +90,7 @@ This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.h
 
 ## Configuration
 
-This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not will running prettier through the command line.
+This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not when running prettier through the command line. The recommended approach is to only use the prettier configuration files.
 
 ### Configuring Default Options
 

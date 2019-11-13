@@ -1,6 +1,5 @@
 import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
-import { workspace } from "vscode";
 import { LoggingService } from "./LoggingService";
 
 interface IResolveConfigResult {
@@ -19,6 +18,7 @@ export class ConfigResolver {
   public async getPrettierOptions(
     fileName: string,
     parser: prettier.BuiltInParserName,
+    vsCodeConfig: prettier.Options,
     options: prettier.ResolveConfigOptions,
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<Partial<prettier.Options>> {
@@ -34,30 +34,25 @@ export class ConfigResolver {
       );
     }
 
-    const vsOpts: any = {};
-    const config = workspace.getConfiguration("prettier");
-    const getConfig = (key: string) => {
-      const val = config.get(key);
-      return val !== null ? val : undefined;
+    const vsOpts = {
+      arrowParens: vsCodeConfig.arrowParens,
+      bracketSpacing: vsCodeConfig.bracketSpacing,
+      endOfLine: vsCodeConfig.endOfLine,
+      htmlWhitespaceSensitivity: vsCodeConfig.htmlWhitespaceSensitivity,
+      insertPragma: vsCodeConfig.insertPragma,
+      jsxBracketSameLine: vsCodeConfig.jsxBracketSameLine,
+      jsxSingleQuote: vsCodeConfig.jsxSingleQuote,
+      printWidth: vsCodeConfig.printWidth,
+      proseWrap: vsCodeConfig.proseWrap,
+      quoteProps: vsCodeConfig.quoteProps,
+      requirePragma: vsCodeConfig.requirePragma,
+      semi: vsCodeConfig.semi,
+      singleQuote: vsCodeConfig.singleQuote,
+      tabWidth: vsCodeConfig.tabWidth,
+      trailingComma: vsCodeConfig.trailingComma,
+      useTabs: vsCodeConfig.useTabs,
+      vueIndentScriptAndStyle: (vsCodeConfig as any).vueIndentScriptAndStyle // Temporary hack since type doesnt have this yet
     };
-
-    vsOpts.arrowParens = getConfig("arrowParens");
-    vsOpts.bracketSpacing = getConfig("bracketSpacing");
-    vsOpts.endOfLine = getConfig("endOfLine");
-    vsOpts.htmlWhitespaceSensitivity = getConfig("htmlWhitespaceSensitivity");
-    vsOpts.insertPragma = getConfig("insertPragma");
-    vsOpts.jsxBracketSameLine = getConfig("jsxBracketSameLine");
-    vsOpts.jsxSingleQuote = getConfig("jsxSingleQuote");
-    vsOpts.printWidth = getConfig("printWidth");
-    vsOpts.proseWrap = getConfig("proseWrap");
-    vsOpts.quoteProps = getConfig("quoteProps");
-    vsOpts.requirePragma = getConfig("requirePragma");
-    vsOpts.semi = getConfig("semi");
-    vsOpts.singleQuote = getConfig("singleQuote");
-    vsOpts.tabWidth = getConfig("tabWidth");
-    vsOpts.trailingComma = getConfig("trailingComma");
-    vsOpts.useTabs = getConfig("useTabs");
-    vsOpts.vueIndentScriptAndStyle = getConfig("vueIndentScriptAndStyle");
 
     const prettierOptions: prettier.Options = {
       ...vsOpts,
