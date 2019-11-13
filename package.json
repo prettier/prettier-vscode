@@ -3,7 +3,7 @@
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "3.4.1",
-  "publisher": "prettier",
+  "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
