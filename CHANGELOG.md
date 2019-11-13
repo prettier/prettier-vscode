@@ -4,15 +4,21 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [3.4.0]
+## [3.5.0]
 
-**NOTE: 3.0 has a number of breaking changes**
+- Fixed issue resolving user home files on mac. i.e. (`~/.prettierrc`) (#1045)
+- Improved tests for config resolution
+
+## [3.4.0]
 
 - Adds back VS Code config
 
-## [3.2.0]
+## [3.3.0]
 
-**NOTE: 3.0 has a number of breaking changes**
+- Bug fixes
+- Change telemetry metric names
+
+## [3.2.0]
 
 - Removed support for Prettier versions older than 1.13.0.
 - No longer bundling linters with extension - to use install them in your package.json.
