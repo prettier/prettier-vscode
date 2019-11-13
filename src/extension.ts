@@ -1,11 +1,9 @@
 import { clearConfigCache } from "prettier";
 import {
-  commands,
   ExtensionContext
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
-import { createConfigFile } from "./Commands";
 import { ConfigResolver } from "./ConfigResolver";
 import { Formatter } from "./Formatter";
 import { IgnorerResolver } from "./IgnorerResolver";
@@ -13,7 +11,6 @@ import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
-import { TemplateService } from "./TemplateService";
 import {
   configWatcher,
   fileWatcher,
@@ -37,14 +34,6 @@ export function activate(context: ExtensionContext) {
   loggingService.logMessage(`Extension Name: ${extensionName}.`, "INFO");
   loggingService.logMessage(`Extension Version: ${extensionVersion}.`, "INFO");
 
-  const templateService = new TemplateService(loggingService);
-
-  const createConfigFileFunc = createConfigFile(templateService);
-  const createConfigFileCommand = commands.registerCommand(
-    "prettier.createConfigFile",
-    createConfigFileFunc
-  );
-
   // create telemetry reporter on extension activation
   reporter = new TelemetryReporter(
     extensionName,
@@ -52,11 +41,7 @@ export function activate(context: ExtensionContext) {
     telemetryKey
   );
 
-  const notificationService = new NotificationService(
-    reporter,
-    loggingService,
-    createConfigFileFunc
-  );
+  const notificationService = new NotificationService(reporter, loggingService);
   const moduleResolver = new ModuleResolver(
     loggingService,
     notificationService
@@ -86,8 +71,7 @@ export function activate(context: ExtensionContext) {
     fileWatcher(clearConfigCache),
     packageWatcher(formatter.registerFormatter),
     formatter,
-    reporter,
-    createConfigFileCommand
+    reporter
   );
 
   const hrend = process.hrtime(hrstart);

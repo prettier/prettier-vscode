@@ -8,12 +8,9 @@ import {
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
 import * as nls from "vscode-nls";
-import { createConfigFileFunction } from "./Commands";
 import { LoggingService } from "./LoggingService";
 import {
   LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
-  LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE,
-  MIGRATE_CONFIG_ACTION_TEXT,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   REMOVE_LEGACY_OPTIONS_ACTION_TEXT,
   VIEW_LOGS_ACTION_TEXT
@@ -25,23 +22,6 @@ const LEGACY_LINTER_OPTIONS = [
   "stylelintIntegration"
 ];
 
-const LEGACY_PRETTIER_OPTIONS = [
-  "printWidth",
-  "tabWidth",
-  "singleQuote",
-  "trailingComma",
-  "bracketSpacing",
-  "jsxBracketSameLine",
-  "semi",
-  "useTabs",
-  "proseWrap",
-  "arrowParens",
-  "jsxSingleQuote",
-  "htmlWhitespaceSensitivity",
-  "endOfLine",
-  "quoteProps"
-];
-
 const localize = nls.loadMessageBundle();
 
 export class NotificationService {
@@ -49,8 +29,7 @@ export class NotificationService {
 
   constructor(
     private telemetryReporter: TelemetryReporter,
-    private loggingService: LoggingService,
-    private createConfigFileCommand: createConfigFileFunction
+    private loggingService: LoggingService
   ) {}
 
   public warnOutdatedPrettierVersion(prettierPath?: string) {
@@ -68,19 +47,15 @@ export class NotificationService {
       return;
     }
     const vscodeConfig = workspace.getConfiguration("prettier", uri);
-    const hasLegacyPrettierConfig = await this.warnIfLegacyPrettierConfiguration(
-      vscodeConfig
-    );
     const hasLegacyLinterConfig = await this.warnIfLegacyLinterConfiguration(
       vscodeConfig
     );
 
     this.telemetryReporter.sendTelemetryEvent("legacyConfig", undefined, {
-      "legacyConfig.linters": hasLegacyLinterConfig ? 1 : 0,
-      "legacyConfig.prettier": hasLegacyPrettierConfig ? 1 : 0
+      "legacyConfig.linters": hasLegacyLinterConfig ? 1 : 0
     });
 
-    if (!hasLegacyPrettierConfig && !hasLegacyLinterConfig) {
+    if (!hasLegacyLinterConfig) {
       // No legacy configs, add to cache
       this.noLegacyConfigWorkspaces.push(cacheKey);
     }
@@ -132,42 +107,6 @@ export class NotificationService {
       }
       if (result && result === REMOVE_LEGACY_OPTIONS_ACTION_TEXT) {
         this.removeLegacyConfiguration(LEGACY_LINTER_OPTIONS, vscodeConfig);
-      }
-    }
-    return hasLegacyConfig;
-  }
-
-  /**
-   * Check if the resource has legacy config. Returns true if legacy config is found.
-   * @param vscodeConfig The configuration
-   */
-  private async warnIfLegacyPrettierConfiguration(
-    vscodeConfig: WorkspaceConfiguration
-  ): Promise<boolean> {
-    const { hasLegacyConfig, foundOptions } = this.hasLegacyConfiguration(
-      vscodeConfig,
-      LEGACY_PRETTIER_OPTIONS
-    );
-    if (hasLegacyConfig) {
-      const message = localize(
-        "ext.message.legacyPrettierConfigInUse",
-        LEGACY_VSCODE_PRETTIER_CONFIG_MESSAGE
-      );
-      const result = await window.showWarningMessage(
-        message,
-        VIEW_LOGS_ACTION_TEXT,
-        REMOVE_LEGACY_OPTIONS_ACTION_TEXT,
-        MIGRATE_CONFIG_ACTION_TEXT
-      );
-      if (result && result === MIGRATE_CONFIG_ACTION_TEXT) {
-        await this.createConfigFileCommand(foundOptions);
-        this.removeLegacyConfiguration(LEGACY_PRETTIER_OPTIONS, vscodeConfig);
-      }
-      if (result && result === VIEW_LOGS_ACTION_TEXT) {
-        this.loggingService.show();
-      }
-      if (result && result === REMOVE_LEGACY_OPTIONS_ACTION_TEXT) {
-        this.removeLegacyConfiguration(LEGACY_PRETTIER_OPTIONS, vscodeConfig);
       }
     }
     return hasLegacyConfig;

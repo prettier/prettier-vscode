@@ -169,8 +169,31 @@ This extension will automatically detect when you have these extensions installe
 
 Settings will be read from (listed by priority):
 
+1. Visual Studio Code Settings
 1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
 1. `.editorconfig`
+
+All prettier options can be configured directly in this extension. The availible options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
+
+```
+prettier.arrowParens
+prettier.bracketSpacing
+prettier.endOfLine
+prettier.htmlWhitespaceSensitivity
+prettier.insertPragma
+prettier.jsxBracketSameLine
+prettier.jsxSingleQuote
+prettier.printWidth
+prettier.proseWrap
+prettier.quoteProps
+prettier.requirePragma
+prettier.semi
+prettier.singleQuote
+prettier.tabWidth
+prettier.trailingComma
+prettier.useTabs
+prettier.vueIndentScriptAndStyle
+```
 
 ### Extension Settings
 
@@ -205,28 +228,9 @@ A list of languages IDs to disable this extension on.
 
 ## Error Messages
 
-**You have legacy settings in your VS Code config. They are being ignored Would you like to migrate them to '.prettierrc'?.**
+**Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
-If you recieve this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings.
-
-Remove any of the following configurations by moving them to the [Prettier Configuration](https://prettier.io/docs/en/options.html).
-
-```
-prettier.printWidth
-prettier.tabWidth
-prettier.singleQuote
-prettier.trailingComma
-prettier.bracketSpacing
-prettier.jsxBracketSameLine
-prettier.semi
-prettier.useTabs
-prettier.proseWrap
-prettier.arrowParens
-prettier.jsxSingleQuote
-prettier.htmlWhitespaceSensitivity
-prettier.endOfLine
-prettier.quoteProps
-```
+You must upgrade to a newer version of prettier.
 
 **You have legacy linter settings in your VS Code config. They are no longer being used.**
 

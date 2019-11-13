@@ -1,7 +1,7 @@
 {
   "name": "prettier-vscode",
-  "displayName": "Prettier - Code formatter",
-  "description": "VS Code plugin for prettier",
+  "displayName": "Prettier",
+  "description": "Code formatter using prettier",
   "version": "3.3.5",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
@@ -190,69 +190,45 @@
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
         },
         "prettier.printWidth": {
-          "type": [
-            "integer",
-            "null"
-          ],
-          "default": null,
+          "type": "integer",
+          "default": 80,
           "description": "%ext.config.printWidth%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.tabWidth": {
-          "type": [
-            "integer",
-            "null"
-          ],
-          "default": null,
+          "type": "integer",
+          "default": 2,
           "description": "%ext.config.tabWidth%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.singleQuote": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": false,
           "description": "%ext.config.singleQuote%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.trailingComma": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "none",
             "es5",
             "all"
           ],
-          "default": null,
+          "default": "none",
           "description": "%ext.config.trailingComma%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.bracketSpacing": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": true,
           "description": "%ext.config.bracketSpacing%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": false,
           "description": "%ext.config.jsxBracketSameLine%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.parser": {
           "type": [
@@ -269,109 +245,95 @@
           "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
         },
         "prettier.semi": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": true,
           "description": "%ext.config.semi%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
+        },
+        "prettier.requirePragma": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.requirePragma%",
+          "scope": "resource"
+        },
+        "prettier.insertPragma": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.insertPragma%",
+          "scope": "resource"
         },
         "prettier.useTabs": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": false,
           "description": "%ext.config.useTabs%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.proseWrap": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "preserve",
             "always",
             "never"
           ],
-          "default": null,
+          "default": "preserve",
           "description": "%ext.config.proseWrap%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.arrowParens": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "avoid",
             "always"
           ],
-          "default": null,
+          "default": "avoid",
           "description": "%ext.config.arrowParens%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.jsxSingleQuote": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "default": null,
+          "type": "boolean",
+          "default": false,
           "description": "%ext.config.jsxSingleQuote%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.htmlWhitespaceSensitivity": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "css",
             "strict",
             "ignore"
           ],
-          "default": null,
+          "default": "css",
           "description": "%ext.config.htmlWhitespaceSensitivity%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
+        },
+        "prettier.vueIndentScriptAndStyle": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.vueIndentScriptAndStyle%",
+          "scope": "resource"
         },
         "prettier.endOfLine": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "auto",
             "lf",
             "crlf",
             "cr"
           ],
-          "default": null,
+          "default": "auto",
           "description": "%ext.config.endOfLine%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.quoteProps": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "enum": [
             "as-needed",
             "consistent",
             "preserve"
           ],
-          "default": null,
+          "default": "as-needed",
           "description": "%ext.config.quoteProps%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         }
       }
     },

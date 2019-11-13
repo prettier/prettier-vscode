@@ -16,7 +16,6 @@ import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import {
-  IExtensionConfig,
   IPrettierStylelint,
   PrettierEslintFormat,
   PrettierTslintFormat
@@ -89,7 +88,7 @@ export default class PrettierEditProvider
     // LEGACY: Remove in version 4.x
     this.notificationService.warnIfLegacyConfiguration(uri);
 
-    const vscodeConfig: IExtensionConfig = getConfig(uri);
+    const vscodeConfig = getConfig(uri);
     const prettierInstance = this.moduleResolver.getPrettierInstance(
       vscodeConfig.prettierPath,
       fileName,

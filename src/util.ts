@@ -1,7 +1,7 @@
 import * as path from "path";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Uri, workspace } from "vscode";
-import { IExtensionConfig } from "./types";
+import { PrettierVSCodeConfig } from "./types";
 
 export function getWorkspaceRelativePath(
   filePath: string,
@@ -17,6 +17,6 @@ export function getWorkspaceRelativePath(
   }
 }
 
-export function getConfig(uri?: Uri): IExtensionConfig {
+export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   return workspace.getConfiguration("prettier", uri) as any;
 }
