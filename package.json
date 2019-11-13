@@ -1,9 +1,9 @@
 {
   "name": "prettier-vscode",
-  "displayName": "Prettier",
+  "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "3.4.0",
-  "publisher": "esbenp",
+  "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",

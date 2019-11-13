@@ -25,7 +25,7 @@
   "ext.config.singleQuote": "If true, will use single instead of double quotes",
   "ext.config.stylelintIntegration": "Use 'prettier-stylelint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
   "ext.config.tabWidth": "Number of spaces it should use per tab",
-  "ext.config.title": "Prettier - Code formatter configuration",
+  "ext.config.title": "Prettier",
   "ext.config.trailingComma": "Controls the printing of trailing commas wherever possible.\n Valid options:\n    'none' - No trailing commas\n    'es5' - Trailing commas where valid in ES5 (objects, arrays, etc)\n    'all' - Trailing commas wherever possible (function arguments)",
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.useTabs": "Indent lines with tabs",
