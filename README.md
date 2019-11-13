@@ -167,9 +167,9 @@ This extension will automatically detect when you have these extensions installe
 
 Settings will be read from (listed by priority):
 
-1. Visual Studio Code Settings
 1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
 1. `.editorconfig`
+1. Visual Studio Code Settings
 
 All prettier options can be configured directly in this extension. The availible options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
