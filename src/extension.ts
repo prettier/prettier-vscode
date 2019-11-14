@@ -1,9 +1,11 @@
 import { clearConfigCache } from "prettier";
 import {
+  commands,
   ExtensionContext
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
+import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
 import { Formatter } from "./Formatter";
 import { IgnorerResolver } from "./IgnorerResolver";
@@ -11,6 +13,7 @@ import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import EditProvider from "./PrettierEditProvider";
+import { TemplateService } from "./TemplateService";
 import {
   configWatcher,
   fileWatcher,
@@ -39,6 +42,13 @@ export function activate(context: ExtensionContext) {
     extensionName,
     extensionVersion,
     telemetryKey
+  );
+
+  const templateService = new TemplateService(loggingService);
+  const createConfigFileFunc = createConfigFile(templateService);
+  const createConfigFileCommand = commands.registerCommand(
+    "prettier.createConfigFile",
+    createConfigFileFunc
   );
 
   const notificationService = new NotificationService(reporter, loggingService);
@@ -71,7 +81,8 @@ export function activate(context: ExtensionContext) {
     fileWatcher(clearConfigCache),
     packageWatcher(formatter.registerFormatter),
     formatter,
-    reporter
+    reporter,
+    createConfigFileCommand
   );
 
   const hrend = process.hrtime(hrstart);
