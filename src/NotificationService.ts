@@ -1,5 +1,6 @@
 import {
   ConfigurationTarget,
+  Disposable,
   Uri,
   window,
   workspace,
@@ -24,8 +25,8 @@ const LEGACY_LINTER_OPTIONS = [
 
 const localize = nls.loadMessageBundle();
 
-export class NotificationService {
-  public noLegacyConfigWorkspaces: string[] = [];
+export class NotificationService implements Disposable {
+  private noLegacyConfigWorkspaces: string[] = [];
 
   constructor(
     private telemetryReporter: TelemetryReporter,
@@ -77,7 +78,7 @@ export class NotificationService {
     }
   }
 
-  public clearCache() {
+  public dispose() {
     this.noLegacyConfigWorkspaces = [];
   }
 

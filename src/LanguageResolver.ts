@@ -1,5 +1,5 @@
 import * as prettier from "prettier";
-import { PrettierModule } from "./types.d";
+import { ModuleResolver } from "./ModuleResolver";
 
 const ESLINT_SUPPORTED_LANGUAGES = [
   "javascript",
@@ -12,11 +12,12 @@ const ESLINT_SUPPORTED_LANGUAGES = [
 const STYLE_PARSERS = ["postcss", "css", "less", "scss"];
 
 export class LanguageResolver {
-  constructor(private prettierInstance: PrettierModule) {}
+  constructor(private moduleResolver: ModuleResolver) {}
   public getParsersFromLanguageId(
+    fsPath: string,
     languageId: string
   ): prettier.BuiltInParserName[] | string[] {
-    const language = this.getSupportLanguages().find(
+    const language = this.getSupportLanguages(fsPath).find(
       lang =>
         lang &&
         lang.extensions &&
@@ -29,9 +30,9 @@ export class LanguageResolver {
     return language.parsers;
   }
 
-  public allEnabledLanguages(): string[] {
+  public allEnabledLanguages(fsPath?: string): string[] {
     const enabledLanguages: string[] = [];
-    this.getSupportLanguages().forEach(lang => {
+    this.getSupportLanguages(fsPath).forEach(lang => {
       if (lang && lang.vscodeLanguageIds) {
         enabledLanguages.push(...lang.vscodeLanguageIds);
       }
@@ -60,7 +61,8 @@ export class LanguageResolver {
     return STYLE_PARSERS.includes(parser);
   }
 
-  private getSupportLanguages() {
-    return this.prettierInstance.getSupportInfo().languages;
+  private getSupportLanguages(fsPath?: string) {
+    const prettierInstance = this.moduleResolver.getPrettierInstance(fsPath);
+    return prettierInstance.getSupportInfo().languages;
   }
 }

@@ -7,12 +7,13 @@ import {
 import TelemetryReporter from "vscode-extension-telemetry";
 import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
-import { Formatter } from "./Formatter";
 import { IgnorerResolver } from "./IgnorerResolver";
+import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
-import EditProvider from "./PrettierEditProvider";
+import PrettierEditService from "./PrettierEditService";
+import { StatusBarService } from "./StatusBarService";
 import { TemplateService } from "./TemplateService";
 import {
   configWatcher,
@@ -50,39 +51,47 @@ export function activate(context: ExtensionContext) {
     "prettier.createConfigFile",
     createConfigFileFunc
   );
+  const openOutputCommand = commands.registerCommand(
+    "prettier.open-output",
+    () => {
+      loggingService.show();
+    }
+  );
 
+  const ignoreReslver = new IgnorerResolver(loggingService);
+  const configResolver = new ConfigResolver(loggingService);
   const notificationService = new NotificationService(reporter, loggingService);
+
   const moduleResolver = new ModuleResolver(
     loggingService,
     notificationService
   );
-  const ignoreReslver = new IgnorerResolver(loggingService);
-  const configResolver = new ConfigResolver(loggingService);
 
-  const editProvider = new EditProvider(
+  const languageResolver = new LanguageResolver(moduleResolver);
+
+  const statusBarService = new StatusBarService(languageResolver);
+
+  const editService = new PrettierEditService(
     moduleResolver,
+    languageResolver,
     ignoreReslver,
     configResolver,
     loggingService,
-    notificationService
+    notificationService,
+    statusBarService
   );
-
-  const formatter = new Formatter(
-    moduleResolver,
-    editProvider,
-    loggingService,
-    notificationService
-  );
-  formatter.registerFormatter();
+  editService.registerFormatter();
 
   context.subscriptions.push(
-    workspaceFolderWatcher(formatter.registerFormatter),
-    configWatcher(formatter.registerFormatter),
+    workspaceFolderWatcher(editService.registerFormatter),
+    configWatcher(editService.registerFormatter),
+    packageWatcher(editService.registerFormatter),
     fileWatcher(clearConfigCache),
-    packageWatcher(formatter.registerFormatter),
-    formatter,
+    editService,
     reporter,
-    createConfigFileCommand
+    createConfigFileCommand,
+    openOutputCommand,
+    ...statusBarService.registerDisposables()
   );
 
   const hrend = process.hrtime(hrstart);

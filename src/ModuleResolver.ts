@@ -4,10 +4,12 @@ import * as prettier from "prettier";
 import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import * as semver from "semver";
+// tslint:disable-next-line: no-implicit-dependencies
+import { Disposable } from "vscode";
 import { LoggingService } from "./LoggingService";
 import { NotificationService } from "./NotificationService";
 import { PrettierModule } from "./types";
-import { getWorkspaceRelativePath } from "./util";
+import { getConfig, getWorkspaceRelativePath } from "./util";
 
 const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
@@ -17,7 +19,7 @@ interface ModuleResult {
   moduleInstance: any | undefined;
   modulePath: string | undefined;
 }
-export class ModuleResolver {
+export class ModuleResolver implements Disposable {
   private findPkgMem: (fspath: string, pkgName: string) => string | undefined;
   private resolvedModules = new Array<string>();
   constructor(
@@ -34,13 +36,14 @@ export class ModuleResolver {
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public getPrettierInstance(
-    prettierPath?: string,
     fileName?: string,
-    promptIfOutdated: boolean = false
+    isUserInteractive: boolean = false
   ): PrettierModule {
     if (!fileName) {
       return prettier;
     }
+
+    const { prettierPath } = getConfig();
 
     // tslint:disable-next-line: prefer-const
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
@@ -49,10 +52,10 @@ export class ModuleResolver {
       prettierPath
     );
 
-    if (!moduleInstance) {
+    if (!moduleInstance && isUserInteractive) {
       this.loggingService.logMessage(
-        "Falling back to bundled version of prettier.",
-        "WARN"
+        "Using bundled version of prettier.",
+        "INFO"
       );
     }
 
@@ -65,7 +68,7 @@ export class ModuleResolver {
         semver.gte(moduleInstance.version, minPrettierVersion);
 
       if (!isValidVersion) {
-        if (promptIfOutdated) {
+        if (isUserInteractive) {
           // We only prompt when formatting a file. If we did it on load there
           // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(modulePath);
@@ -88,9 +91,10 @@ export class ModuleResolver {
   }
 
   /**
-   * Clears the module cache
+   * Clears the module and config cache
    */
-  public clearModuleCache() {
+  public dispose() {
+    this.getPrettierInstance().clearConfigCache();
     this.resolvedModules.forEach(modulePath => {
       const r =
         typeof __webpack_require__ === "function"
