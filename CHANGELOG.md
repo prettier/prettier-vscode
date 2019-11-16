@@ -4,7 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## 3.6.0]
+- Fix for finding local `prettier` module in packages located in `node_modules` dirs.
+
+## [3.6.0]
 
 - Added back status bar button
 
