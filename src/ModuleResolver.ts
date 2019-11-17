@@ -178,7 +178,7 @@ export class ModuleResolver implements Disposable {
     let finalPath = fspath;
     const nodeModulesIndex = splitPath.indexOf("node_modules");
 
-    if (nodeModulesIndex > -1) {
+    if (nodeModulesIndex > 1) {
       finalPath = splitPath.slice(0, nodeModulesIndex).join("/");
     }
 
