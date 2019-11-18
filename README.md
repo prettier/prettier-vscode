@@ -104,7 +104,7 @@ Version 3.0 has a number of breaking changes. The settings for Linters have been
 
 > NOTE: If you are seeing messages about legacy configuration settings, double check that you dont have any settings for the linters in your workspace or global settings. You must remove these. See also [Error Messages](#error-messages)
 
-Finnaly, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
+Finally, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
 ## Usage
 
@@ -140,7 +140,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 ## Linter Integration
 
-The prefered way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
+The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
 
 You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
 
@@ -232,7 +232,7 @@ You must upgrade to a newer version of prettier.
 
 **You have legacy linter settings in your VS Code config. They are no longer being used.**
 
-If you recieve this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted. See [these instructions for linter configuration](#linter-integration).
+If you receive this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted. See [these instructions for linter configuration](#linter-integration).
 
 ```
 prettier.eslintIntegration
