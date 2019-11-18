@@ -172,8 +172,19 @@ export class ModuleResolver implements Disposable {
    * @returns {string} resolved path to module
    */
   private findPkg(fspath: string, pkgName: string): string | undefined {
-    const res = readPkgUp.sync({ cwd: fspath, normalize: false });
-    const { root } = path.parse(fspath);
+    // Get the closest `package.json` file, that's outside of any `node_modules`
+    // directory.
+    const splitPath = fspath.split("/");
+    let finalPath = fspath;
+    const nodeModulesIndex = splitPath.indexOf("node_modules");
+
+    if (nodeModulesIndex > 1) {
+      finalPath = splitPath.slice(0, nodeModulesIndex).join("/");
+    }
+
+    const res = readPkgUp.sync({ cwd: finalPath, normalize: false });
+    const { root } = path.parse(finalPath);
+
     if (
       res &&
       res.packageJson &&
