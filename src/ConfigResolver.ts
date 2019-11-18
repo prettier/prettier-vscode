@@ -51,7 +51,8 @@ export class ConfigResolver {
       tabWidth: vsCodeConfig.tabWidth,
       trailingComma: vsCodeConfig.trailingComma,
       useTabs: vsCodeConfig.useTabs,
-      vueIndentScriptAndStyle: (vsCodeConfig as any).vueIndentScriptAndStyle // Temporary hack since type doesnt have this yet
+      // TODO: Remove once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
+      vueIndentScriptAndStyle: (vsCodeConfig as any).vueIndentScriptAndStyle
     };
 
     const prettierOptions: prettier.Options = {
