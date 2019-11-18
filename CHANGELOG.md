@@ -9,6 +9,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Removed deprecation message from `requireConfig` (Was added by mistake). #1056
 - Sets `resolveConfig: true` to allow parser overrides on [Prettier 1.19+](https://prettier.io/blog/2019/11/09/1.19.0.html#api). #1067
 - Fix for finding local `prettier` module in packages located in `node_modules` dirs.
+- Added doc on what languages support range formatting.
 
 ## [3.6.0]
 

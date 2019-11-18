@@ -138,6 +138,19 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 }
 ```
 
+### Format Selection
+
+Format selection works on several langauges depending on what Prettier itself supports. The following languages currently are supported:
+
+```
+javascript
+javascriptreact
+typescript
+typescriptreact
+json
+graphql
+```
+
 ## Linter Integration
 
 The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
