@@ -189,7 +189,10 @@ export default class PrettierEditService implements Disposable {
 
     let fileInfo: prettier.FileInfoResult | undefined;
     if (fileName) {
-      fileInfo = await prettierInstance.getFileInfo(fileName, { ignorePath });
+      fileInfo = await prettierInstance.getFileInfo(fileName, {
+        ignorePath,
+        resolveConfig: true // Fix for 1.19 (https://prettier.io/blog/2019/11/09/1.19.0.html#api)
+      } as any); // TODO: Remove once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
       this.loggingService.logMessage("File Info:", "INFO");
       this.loggingService.logObject(fileInfo, "INFO");
     }

@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [3.7.0]
 
 - Removed deprecation message from `requireConfig` (Was added by mistake). #1056
+- Sets `resolveConfig: true` to allow parser overrides on [Prettier 1.19+](https://prettier.io/blog/2019/11/09/1.19.0.html#api). #1067
 
 ## [3.6.0]
 
