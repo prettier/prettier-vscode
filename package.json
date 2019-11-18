@@ -99,7 +99,7 @@
     "@types/sinon": "^7.5.0",
     "@types/vscode": "1.34.0",
     "glob": "^7.1.6",
-    "husky": "^3.0.9",
+    "husky": "^3.1.0",
     "lint-staged": "^9.4.3",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
