@@ -140,8 +140,7 @@
           "type": "boolean",
           "default": false,
           "description": "%ext.config.requireConfig%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
