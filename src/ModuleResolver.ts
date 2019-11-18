@@ -7,6 +7,7 @@ import * as semver from "semver";
 // tslint:disable-next-line: no-implicit-dependencies
 import { Disposable } from "vscode";
 import { LoggingService } from "./LoggingService";
+import { FAILED_TO_LOAD_MODULE_MESSAGE } from "./message";
 import { NotificationService } from "./NotificationService";
 import { PrettierModule } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
@@ -142,8 +143,8 @@ export class ModuleResolver implements Disposable {
         "INFO"
       );
       this.notificationService.showErrorMessage(
-        "ext.config.failedToLoadModule",
-        `Failed to load module.`,
+        "ext.message.failedToLoadModule",
+        FAILED_TO_LOAD_MODULE_MESSAGE,
         [`Attempted to load ${pkgName} from ${modulePath || "package.json"}.`]
       );
     }

@@ -6,7 +6,6 @@
   "ext.config.disableLanguages": "A list of languages IDs to disable this extension on",
   "ext.config.endOfLine": "Specify the end of line used by prettier",
   "ext.config.eslintIntegration": "Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
-  "ext.config.failedToLoadModule": "Failed to load module. If you are referencing prettier in your package.json, ensure you have run `npm install`",
   "ext.config.htmlWhitespaceSensitivity": "Specify the global whitespace sensitivity for HTML files.\n Valid options: \n'css' - Respect the default value of CSS display property. \n'strict' - Whitespaces are considered sensitive. \n'ignore' - Whitespaces are considered insensitive.",
   "ext.config.ignorePath": "Path to a .prettierignore file",
   "ext.config.insertPragma": "Prettier can insert a special @format marker at the top of files specifying that the file has been formatted with prettier. This works well when used in tandem with the --require-pragma option. If there is already a docblock at the top of the file then this option will add a newline to it with the @format marker.",
@@ -30,6 +29,7 @@
   "ext.config.tslintIntegration": "Use 'prettier-tslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from tslint rules.",
   "ext.config.useTabs": "Indent lines with tabs",
   "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside <script> and <style> tags in Vue files. Some people (like the creator of Vue) don’t indent to save an indentation level, but this might break code folding in your editor.",
+  "ext.message.failedToLoadModule": "Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`",
   "ext.message.legacyLinterConfigInUse": "You have legacy linter options in your VS Code settings. They are no longer being used. See [documentation for migration information](https://github.com/prettier/prettier-vscode#linter-integration). Would you like to remove them or view the logs?",
   "ext.message.outdatedPrettierVersion": "Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier."
 }
