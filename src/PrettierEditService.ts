@@ -141,15 +141,15 @@ export default class PrettierEditService implements Disposable {
     document: TextDocument,
     options?: RangeFormattingOptions
   ): Promise<TextEdit[]> => {
-    const hrstart = process.hrtime();
+    const hrStart = process.hrtime();
     const result = await this.format(document.getText(), document, options);
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
     }
-    const hrend = process.hrtime(hrstart);
+    const hrEnd = process.hrtime(hrStart);
     this.loggingService.logMessage(
-      `Formatting completed in ${hrend[1] / 1000000}ms.`,
+      `Formatting completed in ${hrEnd[1] / 1000000}ms.`,
       "INFO"
     );
     return [TextEdit.replace(this.fullDocumentRange(document), result)];

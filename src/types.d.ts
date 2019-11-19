@@ -36,7 +36,7 @@ interface IExtensionConfig {
    */
   configPath: string | undefined;
   /**
-   * If true will skip formatting if a prettierconfig isn't found.
+   * If true will skip formatting if a prettier config isn't found.
    */
   requireConfig: boolean;
   /**

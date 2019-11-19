@@ -12,6 +12,7 @@ export function run(): Promise<void> {
   mocha.useColors(true);
 
   if (process.env.AZURE_PIPELINES) {
+    /* cspell: disable-next-line */
     mocha.reporter("mocha-junit-reporter", {
       mochaFile: "./test-results.xml"
     });

@@ -46,7 +46,7 @@ export class StatusBarService {
 
   private toggleStatusBarItem(editor: TextEditor | undefined): void {
     if (editor !== undefined) {
-      // The function will be triggered everytime the active "editor" instance changes
+      // The function will be triggered every time the active "editor" instance changes
       // It also triggers when we focus on the output panel or on the debug panel
       // Both are seen as an "editor".
       // The following check will ignore such panels

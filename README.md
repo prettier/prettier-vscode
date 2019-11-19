@@ -90,11 +90,11 @@ This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.h
 
 ## Configuration
 
-This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recurisevly down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not when running prettier through the command line. The recommended approach is to only use the prettier configuration files.
+This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recursively down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not when running prettier through the command line. The recommended approach is to only use the prettier configuration files.
 
 ### Configuring Default Options
 
-Some users may not wish to create a new Prettier config for every project. Because Prettier searches recursively up the filepath, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
+Some users may not wish to create a new Prettier config for every project. Because Prettier searches recursively up the file path, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
 
 You can also use the setting [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath) to provide a global configuration. However, be careful, if this is set this value will always be used and local configuration files will be ignored.
 
@@ -102,7 +102,7 @@ You can also use the setting [`prettier.configPath`](https://github.com/prettier
 
 Version 3.0 has a number of breaking changes. The settings for Linters have been removed. Linters are still supported, but the settings are no longer needed. See the [documentation on linters below](#linter-integration). See also [Error Messages](#error-messages)
 
-> NOTE: If you are seeing messages about legacy configuration settings, double check that you dont have any settings for the linters in your workspace or global settings. You must remove these. See also [Error Messages](#error-messages)
+> NOTE: If you are seeing messages about legacy configuration settings, double check that you don't have any settings for the linters in your workspace or global settings. You must remove these. See also [Error Messages](#error-messages)
 
 Finally, there are a few smaller breaking changes, including removal of support for older versions of prettier. See the [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details.
 
@@ -140,7 +140,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 ### Format Selection
 
-Format selection works on several langauges depending on what Prettier itself supports. The following languages currently are supported:
+Format selection works on several languages depending on what Prettier itself supports. The following languages currently are supported:
 
 ```
 javascript
@@ -170,7 +170,7 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
 
 > WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
-The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependancies like `prettier`, `eslint`, `tslint`, etc.
+The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, etc.
 
 This extension will automatically detect when you have these extensions installed and use them instead of `prettier` by itself. For configuration of these linter integrations, see their respective documentation.
 
@@ -184,7 +184,7 @@ Settings will be read from (listed by priority):
 1. `.editorconfig`
 1. Visual Studio Code Settings (Ignored if any other configuration is present)
 
-All prettier options can be configured directly in this extension. The availible options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
+All prettier options can be configured directly in this extension. The available options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
 ```
 prettier.arrowParens
@@ -212,7 +212,7 @@ These settings are specific to VS Code and need to be set in the VS Code setting
 
 #### prettier.requireConfig (default: false)
 
-Require a 'prettierconfig' to format
+Require a prettier configuration file to format
 
 #### prettier.ignorePath
 

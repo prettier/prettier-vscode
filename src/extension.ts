@@ -31,7 +31,7 @@ const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 let reporter: TelemetryReporter;
 
 export function activate(context: ExtensionContext) {
-  const hrstart = process.hrtime();
+  const hrStart = process.hrtime();
 
   const loggingService = new LoggingService();
 
@@ -58,7 +58,7 @@ export function activate(context: ExtensionContext) {
     }
   );
 
-  const ignoreReslver = new IgnorerResolver(loggingService);
+  const ignoreResolver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
   const notificationService = new NotificationService(reporter, loggingService);
 
@@ -74,7 +74,7 @@ export function activate(context: ExtensionContext) {
   const editService = new PrettierEditService(
     moduleResolver,
     languageResolver,
-    ignoreReslver,
+    ignoreResolver,
     configResolver,
     loggingService,
     notificationService,
@@ -94,9 +94,9 @@ export function activate(context: ExtensionContext) {
     ...statusBarService.registerDisposables()
   );
 
-  const hrend = process.hrtime(hrstart);
+  const hrEnd = process.hrtime(hrStart);
   reporter.sendTelemetryEvent("extensionActivated", undefined, {
-    activationTime: hrend[1] / 1000000
+    activationTime: hrEnd[1] / 1000000
   });
 }
 

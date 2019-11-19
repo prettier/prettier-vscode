@@ -20,6 +20,7 @@ export class TemplateService {
     const outputPath = path.join(folderPath.fsPath, ".prettierrc");
 
     const formatterOptions: Options = {
+      /* cspell: disable-next-line */
       filepath: outputPath,
       tabWidth: settings.tabWidth,
       useTabs: settings.useTabs

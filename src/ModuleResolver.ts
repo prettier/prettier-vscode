@@ -21,7 +21,7 @@ interface ModuleResult {
   modulePath: string | undefined;
 }
 export class ModuleResolver implements Disposable {
-  private findPkgMem: (fspath: string, pkgName: string) => string | undefined;
+  private findPkgMem: (fsPath: string, pkgName: string) => string | undefined;
   private resolvedModules = new Array<string>();
   constructor(
     private loggingService: LoggingService,
@@ -33,7 +33,7 @@ export class ModuleResolver implements Disposable {
   }
 
   /**
-   * Returns an instance of thge prettier module.
+   * Returns an instance of the prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public getPrettierInstance(
@@ -86,8 +86,8 @@ export class ModuleResolver implements Disposable {
     return moduleInstance || prettier;
   }
 
-  public getModuleInstance(fspath: string, pkgName: string): any {
-    const { moduleInstance } = this.requireLocalPkg<any>(fspath, pkgName);
+  public getModuleInstance(fsPath: string, pkgName: string): any {
+    const { moduleInstance } = this.requireLocalPkg<any>(fsPath, pkgName);
     return moduleInstance;
   }
 
@@ -111,20 +111,20 @@ export class ModuleResolver implements Disposable {
 
   /**
    * Require package explicitly installed relative to given path.
-   * Fallback to bundled one if no pacakge was found bottom up.
-   * @param {string} fspath file system path starting point to resolve package
+   * Fallback to bundled one if no package was found bottom up.
+   * @param {string} fsPath file system path starting point to resolve package
    * @param {string} pkgName package's name to require
    * @returns module
    */
   private requireLocalPkg<T>(
-    fspath: string,
+    fsPath: string,
     pkgName: string,
     modulePath?: string
   ): ModuleResult {
     try {
       modulePath = modulePath
-        ? getWorkspaceRelativePath(fspath, modulePath)
-        : this.findPkgMem(fspath, pkgName);
+        ? getWorkspaceRelativePath(fsPath, modulePath)
+        : this.findPkgMem(fsPath, pkgName);
 
       if (modulePath !== void 0) {
         const moduleInstance = this.loadNodeModule(modulePath);
@@ -168,15 +168,15 @@ export class ModuleResolver implements Disposable {
   /**
    * Recursively search for a package.json upwards containing given package
    * as a dependency or devDependency.
-   * @param {string} fspath file system path to start searching from
+   * @param {string} fsPath file system path to start searching from
    * @param {string} pkgName package's name to search for
    * @returns {string} resolved path to module
    */
-  private findPkg(fspath: string, pkgName: string): string | undefined {
+  private findPkg(fsPath: string, pkgName: string): string | undefined {
     // Get the closest `package.json` file, that's outside of any `node_modules`
     // directory.
-    const splitPath = fspath.split("/");
-    let finalPath = fspath;
+    const splitPath = fsPath.split("/");
+    let finalPath = fsPath;
     const nodeModulesIndex = splitPath.indexOf("node_modules");
 
     if (nodeModulesIndex > 1) {

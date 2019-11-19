@@ -9,14 +9,13 @@ const extensionPackage = require("./package.json");
 
 /**@type {import('webpack').Configuration}*/
 const config = {
-  target: "node", // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
-
-  entry: "./src/extension.ts", // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
+  target: "node",
+  entry: "./src/extension.ts",
   output: {
-    // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, "dist"),
     filename: "extension.js",
     libraryTarget: "commonjs2",
+    /* cspell: disable-next-line */
     devtoolModuleFilenameTemplate: "../[resource-path]"
   },
   plugins: [
@@ -25,17 +24,20 @@ const config = {
       EXTENSION_VERSION: JSON.stringify(extensionPackage.version)
     })
   ],
+  /* cspell: disable-next-line */
   devtool: "source-map",
   externals: {
-    vscode: "commonjs vscode", // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
+    vscode: "commonjs vscode",
     prettier: "commonjs prettier",
+    /* cspell: disable-next-line */
     "spdx-exceptions": "spdx-exceptions",
+    /* cspell: disable-next-line */
     "spdx-license-ids": "spdx-license-ids",
+    /* cspell: disable-next-line */
     "spdx-license-ids/deprecated": "spdx-license-ids/deprecated",
     "applicationinsights-native-metrics": "applicationinsights-native-metrics" // This isn't actually used, it is just to disable a webpack error we don't care about.
   },
   resolve: {
-    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: [".ts", ".js"]
   },
   module: {

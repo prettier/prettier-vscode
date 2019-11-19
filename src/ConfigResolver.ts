@@ -66,6 +66,7 @@ export class ConfigResolver {
     const prettierOptions: prettier.Options = {
       ...(configOptions === null ? vsOpts : {}),
       ...{
+        /* cspell: disable-next-line */
         filepath: fileName,
         parser: parser as prettier.BuiltInParserName
       },
@@ -77,7 +78,7 @@ export class ConfigResolver {
   }
 
   /**
-   * Check if a given file has an associated prettierconfig.
+   * Check if a given file has an associated prettier config.
    * @param filePath file's path
    */
   public async checkHasPrettierConfig(filePath: string) {
@@ -86,7 +87,7 @@ export class ConfigResolver {
   }
 
   /**
-   * Resolves the prettierconfig for the given file.
+   * Resolves the prettier config for the given file.
    *
    * @param filePath file's path
    */

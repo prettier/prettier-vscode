@@ -4,5 +4,22 @@
     "source.fixAll.tslint": true
   },
   "editor.formatOnSave": true,
-  "editor.formatOnType": false
+  "editor.formatOnType": false,
+  "cSpell.words": [
+    "Parens",
+    "Whitespaces",
+    "codebases",
+    "commonmark",
+    "docblock",
+    "editorconfig",
+    "esbenp",
+    "gitignore",
+    "junit",
+    "prettier's",
+    "prettiercode",
+    "prettierignore",
+    "prettierrc",
+    "promisify",
+    "stylelint"
+  ]
 }

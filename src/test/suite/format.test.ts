@@ -63,6 +63,7 @@ async function formatSameAsPrettier(
   const prettierOptions: prettier.Options = {
     ...options,
     ...{
+      /* cspell: disable-next-line */
       filepath: file
     }
   };

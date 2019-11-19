@@ -24,14 +24,17 @@ suite("Test configurations", function() {
   });
   test(
     "it uses config from .prettierrc file and does not inherit VS Code settings ",
+    /* cspell: disable-next-line */
     testConfig("rcfile/test.js", "rcfile/test.result.js")
   );
   test(
     "it uses config from prettier.config.js file ",
+    /* cspell: disable-next-line */
     testConfig("jsconfigfile/test.js", "jsconfigfile/test.result.js")
   );
   test(
     "it uses config from .prettierrc.js file ",
+    /* cspell: disable-next-line */
     testConfig("jsfile/test.js", "jsfile/test.result.js")
   );
   test(
@@ -40,6 +43,7 @@ suite("Test configurations", function() {
   );
   test(
     "it uses config from vscode settings ",
+    /* cspell: disable-next-line */
     testConfig("vscodeconfig/test.js", "vscodeconfig/test.result.js")
   );
 });
