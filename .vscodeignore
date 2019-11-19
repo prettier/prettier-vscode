@@ -7,9 +7,10 @@ tsconfig.json
 webpack.config.js
 .prettierignore
 azure-pipelines.yml
-scripts/**
+scripts/
+samples/
 .gitignore
-.github/**
+.github/
 tsconfig.json
 yarn.lock
 CONTRIBUTORS.md
