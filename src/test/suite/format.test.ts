@@ -15,6 +15,14 @@ const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   return workspaceFolder!.uri;
 };
 
+export async function getText(workspaceFolderName: string, file: string) {
+  const base = getWorkspaceFolderUri(workspaceFolderName);
+  const absPath = path.join(base.fsPath, file);
+  const doc = await vscode.workspace.openTextDocument(absPath);
+  const text = doc.getText();
+  return text;
+}
+
 /**
  * loads and format a file.
  * @param file path relative to base URI (a workspaceFolder's URI)

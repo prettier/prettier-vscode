@@ -1,3 +1,7 @@
 function foo() {
-        console.log("test");
-}
+        const foo = ["aaaaaaaaa", "bbbbbb",
+                     "c","a", "b",
+                     "c","a", "b",
+                     "c","a", "b",
+                     "c"]
+    }

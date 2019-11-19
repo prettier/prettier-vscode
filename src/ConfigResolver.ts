@@ -34,29 +34,37 @@ export class ConfigResolver {
       );
     }
 
-    const vsOpts = {
-      arrowParens: vsCodeConfig.arrowParens,
-      bracketSpacing: vsCodeConfig.bracketSpacing,
-      endOfLine: vsCodeConfig.endOfLine,
-      htmlWhitespaceSensitivity: vsCodeConfig.htmlWhitespaceSensitivity,
-      insertPragma: vsCodeConfig.insertPragma,
-      jsxBracketSameLine: vsCodeConfig.jsxBracketSameLine,
-      jsxSingleQuote: vsCodeConfig.jsxSingleQuote,
-      printWidth: vsCodeConfig.printWidth,
-      proseWrap: vsCodeConfig.proseWrap,
-      quoteProps: vsCodeConfig.quoteProps,
-      requirePragma: vsCodeConfig.requirePragma,
-      semi: vsCodeConfig.semi,
-      singleQuote: vsCodeConfig.singleQuote,
-      tabWidth: vsCodeConfig.tabWidth,
-      trailingComma: vsCodeConfig.trailingComma,
-      useTabs: vsCodeConfig.useTabs,
+    // TODO: Set type once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
+    const vsOpts: any = {};
+
+    if (configOptions === null) {
+      vsOpts.arrowParens = vsCodeConfig.arrowParens;
+      vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
+      vsOpts.endOfLine = vsCodeConfig.endOfLine;
+      vsOpts.htmlWhitespaceSensitivity = vsCodeConfig.htmlWhitespaceSensitivity;
+      vsOpts.insertPragma = vsCodeConfig.insertPragma;
+      vsOpts.jsxBracketSameLine = vsCodeConfig.jsxBracketSameLine;
+      vsOpts.jsxSingleQuote = vsCodeConfig.jsxSingleQuote;
+      vsOpts.printWidth = vsCodeConfig.printWidth;
+      vsOpts.proseWrap = vsCodeConfig.proseWrap;
+      vsOpts.quoteProps = vsCodeConfig.quoteProps;
+      vsOpts.requirePragma = vsCodeConfig.requirePragma;
+      vsOpts.semi = vsCodeConfig.semi;
+      vsOpts.singleQuote = vsCodeConfig.singleQuote;
+      vsOpts.tabWidth = vsCodeConfig.tabWidth;
+      vsOpts.trailingComma = vsCodeConfig.trailingComma;
+      vsOpts.useTabs = vsCodeConfig.useTabs;
       // TODO: Remove once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
-      vueIndentScriptAndStyle: (vsCodeConfig as any).vueIndentScriptAndStyle
-    };
+      vsOpts.vueIndentScriptAndStyle = (vsCodeConfig as any).vueIndentScriptAndStyle;
+
+      this.loggingService.logMessage(
+        "No local configuration detected, using VS Code configuration.",
+        "INFO"
+      );
+    }
 
     const prettierOptions: prettier.Options = {
-      ...vsOpts,
+      ...(configOptions === null ? vsOpts : {}),
       ...{
         filepath: fileName,
         parser: parser as prettier.BuiltInParserName
