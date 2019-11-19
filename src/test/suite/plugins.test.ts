@@ -10,7 +10,6 @@ suite("Test plugins", function() {
     }
     const { actual } = await format("plugins", "index.php");
     const expected = await getText("plugins", "index.result.php");
-    // Normalize these to account for CRLF issues on Windows
-    assert.equal(actual.normalize(), expected.normalize());
+    assert.equal(actual, expected);
   });
 });

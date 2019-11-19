@@ -17,6 +17,6 @@ suite("Test tslint", function() {
     }
     const { actual } = await format("tslint", "index.ts");
     const expected = await getText("tslint", "index.result.ts");
-    assert.equal(actual.normalize(), expected.normalize());
+    assert.equal(actual, expected);
   });
 });

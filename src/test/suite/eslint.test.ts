@@ -17,7 +17,6 @@ suite("Test eslint", function() {
     }
     const { actual } = await format("eslint", "index.js");
     const expected = await getText("eslint", "index.result.js");
-    // Normalize these to account for CRLF issues on Windows
-    return assert.equal(actual.normalize(), expected.normalize());
+    return assert.equal(actual, expected);
   });
 });
