@@ -182,7 +182,7 @@ Settings will be read from (listed by priority):
 
 1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
 1. `.editorconfig`
-1. Visual Studio Code Settings
+1. Visual Studio Code Settings (Ignored if any other configuration is present)
 
 All prettier options can be configured directly in this extension. The availible options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
@@ -238,6 +238,10 @@ A list of languages IDs to disable this extension on.
 **Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
 
 ## Error Messages
+
+**Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`**
+
+When a `package.json` is present in your project and it contains prettier, plugins, or linter libraries this extension will attempt to load these modules from your `node_module` folder. If you see this error, it most likely means you need to run `npm install` or `yarn install` to install the packages in your `package.json`.
 
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
