@@ -1,27 +1,23 @@
 import * as assert from "assert";
-import * as fs from "fs";
-import * as path from "path";
-import { format, getText } from "./format.test";
+import {
+  format,
+  getText,
+  moveRootPrettierRC,
+  putBackPrettierRC
+} from "./format.test";
 
 const testConfig = (testPath: string, resultPath: string) => {
   return async () => {
-    const { result } = await format("config", testPath);
+    const { actual } = await format("config", testPath);
     const expected = await getText("config", resultPath);
-    assert.equal(result, expected);
+    assert.equal(actual, expected);
   };
 };
 
-const prettierConfigOrig = path.resolve(__dirname, "../../../.prettierrc");
-const prettierConfigTemp = path.resolve(__dirname, "../../../old.prettierrc");
-
 suite("Test configurations", function() {
   this.timeout(10000);
-  this.beforeAll(cb => {
-    fs.rename(prettierConfigOrig, prettierConfigTemp, cb);
-  });
-  this.afterAll(cb => {
-    fs.rename(prettierConfigTemp, prettierConfigOrig, cb);
-  });
+  this.beforeAll(moveRootPrettierRC);
+  this.afterAll(putBackPrettierRC);
   test(
     "it uses config from .prettierrc file and does not inherit VS Code settings ",
     /* cspell: disable-next-line */

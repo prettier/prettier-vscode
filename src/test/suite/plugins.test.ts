@@ -1,27 +1,16 @@
 import * as assert from "assert";
-import { format } from "./format.test";
+import { platform } from "os";
+import { format, getText } from "./format.test";
 
 suite("Test plugins", function() {
   this.timeout(10000);
   test("it formats with plugins", async () => {
-    const { result } = await format("plugins", "index.php");
-    assert.equal(
-      result,
-      `<?php
-
-array_map(
-  function ($arg1, $arg2) use ($var1, $var2) {
-    return $arg1 + $arg2 / ($var + $var2);
-  },
-  array(
-    "complex" => "code",
-    "with" => "inconsistent",
-    "formatting" => "is",
-    "hard" => "to",
-    "maintain" => true
-  )
-);
-`
-    );
+    if (platform() === "win32") {
+      return assert.ok(true, "Skipping test on windows.");
+    }
+    const { actual } = await format("plugins", "index.php");
+    const expected = await getText("plugins", "index.result.php");
+    // Normalize these to account for CRLF issues on Windows
+    assert.equal(actual.normalize(), expected.normalize());
   });
 });

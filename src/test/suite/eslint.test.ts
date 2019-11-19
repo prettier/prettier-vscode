@@ -1,17 +1,23 @@
 import * as assert from "assert";
-import { format } from "./format.test";
+import { platform } from "os";
+import {
+  format,
+  getText,
+  moveRootPrettierRC,
+  putBackPrettierRC
+} from "./format.test";
 
 suite("Test eslint", function() {
   this.timeout(10000);
+  this.beforeAll(moveRootPrettierRC);
+  this.afterAll(putBackPrettierRC);
   test("it formats with prettier-eslint", async () => {
-    const { result } = await format("eslint", "withEslint.js");
-    return assert.equal(
-      result,
-      `// Settings (eslint): single-quote, trailing-comma, no-semi
-function foo() {
-    return 'bar'
-}
-`
-    );
+    if (platform() === "win32") {
+      return assert.ok(true, "Skipping test on windows.");
+    }
+    const { actual } = await format("eslint", "index.js");
+    const expected = await getText("eslint", "index.result.js");
+    // Normalize these to account for CRLF issues on Windows
+    return assert.equal(actual.normalize(), expected.normalize());
   });
 });

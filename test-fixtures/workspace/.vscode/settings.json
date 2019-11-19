@@ -2,5 +2,6 @@
     "prettier.disableLanguages": [
         "javascript"
     ],
-    "javascript.format.enable": true
+    "javascript.format.enable": true,
+    "files.eol": "\n"
 }

@@ -5,6 +5,7 @@
   },
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
+  "files.eol": "\n",
   "cSpell.words": [
     "Parens",
     "Whitespaces",
