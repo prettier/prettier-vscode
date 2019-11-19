@@ -1,8 +1,17 @@
 import * as assert from "assert";
+import { readFile, rename } from "fs";
+// tslint:disable-next-line: no-implicit-dependencies
+import { Done } from "mocha";
 import * as path from "path";
 import * as prettier from "prettier";
+import { promisify } from "util";
 // tslint:disable-next-line: no-implicit-dependencies
 import * as vscode from "vscode";
+
+const readFileAsync: (
+  filePath: string,
+  encoding: "utf8"
+) => Promise<string> = promisify(readFile);
 
 /**
  * gets the workspace folder by name
@@ -15,23 +24,36 @@ const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   return workspaceFolder!.uri;
 };
 
-export async function getText(workspaceFolderName: string, file: string) {
+export async function getText(
+  workspaceFolderName: string,
+  expectedFile: string
+) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
-  const absPath = path.join(base.fsPath, file);
-  const doc = await vscode.workspace.openTextDocument(absPath);
-  const text = doc.getText();
-  return text;
+  const expectedPath = path.join(base.fsPath, expectedFile);
+  const expected = await readFileAsync(expectedPath, "utf8");
+  return expected;
+}
+
+const prettierConfigOrig = path.resolve(__dirname, "../../../.prettierrc");
+const prettierConfigTemp = path.resolve(__dirname, "../../../old.prettierrc");
+
+export function moveRootPrettierRC(done: Done) {
+  rename(prettierConfigOrig, prettierConfigTemp, done);
+}
+
+export function putBackPrettierRC(done: Done) {
+  rename(prettierConfigTemp, prettierConfigOrig, done);
 }
 
 /**
  * loads and format a file.
- * @param file path relative to base URI (a workspaceFolder's URI)
+ * @param testFile path relative to base URI (a workspaceFolder's URI)
  * @param base base URI
  * @returns source code and resulting code
  */
-export async function format(workspaceFolderName: string, file: string) {
+export async function format(workspaceFolderName: string, testFile: string) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
-  const absPath = path.join(base.fsPath, file);
+  const absPath = path.join(base.fsPath, testFile);
   const doc = await vscode.workspace.openTextDocument(absPath);
   const text = doc.getText();
   try {
@@ -42,14 +64,13 @@ export async function format(workspaceFolderName: string, file: string) {
     throw error;
   }
   // tslint:disable-next-line: no-console
-  console.time(file);
-  return vscode.commands
-    .executeCommand("editor.action.formatDocument")
-    .then(() => {
-      // tslint:disable-next-line: no-console
-      console.timeEnd(file);
-      return { result: doc.getText(), source: text };
-    });
+  console.time(testFile);
+  await vscode.commands.executeCommand("editor.action.formatDocument");
+
+  // tslint:disable-next-line: no-console
+  console.timeEnd(testFile);
+
+  return { actual: doc.getText(), source: text };
 }
 /**
  * Compare prettier's output (default settings)
@@ -67,9 +88,9 @@ async function formatSameAsPrettier(
       filepath: file
     }
   };
-  const { result, source } = await format("project", file);
+  const { actual, source } = await format("project", file);
   const prettierFormatted = prettier.format(source, prettierOptions);
-  assert.equal(result, prettierFormatted);
+  assert.equal(actual, prettierFormatted);
 }
 
 suite("Test format Document", function() {

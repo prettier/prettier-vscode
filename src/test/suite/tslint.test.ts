@@ -1,17 +1,22 @@
 import * as assert from "assert";
-import { format } from "./format.test";
+import { platform } from "os";
+import {
+  format,
+  getText,
+  moveRootPrettierRC,
+  putBackPrettierRC
+} from "./format.test";
 
 suite("Test tslint", function() {
-  this.timeout(10000);
+  this.timeout(60000);
+  this.beforeAll(moveRootPrettierRC);
+  this.afterAll(putBackPrettierRC);
   test("it formats with prettier-tslint", async () => {
-    const { result } = await format("tslint", "withTslint.ts");
-    assert.equal(
-      result,
-      `// Settings (tslint): single-quote, trailing-comma, no-semi
-function foo() {
-  return 'bar'
-}
-`
-    );
+    if (platform() === "win32") {
+      return assert.ok(true, "Skipping test on windows.");
+    }
+    const { actual } = await format("tslint", "index.ts");
+    const expected = await getText("tslint", "index.result.ts");
+    assert.equal(actual.normalize(), expected.normalize());
   });
 });
