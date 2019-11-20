@@ -34,8 +34,7 @@ export class ConfigResolver {
       );
     }
 
-    // TODO: Set type once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
-    const vsOpts: any = {};
+    const vsOpts: prettier.Options = {};
 
     if (configOptions === null) {
       vsOpts.arrowParens = vsCodeConfig.arrowParens;
@@ -54,8 +53,7 @@ export class ConfigResolver {
       vsOpts.tabWidth = vsCodeConfig.tabWidth;
       vsOpts.trailingComma = vsCodeConfig.trailingComma;
       vsOpts.useTabs = vsCodeConfig.useTabs;
-      // TODO: Remove once type definition is updated https://github.com/DefinitelyTyped/DefinitelyTyped/pull/40469
-      vsOpts.vueIndentScriptAndStyle = (vsCodeConfig as any).vueIndentScriptAndStyle;
+      vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
 
       this.loggingService.logMessage(
         "No local configuration detected, using VS Code configuration.",
