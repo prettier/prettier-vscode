@@ -3,6 +3,8 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
+<!-- IMPORTANT: YOUR BUG WILL MOST LIKELY BE CLOSED WITHOUT CONSIDERATION IF NO LOG IS PROVIDED. -->
+
 <!-- PLEASE NOTE: Many of the issues with the extension are heavily based on your specific configuration and source code. In order to improve your chances of having your bug fixed, the number one thing you can do is create a github repository that can be used to reproduce the issue along with the detailed reproduction steps. If you don't provide this info, it is usually the case that we cannot reproduce the issue and the issue will be closed. -->
 
 ### Summary
@@ -35,3 +37,11 @@ _Feel free to attach a screenshot_.
 **Prettier & Prettier Plugin Version**:
 
 **OS and version**:
+
+## Prettier Log Output
+
+<!-- Click the "Prettier" button in the bottom toolbar and copy all the out put log here. -->
+
+```
+LOG GOES HERE
+```
