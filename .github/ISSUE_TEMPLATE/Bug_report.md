@@ -3,7 +3,15 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-<!-- IMPORTANT: YOUR BUG WILL MOST LIKELY BE CLOSED WITHOUT CONSIDERATION IF NO LOG IS PROVIDED. -->
+## Checklist
+**You must complete all steps in this checklist or the issue will be automatically closed.** 
+
+- [ ] Write a summary of your issue
+- [ ] Include a link to a github repo that can be used to reproduce the issue or exact reproduction steps.
+- [ ] Provide the expected result
+- [ ] Provide the actual result
+- [ ] Include extension, os, and vs code information
+- [ ] Include Prettier extension log
 
 <!-- PLEASE NOTE: Many of the issues with the extension are heavily based on your specific configuration and source code. In order to improve your chances of having your bug fixed, the number one thing you can do is create a github repository that can be used to reproduce the issue along with the detailed reproduction steps. If you don't provide this info, it is usually the case that we cannot reproduce the issue and the issue will be closed. -->
 
@@ -34,7 +42,7 @@ _Feel free to attach a screenshot_.
 
 **VS Code Version**:
 
-**Prettier & Prettier Plugin Version**:
+**Prettier Extension Version**:
 
 **OS and version**:
 
