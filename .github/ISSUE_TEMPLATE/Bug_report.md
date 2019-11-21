@@ -3,7 +3,6 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-## Checklist
 **You must complete all steps in this checklist or the issue will be automatically closed.** 
 
 - [ ] Write a summary of your issue
