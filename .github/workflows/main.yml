@@ -1,0 +1,12 @@
+name: Issue Checklist Checker
+
+on: issues
+
+jobs:
+  checkIssue:
+    name: Check Issue for Incomplete Checklist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: adamzolyak/checklist-checker-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
