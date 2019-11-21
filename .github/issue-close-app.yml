@@ -1,0 +1,15 @@
+# Comment that will be sent if an issue is judged to be closed
+comment: "This issue is closed because it does not match our issue template or include all the required information. Please read and follow the instructions and reopen."
+issueConfigs:
+  # There can be several configs for different kind of issues.
+  - content:
+      # Issue
+      - "Github Repository to Reproduce Issue"
+      - "Steps To Reproduce:"
+      - "Prettier Log Output"
+      - 'Extension Name: "prettier-vscode"' # Ensures they actually included the log
+  - content:
+      # Feature
+      - "Is your feature request related to a problem? Please describe"
+      - "Describe the solution you'd like"
+      - "Describe alternatives you've considered"
