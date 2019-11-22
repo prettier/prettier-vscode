@@ -90,13 +90,25 @@ This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.h
 
 ## Configuration
 
-This extension uses [Prettier Configuration files](https://prettier.io/docs/en/options.html) to set formatting options. Options are searched recursively down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not when running prettier through the command line. The recommended approach is to only use the prettier configuration files.
+There are multiple options for configuring Prettier with this extension. You can use [VS Code settings](#prettiers-settings), [prettier configuration files](https://prettier.io/docs/en/configuration.html), or an `.editorconfig` file. The VS Code settings are meant to be used as a fallback and are generally intended only for use on non-project files. **It is recommended that you always include a prettier configuration file in your project specifying all settings for your project.** This will ensure that no matter how you run prettier - from this extension, from the CLI, or from another IDE with Prettier, the same settings will get applied.
+
+Using [Prettier Configuration files](https://prettier.io/docs/en/configuration.html) to set formatting options is the recommended approach. Options are searched recursively down from the file being formatted so if you want to apply prettier settings to your entire project simply set a configuration in the root. Settings can also be configured through VS Code - however, these settings will only apply while running the extension, not when running prettier through the command line.
 
 ### Configuring Default Options
 
-Some users may not wish to create a new Prettier config for every project. Because Prettier searches recursively up the file path, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
+Some users may not wish to create a new Prettier config for every project or use the VS Code settings. Because Prettier searches recursively up the file path, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
 
 You can also use the setting [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath) to provide a global configuration. However, be careful, if this is set this value will always be used and local configuration files will be ignored.
+
+### Visual Studio Code Settings
+
+You can use [VS Code settings](#prettiers-settings) to configure prettier. Settings will be read from (listed by priority):
+
+1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
+1. `.editorconfig`
+1. Visual Studio Code Settings (Ignored if any other configuration is present)
+
+> NOTE: If any local configuration file is present (i.e. `.prettierrc`) the VS Code settings will **NOT** be used.
 
 ## Migrating from Versions 2.x
 
@@ -178,13 +190,7 @@ This extension will automatically detect when you have these extensions installe
 
 ### Prettier's Settings
 
-Settings will be read from (listed by priority):
-
-1. [Prettier configuration file](https://prettier.io/docs/en/configuration.html)
-1. `.editorconfig`
-1. Visual Studio Code Settings (Ignored if any other configuration is present)
-
-All prettier options can be configured directly in this extension. The available options are listed below. For reference on these options see the [prettier documentation](https://prettier.io/docs/en/options.html).
+All prettier options can be configured directly in this extension. These settings are used as a fallback when no configuration file is present in your project, see the [configuration](#configuration) section of this document for more details. For reference on the options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
 ```
 prettier.arrowParens
@@ -249,7 +255,7 @@ You must upgrade to a newer version of prettier.
 
 **You have legacy linter settings in your VS Code config. They are no longer being used.**
 
-If you receive this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted. See [these instructions for linter configuration](#linter-integration).
+If you receive this error message it means that one of the following settings were found in your VS Code config. Either in your global or workspace settings. These configuration options should be deleted as they are no longer used for anything. See [these instructions for linter configuration](#linter-integration).
 
 ```
 prettier.eslintIntegration
