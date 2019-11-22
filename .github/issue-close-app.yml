@@ -7,7 +7,6 @@ issueConfigs:
       - "Github Repository to Reproduce Issue"
       - "Steps To Reproduce:"
       - "Prettier Log Output"
-      - 'Extension Name: "prettier-vscode"' # Ensures they actually included the log
   - content:
       # Feature
       - "Is your feature request related to a problem? Please describe"
