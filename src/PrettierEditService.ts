@@ -336,7 +336,7 @@ export default class PrettierEditService implements Disposable {
           return returnValue;
         })
         .catch((error: Error) => {
-          this.loggingService.logError(error);
+          this.loggingService.logError(error, "Error formatting document.");
           this.statusBarService.updateStatusBar(false);
 
           return defaultText;
@@ -348,7 +348,7 @@ export default class PrettierEditService implements Disposable {
 
       return returnValue;
     } catch (error) {
-      this.loggingService.logError(error);
+      this.loggingService.logError(error, "Error formatting document.");
       this.statusBarService.updateStatusBar(false);
 
       return defaultText;

@@ -26,11 +26,20 @@ export class LoggingService {
     this.outputChannel.appendLine(message);
   }
 
-  public logError(error: Error) {
-    this.logMessage(error.name, "ERROR");
-    this.outputChannel.appendLine(error.message);
-    if (error.stack) {
-      this.outputChannel.appendLine(error.stack);
+  public logError(error: Error | string, message: string) {
+    if (error instanceof Error) {
+      this.logMessage(error.name || message, "ERROR");
+      if (error.message) {
+        this.outputChannel.appendLine(error.message);
+      }
+      if (error.stack) {
+        this.outputChannel.appendLine(error.stack);
+      }
+    } else {
+      this.logMessage(message, "ERROR");
+      if (error) {
+        this.outputChannel.appendLine(error);
+      }
     }
   }
 

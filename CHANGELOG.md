@@ -4,6 +4,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.9.0]
+
+- Improved error logging.
+- Bumped dependencies and type definitions to latest.
+- More information in readme about configuration.
+
 ## [3.8.0]
 
 - Fixed issue where VS Code and local config where merged. If local config is present, only it will be used. #1074

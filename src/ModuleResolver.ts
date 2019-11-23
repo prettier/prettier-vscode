@@ -104,7 +104,7 @@ export class ModuleResolver implements Disposable {
       try {
         delete r.cache[r.resolve(modulePath)];
       } catch (error) {
-        this.loggingService.logError(error);
+        this.loggingService.logError(error, "Error clearing module cache.");
       }
     });
   }
@@ -160,7 +160,10 @@ export class ModuleResolver implements Disposable {
     try {
       return r(moduleName);
     } catch (error) {
-      this.loggingService.logError(error);
+      this.loggingService.logError(
+        error,
+        `Error loading node module '${moduleName}'`
+      );
     }
     return undefined;
   }
