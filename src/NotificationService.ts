@@ -123,9 +123,8 @@ export class NotificationService implements Disposable {
       const val = vscodeConfig.get(key);
       if (inspected) {
         if (inspected.globalValue !== undefined) {
-          this.loggingService.logMessage(
-            `Configuration value 'prettier.${key}' set to '${val}' found in global configuration.`,
-            "WARN"
+          this.loggingService.logWarning(
+            `Configuration value 'prettier.${key}' set to '${val}' found in global configuration.`
           );
           foundOptions.set(key, val);
         }
@@ -133,9 +132,8 @@ export class NotificationService implements Disposable {
           inspected.workspaceValue !== undefined ||
           inspected.workspaceFolderValue !== undefined
         ) {
-          this.loggingService.logMessage(
-            `Configuration value 'prettier.${key}' set to '${val}' found in workspace configuration.`,
-            "WARN"
+          this.loggingService.logWarning(
+            `Configuration value 'prettier.${key}' set to '${val}' found in workspace configuration.`
           );
           foundOptions.set(key, val);
         }
@@ -153,9 +151,8 @@ export class NotificationService implements Disposable {
       vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
       vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
       vscodeConfig.update(key, undefined, ConfigurationTarget.WorkspaceFolder);
-      this.loggingService.logMessage(
-        `Removed setting 'prettier.${key}' from any configurations.`,
-        "INFO"
+      this.loggingService.logInfo(
+        `Removed setting 'prettier.${key}' from any configurations.`
       );
     });
   }

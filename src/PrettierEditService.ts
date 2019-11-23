@@ -92,15 +92,13 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
-    loggingService.logMessage("Enabling prettier for languages:", "INFO");
-    loggingService.logObject(allLanguages, "INFO");
+    loggingService.logInfo("Enabling prettier for languages", allLanguages);
 
     const allRangeLanguages = languageResolver.rangeSupportedLanguages();
-    loggingService.logMessage(
-      "Enabling prettier for range supported languages:",
-      "INFO"
+    loggingService.logInfo(
+      "Enabling prettier for range supported languages",
+      allRangeLanguages
     );
-    loggingService.logObject(allRangeLanguages, "INFO");
 
     const globalLanguageSelector = allLanguages.filter(
       l => !disableLanguages.includes(l)
@@ -148,9 +146,8 @@ export default class PrettierEditService implements Disposable {
       return [];
     }
     const hrEnd = process.hrtime(hrStart);
-    this.loggingService.logMessage(
-      `Formatting completed in ${hrEnd[1] / 1000000}ms.`,
-      "INFO"
+    this.loggingService.logInfo(
+      `Formatting completed in ${hrEnd[1] / 1000000}ms.`
     );
     return [TextEdit.replace(this.fullDocumentRange(document), result)];
   };
@@ -166,7 +163,7 @@ export default class PrettierEditService implements Disposable {
     { fileName, languageId, uri }: TextDocument,
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<string | undefined> {
-    this.loggingService.logMessage(`Formatting ${fileName}.`, "INFO");
+    this.loggingService.logInfo(`Formatting ${fileName}`);
 
     // LEGACY: Remove in version 4.x
     this.notificationService.warnIfLegacyConfiguration(uri);
@@ -193,8 +190,7 @@ export default class PrettierEditService implements Disposable {
         ignorePath,
         resolveConfig: true // Fix for 1.19 (https://prettier.io/blog/2019/11/09/1.19.0.html#api)
       });
-      this.loggingService.logMessage("File Info:", "INFO");
-      this.loggingService.logObject(fileInfo, "INFO");
+      this.loggingService.logInfo("File Info:", fileInfo);
     }
 
     if (fileInfo && fileInfo.ignored) {
@@ -205,28 +201,22 @@ export default class PrettierEditService implements Disposable {
     if (fileInfo && fileInfo.inferredParser) {
       parser = fileInfo.inferredParser;
     } else {
-      this.loggingService.logMessage(
-        "Parser not inferred, using VS Code language.",
-        "WARN"
+      this.loggingService.logWarning(
+        "Parser not inferred, using VS Code language."
       );
       const dynamicParsers = this.languageResolver.getParsersFromLanguageId(
         fileName,
         languageId
       );
-      this.loggingService.logObject(dynamicParsers, "INFO");
       if (dynamicParsers.length > 0) {
         parser = dynamicParsers[0];
-        this.loggingService.logMessage(
-          `Resolved parser to '${parser}'.`,
-          "INFO"
-        );
+        this.loggingService.logInfo(`Resolved parser to '${parser}'`);
       }
     }
 
     if (!parser) {
-      this.loggingService.logMessage(
-        `Failed to resolve a parser, skipping file.`,
-        "ERROR"
+      this.loggingService.logError(
+        `Failed to resolve a parser, skipping file.`
       );
       return;
     }
@@ -252,8 +242,7 @@ export default class PrettierEditService implements Disposable {
       rangeFormattingOptions
     );
 
-    this.loggingService.logMessage("Prettier Options:", "INFO");
-    this.loggingService.logObject(prettierOptions, "INFO");
+    this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
     if (parser === "typescript") {
       const prettierTslintModule = this.moduleResolver.getModuleInstance(
@@ -336,7 +325,7 @@ export default class PrettierEditService implements Disposable {
           return returnValue;
         })
         .catch((error: Error) => {
-          this.loggingService.logError(error, "Error formatting document.");
+          this.loggingService.logError("Error formatting document.", error);
           this.statusBarService.updateStatusBar(false);
 
           return defaultText;
@@ -348,7 +337,7 @@ export default class PrettierEditService implements Disposable {
 
       return returnValue;
     } catch (error) {
-      this.loggingService.logError(error, "Error formatting document.");
+      this.loggingService.logError("Error formatting document.", error);
       this.statusBarService.updateStatusBar(false);
 
       return defaultText;

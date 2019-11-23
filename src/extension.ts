@@ -35,8 +35,8 @@ export function activate(context: ExtensionContext) {
 
   const loggingService = new LoggingService();
 
-  loggingService.logMessage(`Extension Name: ${extensionName}.`, "INFO");
-  loggingService.logMessage(`Extension Version: ${extensionVersion}.`, "INFO");
+  loggingService.logInfo(`Extension Name: ${extensionName}.`);
+  loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
   // create telemetry reporter on extension activation
   reporter = new TelemetryReporter(

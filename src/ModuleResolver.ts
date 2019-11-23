@@ -54,10 +54,7 @@ export class ModuleResolver implements Disposable {
     );
 
     if (!moduleInstance && isUserInteractive) {
-      this.loggingService.logMessage(
-        "Using bundled version of prettier.",
-        "INFO"
-      );
+      this.loggingService.logInfo("Using bundled version of prettier.");
     }
 
     if (moduleInstance) {
@@ -74,9 +71,8 @@ export class ModuleResolver implements Disposable {
           // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(modulePath);
         }
-        this.loggingService.logMessage(
-          "Outdated version of prettier installed. Falling back to bundled version of prettier.",
-          "ERROR"
+        this.loggingService.logError(
+          "Outdated version of prettier installed. Falling back to bundled version of prettier."
         );
         // Invalid version, force bundled
         moduleInstance = undefined;
@@ -104,7 +100,7 @@ export class ModuleResolver implements Disposable {
       try {
         delete r.cache[r.resolve(modulePath)];
       } catch (error) {
-        this.loggingService.logError(error, "Error clearing module cache.");
+        this.loggingService.logError("Error clearing module cache.", error);
       }
     });
   }
@@ -131,21 +127,20 @@ export class ModuleResolver implements Disposable {
         if (this.resolvedModules.indexOf(modulePath) === -1) {
           this.resolvedModules.push(modulePath);
         }
-        this.loggingService.logMessage(
-          `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'.`,
-          "INFO"
+        this.loggingService.logInfo(
+          `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'`
         );
         return { moduleInstance, modulePath };
       }
     } catch (error) {
-      this.loggingService.logMessage(
-        `Failed to load ${pkgName} from ${modulePath}.`,
-        "INFO"
+      this.loggingService.logError(
+        `Failed to load ${pkgName} from '${modulePath}'`,
+        error
       );
       this.notificationService.showErrorMessage(
         "ext.message.failedToLoadModule",
         FAILED_TO_LOAD_MODULE_MESSAGE,
-        [`Attempted to load ${pkgName} from ${modulePath || "package.json"}.`]
+        [`Attempted to load ${pkgName} from ${modulePath || "package.json"}`]
       );
     }
     return { moduleInstance: undefined, modulePath };
@@ -161,8 +156,8 @@ export class ModuleResolver implements Disposable {
       return r(moduleName);
     } catch (error) {
       this.loggingService.logError(
-        error,
-        `Error loading node module '${moduleName}'`
+        `Error loading node module '${moduleName}'`,
+        error
       );
     }
     return undefined;

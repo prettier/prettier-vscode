@@ -28,9 +28,9 @@ export class ConfigResolver {
     );
 
     if (error) {
-      this.loggingService.logMessage(
+      this.loggingService.logError(
         `Failed to resolve config for ${fileName}. Falling back to the default config settings.`,
-        "ERROR"
+        error
       );
     }
 
@@ -55,9 +55,8 @@ export class ConfigResolver {
       vsOpts.useTabs = vsCodeConfig.useTabs;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
 
-      this.loggingService.logMessage(
-        "No local configuration detected, using VS Code configuration.",
-        "INFO"
+      this.loggingService.logInfo(
+        "No local configuration detected, using VS Code configuration"
       );
     }
 

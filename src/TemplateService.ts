@@ -31,7 +31,7 @@ export class TemplateService {
       formatterOptions
     );
 
-    this.loggingService.logMessage(outputPath, "INFO");
+    this.loggingService.logInfo(`Writing .prettierrc to '${outputPath}'`);
     await writeFileAsync(outputPath, templateSource, "utf8");
   }
 }
