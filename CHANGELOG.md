@@ -6,9 +6,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [3.10.0]
 
+- Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config.
 - Added additional logging.
 - Added `pattern` filter to formatter registrations to avoid registering incorrectly on multi-workspace projects.
-- Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config.
+- Removed some unused localization code.
 
 ## [3.9.0]
 
@@ -54,9 +55,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Removed support for Prettier versions older than 1.13.0.
 - No longer bundling linters with extension - to use install them in your package.json.
 - Use Prettier as default resolver of formatter instead of VS Code.
-- Use Prettier to determine if a file is igored or not instead of custom logic.
+- Use Prettier to determine if a file is ignored or not instead of custom logic.
 - Support for formatting of untitled files when the language is set by VS Code.
-- Set filepath config on format to assist with parser resolution.
+- Set file path config on format to assist with parser resolution.
 - Less fallbacks - if you have local prettier installed it will always use that. Before if your local prettier didn't support things we would fall back to bundled prettier - this caused many errors and inconsistent behavior.
 - Removed toolbar button.
 - Deprecated linter configuration settings.
@@ -85,7 +86,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [1.12.0]
 
-- Fixed issue where error output was used before inialized (#918)
+- Fixed issue where error output was used before initialized (#918)
 
 ## [1.11.0]
 
@@ -242,7 +243,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [0.13.0]
 
-- Local prettier has to be _explicitely_ installed (dependencies or devDependencies)
+- Local prettier has to be _explicitly_ installed (dependencies or devDependencies)
 
 ## [0.11.0]
 

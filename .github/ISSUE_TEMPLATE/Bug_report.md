@@ -3,7 +3,9 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-**You must complete all steps in this checklist or the issue will be automatically closed.** 
+<!-- SEE THIS GUIDE ON OPENING A GOOD ISSUE: https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue -->
+
+**You must complete all steps in this checklist or the issue will be automatically closed.**
 
 - [ ] Write a summary of your issue
 - [ ] Include a link to a github repo that can be used to reproduce the issue or exact reproduction steps.
@@ -48,6 +50,7 @@ _Feel free to attach a screenshot_.
 ## Prettier Log Output
 
 <!-- Click the "Prettier" button in the bottom toolbar and copy all the out put log here. -->
+<!-- SEE THIS GUIDE ON HOW TO GET YOUR LOGS: https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue -->
 
 ```
 LOG GOES HERE

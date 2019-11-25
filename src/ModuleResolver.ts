@@ -137,11 +137,9 @@ export class ModuleResolver implements Disposable {
         `Failed to load ${pkgName} from '${modulePath}'`,
         error
       );
-      this.notificationService.showErrorMessage(
-        "ext.message.failedToLoadModule",
-        FAILED_TO_LOAD_MODULE_MESSAGE,
-        [`Attempted to load ${pkgName} from ${modulePath || "package.json"}`]
-      );
+      this.notificationService.showErrorMessage(FAILED_TO_LOAD_MODULE_MESSAGE, [
+        `Attempted to load ${pkgName} from ${modulePath || "package.json"}`
+      ]);
     }
     return { moduleInstance: undefined, modulePath };
   }

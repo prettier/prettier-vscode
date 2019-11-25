@@ -8,7 +8,6 @@ import {
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
-import * as nls from "vscode-nls";
 import { LoggingService } from "./LoggingService";
 import {
   LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
@@ -23,8 +22,6 @@ const LEGACY_LINTER_OPTIONS = [
   "stylelintIntegration"
 ];
 
-const localize = nls.loadMessageBundle();
-
 export class NotificationService implements Disposable {
   private noLegacyConfigWorkspaces: string[] = [];
 
@@ -34,11 +31,12 @@ export class NotificationService implements Disposable {
   ) {}
 
   public warnOutdatedPrettierVersion(prettierPath?: string) {
-    const message = localize(
-      "ext.message.outdatedPrettierVersion",
-      OUTDATED_PRETTIER_VERSION_MESSAGE
-    ).replace("{{path}}", prettierPath || "unknown");
-    window.showErrorMessage(message);
+    window.showErrorMessage(
+      OUTDATED_PRETTIER_VERSION_MESSAGE.replace(
+        "{{path}}",
+        prettierPath || "unknown"
+      )
+    );
   }
 
   public async warnIfLegacyConfiguration(uri: Uri) {
@@ -62,19 +60,13 @@ export class NotificationService implements Disposable {
     }
   }
 
-  public async showErrorMessage(
-    label: string,
-    message: string,
-    extraLines?: string[]
-  ) {
-    const localizedMessage = localize(label, message);
-
+  public async showErrorMessage(message: string, extraLines?: string[]) {
     if (extraLines) {
-      const lines = [localizedMessage];
+      const lines = [message];
       lines.push(...extraLines);
       return window.showErrorMessage(lines.join(" "));
     } else {
-      return window.showErrorMessage(localizedMessage);
+      return window.showErrorMessage(message);
     }
   }
 
@@ -94,12 +86,8 @@ export class NotificationService implements Disposable {
       LEGACY_LINTER_OPTIONS
     );
     if (hasLegacyConfig) {
-      const message = localize(
-        "ext.message.legacyLinterConfigInUse",
-        LEGACY_VSCODE_LINTER_CONFIG_MESSAGE
-      );
       const result = await window.showWarningMessage(
-        message,
+        LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
         VIEW_LOGS_ACTION_TEXT,
         REMOVE_LEGACY_OPTIONS_ACTION_TEXT
       );

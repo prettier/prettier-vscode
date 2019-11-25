@@ -1,12 +1,12 @@
 {
   "ext.config.title": "Prettier - 代码格式化配置",
   "ext.config.disableLanguages": "用于禁用此扩展的语言ID列表",
-  "ext.config.requireConfig": "需要 'prettierconfig' 来格式化",
+  "ext.config.requireConfig": "需要 prettier configuration 来格式化",
   "ext.config.ignorePath": ".prettierignore或类似文件的路径",
   "ext.config.printWidth": "指定每行代码的最佳长度， 如果超出长度则换行。",
   "ext.config.tabWidth": "每个制表符占用的空格数",
   "ext.config.singleQuote": "如果为 true，将使用单引号而不是双引号",
-  "ext.config.trailingComma": "尽可能控制尾随逗号的输出。\n有效选项：\n'无' - 无尾随逗号\n'es5' - 在ES5中有效的尾随逗号（对象，数组等）\n'all' - 尾随逗号 尽可能（函数参数）",
+  "ext.config.trailingComma": "尽可能控制尾随逗号的输出。\n有效选项：\n'无' - 无尾随逗号\n' es5' - 在ES5中有效的尾随逗号（对象，数组等）\n 'all' - 尾随逗号 尽可能（函数参数）",
   "ext.config.bracketSpacing": "控制对象字面量的空格输出",
   "ext.config.jsxBracketSameLine": "如果为 true，则将多行jsx元素的 `>` 放在最后一行的末尾，而不是单独放在下一行",
   "ext.config.parser": "覆盖解析器。 您不必更改此设置。",
@@ -15,7 +15,7 @@
   "ext.config.proseWrap": "（Markdown）将散文包含在多行中",
   "ext.config.arrowParens": "当箭头函数仅有一个参数时加上括号",
   "ext.config.jsxSingleQuote": "在JSX中使用单引号而不是双引号",
-  "ext.config.htmlWhitespaceSensitivity": "指定HTML文件的全局空白区域敏感度。\n有效选项：\n'css' - 尊重CSS显示属性的默认值。 \n'strict' - 空格被认为是敏感的。 \n'ignore' - 空格被认为是不敏感的。",
+  "ext.config.htmlWhitespaceSensitivity": "指定HTML文件的全局空白区域敏感度。\n有效选项：\n 'css' - 尊重CSS显示属性的默认值。 \n 'strict' - 空格被认为是敏感的。 \n 'ignore' - 空格被认为是不敏感的。",
   "ext.config.endOfLine": "指定 prettier 的换行符",
   "ext.config.quoteProps": "Change when properties in objects are quoted"
 }
