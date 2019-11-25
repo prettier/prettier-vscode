@@ -5,6 +5,7 @@ import {
   DocumentSelector,
   languages,
   Range,
+  RelativePattern,
   TextDocument,
   TextEdit,
   workspace
@@ -46,10 +47,7 @@ export default class PrettierEditService implements Disposable {
 
   public registerFormatter = () => {
     this.dispose();
-    const { languageSelector, rangeLanguageSelector } = this.selectors(
-      this.languageResolver,
-      this.loggingService
-    );
+    const { languageSelector, rangeLanguageSelector } = this.selectors();
     const editProvider = new PrettierEditProvider(this.provideEdits);
     this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
       rangeLanguageSelector,
@@ -73,59 +71,74 @@ export default class PrettierEditService implements Disposable {
   /**
    * Build formatter selectors
    */
-  private selectors = (
-    languageResolver: LanguageResolver,
-    loggingService: LoggingService
-  ): ISelectors => {
+  private selectors = (): ISelectors => {
     const { disableLanguages } = getConfig();
 
-    let allLanguages: string[];
+    let allLanguages: DocumentFilter[];
     if (workspace.workspaceFolders === undefined) {
-      allLanguages = languageResolver.allEnabledLanguages();
+      allLanguages = this.languageResolver
+        .allEnabledLanguages()
+        .map(language => ({
+          language
+        }));
+      this.loggingService.logInfo(
+        `Enabling prettier for languages:`,
+        allLanguages.map(l => l.language)
+      );
     } else {
       allLanguages = [];
       for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = languageResolver.allEnabledLanguages(
+        const allWorkspaceLanguages = this.languageResolver.allEnabledLanguages(
           folder.uri.fsPath
         );
-        allLanguages.push(...allWorkspaceLanguages);
+        allWorkspaceLanguages.forEach(language => {
+          const pattern = new RelativePattern(folder.uri.fsPath, "**/*.*");
+          allLanguages.push({ language, pattern });
+        });
+        this.loggingService.logInfo(
+          `Enabling prettier in workspace '${folder.name}' for languages:`,
+          allWorkspaceLanguages
+        );
       }
     }
 
-    loggingService.logInfo("Enabling prettier for languages", allLanguages);
+    const allRangeLanguages: DocumentFilter[] = this.languageResolver
+      .rangeSupportedLanguages()
+      .map(language => ({
+        language
+      }));
 
-    const allRangeLanguages = languageResolver.rangeSupportedLanguages();
-    loggingService.logInfo(
+    this.loggingService.logInfo(
       "Enabling prettier for range supported languages",
-      allRangeLanguages
+      allRangeLanguages.map(l => l.language)
     );
 
     const globalLanguageSelector = allLanguages.filter(
-      l => !disableLanguages.includes(l)
+      l => l.language && !disableLanguages.includes(l.language)
     );
     const globalRangeLanguageSelector = allRangeLanguages.filter(
-      l => !disableLanguages.includes(l)
+      l => l.language && !disableLanguages.includes(l.language)
     );
     if (workspace.workspaceFolders === undefined) {
       // no workspace opened
       return {
-        languageSelector: globalLanguageSelector,
+        languageSelector: globalLanguageSelector.map(languageId => languageId),
         rangeLanguageSelector: globalRangeLanguageSelector
       };
     }
 
     // at least 1 workspace
     const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l, scheme: "untitled" })
+      l => ({ language: l.language, pattern: l.pattern, scheme: "untitled" })
     );
     const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l, scheme: "untitled" })
+      l => ({ language: l.language, pattern: l.pattern, scheme: "untitled" })
     );
     const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l, scheme: "file" })
+      l => ({ language: l.language, pattern: l.pattern, scheme: "file" })
     );
     const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l, scheme: "file" })
+      l => ({ language: l.language, pattern: l.pattern, scheme: "file" })
     );
     return {
       languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
@@ -251,6 +264,7 @@ export default class PrettierEditService implements Disposable {
       );
 
       if (prettierTslintModule) {
+        this.loggingService.logInfo("Formatting using 'prettier-tslint'");
         return this.safeExecution(() => {
           const prettierTslintFormat = prettierTslintModule.format as PrettierTslintFormat;
 
@@ -269,6 +283,7 @@ export default class PrettierEditService implements Disposable {
         "prettier-eslint"
       );
       if (prettierEslintModule) {
+        this.loggingService.logInfo("Formatting using 'prettier-eslint'");
         return this.safeExecution(() => {
           const prettierEslintFormat = prettierEslintModule as PrettierEslintFormat;
 
@@ -287,6 +302,7 @@ export default class PrettierEditService implements Disposable {
         "prettier-stylelint"
       );
       if (prettierStylelintModule) {
+        this.loggingService.logInfo("Formatting using 'prettier-stylelint'");
         const prettierStylelint = prettierStylelintModule as IPrettierStylelint;
         return this.safeExecution(
           prettierStylelint.format({

@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.10.0]
+
+- Added additional logging.
+- Added `pattern` filter to formatter registrations to avoid registering incorrectly on multi-workspace projects.
+
 ## [3.9.0]
 
 - Improved error logging.
