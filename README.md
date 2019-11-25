@@ -216,11 +216,11 @@ prettier.vueIndentScriptAndStyle
 
 These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
-#### prettier.requireConfig (default: false)
+#### prettier.requireConfig (default: `false`)
 
 Require a prettier configuration file to format
 
-#### prettier.ignorePath
+#### prettier.ignorePath (default: `.prettierignore`)
 
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
 Files which match will not be formatted. Set to `null` to not read ignore files.
@@ -242,6 +242,10 @@ Supply a custom path to the prettier module.
 A list of languages IDs to disable this extension on.
 
 **Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
+
+#### prettier.useEditorConfig (default: `true`)
+
+Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
 
 ## Error Messages
 

@@ -8,6 +8,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Added additional logging.
 - Added `pattern` filter to formatter registrations to avoid registering incorrectly on multi-workspace projects.
+- Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config.
 
 ## [3.9.0]
 

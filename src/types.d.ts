@@ -43,6 +43,11 @@ interface IExtensionConfig {
    * Array of language IDs to ignore
    */
   disableLanguages: string[];
+
+  /**
+   * If true, take into account the .editorconfig file when resolving configuration
+   */
+  useEditorConfig: boolean;
 }
 /**
  * Configuration for prettier-vscode

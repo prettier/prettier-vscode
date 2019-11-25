@@ -250,7 +250,7 @@ export default class PrettierEditService implements Disposable {
         config: vscodeConfig.configPath
           ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
           : undefined,
-        editorconfig: true
+        editorconfig: vscodeConfig.useEditorConfig
       },
       rangeFormattingOptions
     );
