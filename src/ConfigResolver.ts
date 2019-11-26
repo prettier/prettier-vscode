@@ -28,7 +28,7 @@ export class ConfigResolver {
 
     if (error) {
       this.loggingService.logError(
-        `Failed to resolve config for ${fileName}. Falling back to the default config settings.`,
+        `Error resolving prettier configuration for ${fileName}`,
         error
       );
     }
