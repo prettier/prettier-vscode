@@ -36,7 +36,9 @@ export class ConfigResolver {
 
     const vsOpts: prettier.Options = {};
 
-    if (configOptions === null) {
+    const fallbackToVSCodeConfig = configOptions === null;
+
+    if (fallbackToVSCodeConfig) {
       vsOpts.arrowParens = vsCodeConfig.arrowParens;
       vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
       vsOpts.endOfLine = vsCodeConfig.endOfLine;
@@ -54,14 +56,16 @@ export class ConfigResolver {
       vsOpts.trailingComma = vsCodeConfig.trailingComma;
       vsOpts.useTabs = vsCodeConfig.useTabs;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
-
-      this.loggingService.logInfo(
-        "No local configuration detected, using VS Code configuration"
-      );
     }
 
+    this.loggingService.logInfo(
+      fallbackToVSCodeConfig
+        ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
+        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
+    );
+
     const prettierOptions: prettier.Options = {
-      ...(configOptions === null ? vsOpts : {}),
+      ...(fallbackToVSCodeConfig ? vsOpts : {}),
       ...{
         /* cspell: disable-next-line */
         filepath: fileName,

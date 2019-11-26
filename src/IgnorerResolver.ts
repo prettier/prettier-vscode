@@ -11,7 +11,9 @@ export class IgnorerResolver {
       fsPath,
       getConfig(Uri.file(fsPath)).ignorePath
     );
-    this.loggingService.logInfo(`Resolved ignore file to ${absolutePath}`);
+    this.loggingService.logInfo(
+      `Using ignore file (if present) at ${absolutePath}`
+    );
     return absolutePath;
   }
 
