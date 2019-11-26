@@ -31,6 +31,20 @@ interface ISelectors {
   languageSelector: DocumentSelector;
 }
 
+/**
+ * Prettier reads configuration from files
+ */
+const PRETTIER_CONFIG_FILES = [
+  ".prettierrc",
+  ".prettierrc.json",
+  ".prettierrc.yaml",
+  ".prettierrc.yml",
+  ".prettierrc.js",
+  "package.json",
+  "prettier.config.js",
+  ".editorconfig"
+];
+
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
@@ -45,8 +59,40 @@ export default class PrettierEditService implements Disposable {
     private statusBarService: StatusBarService
   ) {}
 
+  public registerDisposables(): Disposable[] {
+    const packageWatcher = workspace.createFileSystemWatcher("**/package.json");
+    packageWatcher.onDidChange(this.registerFormatter);
+    packageWatcher.onDidCreate(this.registerFormatter);
+    packageWatcher.onDidDelete(this.registerFormatter);
+
+    const configurationWatcher = workspace.onDidChangeConfiguration(event => {
+      if (event.affectsConfiguration("prettier")) {
+        this.registerFormatter();
+      }
+    });
+
+    const workspaceWatcher = workspace.onDidChangeWorkspaceFolders(
+      this.registerFormatter
+    );
+
+    const prettierConfigWatcher = workspace.createFileSystemWatcher(
+      `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
+    );
+    prettierConfigWatcher.onDidChange(this.registerFormatter);
+    prettierConfigWatcher.onDidCreate(this.registerFormatter);
+    prettierConfigWatcher.onDidDelete(this.registerFormatter);
+
+    return [
+      packageWatcher,
+      configurationWatcher,
+      workspaceWatcher,
+      prettierConfigWatcher
+    ];
+  }
+
   public registerFormatter = () => {
     this.dispose();
+    prettier.clearConfigCache();
     const { languageSelector, rangeLanguageSelector } = this.selectors();
     const editProvider = new PrettierEditProvider(this.provideEdits);
     this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(

@@ -1,5 +1,4 @@
 import * as prettier from "prettier";
-// tslint:disable-next-line: no-implicit-dependencies
 import { LoggingService } from "./LoggingService";
 
 interface IResolveConfigResult {

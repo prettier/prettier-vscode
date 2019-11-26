@@ -1,4 +1,3 @@
-import { clearConfigCache } from "prettier";
 import {
   commands,
   ExtensionContext
@@ -15,12 +14,6 @@ import { NotificationService } from "./NotificationService";
 import PrettierEditService from "./PrettierEditService";
 import { StatusBarService } from "./StatusBarService";
 import { TemplateService } from "./TemplateService";
-import {
-  configWatcher,
-  fileWatcher,
-  packageWatcher,
-  workspaceFolderWatcher
-} from "./Watchers";
 
 // the application insights key (also known as instrumentation key)
 const telemetryKey = "93c48152-e880-42c1-8652-30ad62ce8b49";
@@ -83,14 +76,11 @@ export function activate(context: ExtensionContext) {
   editService.registerFormatter();
 
   context.subscriptions.push(
-    workspaceFolderWatcher(editService.registerFormatter),
-    configWatcher(editService.registerFormatter),
-    packageWatcher(editService.registerFormatter),
-    fileWatcher(clearConfigCache),
     editService,
     reporter,
     createConfigFileCommand,
     openOutputCommand,
+    ...editService.registerDisposables(),
     ...statusBarService.registerDisposables()
   );
 
