@@ -1,0 +1,20 @@
+variables:
+  azure_pipelines: true
+
+trigger:
+  tags:
+    include:
+      - v*
+
+steps:
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: "github.com_ntotten"
+      repositoryName: "$(Build.Repository.Name)"
+      action: "create"
+      target: "$(Build.SourceVersion)"
+      tagSource: "gitTag"
+      tagPattern: "v*"
+      releaseNotesFilePath: "CHANGE_LOG.md"
+      changeLogCompareToRelease: "lastFullRelease"
+      changeLogType: "commitBased"
