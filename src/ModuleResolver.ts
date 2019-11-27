@@ -81,13 +81,7 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    const resultInstance = moduleInstance || prettier;
-
-    if (!ModuleResolver.resolvedPrettierModules.indexOf(resultInstance)) {
-      ModuleResolver.resolvedPrettierModules.push(resultInstance);
-    }
-
-    return resultInstance;
+    return moduleInstance || prettier;
   }
 
   public getModuleInstance(fsPath: string, pkgName: string): any {
