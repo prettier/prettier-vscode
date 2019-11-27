@@ -1,0 +1,30 @@
+variables:
+  azure_pipelines: true
+
+trigger:
+  - "*"
+pr:
+  - "*"
+
+jobs:
+  - job: Windows
+    pool:
+      vmImage: windows-latest
+    steps:
+      - template: common/build.yml
+      - template: common/test.yml
+
+  - job: Linux
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - template: common/build.yml
+      - template: common/test.yml
+      - template: common/package.yml # Only publish vsix from linux build since we use this to release and want to stay consistent
+
+  - job: macOS
+    pool:
+      vmImage: macos-latest
+    steps:
+      - template: common/build.yml
+      - template: common/test.yml

@@ -21,6 +21,7 @@
     "prettierignore",
     "prettierrc",
     "promisify",
-    "stylelint"
+    "stylelint",
+    "vsce"
   ]
 }

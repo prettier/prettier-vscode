@@ -63,6 +63,8 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "tslint --project .",
+    "package": "vsce package",
+    "publish": "vsce publish",
     "pretest": "yarn test-compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install  && cd ../plugins && yarn install && cd ../outdated && yarn install",
     "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
@@ -108,6 +110,7 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.2",
+    "vsce": "^1.69.0",
     "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.2.3",
     "webpack": "^4.41.2",

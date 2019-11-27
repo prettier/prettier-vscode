@@ -1,0 +1,12 @@
+steps:
+  - script: "yarn test"
+    displayName: "Run tests"
+    env:
+      DISPLAY: ":99.0"
+
+    # Publish Test Results
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: "**/test-results.xml"
