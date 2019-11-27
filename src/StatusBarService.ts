@@ -11,6 +11,12 @@ import { LanguageResolver } from "./LanguageResolver";
 import { PrettierVSCodeConfig } from "./types";
 import { getConfig } from "./util";
 
+export enum FormattingResult {
+  Success = "check",
+  Ignore = "x",
+  Error = "alert"
+}
+
 export class StatusBarService {
   private statusBarItem: StatusBarItem;
   constructor(private languageResolver: LanguageResolver) {
@@ -36,11 +42,10 @@ export class StatusBarService {
   /**
    * Update the statusBarItem message and show the statusBarItem
    *
-   * @param message The message to put inside the statusBarItem
+   * @param icon The the icon to use
    */
-  public updateStatusBar(success: boolean): void {
-    const message = success ? "Prettier: $(check)" : "Prettier: $(x)";
-    this.statusBarItem.text = message;
+  public updateStatusBar(result: FormattingResult): void {
+    this.statusBarItem.text = `Prettier: $(${result.toString()})`;
     this.statusBarItem.show();
   }
 

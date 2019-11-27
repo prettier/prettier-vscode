@@ -18,19 +18,16 @@ export class ConfigResolver {
     fileName: string,
     parser: prettier.BuiltInParserName,
     vsCodeConfig: prettier.Options,
-    options: prettier.ResolveConfigOptions,
+    resolveConfigOptions: prettier.ResolveConfigOptions,
     rangeFormattingOptions?: RangeFormattingOptions
-  ): Promise<Partial<prettier.Options>> {
+  ): Promise<{ options?: Partial<prettier.Options>; error?: Error }> {
     const { config: configOptions, error } = await this.resolveConfig(
       fileName,
-      options
+      resolveConfigOptions
     );
 
     if (error) {
-      this.loggingService.logError(
-        `Error resolving prettier configuration for ${fileName}`,
-        error
-      );
+      return { error };
     }
 
     const vsOpts: prettier.Options = {};
@@ -63,7 +60,7 @@ export class ConfigResolver {
         : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
     );
 
-    const prettierOptions: prettier.Options = {
+    const options: prettier.Options = {
       ...(fallbackToVSCodeConfig ? vsOpts : {}),
       ...{
         /* cspell: disable-next-line */
@@ -74,7 +71,7 @@ export class ConfigResolver {
       ...(configOptions || {})
     };
 
-    return prettierOptions;
+    return { options };
   }
 
   /**

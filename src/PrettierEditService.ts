@@ -18,7 +18,7 @@ import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
-import { StatusBarService } from "./StatusBarService";
+import { FormattingResult, StatusBarService } from "./StatusBarService";
 import {
   IPrettierStylelint,
   PrettierEslintFormat,
@@ -237,6 +237,7 @@ export default class PrettierEditService implements Disposable {
     // wf1  (with "lang") -> glob: "wf1/**"
     // wf1/wf2  (without "lang") -> match "wf1/**"
     if (vscodeConfig.disableLanguages.includes(languageId)) {
+      this.statusBarService.updateStatusBar(FormattingResult.Ignore);
       return;
     }
 
@@ -252,6 +253,8 @@ export default class PrettierEditService implements Disposable {
     }
 
     if (fileInfo && fileInfo.ignored) {
+      this.loggingService.logInfo("File is ignored, skipping.");
+      this.statusBarService.updateStatusBar(FormattingResult.Ignore);
       return;
     }
 
@@ -276,6 +279,7 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logError(
         `Failed to resolve a parser, skipping file.`
       );
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
       return;
     }
 
@@ -284,10 +288,17 @@ export default class PrettierEditService implements Disposable {
     );
 
     if (!hasConfig && vscodeConfig.requireConfig) {
+      this.loggingService.logInfo(
+        "Require config set to true and no config present. Skipping file."
+      );
+      this.statusBarService.updateStatusBar(FormattingResult.Ignore);
       return;
     }
 
-    const prettierOptions = await this.configResolver.getPrettierOptions(
+    const {
+      options: prettierOptions,
+      error
+    } = await this.configResolver.getPrettierOptions(
       fileName,
       parser as prettier.BuiltInParserName,
       vscodeConfig,
@@ -299,6 +310,15 @@ export default class PrettierEditService implements Disposable {
       },
       rangeFormattingOptions
     );
+
+    if (error) {
+      this.loggingService.logError(
+        `Error resolving prettier configuration for ${fileName}`,
+        error
+      );
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
+      return;
+    }
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
@@ -381,25 +401,25 @@ export default class PrettierEditService implements Disposable {
     if (cb instanceof Promise) {
       return cb
         .then(returnValue => {
-          this.statusBarService.updateStatusBar(true);
+          this.statusBarService.updateStatusBar(FormattingResult.Success);
 
           return returnValue;
         })
         .catch((error: Error) => {
           this.loggingService.logError("Error formatting document.", error);
-          this.statusBarService.updateStatusBar(false);
+          this.statusBarService.updateStatusBar(FormattingResult.Error);
 
           return defaultText;
         });
     }
     try {
       const returnValue = cb();
-      this.statusBarService.updateStatusBar(true);
+      this.statusBarService.updateStatusBar(FormattingResult.Success);
 
       return returnValue;
     } catch (error) {
       this.loggingService.logError("Error formatting document.", error);
-      this.statusBarService.updateStatusBar(false);
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
 
       return defaultText;
     }
