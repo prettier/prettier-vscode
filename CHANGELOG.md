@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.11.0]
+
+- Additional logging for errors loading config
+- Updated status icon to not error states
+
 ## [3.10.0]
 
 - Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config.
