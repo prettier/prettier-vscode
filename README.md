@@ -165,15 +165,19 @@ graphql
 
 ## Linter Integration
 
-The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) extensions directly.
+The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=hex-ci.stylelint-plus) extensions directly.
 
 You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
 
 ```
+// For ESLint
 "eslint.autoFixOnSave": true,
+// For TSLint
 "editor.codeActionsOnSave": {
     "source.fixAll.tslint": true
-}
+},
+// For Stylelint
+stylelint.autoFixOnSave: true,
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
@@ -182,7 +186,7 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
 
 > WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
-The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, etc.
+The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, `stylelint`, etc.
 
 This extension will automatically detect when you have these extensions installed and use them instead of `prettier` by itself. For configuration of these linter integrations, see their respective documentation.
 
