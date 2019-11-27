@@ -20,9 +20,11 @@ interface ModuleResult {
   moduleInstance: any | undefined;
   modulePath: string | undefined;
 }
+
 export class ModuleResolver implements Disposable {
   private findPkgMem: (fsPath: string, pkgName: string) => string | undefined;
   private resolvedModules = new Array<string>();
+
   constructor(
     private loggingService: LoggingService,
     private notificationService: NotificationService
@@ -79,7 +81,13 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    return moduleInstance || prettier;
+    const resultInstance = moduleInstance || prettier;
+
+    if (!ModuleResolver.resolvedPrettierModules.indexOf(resultInstance)) {
+      ModuleResolver.resolvedPrettierModules.push(resultInstance);
+    }
+
+    return resultInstance;
   }
 
   public getModuleInstance(fsPath: string, pkgName: string): any {
@@ -98,6 +106,8 @@ export class ModuleResolver implements Disposable {
           ? __non_webpack_require__
           : require;
       try {
+        const mod: any = r.cache[r.resolve(modulePath)];
+        mod?.exports?.clearConfigCache();
         delete r.cache[r.resolve(modulePath)];
       } catch (error) {
         this.loggingService.logError("Error clearing module cache.", error);

@@ -92,7 +92,6 @@ export default class PrettierEditService implements Disposable {
 
   public registerFormatter = () => {
     this.dispose();
-    prettier.clearConfigCache();
     const { languageSelector, rangeLanguageSelector } = this.selectors();
     const editProvider = new PrettierEditProvider(this.provideEdits);
     this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
