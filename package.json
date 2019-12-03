@@ -110,7 +110,7 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.2",
-    "vsce": "^1.69.0",
+    "vsce": "^1.70.0",
     "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.2.3",
     "webpack": "^4.41.2",
