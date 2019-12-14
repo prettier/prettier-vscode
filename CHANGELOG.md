@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [3.12.0]
 
 - Reverted range filter on formatter registration due to problems, needs more investigation
+- Added additional details to description of `requireConfiguration` option.
 
 ## [3.11.0]
 
