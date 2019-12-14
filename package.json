@@ -120,7 +120,7 @@
     "ignore": "^5.1.4",
     "mem": "^6.0.1",
     "prettier": "^1.19.1",
-    "read-pkg-up": "^7.0.0",
+    "read-pkg-up": "^7.0.1",
     "resolve": "^1.13.1",
     "semver": "^6.3.0",
     "vscode-extension-telemetry": "^0.1.2",
