@@ -5,7 +5,6 @@ import {
   DocumentSelector,
   languages,
   Range,
-  RelativePattern,
   TextDocument,
   TextEdit,
   workspace
@@ -119,71 +118,58 @@ export default class PrettierEditService implements Disposable {
   private selectors = (): ISelectors => {
     const { disableLanguages } = getConfig();
 
-    let allLanguages: DocumentFilter[];
+    let allLanguages: string[];
     if (workspace.workspaceFolders === undefined) {
-      allLanguages = this.languageResolver
-        .allEnabledLanguages()
-        .map(language => ({
-          language
-        }));
-      this.loggingService.logInfo(
-        `Enabling prettier for languages:`,
-        allLanguages.map(l => l.language)
-      );
+      allLanguages = this.languageResolver.allEnabledLanguages();
     } else {
       allLanguages = [];
       for (const folder of workspace.workspaceFolders) {
         const allWorkspaceLanguages = this.languageResolver.allEnabledLanguages(
           folder.uri.fsPath
         );
-        allWorkspaceLanguages.forEach(language => {
-          const pattern = new RelativePattern(folder.uri.fsPath, "**/*.*");
-          allLanguages.push({ language, pattern });
-        });
-        this.loggingService.logInfo(
-          `Enabling prettier in workspace '${folder.name}' for languages:`,
-          allWorkspaceLanguages
-        );
+        allLanguages.push(...allWorkspaceLanguages);
       }
     }
 
-    const allRangeLanguages: DocumentFilter[] = this.languageResolver
-      .rangeSupportedLanguages()
-      .map(language => ({
-        language
-      }));
+    this.loggingService.logInfo(
+      "Enabling prettier for languages",
+      allLanguages
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .sort()
+    );
 
+    const allRangeLanguages = this.languageResolver.rangeSupportedLanguages();
     this.loggingService.logInfo(
       "Enabling prettier for range supported languages",
-      allRangeLanguages.map(l => l.language)
+      allRangeLanguages.sort()
     );
 
     const globalLanguageSelector = allLanguages.filter(
-      l => l.language && !disableLanguages.includes(l.language)
+      l => !disableLanguages.includes(l)
     );
     const globalRangeLanguageSelector = allRangeLanguages.filter(
-      l => l.language && !disableLanguages.includes(l.language)
+      l => !disableLanguages.includes(l)
     );
     if (workspace.workspaceFolders === undefined) {
       // no workspace opened
       return {
-        languageSelector: globalLanguageSelector.map(languageId => languageId),
+        languageSelector: globalLanguageSelector,
         rangeLanguageSelector: globalRangeLanguageSelector
       };
     }
 
     // at least 1 workspace
     const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l.language, pattern: l.pattern, scheme: "untitled" })
+      l => ({ language: l, scheme: "untitled" })
     );
     const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l.language, pattern: l.pattern, scheme: "untitled" })
+      l => ({ language: l, scheme: "untitled" })
     );
     const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l.language, pattern: l.pattern, scheme: "file" })
+      l => ({ language: l, scheme: "file" })
     );
     const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l.language, pattern: l.pattern, scheme: "file" })
+      l => ({ language: l, scheme: "file" })
     );
     return {
       languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
