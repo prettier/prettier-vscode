@@ -241,6 +241,10 @@ Supply a custom path to the prettier configuration file.
 
 Supply a custom path to the prettier module.
 
+#### prettier.packageManager
+
+Controls the package manager to be used to resolve the ESLint library. This has only an influence if the ESLint library is resolved globally. Valid values are `"npm"` or `"yarn"` or `"pnpm"`.
+
 #### prettier.disableLanguages
 
 A list of languages IDs to disable this extension on.

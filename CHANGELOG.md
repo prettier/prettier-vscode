@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [3.13.0]
 
+- Added support for global module resolution.
+- Added setting `packageManager` to determine which package manager to use for global module resolution.
 - Fixed issue where unsaved HTML files were resolved as Angular
 
 ## [3.12.0]

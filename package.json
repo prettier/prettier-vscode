@@ -145,6 +145,17 @@
           "description": "%ext.config.requireConfig%",
           "scope": "resource"
         },
+        "prettier.packageManager": {
+          "scope": "resource",
+          "type": "string",
+          "enum": [
+            "npm",
+            "yarn",
+            "pnpm"
+          ],
+          "default": "npm",
+          "description": "The package manager you use to install node modules."
+        },
         "prettier.useEditorConfig": {
           "type": "boolean",
           "default": true,

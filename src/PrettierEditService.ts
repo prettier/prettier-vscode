@@ -311,6 +311,7 @@ export default class PrettierEditService implements Disposable {
     if (parser === "typescript") {
       const prettierTslintModule = this.moduleResolver.getModuleInstance(
         fileName,
+        vscodeConfig.packageManager,
         "prettier-tslint"
       );
 
@@ -331,6 +332,7 @@ export default class PrettierEditService implements Disposable {
     if (this.languageResolver.doesLanguageSupportESLint(languageId)) {
       const prettierEslintModule = this.moduleResolver.getModuleInstance(
         fileName,
+        vscodeConfig.packageManager,
         "prettier-eslint"
       );
       if (prettierEslintModule) {
@@ -350,6 +352,7 @@ export default class PrettierEditService implements Disposable {
     if (this.languageResolver.doesParserSupportStylelint(parser)) {
       const prettierStylelintModule = this.moduleResolver.getModuleInstance(
         fileName,
+        vscodeConfig.packageManager,
         "prettier-stylelint"
       );
       if (prettierStylelintModule) {
