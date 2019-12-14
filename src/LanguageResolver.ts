@@ -1,4 +1,6 @@
 import * as prettier from "prettier";
+// tslint:disable-next-line: no-implicit-dependencies
+import { Uri } from "vscode";
 import { ModuleResolver } from "./ModuleResolver";
 
 const ESLINT_SUPPORTED_LANGUAGES = [
@@ -14,10 +16,15 @@ const STYLE_PARSERS = ["postcss", "css", "less", "scss"];
 export class LanguageResolver {
   constructor(private moduleResolver: ModuleResolver) {}
   public getParsersFromLanguageId(
-    fsPath: string,
+    uri: Uri,
     languageId: string
   ): prettier.BuiltInParserName[] | string[] {
-    const language = this.getSupportLanguages(fsPath).find(
+    if (uri.scheme === "untitled" && languageId === "html") {
+      // This is a workaround for the HTML language when it is unsaved. By default,
+      // the Angular parser matches first because both register the language 'html'
+      return ["html"];
+    }
+    const language = this.getSupportLanguages(uri.fsPath).find(
       lang =>
         lang &&
         lang.extensions &&

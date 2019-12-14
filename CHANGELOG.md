@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.13.0]
+
+- Fixed issue where unsaved HTML files were resolved as Angular
+
 ## [3.12.0]
 
 - Reverted range filter on formatter registration due to problems, needs more investigation
