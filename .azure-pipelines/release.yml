@@ -2,9 +2,6 @@ variables:
   azure_pipelines: true
 
 trigger:
-  branches:
-    include:
-      - master
   tags:
     include:
       - v*
