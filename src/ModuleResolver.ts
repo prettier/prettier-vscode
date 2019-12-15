@@ -20,8 +20,8 @@ const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
 
-interface ModuleResult {
-  moduleInstance: any | undefined;
+interface ModuleResult<T> {
+  moduleInstance: T | undefined;
   modulePath: string | undefined;
 }
 
@@ -185,7 +185,7 @@ export class ModuleResolver implements Disposable {
     fsPath: string,
     pkgName: string,
     modulePath?: string
-  ): ModuleResult {
+  ): ModuleResult<T> {
     try {
       modulePath = modulePath
         ? getWorkspaceRelativePath(fsPath, modulePath)
@@ -216,12 +216,12 @@ export class ModuleResolver implements Disposable {
   private requireGlobalPkg<T>(
     packageManager: PackageManagers,
     pkgName: string
-  ): ModuleResult {
+  ): ModuleResult<T> {
     const resolvedGlobalPackageManagerPath = globalPathGet(packageManager);
     if (resolvedGlobalPackageManagerPath) {
       const modulePath = path.join(resolvedGlobalPackageManagerPath, pkgName);
-      if (fs.existsSync(modulePath)) {
-        try {
+      try {
+        if (fs.existsSync(modulePath)) {
           const moduleInstance = this.loadNodeModule(modulePath);
           if (this.resolvedModules.indexOf(modulePath) === -1) {
             this.resolvedModules.push(modulePath);
@@ -230,13 +230,13 @@ export class ModuleResolver implements Disposable {
             `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'`
           );
           return { moduleInstance, modulePath };
-        } catch (error) {
-          this.loggingService.logError(
-            `Failed to load ${pkgName} from '${modulePath}'`,
-            error
-          );
-          return { moduleInstance: undefined, modulePath };
         }
+      } catch (error) {
+        this.loggingService.logError(
+          `Failed to load ${pkgName} from '${modulePath}'`,
+          error
+        );
+        return { moduleInstance: undefined, modulePath };
       }
     }
     return { moduleInstance: undefined, modulePath: undefined };
