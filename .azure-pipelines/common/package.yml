@@ -1,5 +1,5 @@
 steps:
-  - script: "yarn package"
+  - script: "yarn vscode:package"
     displayName: "Package VSIX"
 
   - task: CopyFiles@2
