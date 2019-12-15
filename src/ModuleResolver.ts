@@ -101,7 +101,10 @@ export class ModuleResolver implements Disposable {
         packageManager,
         "prettier"
       );
-      if (globalModuleResult.moduleInstance && globalModuleResult.modulePath) {
+      if (
+        globalModuleResult?.moduleInstance &&
+        globalModuleResult?.modulePath
+      ) {
         moduleInstance = globalModuleResult.moduleInstance;
         modulePath = globalModuleResult.modulePath;
       }
@@ -145,9 +148,9 @@ export class ModuleResolver implements Disposable {
     if (!moduleInstance) {
       const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
         packageManager,
-        "prettier"
+        pkgName
       );
-      if (globalModuleResult.moduleInstance) {
+      if (globalModuleResult?.moduleInstance) {
         moduleInstance = globalModuleResult.moduleInstance;
       }
     }
@@ -197,7 +200,8 @@ export class ModuleResolver implements Disposable {
           this.resolvedModules.push(modulePath);
         }
         this.loggingService.logInfo(
-          `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'`
+          `Loaded module '${pkgName}@${moduleInstance.version ??
+            "unknown"}' from '${modulePath}'`
         );
         return { moduleInstance, modulePath };
       }
@@ -227,7 +231,8 @@ export class ModuleResolver implements Disposable {
             this.resolvedModules.push(modulePath);
           }
           this.loggingService.logInfo(
-            `Loaded module '${pkgName}@${moduleInstance.version}' from '${modulePath}'`
+            `Loaded module '${pkgName}@${moduleInstance.version ??
+              "unknown"}' from '${modulePath}'`
           );
           return { moduleInstance, modulePath };
         }
