@@ -7,7 +7,7 @@ trigger:
       - "*"
   tags:
     include:
-      - v*
+      - v.*
 pr:
   - "*"
 
