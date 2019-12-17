@@ -1,0 +1,3 @@
+steps:
+  - script: "echo 'Publish'"
+    displayName: "Publishing Extension to Marketplace"

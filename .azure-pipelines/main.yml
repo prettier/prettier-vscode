@@ -37,10 +37,12 @@ stages:
   - stage: release
     jobs:
       - job: Release
-        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
         pool:
           vmImage: ubuntu-latest
         steps:
           - template: common/build.yml
-          - template: common/package.yml # Only publish vsix from linux build since we use this to release and want to stay consistent
+          - template: common/package.yml
           - template: common/release.yml
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+          - template: common/publish.yml
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
