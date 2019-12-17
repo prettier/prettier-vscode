@@ -27,6 +27,7 @@ stages:
         steps:
           - template: common/build.yml
           - template: common/test.yml
+          - template: common/package.yml
 
       - job: macOS
         pool:
@@ -37,12 +38,10 @@ stages:
   - stage: release
     jobs:
       - job: Release
+        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
         pool:
           vmImage: ubuntu-latest
         steps:
           - template: common/build.yml
-          - template: common/package.yml
           - template: common/release.yml
-            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
           - template: common/publish.yml
-            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
