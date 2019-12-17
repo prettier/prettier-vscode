@@ -76,7 +76,7 @@ To ensure that this extension is used over other extensions you may have install
 
 ### Prettier Resolution
 
-This extension will use prettier from your project's local dependencies (recommended). Should prettier not be installed locally with your project's dependencies, a copy will be bundled with the extension.
+This extension will use prettier from your project's local dependencies (recommended). If no local module is found, the extension will attempt to resolve prettier globally. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
 
 To install prettier in your project run:
 
@@ -86,7 +86,7 @@ npm install prettier -D
 
 ### Plugins
 
-This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
+This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally or globally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
 
 ## Configuration
 
