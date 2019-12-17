@@ -79,7 +79,10 @@ export class ConfigResolver {
    * @param filePath file's path
    */
   public async checkHasPrettierConfig(filePath: string) {
-    const { config } = await this.resolveConfig(filePath);
+    const { config, error } = await this.resolveConfig(filePath);
+    if (error) {
+      throw error;
+    }
     return config !== null;
   }
 

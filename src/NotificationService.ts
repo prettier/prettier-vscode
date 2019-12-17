@@ -61,12 +61,19 @@ export class NotificationService implements Disposable {
   }
 
   public async showErrorMessage(message: string, extraLines?: string[]) {
+    let result: string | undefined;
     if (extraLines) {
       const lines = [message];
       lines.push(...extraLines);
-      return window.showErrorMessage(lines.join(" "));
+      result = await window.showErrorMessage(
+        lines.join(" "),
+        VIEW_LOGS_ACTION_TEXT
+      );
     } else {
-      return window.showErrorMessage(message);
+      result = await window.showErrorMessage(message, VIEW_LOGS_ACTION_TEXT);
+    }
+    if (result && result === VIEW_LOGS_ACTION_TEXT) {
+      this.loggingService.show();
     }
   }
 

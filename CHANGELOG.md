@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.16.0]
+
+- Show error when prettier configuration file is invalid.
+
 ## [3.15.0]
 
 - Always format untitled files, even when `requireConfig` setting is enabled.

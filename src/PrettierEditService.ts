@@ -14,6 +14,7 @@ import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
+import { INVALID_PRETTIER_CONFIG } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
@@ -269,15 +270,25 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    const hasConfig = await this.configResolver.checkHasPrettierConfig(
-      fileName
-    );
-
-    if (!isUntitled && !hasConfig && vscodeConfig.requireConfig) {
-      this.loggingService.logInfo(
-        "Require config set to true and no config present. Skipping file."
+    try {
+      const hasConfig = await this.configResolver.checkHasPrettierConfig(
+        fileName
       );
-      this.statusBarService.updateStatusBar(FormattingResult.Ignore);
+
+      if (!isUntitled && !hasConfig && vscodeConfig.requireConfig) {
+        this.loggingService.logInfo(
+          "Require config set to true and no config present. Skipping file."
+        );
+        this.statusBarService.updateStatusBar(FormattingResult.Ignore);
+        return;
+      }
+    } catch (error) {
+      this.loggingService.logError(
+        "Invalid prettier configuration file detected.",
+        error
+      );
+      this.notificationService.showErrorMessage(INVALID_PRETTIER_CONFIG);
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
       return;
     }
 
