@@ -4,7 +4,7 @@ variables:
 trigger:
   tags:
     include:
-      - v*
+      - refs/tags/v*
 
 stages:
   - stage: build
@@ -36,6 +36,5 @@ stages:
           vmImage: ubuntu-latest
         steps:
           - template: common/build.yml
-          - template: common/test.yml
           - template: common/package.yml # Only publish vsix from linux build since we use this to release and want to stay consistent
           - template: common/release.yml

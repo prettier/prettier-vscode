@@ -6,25 +6,36 @@ trigger:
 pr:
   - "*"
 
-jobs:
-  - job: Windows
-    pool:
-      vmImage: windows-latest
-    steps:
-      - template: common/build.yml
-      - template: common/test.yml
+stages:
+  - stage: build
+    jobs:
+      - job: Windows
+        pool:
+          vmImage: windows-latest
+        steps:
+          - template: common/build.yml
+          - template: common/test.yml
 
-  - job: Linux
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - template: common/build.yml
-      - template: common/test.yml
-      - template: common/package.yml # Only publish vsix from linux build since we use this to release and want to stay consistent
+      - job: Linux
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - template: common/build.yml
+          - template: common/test.yml
 
-  - job: macOS
-    pool:
-      vmImage: macos-latest
-    steps:
-      - template: common/build.yml
-      - template: common/test.yml
+      - job: macOS
+        pool:
+          vmImage: macos-latest
+        steps:
+          - template: common/build.yml
+          - template: common/test.yml
+  - stage: release
+    jobs:
+      - job: Release
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/tags/v*'))
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - template: common/build.yml
+          - template: common/package.yml # Only publish vsix from linux build since we use this to release and want to stay consistent
+          - template: common/release.yml
