@@ -18,7 +18,7 @@
   "ext.config.printWidth": "Fit code within this line limit",
   "ext.config.proseWrap": "(Markdown) wrap prose over multiple lines",
   "ext.config.quoteProps": "Change when properties in objects are quoted",
-  "ext.config.requireConfig": "Require a prettier configuration file to format. See [documentation for valid configuration files](https://prettier.io/docs/en/configuration.html).",
+  "ext.config.requireConfig": "Require a prettier configuration file to format. See [documentation for valid configuration files](https://prettier.io/docs/en/configuration.html).\n Note, untitled files will still be formatted using the VS Code prettier settings even when this setting is set.",
   "ext.config.requirePragma": "Prettier can restrict itself to only format files that contain a special comment, called a pragma, at the top of the file. This is very useful when gradually transitioning large, unformatted codebases to prettier.",
   "ext.config.semi": "Whether to add a semicolon at the end of every line",
   "ext.config.singleQuote": "If true, will use single instead of double quotes",

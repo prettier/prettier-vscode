@@ -204,7 +204,7 @@ export default class PrettierEditService implements Disposable {
    */
   private async format(
     text: string,
-    { fileName, languageId, uri }: TextDocument,
+    { fileName, languageId, uri, isUntitled }: TextDocument,
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<string | undefined> {
     this.loggingService.logInfo(`Formatting ${fileName}`);
@@ -273,7 +273,7 @@ export default class PrettierEditService implements Disposable {
       fileName
     );
 
-    if (!hasConfig && vscodeConfig.requireConfig) {
+    if (!isUntitled && !hasConfig && vscodeConfig.requireConfig) {
       this.loggingService.logInfo(
         "Require config set to true and no config present. Skipping file."
       );

@@ -222,7 +222,7 @@ These settings are specific to VS Code and need to be set in the VS Code setting
 
 #### prettier.requireConfig (default: `false`)
 
-Require a prettier configuration file to format
+Require a prettier configuration file to format files. Untitled files will still be formatted using the VS Code Prettier configuration even with this option set to `true`.
 
 #### prettier.ignorePath (default: `.prettierignore`)
 

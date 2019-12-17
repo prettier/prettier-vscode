@@ -4,6 +4,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.15.0]
+
+- Always format untitled files, even when `requireConfig` setting is enabled.
+
+## [3.14.0]
+
+- Fixed an issue with global module resolution.
+
 ## [3.13.0]
 
 - Added support for global module resolution.
