@@ -13,33 +13,6 @@ import {
 } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
-import * as url from "url";
-
-/**
- * @deprecated Use the `vscode-uri` npm module which provides a more
- * complete implementation of handling VS Code URIs.
- */
-export function uriToFilePath(uri: string): string | undefined {
-  const parsed = url.parse(uri);
-  if (parsed.protocol !== "file:" || !parsed.path) {
-    return undefined;
-  }
-  const segments = parsed.path.split("/");
-  for (let i = 0, len = segments.length; i < len; i++) {
-    segments[i] = decodeURIComponent(segments[i]);
-  }
-  if (process.platform === "win32" && segments.length > 1) {
-    const first = segments[0];
-    const second = segments[1];
-    // Do we have a drive letter and we started with a / which is the
-    // case if the first segment is empty (see split above)
-    if (first.length === 0 && second.length > 1 && second[1] === ":") {
-      // Remove first slash
-      segments.shift();
-    }
-  }
-  return path.normalize(segments.join("/"));
-}
 
 function isWindows(): boolean {
   return process.platform === "win32";
