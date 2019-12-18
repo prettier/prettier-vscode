@@ -128,15 +128,17 @@ export default class PrettierEditService implements Disposable {
         const allWorkspaceLanguages = this.languageResolver.allEnabledLanguages(
           folder.uri.fsPath
         );
-        allLanguages.push(...allWorkspaceLanguages);
+        allWorkspaceLanguages.forEach(lang => {
+          if (!allLanguages.includes(lang)) {
+            allLanguages.push(lang);
+          }
+        });
       }
     }
 
     this.loggingService.logInfo(
       "Enabling prettier for languages",
-      allLanguages
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .sort()
+      allLanguages.sort()
     );
 
     const allRangeLanguages = this.languageResolver.rangeSupportedLanguages();
