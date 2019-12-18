@@ -122,7 +122,7 @@
     "prettier": "^1.19.1",
     "read-pkg-up": "^7.0.1",
     "resolve": "^1.13.1",
-    "semver": "^6.3.0",
+    "semver": "^7.1.1",
     "vscode-extension-telemetry": "^0.1.2",
     "vscode-nls": "^4.1.1"
   },
