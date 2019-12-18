@@ -26,7 +26,7 @@ export class StatusBarService {
       -1
     );
     this.statusBarItem.text = "Prettier";
-    this.statusBarItem.command = "prettier.open-output";
+    this.statusBarItem.command = "prettier.openOutput";
 
     this.toggleStatusBarItem(window.activeTextEditor);
   }

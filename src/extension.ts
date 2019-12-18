@@ -45,10 +45,8 @@ export function activate(context: ExtensionContext) {
     createConfigFileFunc
   );
   const openOutputCommand = commands.registerCommand(
-    "prettier.open-output",
-    () => {
-      loggingService.show();
-    }
+    "prettier.openOutput",
+    loggingService.show
   );
 
   const ignoreResolver = new IgnorerResolver(loggingService);
