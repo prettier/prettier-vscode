@@ -1,5 +1,4 @@
 import { execSync } from "child_process";
-import { trace } from "console";
 import * as fs from "fs";
 import * as mem from "mem";
 import * as path from "path";
@@ -31,7 +30,7 @@ const globalPaths: {
   npm: {
     cache: undefined,
     get(): string | undefined {
-      return resolveGlobalNodePath(trace);
+      return resolveGlobalNodePath();
     }
   },
   pnpm: {
@@ -46,7 +45,7 @@ const globalPaths: {
   yarn: {
     cache: undefined,
     get(): string | undefined {
-      return resolveGlobalYarnPath(trace);
+      return resolveGlobalYarnPath();
     }
   }
 };
