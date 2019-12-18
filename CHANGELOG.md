@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [3.16.0]
 
 - Show error when prettier configuration file is invalid.
+- Removed unused debug tracer on module resolution
 
 ## [3.15.0]
 
