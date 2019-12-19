@@ -136,19 +136,19 @@
           "items": {
             "type": "string"
           },
-          "description": "%ext.config.disableLanguages%",
+          "markdownDescription": "%ext.config.disableLanguages%",
           "scope": "window"
         },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.requireConfig%",
+          "markdownDescription": "%ext.config.requireConfig%",
           "scope": "resource"
         },
         "prettier.resolveGlobalModules": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.resolveGlobalModules%",
+          "markdownDescription": "%ext.config.resolveGlobalModules%",
           "scope": "resource"
         },
         "prettier.packageManager": {
@@ -160,28 +160,28 @@
             "pnpm"
           ],
           "default": "npm",
-          "description": "The package manager you use to install node modules."
+          "markdownDescription": "%ext.config.packageManager%"
         },
         "prettier.useEditorConfig": {
           "type": "boolean",
           "default": true,
-          "description": "%ext.config.useEditorConfig%",
+          "markdownDescription": "%ext.config.useEditorConfig%",
           "scope": "resource"
         },
         "prettier.ignorePath": {
           "type": "string",
           "default": ".prettierignore",
-          "description": "%ext.config.ignorePath%",
+          "markdownDescription": "%ext.config.ignorePath%",
           "scope": "resource"
         },
         "prettier.prettierPath": {
           "type": "string",
-          "description": "%ext.config.prettierPath%",
+          "markdownDescription": "%ext.config.prettierPath%",
           "scope": "resource"
         },
         "prettier.configPath": {
           "type": "string",
-          "description": "%ext.config.configPath%",
+          "markdownDescription": "%ext.config.configPath%",
           "scope": "resource"
         },
         "prettier.eslintIntegration": {
@@ -189,7 +189,7 @@
             "boolean",
             "null"
           ],
-          "description": "%ext.config.eslintIntegration%",
+          "markdownDescription": "%ext.config.eslintIntegration%",
           "scope": "resource",
           "default": null,
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
@@ -199,7 +199,7 @@
             "boolean",
             "null"
           ],
-          "description": "%ext.config.tslintIntegration%",
+          "markdownDescription": "%ext.config.tslintIntegration%",
           "scope": "resource",
           "default": null,
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
@@ -209,7 +209,7 @@
             "boolean",
             "null"
           ],
-          "description": "%ext.config.stylelintIntegration%",
+          "markdownDescription": "%ext.config.stylelintIntegration%",
           "default": null,
           "scope": "resource",
           "deprecationMessage": "%ext.config.lintDeprecationMessage%"
@@ -217,19 +217,19 @@
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
-          "description": "%ext.config.printWidth%",
+          "markdownDescription": "%ext.config.printWidth%",
           "scope": "resource"
         },
         "prettier.tabWidth": {
           "type": "integer",
           "default": 2,
-          "description": "%ext.config.tabWidth%",
+          "markdownDescription": "%ext.config.tabWidth%",
           "scope": "resource"
         },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.singleQuote%",
+          "markdownDescription": "%ext.config.singleQuote%",
           "scope": "resource"
         },
         "prettier.trailingComma": {
@@ -240,19 +240,19 @@
             "all"
           ],
           "default": "none",
-          "description": "%ext.config.trailingComma%",
+          "markdownDescription": "%ext.config.trailingComma%",
           "scope": "resource"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
-          "description": "%ext.config.bracketSpacing%",
+          "markdownDescription": "%ext.config.bracketSpacing%",
           "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.jsxBracketSameLine%",
+          "markdownDescription": "%ext.config.jsxBracketSameLine%",
           "scope": "resource"
         },
         "prettier.parser": {
@@ -265,32 +265,32 @@
             "flow"
           ],
           "default": null,
-          "description": "%ext.config.parser%",
+          "markdownDescription": "%ext.config.parser%",
           "scope": "resource",
-          "deprecationMessage": "%ext.config.prettierSettingsDeprecatedMessage%"
+          "deprecationMessage": "%ext.config.parserDeprecationMessage%"
         },
         "prettier.semi": {
           "type": "boolean",
           "default": true,
-          "description": "%ext.config.semi%",
+          "markdownDescription": "%ext.config.semi%",
           "scope": "resource"
         },
         "prettier.requirePragma": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.requirePragma%",
+          "markdownDescription": "%ext.config.requirePragma%",
           "scope": "resource"
         },
         "prettier.insertPragma": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.insertPragma%",
+          "markdownDescription": "%ext.config.insertPragma%",
           "scope": "resource"
         },
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.useTabs%",
+          "markdownDescription": "%ext.config.useTabs%",
           "scope": "resource"
         },
         "prettier.proseWrap": {
@@ -301,7 +301,7 @@
             "never"
           ],
           "default": "preserve",
-          "description": "%ext.config.proseWrap%",
+          "markdownDescription": "%ext.config.proseWrap%",
           "scope": "resource"
         },
         "prettier.arrowParens": {
@@ -311,13 +311,13 @@
             "always"
           ],
           "default": "avoid",
-          "description": "%ext.config.arrowParens%",
+          "markdownDescription": "%ext.config.arrowParens%",
           "scope": "resource"
         },
         "prettier.jsxSingleQuote": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.jsxSingleQuote%",
+          "markdownDescription": "%ext.config.jsxSingleQuote%",
           "scope": "resource"
         },
         "prettier.htmlWhitespaceSensitivity": {
@@ -328,13 +328,13 @@
             "ignore"
           ],
           "default": "css",
-          "description": "%ext.config.htmlWhitespaceSensitivity%",
+          "markdownDescription": "%ext.config.htmlWhitespaceSensitivity%",
           "scope": "resource"
         },
         "prettier.vueIndentScriptAndStyle": {
           "type": "boolean",
           "default": false,
-          "description": "%ext.config.vueIndentScriptAndStyle%",
+          "markdownDescription": "%ext.config.vueIndentScriptAndStyle%",
           "scope": "resource"
         },
         "prettier.endOfLine": {
@@ -346,7 +346,7 @@
             "cr"
           ],
           "default": "auto",
-          "description": "%ext.config.endOfLine%",
+          "markdownDescription": "%ext.config.endOfLine%",
           "scope": "resource"
         },
         "prettier.quoteProps": {
@@ -357,7 +357,7 @@
             "preserve"
           ],
           "default": "as-needed",
-          "description": "%ext.config.quoteProps%",
+          "markdownDescription": "%ext.config.quoteProps%",
           "scope": "resource"
         }
       }
