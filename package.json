@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "3.16.1",
+  "version": "3.17.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -143,6 +143,12 @@
           "type": "boolean",
           "default": false,
           "description": "%ext.config.requireConfig%",
+          "scope": "resource"
+        },
+        "prettier.resolveGlobalModules": {
+          "type": "boolean",
+          "default": false,
+          "description": "%ext.config.resolveGlobalModules%",
           "scope": "resource"
         },
         "prettier.packageManager": {

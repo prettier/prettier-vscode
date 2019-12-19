@@ -76,7 +76,7 @@ To ensure that this extension is used over other extensions you may have install
 
 ### Prettier Resolution
 
-This extension will use prettier from your project's local dependencies (recommended). If no local module is found, the extension will attempt to resolve prettier globally. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
+This extension will use prettier from your project's local dependencies (recommended). When the `prettier.resolveGlobalModules` is set to `true` the extension can also attempt to resolve global modules. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
 
 To install prettier in your project run:
 
@@ -243,7 +243,13 @@ Supply a custom path to the prettier module.
 
 #### prettier.packageManager
 
-Controls the package manager to be used to resolve the ESLint library. This has only an influence if the ESLint library is resolved globally. Valid values are `"npm"` or `"yarn"` or `"pnpm"`.
+Controls the package manager to be used to resolve modules. This has only an influence if the `prettier.resolveGlobalModules` setting is `true` and modules are resolved globally. Valid values are `"npm"` or `"yarn"` or `"pnpm"`.
+
+#### prettier.resolveGlobalModules (default: false)
+
+When enabled, this extension will attempt to use global npm or yarn modules if local modules cannot be resolved.
+
+> NOTE: This setting can have a negative performance impact, particularly on Windows when you have attached network drives. Only enable this if you must use global modules. It is recommended that you always use local modules when possible.
 
 #### prettier.disableLanguages
 

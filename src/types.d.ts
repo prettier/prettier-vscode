@@ -50,9 +50,13 @@ interface IExtensionConfig {
    */
   disableLanguages: string[];
   /**
-   * If true, take into account the .editorconfig file when resolving configuration
+   * If true, take into account the .editorconfig file when resolving configuration.
    */
   useEditorConfig: boolean;
+  /**
+   * If true, this extension will attempt to use global npm or yarn modules.
+   */
+  resolveGlobalModules: boolean;
 }
 /**
  * Configuration for prettier-vscode

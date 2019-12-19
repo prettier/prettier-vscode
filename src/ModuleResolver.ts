@@ -86,7 +86,7 @@ export class ModuleResolver implements Disposable {
       return prettier;
     }
 
-    const { prettierPath, packageManager } = getConfig();
+    const { prettierPath, packageManager, resolveGlobalModules } = getConfig();
 
     // tslint:disable-next-line: prefer-const
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
@@ -95,7 +95,7 @@ export class ModuleResolver implements Disposable {
       prettierPath
     );
 
-    if (!moduleInstance) {
+    if (resolveGlobalModules && !moduleInstance) {
       const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
         packageManager,
         "prettier"
@@ -138,13 +138,11 @@ export class ModuleResolver implements Disposable {
     return moduleInstance || prettier;
   }
 
-  public getModuleInstance(
-    fsPath: string,
-    packageManager: PackageManagers,
-    pkgName: string
-  ): any {
+  public getModuleInstance(fsPath: string, pkgName: string): any {
     let { moduleInstance } = this.requireLocalPkg<any>(fsPath, pkgName);
-    if (!moduleInstance) {
+
+    const { packageManager, resolveGlobalModules } = getConfig();
+    if (resolveGlobalModules && !moduleInstance) {
       const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
         packageManager,
         pkgName

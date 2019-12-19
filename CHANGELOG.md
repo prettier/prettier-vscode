@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.17.0]
+
+- Due to performance issues, global module resolution is now off by default. Enable by setting `prettier.resolveGlobalModules` to `true`.
+
 ## [3.16.0]
 
 - Show error when prettier configuration file is invalid.
