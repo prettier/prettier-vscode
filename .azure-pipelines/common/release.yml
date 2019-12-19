@@ -6,7 +6,7 @@ steps:
       action: "create"
       target: "$(Build.SourceVersion)"
       tagSource: "gitTag"
-      tagPattern: "v*"
+      tagPattern: "v.*"
       releaseNotesFilePath: "CHANGELOG.md"
       changeLogCompareToRelease: "lastFullRelease"
       changeLogType: "commitBased"
