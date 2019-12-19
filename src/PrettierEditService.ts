@@ -215,10 +215,9 @@ export default class PrettierEditService implements Disposable {
     // LEGACY: Remove in version 4.x
     this.notificationService.warnIfLegacyConfiguration(uri);
 
-    const prettierInstance = this.moduleResolver.getPrettierInstance(
-      fileName,
-      true /* Show outdated or fallback warnings */
-    );
+    const prettierInstance = this.moduleResolver.getPrettierInstance(fileName, {
+      showWarnings: true
+    });
 
     const vscodeConfig = getConfig(uri);
 

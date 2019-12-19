@@ -24,6 +24,10 @@ interface ModuleResult<T> {
   modulePath: string | undefined;
 }
 
+interface PrettierResolutionOptions {
+  showWarnings: boolean;
+}
+
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
 } = {
@@ -80,7 +84,7 @@ export class ModuleResolver implements Disposable {
    */
   public getPrettierInstance(
     fileName?: string,
-    isUserInteractive: boolean = false
+    options?: PrettierResolutionOptions
   ): PrettierModule {
     if (!fileName) {
       return prettier;
@@ -109,7 +113,7 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    if (!moduleInstance && isUserInteractive) {
+    if (!moduleInstance && options?.showWarnings) {
       this.loggingService.logInfo("Using bundled version of prettier.");
     }
 
@@ -122,7 +126,7 @@ export class ModuleResolver implements Disposable {
         semver.gte(moduleInstance.version, minPrettierVersion);
 
       if (!isValidVersion) {
-        if (isUserInteractive) {
+        if (options?.showWarnings) {
           // We only prompt when formatting a file. If we did it on load there
           // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(modulePath);
