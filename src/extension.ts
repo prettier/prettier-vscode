@@ -46,7 +46,9 @@ export function activate(context: ExtensionContext) {
   );
   const openOutputCommand = commands.registerCommand(
     "prettier.openOutput",
-    loggingService.show
+    () => {
+      loggingService.show();
+    }
   );
 
   const ignoreResolver = new IgnorerResolver(loggingService);

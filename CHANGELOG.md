@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.18.0]
+
+- Fixed a bug with the prettier output open command.
+- Upgraded module dependencies.
+
 ## [3.17.0]
 
 - Due to performance issues, global module resolution is now off by default. Enable by setting `prettier.resolveGlobalModules` to `true`.
