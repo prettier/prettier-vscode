@@ -105,7 +105,7 @@
     "lint-staged": "^9.5.0",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
-    "sinon": "^8.0.0",
+    "sinon": "^8.0.1",
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
