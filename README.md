@@ -170,10 +170,10 @@ The preferred way of integrating with linters is to let Prettier do the formatti
 You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
 
 ```
-// For ESLint
-"eslint.autoFixOnSave": true,
-// For TSLint
 "editor.codeActionsOnSave": {
+    // For ESLint
+    "source.fixAll.eslint": true,
+    // For TSLint
     "source.fixAll.tslint": true
 },
 // For Stylelint
