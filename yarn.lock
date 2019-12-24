@@ -46,7 +46,7 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sinonjs/commons@^1", "@sinonjs/commons@^1.4.0", "@sinonjs/commons@^1.6.0", "@sinonjs/commons@^1.7.0":
+"@sinonjs/commons@^1", "@sinonjs/commons@^1.6.0", "@sinonjs/commons@^1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.0.tgz#f90ffc52a2e519f018b13b6c4da03cbff36ebed6"
   integrity sha512-qbk9AP+cZUsKdW1GJsBpxPKFmCJ0T8swwzVje3qFd+AkQb74Q/tiuzrdfFg8AD2g5HH/XbE/I8Uc1KYHVYWfhg==
@@ -3951,12 +3951,12 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
-sinon@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-8.0.0.tgz#7126368de2df4ebd5b0a4d7da3de89aab4948c3e"
-  integrity sha512-9ugfO9tMrxTzqViG0hGhJoLXj8M01FZwfXMpYSmQT1AuV2jyXDJZUMpbENHBY9/2c2u6RKkHOcbYINx2FttUkg==
+sinon@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-8.0.1.tgz#c256376cd133dbb0c69ba4d73ed5bdd591597502"
+  integrity sha512-vbXMHBszVioyPsuRDLEiPEgvkZnbjfdCFvLYV4jONNJqZNLWTwZ/gYSNh3SuiT1w9MRXUz+S7aX0B4Ar2XI8iw==
   dependencies:
-    "@sinonjs/commons" "^1.4.0"
+    "@sinonjs/commons" "^1.7.0"
     "@sinonjs/formatio" "^4.0.1"
     "@sinonjs/samsam" "^4.0.1"
     diff "^4.0.1"
