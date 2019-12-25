@@ -211,9 +211,13 @@ export class ModuleResolver implements Disposable {
         `Failed to load ${pkgName} from '${modulePath}'`,
         error
       );
-      this.notificationService.showErrorMessage(FAILED_TO_LOAD_MODULE_MESSAGE, [
-        `Attempted to load ${pkgName} from ${modulePath || "package.json"}`
-      ]);
+      const { disableRequireLocalPkgErrorMessage } = getConfig();
+      if (!disableRequireLocalPkgErrorMessage) {
+        this.notificationService.showErrorMessage(
+          FAILED_TO_LOAD_MODULE_MESSAGE,
+          [`Attempted to load ${pkgName} from ${modulePath || "package.json"}`]
+        );
+      }
     }
     return { moduleInstance: undefined, modulePath };
   }

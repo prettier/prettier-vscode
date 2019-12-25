@@ -1,6 +1,7 @@
 {
   "ext.config.title": "Prettier - 代碼格式化配置",
   "ext.config.disableLanguages": "用於禁用此擴展的語言ID列表",
+  "ext.config.disableRequireLocalPkgErrorMessage": "加載本地模塊失敗時不展示錯誤信息",
   "ext.config.requireConfig": "需要 'prettierconfig' 來格式化",
   "ext.config.ignorePath": ".prettierignore或類似文件的路徑",
   "ext.config.printWidth": "指定每行代碼的最佳長度， 如果超出長度則換行。",

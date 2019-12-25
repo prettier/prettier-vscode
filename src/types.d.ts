@@ -50,6 +50,10 @@ interface IExtensionConfig {
    */
   disableLanguages: string[];
   /**
+   * Do not show error message when failed to load local module.
+   */
+  disableRequireLocalPkgErrorMessage: boolean;
+  /**
    * If true, take into account the .editorconfig file when resolving configuration.
    */
   useEditorConfig: boolean;

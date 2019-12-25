@@ -139,6 +139,12 @@
           "markdownDescription": "%ext.config.disableLanguages%",
           "scope": "window"
         },
+        "prettier.disableRequireLocalPkgErrorMessage": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.disableRequireLocalPkgErrorMessage%",
+          "scope": "window"
+        },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,

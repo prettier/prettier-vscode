@@ -1,6 +1,7 @@
 {
   "ext.config.title": "Prettier - 代码格式化配置",
   "ext.config.disableLanguages": "用于禁用此扩展的语言ID列表",
+  "ext.config.disableRequireLocalPkgErrorMessage": "加载本地模块失败时不展示错误信息",
   "ext.config.requireConfig": "需要 prettier configuration 来格式化",
   "ext.config.ignorePath": ".prettierignore或类似文件的路径",
   "ext.config.printWidth": "指定每行代码的最佳长度， 如果超出长度则换行。",

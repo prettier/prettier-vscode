@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## unreleased
+
+- New setting disableRequireLocalPkgErrorMessage. Do not show error message when failed to load local module.
+
 ## [3.18.0]
 
 - Fixed a bug with the prettier output open command.

@@ -4,6 +4,7 @@
   "ext.config.bracketSpacing": "Controls the printing of spaces inside object literals",
   "ext.config.configPath": "Path to the prettier configuration file",
   "ext.config.disableLanguages": "A list of languages IDs to disable this extension on",
+  "ext.config.disableRequireLocalPkgErrorMessage": "Do not show error message when failed to load local module",
   "ext.config.endOfLine": "Specify the end of line used by prettier",
   "ext.config.eslintIntegration": "Use `prettier-eslint` instead of `prettier`. Other settings will only be fallbacks in case they could not be inferred from eslint rules.",
   "ext.config.htmlWhitespaceSensitivity": "Specify the global whitespace sensitivity for HTML files.\n Valid options:\n- `css` - Respect the default value of CSS display property.\n- `strict` - Whitespaces are considered sensitive.\n- `ignores` - Whitespaces are considered insensitive.",

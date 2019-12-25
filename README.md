@@ -257,6 +257,10 @@ A list of languages IDs to disable this extension on.
 
 **Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
 
+#### prettier.disableRequireLocalPkgErrorMessage
+
+Do not show error message when failed to load local module.
+
 #### prettier.useEditorConfig (default: `true`)
 
 Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
