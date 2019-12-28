@@ -96,7 +96,7 @@
     "@types/mocha": "^5.2.1",
     "@types/node": "^13.1.1",
     "@types/prettier": "^1.19.0",
-    "@types/resolve": "0.0.8",
+    "@types/resolve": "1.14.0",
     "@types/semver": "^6.2.0",
     "@types/sinon": "^7.5.1",
     "@types/vscode": "1.34.0",
