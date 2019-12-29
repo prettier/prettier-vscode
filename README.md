@@ -165,19 +165,19 @@ graphql
 
 ## Linter Integration
 
-The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=hex-ci.stylelint-plus) extensions directly.
+The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) extensions directly.
 
-You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
+You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have formatting and quick fixes:
 
 ```
 "editor.codeActionsOnSave": {
     // For ESLint
     "source.fixAll.eslint": true,
     // For TSLint
-    "source.fixAll.tslint": true
-},
-// For Stylelint
-stylelint.autoFixOnSave: true,
+    "source.fixAll.tslint": true,
+    // For Stylelint
+    "source.fixAll.stylelint": true
+}
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
