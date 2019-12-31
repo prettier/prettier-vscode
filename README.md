@@ -177,7 +177,7 @@ You can enable Auto-Fix on Save for either TSLint or ESLint and still have forma
     "source.fixAll.tslint": true
 },
 // For Stylelint
-stylelint.autoFixOnSave: true,
+"stylelint.autoFixOnSave": true,
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
