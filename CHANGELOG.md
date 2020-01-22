@@ -4,6 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [Unreleased]
+- add snippets to include prettier-ignore comments
+
 ## [3.18.0]
 
 - Fixed a bug with the prettier output open command.

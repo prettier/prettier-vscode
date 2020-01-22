@@ -407,6 +407,11 @@
         "command": "prettier.createConfigFile",
         "title": "%ext.command.createConfigFile.title%"
       }
+    ],
+    "snippets": [
+      {
+        "path": "./snippets/.code-snippets"
+      }
     ]
   }
 }

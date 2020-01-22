@@ -1,0 +1,38 @@
+{
+  "prettier-ignore-js": {
+    "prefix": "pi",
+    "body": "// prettier-ignore",
+    "description": "Add Prettier Ignore",
+    "scope": "javascript,typescript"
+  },
+  "prettier-ignore-jsx": {
+    "prefix": "pi",
+    "body": "/* prettier-ignore */",
+    "description": "Add Prettier Ignore",
+    "scope": "javascriptreact,typescriptreact,scss,sass,css"
+  },
+  "prettier-ignore-html": {
+    "prefix": "pi",
+    "body": "<!-- prettier-ignore -->",
+    "description": "Add Prettier Ignore",
+    "scope": "html,markdown"
+  },
+  "prettier-ignore-attribute": {
+    "prefix": "pi-attr",
+    "body": "<!-- prettier-ignore-attribute -->",
+    "description": "Add Prettier Ignore for all attribute",
+    "scope": "html"
+  },
+  "prettier-ignore-attribute-x": {
+    "prefix": "pi-attr-x",
+    "body": "<!-- prettier-ignore-attribute (${1:attr}) -->",
+    "description": "Add Prettier Ignore for attribute",
+    "scope": "html"
+  },
+  "prettier-ignore-graphql": {
+    "prefix": "pi",
+    "body": "# prettier-ignore",
+    "description": "Add Prettier Ignore",
+    "scope": "graphql"
+  }
+}
