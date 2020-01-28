@@ -192,12 +192,16 @@ export class ModuleResolver implements Disposable {
     modulePath?: string,
     options?: ModuleResolutionOptions
   ): ModuleResult<T> {
+    if (modulePath === "") {
+      modulePath = undefined;
+    }
+
     try {
       modulePath = modulePath
         ? getWorkspaceRelativePath(fsPath, modulePath)
         : this.findPkgMem(fsPath, pkgName);
 
-      if (modulePath !== void 0) {
+      if (modulePath !== undefined) {
         const moduleInstance = this.loadNodeModule(modulePath);
         if (this.resolvedModules.indexOf(modulePath) === -1) {
           this.resolvedModules.push(modulePath);
@@ -209,10 +213,7 @@ export class ModuleResolver implements Disposable {
         return { moduleInstance, modulePath };
       }
     } catch (error) {
-      this.loggingService.logError(
-        `Failed to load ${pkgName} from '${modulePath}'`,
-        error
-      );
+      this.loggingService.logError(`Failed to load ${pkgName}.`, error);
       if (options?.showNotifications) {
         this.notificationService.showErrorMessage(
           FAILED_TO_LOAD_MODULE_MESSAGE,
