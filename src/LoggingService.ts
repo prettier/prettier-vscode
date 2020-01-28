@@ -2,10 +2,16 @@ import * as prettier from "prettier";
 // tslint:disable-next-line: no-implicit-dependencies
 import { window } from "vscode";
 
-type LogLevel = "INFO" | "WARN" | "ERROR";
+type LogLevel = "INFO" | "WARN" | "ERROR" | "NONE";
 
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
+
+  private logLevel: LogLevel = "INFO";
+
+  public setOutputLevel(logLevel: LogLevel) {
+    this.logLevel = logLevel;
+  }
 
   /**
    * Append messages to the output channel and format it with a title
@@ -13,6 +19,13 @@ export class LoggingService {
    * @param message The message to append to the output channel
    */
   public logInfo(message: string, data?: object): void {
+    if (
+      this.logLevel === "NONE" ||
+      this.logLevel === "WARN" ||
+      this.logLevel === "ERROR"
+    ) {
+      return;
+    }
     this.logMessage(message, "INFO");
     if (data) {
       this.logObject(data);
@@ -25,6 +38,9 @@ export class LoggingService {
    * @param message The message to append to the output channel
    */
   public logWarning(message: string, data?: object): void {
+    if (this.logLevel === "NONE" || this.logLevel === "ERROR") {
+      return;
+    }
     this.logMessage(message, "WARN");
     if (data) {
       this.logObject(data);
@@ -32,6 +48,9 @@ export class LoggingService {
   }
 
   public logError(message: string, error?: Error | string) {
+    if (this.logLevel === "NONE") {
+      return;
+    }
     this.logMessage(message, "ERROR");
     if (error instanceof Error) {
       if (error.message) {

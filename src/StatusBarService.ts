@@ -8,6 +8,7 @@ import {
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { LanguageResolver } from "./LanguageResolver";
+import { LoggingService } from "./LoggingService";
 import { PrettierVSCodeConfig } from "./types";
 import { getConfig } from "./util";
 
@@ -19,7 +20,10 @@ export enum FormattingResult {
 
 export class StatusBarService {
   private statusBarItem: StatusBarItem;
-  constructor(private languageResolver: LanguageResolver) {
+  constructor(
+    private languageResolver: LanguageResolver,
+    private loggingService: LoggingService
+  ) {
     // Setup the statusBarItem
     this.statusBarItem = window.createStatusBarItem(
       StatusBarAlignment.Right,
@@ -61,6 +65,8 @@ export class StatusBarService {
         return;
       }
 
+      this.loggingService.setOutputLevel("NONE"); // No logs here, they are annoying.
+
       const filePath = editor.document.isUntitled
         ? undefined
         : editor.document.fileName;
@@ -83,5 +89,7 @@ export class StatusBarService {
     } else {
       this.statusBarItem.hide();
     }
+
+    this.loggingService.setOutputLevel("INFO"); // Resume logging
   }
 }
