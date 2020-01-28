@@ -47,20 +47,16 @@ export class LoggingService {
     }
   }
 
-  public logError(message: string, error?: Error | string) {
+  public logError(message: string, error?: Error) {
     if (this.logLevel === "NONE") {
       return;
     }
     this.logMessage(message, "ERROR");
-    if (error instanceof Error) {
-      if (error.message) {
-        this.outputChannel.appendLine(error.message);
-      }
-      if (error.stack) {
-        this.outputChannel.appendLine(error.stack);
-      }
-    } else if (error) {
-      this.outputChannel.appendLine(error);
+    if (error?.message) {
+      this.logMessage(error.message, "ERROR");
+    }
+    if (error?.stack) {
+      this.outputChannel.appendLine(error.stack);
     }
   }
 

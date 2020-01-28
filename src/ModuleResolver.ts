@@ -213,7 +213,10 @@ export class ModuleResolver implements Disposable {
         return { moduleInstance, modulePath };
       }
     } catch (error) {
-      this.loggingService.logError(`Failed to load ${pkgName}.`, error);
+      this.loggingService.logError(
+        `Failed to load local module ${pkgName}.`,
+        error
+      );
       if (options?.showNotifications) {
         this.notificationService.showErrorMessage(
           FAILED_TO_LOAD_MODULE_MESSAGE,
@@ -245,7 +248,7 @@ export class ModuleResolver implements Disposable {
         }
       } catch (error) {
         this.loggingService.logError(
-          `Failed to load ${pkgName} from '${modulePath}'`,
+          `Failed to load global module ${pkgName}.`,
           error
         );
         return { moduleInstance: undefined, modulePath };
