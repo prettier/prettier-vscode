@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [3.20.0]
+
+- No longer loads prettier when `requireConfig` is `true` and no config is found. (#1161)
+- Minor logging improvements
+
 ## [3.19.0]
 
 - Notifications only show when running formatter
