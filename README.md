@@ -184,9 +184,7 @@ You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have f
 
 ### Legacy Prettier Linter Integration (unreliable, not recommended)
 
-> WARNING: There are numerous issues with this type of integration due to problems in the libraries like `prettier-eslint`. See: [#870](https://github.com/prettier/prettier-vscode/issues/870), [#137](https://github.com/prettier/prettier-vscode/issues/137), [#494](https://github.com/prettier/prettier-vscode/issues/494), [#1191](https://github.com/prettier/prettier-vscode/issues/1191), and [others](https://github.com/prettier/prettier-vscode/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+linter).
-
-**This feature is likely to be removed completely in future versions of this extension.**
+> WARNING: There are numerous issues with this type of integration due to problems in the libraries like `prettier-eslint`. See: [#870](https://github.com/prettier/prettier-vscode/issues/870), [#137](https://github.com/prettier/prettier-vscode/issues/137), [#494](https://github.com/prettier/prettier-vscode/issues/494), [#1191](https://github.com/prettier/prettier-vscode/issues/1191), and [others](https://github.com/prettier/prettier-vscode/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+linter). Due to these problems, this feature will likely to be removed completely in future versions of this extension.
 
 The legacy option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, `stylelint`, etc.
 
