@@ -182,7 +182,7 @@ You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have f
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
-### Prettier Linter Integration (advanced)
+### Legacy Prettier Linter Integration (unreliable, not recommended)
 
 > WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
 
