@@ -24,8 +24,8 @@ interface ModuleResult<T> {
   modulePath: string | undefined;
 }
 
-interface PrettierResolutionOptions {
-  showWarnings: boolean;
+interface ModuleResolutionOptions {
+  showNotifications: boolean;
 }
 
 const globalPaths: {
@@ -84,7 +84,7 @@ export class ModuleResolver implements Disposable {
    */
   public getPrettierInstance(
     fileName?: string,
-    options?: PrettierResolutionOptions
+    options?: ModuleResolutionOptions
   ): PrettierModule {
     if (!fileName) {
       return prettier;
@@ -96,7 +96,8 @@ export class ModuleResolver implements Disposable {
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
       fileName,
       "prettier",
-      prettierPath
+      prettierPath,
+      options
     );
 
     if (resolveGlobalModules && !moduleInstance) {
@@ -113,7 +114,7 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    if (!moduleInstance && options?.showWarnings) {
+    if (!moduleInstance && options?.showNotifications) {
       this.loggingService.logInfo("Using bundled version of prettier.");
     }
 
@@ -126,7 +127,7 @@ export class ModuleResolver implements Disposable {
         semver.gte(moduleInstance.version, minPrettierVersion);
 
       if (!isValidVersion) {
-        if (options?.showWarnings) {
+        if (options?.showNotifications) {
           // We only prompt when formatting a file. If we did it on load there
           // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(modulePath);
@@ -188,14 +189,19 @@ export class ModuleResolver implements Disposable {
   private requireLocalPkg<T>(
     fsPath: string,
     pkgName: string,
-    modulePath?: string
+    modulePath?: string,
+    options?: ModuleResolutionOptions
   ): ModuleResult<T> {
+    if (modulePath === "") {
+      modulePath = undefined;
+    }
+
     try {
       modulePath = modulePath
         ? getWorkspaceRelativePath(fsPath, modulePath)
         : this.findPkgMem(fsPath, pkgName);
 
-      if (modulePath !== void 0) {
+      if (modulePath !== undefined) {
         const moduleInstance = this.loadNodeModule(modulePath);
         if (this.resolvedModules.indexOf(modulePath) === -1) {
           this.resolvedModules.push(modulePath);
@@ -208,12 +214,15 @@ export class ModuleResolver implements Disposable {
       }
     } catch (error) {
       this.loggingService.logError(
-        `Failed to load ${pkgName} from '${modulePath}'`,
+        `Failed to load local module ${pkgName}.`,
         error
       );
-      this.notificationService.showErrorMessage(FAILED_TO_LOAD_MODULE_MESSAGE, [
-        `Attempted to load ${pkgName} from ${modulePath || "package.json"}`
-      ]);
+      if (options?.showNotifications) {
+        this.notificationService.showErrorMessage(
+          FAILED_TO_LOAD_MODULE_MESSAGE,
+          [`Attempted to load ${pkgName} from ${modulePath || "package.json"}`]
+        );
+      }
     }
     return { moduleInstance: undefined, modulePath };
   }
@@ -239,7 +248,7 @@ export class ModuleResolver implements Disposable {
         }
       } catch (error) {
         this.loggingService.logError(
-          `Failed to load ${pkgName} from '${modulePath}'`,
+          `Failed to load global module ${pkgName}.`,
           error
         );
         return { moduleInstance: undefined, modulePath };

@@ -62,7 +62,10 @@ export function activate(context: ExtensionContext) {
 
   const languageResolver = new LanguageResolver(moduleResolver);
 
-  const statusBarService = new StatusBarService(languageResolver);
+  const statusBarService = new StatusBarService(
+    languageResolver,
+    loggingService
+  );
 
   const editService = new PrettierEditService(
     moduleResolver,

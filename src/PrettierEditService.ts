@@ -212,13 +212,6 @@ export default class PrettierEditService implements Disposable {
   ): Promise<string | undefined> {
     this.loggingService.logInfo(`Formatting ${fileName}`);
 
-    // LEGACY: Remove in version 4.x
-    this.notificationService.warnIfLegacyConfiguration(uri);
-
-    const prettierInstance = this.moduleResolver.getPrettierInstance(fileName, {
-      showWarnings: true
-    });
-
     const vscodeConfig = getConfig(uri);
 
     // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
@@ -229,7 +222,36 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
+    try {
+      const hasConfig = await this.configResolver.checkHasPrettierConfig(
+        fileName
+      );
+
+      if (!isUntitled && !hasConfig && vscodeConfig.requireConfig) {
+        this.loggingService.logInfo(
+          "Require config set to true and no config present. Skipping file."
+        );
+        this.statusBarService.updateStatusBar(FormattingResult.Ignore);
+        return;
+      }
+    } catch (error) {
+      this.loggingService.logError(
+        "Invalid prettier configuration file detected.",
+        error
+      );
+      this.notificationService.showErrorMessage(INVALID_PRETTIER_CONFIG);
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
+      return;
+    }
+
+    // LEGACY: Remove in version 4.x
+    this.notificationService.warnIfLegacyConfiguration(uri);
+
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
+
+    const prettierInstance = this.moduleResolver.getPrettierInstance(fileName, {
+      showNotifications: true
+    });
 
     let fileInfo: prettier.FileInfoResult | undefined;
     if (fileName) {
@@ -268,28 +290,6 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logError(
         `Failed to resolve a parser, skipping file.`
       );
-      this.statusBarService.updateStatusBar(FormattingResult.Error);
-      return;
-    }
-
-    try {
-      const hasConfig = await this.configResolver.checkHasPrettierConfig(
-        fileName
-      );
-
-      if (!isUntitled && !hasConfig && vscodeConfig.requireConfig) {
-        this.loggingService.logInfo(
-          "Require config set to true and no config present. Skipping file."
-        );
-        this.statusBarService.updateStatusBar(FormattingResult.Ignore);
-        return;
-      }
-    } catch (error) {
-      this.loggingService.logError(
-        "Invalid prettier configuration file detected.",
-        error
-      );
-      this.notificationService.showErrorMessage(INVALID_PRETTIER_CONFIG);
       this.statusBarService.updateStatusBar(FormattingResult.Error);
       return;
     }

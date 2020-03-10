@@ -165,28 +165,28 @@ graphql
 
 ## Linter Integration
 
-The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=hex-ci.stylelint-plus) extensions directly.
+The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) extensions directly.
 
-You can enable Auto-Fix on Save for either TSLint or ESLint and still have formatting and quick fixes:
+You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have formatting and quick fixes:
 
 ```
-// For ESLint
-"eslint.autoFixOnSave": true,
-// For TSLint
 "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
-},
-// For Stylelint
-stylelint.autoFixOnSave: true,
+    // For ESLint
+    "source.fixAll.eslint": true,
+    // For TSLint
+    "source.fixAll.tslint": true,
+    // For Stylelint
+    "source.fixAll.stylelint": true
+}
 ```
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
-### Prettier Linter Integration (advanced)
+### Legacy Prettier Linter Integration (unreliable, not recommended)
 
-> WARNING: Due to a [bug](https://github.com/prettier/prettier-vscode/issues/870) in the `prettier-eslint` library, this extension is NOT compatible with ESLint version 6.
+> WARNING: There are numerous issues with this type of integration due to problems in the libraries like `prettier-eslint`. See: [#870](https://github.com/prettier/prettier-vscode/issues/870), [#137](https://github.com/prettier/prettier-vscode/issues/137), [#494](https://github.com/prettier/prettier-vscode/issues/494), [#1191](https://github.com/prettier/prettier-vscode/issues/1191), and [others](https://github.com/prettier/prettier-vscode/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+linter). Due to these problems, this feature will likely to be removed completely in future versions of this extension.
 
-The advanced option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, `stylelint`, etc.
+The legacy option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, `stylelint`, etc.
 
 This extension will automatically detect when you have these extensions installed and use them instead of `prettier` by itself. For configuration of these linter integrations, see their respective documentation.
 
