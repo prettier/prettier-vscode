@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-<!-- 
+<!--
 SEE THIS GUIDE ON OPENING A GOOD ISSUE: https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue
 
 **You must complete all steps in this checklist or the issue will be automatically closed.**
@@ -15,7 +15,7 @@ SEE THIS GUIDE ON OPENING A GOOD ISSUE: https://github.com/prettier/prettier-vsc
 - [ ] Include extension, os, and vs code information
 - [ ] Include Prettier extension log
 
-PLEASE NOTE: Many of the issues with the extension are heavily based on your specific configuration and source code. In order to improve your chances of having your bug fixed, the number one thing you can do is create a github repository that can be used to reproduce the issue along with the detailed reproduction steps. If you don't provide this info, it is usually the case that we cannot reproduce the issue and the issue will be closed. 
+PLEASE NOTE: Many of the issues with the extension are heavily based on your specific configuration and source code. In order to improve your chances of having your bug fixed, the number one thing you can do is create a github repository that can be used to reproduce the issue along with the detailed reproduction steps. If you don't provide this info, it is usually the case that we cannot reproduce the issue and the issue will be closed.
 -->
 
 ### Summary

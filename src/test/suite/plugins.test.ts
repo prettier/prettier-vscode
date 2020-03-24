@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { platform } from "os";
 import { format, getText } from "./format.test";
 
-suite("Test plugins", function() {
+suite("Test plugins", function () {
   this.timeout(10000);
   test("it formats with plugins", async () => {
     if (platform() === "win32") {

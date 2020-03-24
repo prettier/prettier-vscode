@@ -22,7 +22,7 @@ export function resolveGlobalNodePath(
 ): string | undefined {
   let npmCommand = "npm";
   const options: SpawnSyncOptionsWithStringEncoding = {
-    encoding: "utf8"
+    encoding: "utf8",
   };
   if (isWindows()) {
     npmCommand = "npm.cmd";
@@ -78,7 +78,7 @@ export function resolveGlobalYarnPath(
 ): string | undefined {
   let yarnCommand = "yarn";
   const options: SpawnSyncOptionsWithStringEncoding = {
-    encoding: "utf8"
+    encoding: "utf8",
   };
 
   if (isWindows()) {

@@ -65,10 +65,10 @@ export class ConfigResolver {
       ...{
         /* cspell: disable-next-line */
         filepath: fileName,
-        parser: parser as prettier.BuiltInParserName
+        parser: parser as prettier.BuiltInParserName,
       },
       ...(rangeFormattingOptions || {}),
-      ...(configOptions || {})
+      ...(configOptions || {}),
     };
 
     return { options };

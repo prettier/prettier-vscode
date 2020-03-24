@@ -5,11 +5,11 @@ import * as sinon from "sinon";
 import { MessageItem, MessageOptions, window } from "vscode";
 import {
   LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
-  OUTDATED_PRETTIER_VERSION_MESSAGE
+  OUTDATED_PRETTIER_VERSION_MESSAGE,
 } from "../../message";
 import { format } from "./format.test";
 
-suite("Test notifications", function() {
+suite("Test notifications", function () {
   let showWarningMessage: sinon.SinonStub<
     [string, MessageOptions, ...MessageItem[]],
     Thenable<MessageItem | undefined>

@@ -67,7 +67,7 @@ export class LoggingService {
   private logObject(data: object): void {
     const message = prettier
       .format(JSON.stringify(data, null, 2), {
-        parser: "json"
+        parser: "json",
       })
       .trim();
     this.outputChannel.appendLine(message);
