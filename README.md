@@ -78,10 +78,10 @@ To ensure that this extension is used over other extensions you may have install
 
 This extension will use prettier from your project's local dependencies (recommended). When the `prettier.resolveGlobalModules` is set to `true` the extension can also attempt to resolve global modules. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
 
-To install prettier in your project run:
+To install prettier in your project and pin its version [as recommended](https://prettier.io/docs/en/install.html), run:
 
 ```
-npm install prettier -D
+npm install prettier -D --save-exact
 ```
 
 ### Plugins
