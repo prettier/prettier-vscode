@@ -8,7 +8,7 @@ const ESLINT_SUPPORTED_LANGUAGES = [
   "javascriptreact",
   "typescript",
   "typescriptreact",
-  "vue"
+  "vue",
 ];
 
 const STYLE_PARSERS = ["postcss", "css", "less", "scss"];
@@ -25,7 +25,7 @@ export class LanguageResolver {
       return ["html"];
     }
     const language = this.getSupportLanguages(uri.fsPath).find(
-      lang =>
+      (lang) =>
         lang &&
         lang.extensions &&
         Array.isArray(lang.vscodeLanguageIds) &&
@@ -39,7 +39,7 @@ export class LanguageResolver {
 
   public allEnabledLanguages(fsPath?: string): string[] {
     const enabledLanguages: string[] = [];
-    this.getSupportLanguages(fsPath).forEach(lang => {
+    this.getSupportLanguages(fsPath).forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
         enabledLanguages.push(...lang.vscodeLanguageIds);
       }
@@ -56,7 +56,7 @@ export class LanguageResolver {
       "typescript",
       "typescriptreact",
       "json",
-      "graphql"
+      "graphql",
     ];
   }
 

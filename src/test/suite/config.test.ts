@@ -3,7 +3,7 @@ import {
   format,
   getText,
   moveRootPrettierRC,
-  putBackPrettierRC
+  putBackPrettierRC,
 } from "./format.test";
 
 const testConfig = (testPath: string, resultPath: string) => {
@@ -14,7 +14,7 @@ const testConfig = (testPath: string, resultPath: string) => {
   };
 };
 
-suite("Test configurations", function() {
+suite("Test configurations", function () {
   this.timeout(10000);
   this.beforeAll(moveRootPrettierRC);
   this.afterAll(putBackPrettierRC);

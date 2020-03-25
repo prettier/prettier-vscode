@@ -4,10 +4,10 @@ import {
   format,
   getText,
   moveRootPrettierRC,
-  putBackPrettierRC
+  putBackPrettierRC,
 } from "./format.test";
 
-suite("Test tslint", function() {
+suite("Test tslint", function () {
   this.timeout(60000);
   this.beforeAll(moveRootPrettierRC);
   this.afterAll(putBackPrettierRC);

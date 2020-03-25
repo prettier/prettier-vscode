@@ -4,7 +4,7 @@ import {
   Uri,
   window,
   workspace,
-  WorkspaceConfiguration
+  WorkspaceConfiguration,
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
@@ -13,13 +13,13 @@ import {
   LEGACY_VSCODE_LINTER_CONFIG_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   REMOVE_LEGACY_OPTIONS_ACTION_TEXT,
-  VIEW_LOGS_ACTION_TEXT
+  VIEW_LOGS_ACTION_TEXT,
 } from "./message";
 
 const LEGACY_LINTER_OPTIONS = [
   "eslintIntegration",
   "tslintIntegration",
-  "stylelintIntegration"
+  "stylelintIntegration",
 ];
 
 export class NotificationService implements Disposable {
@@ -51,7 +51,7 @@ export class NotificationService implements Disposable {
     );
 
     this.telemetryReporter.sendTelemetryEvent("legacyConfig", undefined, {
-      "legacyConfig.linters": hasLegacyLinterConfig ? 1 : 0
+      "legacyConfig.linters": hasLegacyLinterConfig ? 1 : 0,
     });
 
     if (!hasLegacyLinterConfig) {
@@ -113,7 +113,7 @@ export class NotificationService implements Disposable {
     legacyConfigOptions: string[]
   ) {
     const foundOptions = new Map<string, any>();
-    legacyConfigOptions.forEach(key => {
+    legacyConfigOptions.forEach((key) => {
       const inspected = vscodeConfig.inspect(key);
       const val = vscodeConfig.get(key);
       if (inspected) {
@@ -142,7 +142,7 @@ export class NotificationService implements Disposable {
     legacyConfigOptions: string[],
     vscodeConfig: WorkspaceConfiguration
   ) {
-    legacyConfigOptions.forEach(key => {
+    legacyConfigOptions.forEach((key) => {
       vscodeConfig.update(key, undefined, ConfigurationTarget.Global);
       vscodeConfig.update(key, undefined, ConfigurationTarget.Workspace);
       vscodeConfig.update(key, undefined, ConfigurationTarget.WorkspaceFolder);

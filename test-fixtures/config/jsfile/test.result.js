@@ -11,6 +11,6 @@ function foo() {
       "c",
       "a",
       "b",
-      "c"
+      "c",
    ];
 }

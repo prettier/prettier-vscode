@@ -35,23 +35,21 @@ const globalPaths: {
     cache: undefined,
     get(): string | undefined {
       return resolveGlobalNodePath();
-    }
+    },
   },
   pnpm: {
     cache: undefined,
     get(): string {
-      const pnpmPath = execSync("pnpm root -g")
-        .toString()
-        .trim();
+      const pnpmPath = execSync("pnpm root -g").toString().trim();
       return pnpmPath;
-    }
+    },
   },
   yarn: {
     cache: undefined,
     get(): string | undefined {
       return resolveGlobalYarnPath();
-    }
-  }
+    },
+  },
 };
 
 function globalPathGet(packageManager: PackageManagers): string | undefined {
@@ -74,7 +72,7 @@ export class ModuleResolver implements Disposable {
     private notificationService: NotificationService
   ) {
     this.findPkgMem = mem(this.findPkg, {
-      cacheKey: args => `${args[0]}:${args[1]}`
+      cacheKey: (args) => `${args[0]}:${args[1]}`,
     });
   }
 
@@ -164,7 +162,7 @@ export class ModuleResolver implements Disposable {
    */
   public dispose() {
     this.getPrettierInstance().clearConfigCache();
-    this.resolvedModules.forEach(modulePath => {
+    this.resolvedModules.forEach((modulePath) => {
       const r =
         typeof __webpack_require__ === "function"
           ? __non_webpack_require__
@@ -207,8 +205,9 @@ export class ModuleResolver implements Disposable {
           this.resolvedModules.push(modulePath);
         }
         this.loggingService.logInfo(
-          `Loaded module '${pkgName}@${moduleInstance.version ??
-            "unknown"}' from '${modulePath}'`
+          `Loaded module '${pkgName}@${
+            moduleInstance.version ?? "unknown"
+          }' from '${modulePath}'`
         );
         return { moduleInstance, modulePath };
       }
@@ -241,8 +240,9 @@ export class ModuleResolver implements Disposable {
             this.resolvedModules.push(modulePath);
           }
           this.loggingService.logInfo(
-            `Loaded module '${pkgName}@${moduleInstance.version ??
-              "unknown"}' from '${modulePath}'`
+            `Loaded module '${pkgName}@${
+              moduleInstance.version ?? "unknown"
+            }' from '${modulePath}'`
           );
           return { moduleInstance, modulePath };
         }
