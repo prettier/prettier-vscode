@@ -98,7 +98,7 @@
     "@types/prettier": "^1.19.1",
     "@types/resolve": "^1.14.0",
     "@types/semver": "^7.1.0",
-    "@types/sinon": "^7.5.2",
+    "@types/sinon": "^9.0.0",
     "@types/vscode": "1.34.0",
     "glob": "^7.1.6",
     "husky": "^4.2.3",
