@@ -96,7 +96,7 @@
     "@types/resolve": "^1.14.0",
     "@types/semver": "^7.1.0",
     "@types/sinon": "^9.0.0",
-    "@types/vscode": "1.41",
+    "@types/vscode": "1.43",
     "glob": "^7.1.6",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.9",
