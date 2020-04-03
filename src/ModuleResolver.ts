@@ -1,9 +1,9 @@
 import { execSync } from "child_process";
+import * as findUp from "find-up";
 import * as fs from "fs";
 import * as mem from "mem";
 import * as path from "path";
 import * as prettier from "prettier";
-import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import * as semver from "semver";
 // tslint:disable-next-line: no-implicit-dependencies
@@ -212,14 +212,30 @@ export class ModuleResolver implements Disposable {
         return { moduleInstance, modulePath };
       }
     } catch (error) {
+      let moduleDirectory = "";
+      if (!modulePath) {
+        // If findPkg threw an error from `resolve.sync`, attempt to parse the
+        // directory it failed on to provide a better error message
+        const resolveSyncPathRegex = /Cannot find module '.*' from '(.*)'/;
+        const resolveErrorMatches = resolveSyncPathRegex.exec(error.message);
+        if (resolveErrorMatches && resolveErrorMatches[1]) {
+          moduleDirectory = resolveErrorMatches[1];
+        }
+      }
+
       this.loggingService.logError(
         `Failed to load local module ${pkgName}.`,
         error
       );
+
       if (options?.showNotifications) {
         this.notificationService.showErrorMessage(
           FAILED_TO_LOAD_MODULE_MESSAGE,
-          [`Attempted to load ${pkgName} from ${modulePath || "package.json"}`]
+          [
+            `Attempted to load ${pkgName} from ${
+              modulePath || moduleDirectory || "package.json"
+            }`,
+          ]
         );
       }
     }
@@ -275,15 +291,14 @@ export class ModuleResolver implements Disposable {
   }
 
   /**
-   * Recursively search for a package.json upwards containing given package
-   * as a dependency or devDependency.
+   * Recursively search upwards for a given module definition based on
+   * package.json or node_modules existence
    * @param {string} fsPath file system path to start searching from
    * @param {string} pkgName package's name to search for
    * @returns {string} resolved path to module
    */
   private findPkg(fsPath: string, pkgName: string): string | undefined {
-    // Get the closest `package.json` file, that's outside of any `node_modules`
-    // directory.
+    // Only look for a module definition outside of any `node_modules` directories
     const splitPath = fsPath.split("/");
     let finalPath = fsPath;
     const nodeModulesIndex = splitPath.indexOf("node_modules");
@@ -292,24 +307,39 @@ export class ModuleResolver implements Disposable {
       finalPath = splitPath.slice(0, nodeModulesIndex).join("/");
     }
 
-    const res = readPkgUp.sync({ cwd: finalPath, normalize: false });
-    const { root } = path.parse(finalPath);
+    const resDir = findUp.sync(
+      (dir) => {
+        if (fs.existsSync(path.join(dir, "package.json"))) {
+          let packageJson;
+          try {
+            packageJson = JSON.parse(
+              fs.readFileSync(path.join(dir, "package.json"), "utf8")
+            );
+          } catch (e) {
+            // Swallow, if we can't read it we don't want to resolve based on it
+          }
 
-    if (
-      res &&
-      res.packageJson &&
-      ((res.packageJson.dependencies &&
-        res.packageJson.dependencies[pkgName]) ||
-        (res.packageJson.devDependencies &&
-          res.packageJson.devDependencies[pkgName]))
-    ) {
-      return resolve.sync(pkgName, { basedir: res.path });
-    } else if (res && res.path) {
-      const parent = path.resolve(path.dirname(res.path), "..");
-      if (parent !== root) {
-        return this.findPkg(parent, pkgName);
-      }
+          if (
+            packageJson &&
+            ((packageJson.dependencies && packageJson.dependencies[pkgName]) ||
+              (packageJson.devDependencies &&
+                packageJson.devDependencies[pkgName]))
+          ) {
+            return dir;
+          }
+        }
+
+        if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {
+          return dir;
+        }
+      },
+      { cwd: finalPath, type: "directory" }
+    );
+
+    if (resDir) {
+      return resolve.sync(pkgName, { basedir: resDir });
     }
+
     return;
   }
 }
