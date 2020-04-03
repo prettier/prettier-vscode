@@ -53,7 +53,7 @@ export function activate(context: ExtensionContext) {
 
   const ignoreResolver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
-  const notificationService = new NotificationService(reporter, loggingService);
+  const notificationService = new NotificationService(loggingService);
 
   const moduleResolver = new ModuleResolver(
     loggingService,

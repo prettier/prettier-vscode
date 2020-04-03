@@ -10,7 +10,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Change default configuration for `trailingComma` to `es5` to match Prettier 2.0
 - Change default configuration for `arrowParens` to `always` to match Prettier 2.0
 - Change default configuration for `endOfLine` to `lf` to match Prettier 2.0
-- Updated module dependencies.
+- Updated module dependencies
+- Removed deprecated configuration options
 
 ## [3.20.0]
 

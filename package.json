@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.34.0"
+    "vscode": "^1.41.0"
   },
   "keywords": [
     "multi-root ready",
@@ -99,7 +99,7 @@
     "@types/resolve": "^1.14.0",
     "@types/semver": "^7.1.0",
     "@types/sinon": "^9.0.0",
-    "@types/vscode": "1.34.0",
+    "@types/vscode": "1.41",
     "glob": "^7.1.6",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.9",
@@ -184,36 +184,6 @@
           "markdownDescription": "%ext.config.configPath%",
           "scope": "resource"
         },
-        "prettier.eslintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.eslintIntegration%",
-          "scope": "resource",
-          "default": null,
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.tslintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.tslintIntegration%",
-          "scope": "resource",
-          "default": null,
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.stylelintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.stylelintIntegration%",
-          "default": null,
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
@@ -254,20 +224,6 @@
           "default": false,
           "markdownDescription": "%ext.config.jsxBracketSameLine%",
           "scope": "resource"
-        },
-        "prettier.parser": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "enum": [
-            "babylon",
-            "flow"
-          ],
-          "default": null,
-          "markdownDescription": "%ext.config.parser%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.parserDeprecationMessage%"
         },
         "prettier.semi": {
           "type": "boolean",

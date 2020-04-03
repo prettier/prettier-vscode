@@ -106,7 +106,6 @@ export default class PrettierEditService implements Disposable {
 
   public dispose = () => {
     this.moduleResolver.dispose();
-    this.notificationService.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
     this.formatterHandler = undefined;
@@ -243,9 +242,6 @@ export default class PrettierEditService implements Disposable {
       this.statusBarService.updateStatusBar(FormattingResult.Error);
       return;
     }
-
-    // LEGACY: Remove in version 4.x
-    this.notificationService.warnIfLegacyConfiguration(uri);
 
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
 
