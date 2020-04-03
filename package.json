@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "3.20.0",
+  "version": "4.0.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -239,7 +239,7 @@
             "es5",
             "all"
           ],
-          "default": "none",
+          "default": "es5",
           "markdownDescription": "%ext.config.trailingComma%",
           "scope": "resource"
         },
@@ -310,7 +310,7 @@
             "avoid",
             "always"
           ],
-          "default": "avoid",
+          "default": "always",
           "markdownDescription": "%ext.config.arrowParens%",
           "scope": "resource"
         },
@@ -345,7 +345,7 @@
             "crlf",
             "cr"
           ],
-          "default": "auto",
+          "default": "lf",
           "markdownDescription": "%ext.config.endOfLine%",
           "scope": "resource"
         },

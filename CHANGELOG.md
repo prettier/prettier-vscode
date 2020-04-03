@@ -4,9 +4,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [next]
+## [4.0.0]
 
-- Updated prettier to 2.0.2.
+- Updated prettier to 2.0 - [See changes here](https://prettier.io/blog/2020/03/21/2.0.0.html).
+- Change default configuration for `trailingComma` to `es5` to match Prettier 2.0
+- Change default configuration for `arrowParens` to `always` to match Prettier 2.0
+- Change default configuration for `endOfLine` to `lf` to match Prettier 2.0
 - Updated module dependencies.
 
 ## [3.20.0]
