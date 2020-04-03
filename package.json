@@ -86,9 +86,6 @@
     ],
     "src/**/*.ts": [
       "tslint --project ."
-    ],
-    "*": [
-      "git add"
     ]
   },
   "devDependencies": {
