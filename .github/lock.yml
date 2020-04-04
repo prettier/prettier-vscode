@@ -1,5 +1,8 @@
 # Configuration for lock-threads - https://github.com/dessant/lock-threads
 daysUntilLock: 90
-lockLabel: locked-due-to-inactivity
-lockComment: false
+lockLabel: locked due to inactivity
 setLockReason: true
+lockComment: >
+  This issue has been automatically locked since there has not been
+  any recent activity after it was closed. Please open a new issue for
+  related bugs.
