@@ -114,10 +114,10 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "find-up": "^4.1.0",
     "ignore": "^5.1.4",
     "mem": "^6.0.1",
     "prettier": "^2.0.2",
-    "read-pkg-up": "^7.0.1",
     "resolve": "^1.15.1",
     "semver": "^7.1.3",
     "vscode-extension-telemetry": "^0.1.2",
