@@ -20,6 +20,9 @@
     },
     {
       "path": "outdated"
+    },
+    {
+      "path": "module"
     }
   ],
   "settings": {
