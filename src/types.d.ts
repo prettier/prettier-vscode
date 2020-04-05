@@ -57,6 +57,10 @@ interface IExtensionConfig {
    * If true, this extension will attempt to use global npm or yarn modules.
    */
   resolveGlobalModules: boolean;
+  /**
+   * If true, this extension will process files in node_modules
+   */
+  withNodeModules: boolean;
 }
 /**
  * Configuration for prettier-vscode
