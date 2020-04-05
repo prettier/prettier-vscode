@@ -7,12 +7,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [next]
 
 - Support loading Prettier from `node_modules` even if it doesn't appear as a direct dependency in a `package.json`
-- Honor project-scoped config when loading module
-- Added configuration option `withNodeModules` to enable processing of files in the `node_modules` folder.
+- Honor project-scoped config when loading module #1222
+- Added configuration option `withNodeModules` to enable processing of files in the `node_modules` folder
 
 ## [4.0.0]
 
-- Updated prettier to 2.0 - [See changes here](https://prettier.io/blog/2020/03/21/2.0.0.html).
+- Updated prettier to 2.0 - [See changes here](https://prettier.io/blog/2020/03/21/2.0.0.html)
 - Change default configuration for `trailingComma` to `es5` to match Prettier 2.0
 - Change default configuration for `arrowParens` to `always` to match Prettier 2.0
 - Change default configuration for `endOfLine` to `lf` to match Prettier 2.0
@@ -31,36 +31,36 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [3.18.0]
 
-- Fixed a bug with the prettier output open command.
-- Upgraded module dependencies.
+- Fixed a bug with the prettier output open command
+- Upgraded module dependencies
 
 ## [3.17.0]
 
-- Due to performance issues, global module resolution is now off by default. Enable by setting `prettier.resolveGlobalModules` to `true`.
+- Due to performance issues, global module resolution is now off by default. Enable by setting `prettier.resolveGlobalModules` to `true`
 
 ## [3.16.0]
 
-- Show error when prettier configuration file is invalid.
+- Show error when prettier configuration file is invalid
 - Removed unused debug tracer on module resolution
 
 ## [3.15.0]
 
-- Always format untitled files, even when `requireConfig` setting is enabled.
+- Always format untitled files, even when `requireConfig` setting is enabled
 
 ## [3.14.0]
 
-- Fixed an issue with global module resolution.
+- Fixed an issue with global module resolution
 
 ## [3.13.0]
 
-- Added support for global module resolution.
-- Added setting `packageManager` to determine which package manager to use for global module resolution.
+- Added support for global module resolution
+- Added setting `packageManager` to determine which package manager to use for global module resolution
 - Fixed issue where unsaved HTML files were resolved as Angular
 
 ## [3.12.0]
 
 - Reverted range filter on formatter registration due to problems, needs more investigation
-- Added additional details to description of `requireConfiguration` option.
+- Added additional details to description of `requireConfiguration` option
 
 ## [3.11.0]
 
@@ -69,16 +69,16 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [3.10.0]
 
-- Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config.
-- Added additional logging.
-- Added `pattern` filter to formatter registrations to avoid registering incorrectly on multi-workspace projects.
-- Removed some unused localization code.
+- Added setting `prettier.useEditorConfig` (defaults to `true`) to allow disabling resolving `.editorconfig` for Prettier config
+- Added additional logging
+- Added `pattern` filter to formatter registrations to avoid registering incorrectly on multi-workspace projects
+- Removed some unused localization code
 
 ## [3.9.0]
 
 - Improved error logging.
-- Bumped dependencies and type definitions to latest.
-- More information in readme about configuration.
+- Bumped dependencies and type definitions to latest
+- More information in readme about configuration
 
 ## [3.8.0]
 
@@ -88,8 +88,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Removed deprecation message from `requireConfig` (Was added by mistake). #1056
 - Sets `resolveConfig: true` to allow parser overrides on [Prettier 1.19+](https://prettier.io/blog/2019/11/09/1.19.0.html#api). #1067
-- Fix for finding local `prettier` module in packages located in `node_modules` dirs.
-- Added doc on what languages support range formatting.
+- Fix for finding local `prettier` module in packages located in `node_modules` dirs
+- Added doc on what languages support range formatting
 
 ## [3.6.0]
 
@@ -97,7 +97,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [3.5.1]
 
-- Add command `Prettier: Create Configuration File` to create a basic `.prettierrc` file.
+- Add command `Prettier: Create Configuration File` to create a basic `.prettierrc` file
 
 ## [3.5.0]
 
