@@ -19,7 +19,7 @@ async function main() {
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
-      launchArgs: [workspace, "--disable-extensions"]
+      launchArgs: [workspace, "--disable-extensions"],
     });
   } catch (error) {
     // tslint:disable-next-line: no-console

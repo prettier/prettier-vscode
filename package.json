@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "3.20.0",
+  "version": "4.0.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.34.0"
+    "vscode": "^1.41.0"
   },
   "keywords": [
     "multi-root ready",
@@ -86,45 +86,42 @@
     ],
     "src/**/*.ts": [
       "tslint --project ."
-    ],
-    "*": [
-      "git add"
     ]
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/mocha": "^5.2.1",
+    "@types/mocha": "^7.0.2",
     "@types/node": "^12",
-    "@types/prettier": "^1.19.0",
-    "@types/resolve": "1.14.0",
-    "@types/semver": "6.2.0",
-    "@types/sinon": "^7.5.1",
-    "@types/vscode": "1.34.0",
+    "@types/prettier": "^2.0.0",
+    "@types/resolve": "^1.14.0",
+    "@types/semver": "^7.1.0",
+    "@types/sinon": "^9.0.0",
+    "@types/vscode": "1.41",
     "glob": "^7.1.6",
-    "husky": "^4.2.1",
-    "lint-staged": "^10.0.4",
-    "mocha": "^7.0.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
+    "mocha": "^7.1.1",
     "mocha-junit-reporter": "^1.23.3",
-    "sinon": "^8.1.1",
-    "ts-loader": "^6.2.1",
-    "tslint": "^5.20.1",
+    "sinon": "^9.0.1",
+    "ts-loader": "^6.2.2",
+    "tslint": "^6.1.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.5",
-    "vsce": "^1.71.0",
+    "typescript": "~3.8.3",
+    "vsce": "^1.74.0",
     "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.3.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "ignore": "^5.1.4",
     "mem": "^6.0.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "read-pkg-up": "^7.0.1",
-    "resolve": "^1.15.0",
-    "semver": "6.2.0",
+    "resolve": "^1.15.1",
+    "semver": "^7.1.3",
     "vscode-extension-telemetry": "^0.1.2",
-    "vscode-nls": "^4.1.1"
+    "vscode-nls": "^4.1.2"
   },
   "contributes": {
     "configuration": {
@@ -190,36 +187,6 @@
           "markdownDescription": "%ext.config.configPath%",
           "scope": "resource"
         },
-        "prettier.eslintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.eslintIntegration%",
-          "scope": "resource",
-          "default": null,
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.tslintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.tslintIntegration%",
-          "scope": "resource",
-          "default": null,
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
-        "prettier.stylelintIntegration": {
-          "type": [
-            "boolean",
-            "null"
-          ],
-          "markdownDescription": "%ext.config.stylelintIntegration%",
-          "default": null,
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.lintDeprecationMessage%"
-        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,
@@ -245,7 +212,7 @@
             "es5",
             "all"
           ],
-          "default": "none",
+          "default": "es5",
           "markdownDescription": "%ext.config.trailingComma%",
           "scope": "resource"
         },
@@ -260,20 +227,6 @@
           "default": false,
           "markdownDescription": "%ext.config.jsxBracketSameLine%",
           "scope": "resource"
-        },
-        "prettier.parser": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "enum": [
-            "babylon",
-            "flow"
-          ],
-          "default": null,
-          "markdownDescription": "%ext.config.parser%",
-          "scope": "resource",
-          "deprecationMessage": "%ext.config.parserDeprecationMessage%"
         },
         "prettier.semi": {
           "type": "boolean",
@@ -316,7 +269,7 @@
             "avoid",
             "always"
           ],
-          "default": "avoid",
+          "default": "always",
           "markdownDescription": "%ext.config.arrowParens%",
           "scope": "resource"
         },
@@ -351,7 +304,7 @@
             "crlf",
             "cr"
           ],
-          "default": "auto",
+          "default": "lf",
           "markdownDescription": "%ext.config.endOfLine%",
           "scope": "resource"
         },

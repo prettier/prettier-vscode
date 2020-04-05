@@ -18,7 +18,7 @@ const readFileAsync: (
  * @param name Workspace folder name
  */
 const getWorkspaceFolderUri = (workspaceFolderName: string) => {
-  const workspaceFolder = vscode.workspace.workspaceFolders!.find(folder => {
+  const workspaceFolder = vscode.workspace.workspaceFolders!.find((folder) => {
     return folder.name === workspaceFolderName;
   });
   return workspaceFolder!.uri;
@@ -85,15 +85,15 @@ async function formatSameAsPrettier(
     ...options,
     ...{
       /* cspell: disable-next-line */
-      filepath: file
-    }
+      filepath: file,
+    },
   };
   const { actual, source } = await format("project", file);
   const prettierFormatted = prettier.format(source, prettierOptions);
   assert.equal(actual, prettierFormatted);
 }
 
-suite("Test format Document", function() {
+suite("Test format Document", function () {
   this.timeout(10000);
   test("it formats JavaScript", () =>
     formatSameAsPrettier("formatTest/ugly.js"));

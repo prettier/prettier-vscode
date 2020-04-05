@@ -4,10 +4,10 @@ import {
   format,
   getText,
   moveRootPrettierRC,
-  putBackPrettierRC
+  putBackPrettierRC,
 } from "./format.test";
 
-suite("Test eslint", function() {
+suite("Test eslint", function () {
   this.timeout(10000);
   this.beforeAll(moveRootPrettierRC);
   this.afterAll(putBackPrettierRC);

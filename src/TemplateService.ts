@@ -23,7 +23,7 @@ export class TemplateService {
       /* cspell: disable-next-line */
       filepath: outputPath,
       tabWidth: settings.tabWidth,
-      useTabs: settings.useTabs
+      useTabs: settings.useTabs,
     };
 
     const templateSource = format(

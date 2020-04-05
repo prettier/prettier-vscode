@@ -12,7 +12,7 @@ export const createConfigFile = (
   const folderResult = await window.showOpenDialog({
     canSelectFiles: false,
     canSelectFolders: true,
-    canSelectMany: false
+    canSelectMany: false,
   });
   if (folderResult && folderResult.length === 1) {
     const folderUri = folderResult[0];

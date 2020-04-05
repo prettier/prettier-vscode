@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { format } from "./format.test";
 
-suite("Test ignore", function() {
+suite("Test ignore", function () {
   this.timeout(10000);
   test("it does not format file", async () => {
     const { actual, source } = await format("project", "fileToIgnore.js");

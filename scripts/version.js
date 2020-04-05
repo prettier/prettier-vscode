@@ -17,7 +17,7 @@ fs.readFile(CHANGELOG, (error, data) => {
   if (updated !== stringData) {
     console.log(`CHANGELOG: [Unreleased] updated with [${v}]`);
   }
-  fs.writeFile(CHANGELOG, updated, err => {
+  fs.writeFile(CHANGELOG, updated, (err) => {
     if (err) {
       console.error(err);
       process.exit(1);

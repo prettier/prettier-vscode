@@ -1,6 +1,6 @@
 import {
   commands,
-  ExtensionContext
+  ExtensionContext,
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
@@ -53,7 +53,7 @@ export function activate(context: ExtensionContext) {
 
   const ignoreResolver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
-  const notificationService = new NotificationService(reporter, loggingService);
+  const notificationService = new NotificationService(loggingService);
 
   const moduleResolver = new ModuleResolver(
     loggingService,
@@ -89,7 +89,7 @@ export function activate(context: ExtensionContext) {
 
   const hrEnd = process.hrtime(hrStart);
   reporter.sendTelemetryEvent("extensionActivated", undefined, {
-    activationTime: hrEnd[1] / 1000000
+    activationTime: hrEnd[1] / 1000000,
   });
 }
 

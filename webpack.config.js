@@ -16,13 +16,13 @@ const config = {
     filename: "extension.js",
     libraryTarget: "commonjs2",
     /* cspell: disable-next-line */
-    devtoolModuleFilenameTemplate: "../[resource-path]"
+    devtoolModuleFilenameTemplate: "../[resource-path]",
   },
   plugins: [
     new webpack.EnvironmentPlugin({
       EXTENSION_NAME: JSON.stringify(extensionPackage.name),
-      EXTENSION_VERSION: JSON.stringify(extensionPackage.version)
-    })
+      EXTENSION_VERSION: JSON.stringify(extensionPackage.version),
+    }),
   ],
   /* cspell: disable-next-line */
   devtool: "source-map",
@@ -35,10 +35,10 @@ const config = {
     "spdx-license-ids": "spdx-license-ids",
     /* cspell: disable-next-line */
     "spdx-license-ids/deprecated": "spdx-license-ids/deprecated",
-    "applicationinsights-native-metrics": "applicationinsights-native-metrics" // This isn't actually used, it is just to disable a webpack error we don't care about.
+    "applicationinsights-native-metrics": "applicationinsights-native-metrics", // This isn't actually used, it is just to disable a webpack error we don't care about.
   },
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
   },
   module: {
     rules: [
@@ -47,19 +47,19 @@ const config = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "ts-loader"
-          }
-        ]
+            loader: "ts-loader",
+          },
+        ],
       },
       {
         // vscode-nls-dev loader:
         // * rewrite nls-calls
         loader: "vscode-nls-dev/lib/webpack-loader",
         options: {
-          base: path.join(__dirname, "src")
-        }
-      }
-    ]
-  }
+          base: path.join(__dirname, "src"),
+        },
+      },
+    ],
+  },
 };
 module.exports = config;

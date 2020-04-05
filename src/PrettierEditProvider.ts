@@ -5,7 +5,7 @@ import {
   FormattingOptions,
   Range,
   TextDocument,
-  TextEdit
+  TextEdit,
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 
@@ -30,7 +30,7 @@ export class PrettierEditProvider
   ): Promise<TextEdit[]> {
     return this.provideEdits(document, {
       rangeEnd: document.offsetAt(range.end),
-      rangeStart: document.offsetAt(range.start)
+      rangeStart: document.offsetAt(range.start),
     });
   }
 

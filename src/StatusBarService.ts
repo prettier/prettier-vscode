@@ -4,7 +4,7 @@ import {
   StatusBarAlignment,
   StatusBarItem,
   TextEditor,
-  window
+  window,
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { LanguageResolver } from "./LanguageResolver";
@@ -15,7 +15,7 @@ import { getConfig } from "./util";
 export enum FormattingResult {
   Success = "check",
   Ignore = "x",
-  Error = "alert"
+  Error = "alert",
 }
 
 export class StatusBarService {
@@ -37,9 +37,9 @@ export class StatusBarService {
   public registerDisposables(): Disposable[] {
     return [
       // Keep track whether to show/hide the statusbar
-      window.onDidChangeActiveTextEditor(editor => {
+      window.onDidChangeActiveTextEditor((editor) => {
         this.toggleStatusBarItem(editor);
-      })
+      }),
     ];
   }
 
@@ -60,7 +60,7 @@ export class StatusBarService {
       // Both are seen as an "editor".
       // The following check will ignore such panels
       if (
-        ["debug", "output"].some(part => editor.document.uri.scheme === part)
+        ["debug", "output"].some((part) => editor.document.uri.scheme === part)
       ) {
         return;
       }

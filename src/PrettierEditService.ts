@@ -7,7 +7,7 @@ import {
   Range,
   TextDocument,
   TextEdit,
-  workspace
+  workspace,
   // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
@@ -22,7 +22,7 @@ import { FormattingResult, StatusBarService } from "./StatusBarService";
 import {
   IPrettierStylelint,
   PrettierEslintFormat,
-  PrettierTslintFormat
+  PrettierTslintFormat,
 } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
@@ -42,7 +42,7 @@ const PRETTIER_CONFIG_FILES = [
   ".prettierrc.js",
   "package.json",
   "prettier.config.js",
-  ".editorconfig"
+  ".editorconfig",
 ];
 
 export default class PrettierEditService implements Disposable {
@@ -65,7 +65,7 @@ export default class PrettierEditService implements Disposable {
     packageWatcher.onDidCreate(this.registerFormatter);
     packageWatcher.onDidDelete(this.registerFormatter);
 
-    const configurationWatcher = workspace.onDidChangeConfiguration(event => {
+    const configurationWatcher = workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("prettier")) {
         this.registerFormatter();
       }
@@ -86,7 +86,7 @@ export default class PrettierEditService implements Disposable {
       packageWatcher,
       configurationWatcher,
       workspaceWatcher,
-      prettierConfigWatcher
+      prettierConfigWatcher,
     ];
   }
 
@@ -106,7 +106,6 @@ export default class PrettierEditService implements Disposable {
 
   public dispose = () => {
     this.moduleResolver.dispose();
-    this.notificationService.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
     this.formatterHandler = undefined;
@@ -128,7 +127,7 @@ export default class PrettierEditService implements Disposable {
         const allWorkspaceLanguages = this.languageResolver.allEnabledLanguages(
           folder.uri.fsPath
         );
-        allWorkspaceLanguages.forEach(lang => {
+        allWorkspaceLanguages.forEach((lang) => {
           if (!allLanguages.includes(lang)) {
             allLanguages.push(lang);
           }
@@ -148,37 +147,37 @@ export default class PrettierEditService implements Disposable {
     );
 
     const globalLanguageSelector = allLanguages.filter(
-      l => !disableLanguages.includes(l)
+      (l) => !disableLanguages.includes(l)
     );
     const globalRangeLanguageSelector = allRangeLanguages.filter(
-      l => !disableLanguages.includes(l)
+      (l) => !disableLanguages.includes(l)
     );
     if (workspace.workspaceFolders === undefined) {
       // no workspace opened
       return {
         languageSelector: globalLanguageSelector,
-        rangeLanguageSelector: globalRangeLanguageSelector
+        rangeLanguageSelector: globalRangeLanguageSelector,
       };
     }
 
     // at least 1 workspace
     const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l, scheme: "untitled" })
+      (l) => ({ language: l, scheme: "untitled" })
     );
     const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l, scheme: "untitled" })
+      (l) => ({ language: l, scheme: "untitled" })
     );
     const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      l => ({ language: l, scheme: "file" })
+      (l) => ({ language: l, scheme: "file" })
     );
     const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      l => ({ language: l, scheme: "file" })
+      (l) => ({ language: l, scheme: "file" })
     );
     return {
       languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
       rangeLanguageSelector: untitledRangeLanguageSelector.concat(
         fileRangeLanguageSelector
-      )
+      ),
     };
   };
 
@@ -244,13 +243,10 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    // LEGACY: Remove in version 4.x
-    this.notificationService.warnIfLegacyConfiguration(uri);
-
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
 
     const prettierInstance = this.moduleResolver.getPrettierInstance(fileName, {
-      showNotifications: true
+      showNotifications: true,
     });
 
     let fileInfo: prettier.FileInfoResult | undefined;
@@ -296,7 +292,7 @@ export default class PrettierEditService implements Disposable {
 
     const {
       options: prettierOptions,
-      error
+      error,
     } = await this.configResolver.getPrettierOptions(
       fileName,
       parser as prettier.BuiltInParserName,
@@ -305,7 +301,7 @@ export default class PrettierEditService implements Disposable {
         config: vscodeConfig.configPath
           ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
           : undefined,
-        editorconfig: vscodeConfig.useEditorConfig
+        editorconfig: vscodeConfig.useEditorConfig,
       },
       rangeFormattingOptions
     );
@@ -335,7 +331,7 @@ export default class PrettierEditService implements Disposable {
           return prettierTslintFormat({
             fallbackPrettierOptions: prettierOptions,
             filePath: fileName,
-            text
+            text,
           });
         }, text);
       }
@@ -354,7 +350,7 @@ export default class PrettierEditService implements Disposable {
           return prettierEslintFormat({
             fallbackPrettierOptions: prettierOptions,
             filePath: fileName,
-            text
+            text,
           });
         }, text);
       }
@@ -372,7 +368,7 @@ export default class PrettierEditService implements Disposable {
           prettierStylelint.format({
             filePath: fileName,
             prettierOptions,
-            text
+            text,
           }),
           text
         );
@@ -399,7 +395,7 @@ export default class PrettierEditService implements Disposable {
   ): string | Promise<string> {
     if (cb instanceof Promise) {
       return cb
-        .then(returnValue => {
+        .then((returnValue) => {
           this.statusBarService.updateStatusBar(FormattingResult.Success);
 
           return returnValue;
