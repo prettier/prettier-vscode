@@ -10,5 +10,5 @@ steps:
     displayName: Start xvfb
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
-  - script: "yarn install"
+  - script: "yarn install --network-timeout 100000"
     displayName: "Install dependencies"
