@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [next]
+
+- Honor project-scoped config when loading module
+
 ## [4.0.0]
 
 - Updated prettier to 2.0 - [See changes here](https://prettier.io/blog/2020/03/21/2.0.0.html).
