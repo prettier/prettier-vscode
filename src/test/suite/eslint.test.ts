@@ -1,5 +1,4 @@
 import * as assert from "assert";
-import { platform } from "os";
 import {
   format,
   getText,
