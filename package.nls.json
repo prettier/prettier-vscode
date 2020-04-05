@@ -22,6 +22,7 @@
   "ext.config.requireConfig": "Require a prettier configuration file to format. See [documentation for valid configuration files](https://prettier.io/docs/en/configuration.html).\n\n> _Note, untitled files will still be formatted using the VS Code prettier settings even when this setting is set._",
   "ext.config.requirePragma": "Prettier can restrict itself to only format files that contain a special comment, called a pragma, at the top of the file. This is very useful when gradually transitioning large, unformatted codebases to prettier.",
   "ext.config.resolveGlobalModules": "When enabled, this extension will attempt to use global npm or yarn modules if local modules cannot be resolved.\n> _This setting can have a negative performance impact, particularly on Windows when you have attached network drives. Only enable this if you must use global modules._",
+  "ext.config.withNodeModules": "If true, this extension will process files in node_modules",
   "ext.config.semi": "Whether to add a semicolon at the end of every line",
   "ext.config.singleQuote": "If true, will use single instead of double quotes",
   "ext.config.stylelintIntegration": "Use `prettier-stylelint` instead of`prettier`. Other settings will only be fallbacks in case they could not be inferred from stylelint rules.",
