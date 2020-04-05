@@ -7,7 +7,7 @@ import * as readPkgUp from "read-pkg-up";
 import * as resolve from "resolve";
 import * as semver from "semver";
 // tslint:disable-next-line: no-implicit-dependencies
-import { Disposable } from "vscode";
+import { Disposable, Uri } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import { FAILED_TO_LOAD_MODULE_MESSAGE } from "./message";
@@ -88,7 +88,9 @@ export class ModuleResolver implements Disposable {
       return prettier;
     }
 
-    const { prettierPath, packageManager, resolveGlobalModules } = getConfig();
+    const { prettierPath, packageManager, resolveGlobalModules } = getConfig(
+      Uri.file(fileName)
+    );
 
     // tslint:disable-next-line: prefer-const
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
