@@ -253,6 +253,10 @@ A list of languages IDs to disable this extension on.
 
 Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
 
+#### prettier.withNodeModules (default: `false`)
+
+Whether or not to process files in the `node_modules` folder.
+
 ## Error Messages
 
 **Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`**

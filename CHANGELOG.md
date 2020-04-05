@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [next]
 
 - Honor project-scoped config when loading module
+- Added configuration option `withNodeModules` to enable processing of files in the `node_modules` folder.
 
 ## [4.0.0]
 
