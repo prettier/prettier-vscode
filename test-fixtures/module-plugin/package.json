@@ -1,0 +1,15 @@
+{
+  "name": "testplugins",
+  "version": "1.0.0",
+  "description": "Test folder for prettier plugins",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jarrodldavis",
+  "license": "MIT",
+  "devDependencies": {
+    "module-plugin-dep": "../module-plugin-dep",
+    "prettier": "^2.0.2"
+  }
+}

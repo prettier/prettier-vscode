@@ -23,6 +23,9 @@
     },
     {
       "path": "module"
+    },
+    {
+      "path": "module-plugin"
     }
   ],
   "settings": {

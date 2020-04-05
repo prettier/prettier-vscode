@@ -21,6 +21,11 @@ const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   const workspaceFolder = vscode.workspace.workspaceFolders!.find((folder) => {
     return folder.name === workspaceFolderName;
   });
+  if (!workspaceFolder) {
+    throw new Error(
+      "Folder not found in workspace. Did you forget to add the test folder to test.code-workspace?"
+    );
+  }
   return workspaceFolder!.uri;
 };
 
