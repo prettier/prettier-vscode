@@ -4,11 +4,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [next]
+## [4.1.0]
 
 - Support loading Prettier from `node_modules` even if it doesn't appear as a direct dependency in a `package.json`
-- Honor project-scoped config when loading module #1222, #950
+- Honor project-scoped config when loading module (#1222, #950)
 - Added configuration option `withNodeModules` to enable processing of files in the `node_modules` folder
+- Updated prettier to 2.0.3 (#1289)
 
 ## [4.0.0]
 
