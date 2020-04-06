@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [4.1.1]
+
+- Updated prettier to 2.0.4
+
 ## [4.1.0]
 
 - Support loading Prettier from `node_modules` even if it doesn't appear as a direct dependency in a `package.json`
