@@ -26,6 +26,9 @@
     },
     {
       "path": "module-plugin"
+    },
+    {
+      "path": "no-dep"
     }
   ],
   "settings": {

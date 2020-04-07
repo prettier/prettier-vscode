@@ -334,6 +334,10 @@ export class ModuleResolver implements Disposable {
         if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {
           return dir;
         }
+
+        if (fs.existsSync(path.join(dir, ".prettier-vscode-root"))) {
+          return findUp.stop;
+        }
       },
       { cwd: finalPath, type: "directory" }
     );
