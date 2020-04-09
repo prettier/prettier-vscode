@@ -188,6 +188,8 @@ This extension will automatically detect when you have these extensions installe
 
 All prettier options can be configured directly in this extension. These settings are used as a fallback when no configuration file is present in your project, see the [configuration](#configuration) section of this document for more details. For reference on the options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
+> The default values of these configurations are set to their Prettier 2.0 defaults. However, if this extension detects you have a version of prettier less than 2.0 installed, it will use the prettier 1.x default config values.
+
 ```
 prettier.arrowParens
 prettier.bracketSpacing
