@@ -119,7 +119,7 @@
     "mem": "^6.0.1",
     "prettier": "^2.0.2",
     "resolve": "^1.15.1",
-    "semver": "^7.1.3",
+    "semver": "^7.2.1",
     "vscode-extension-telemetry": "^0.1.2",
     "vscode-nls": "^4.1.2"
   },
