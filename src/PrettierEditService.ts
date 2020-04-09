@@ -254,7 +254,7 @@ export default class PrettierEditService implements Disposable {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath,
         resolveConfig: true, // Fix for 1.19 (https://prettier.io/blog/2019/11/09/1.19.0.html#api)
-        withNodeModules: vscodeConfig.withNodeModules
+        withNodeModules: vscodeConfig.withNodeModules,
       });
       this.loggingService.logInfo("File Info:", fileInfo);
     }
@@ -297,6 +297,7 @@ export default class PrettierEditService implements Disposable {
       fileName,
       parser as prettier.BuiltInParserName,
       vscodeConfig,
+      prettierInstance.version,
       {
         config: vscodeConfig.configPath
           ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
