@@ -17,7 +17,7 @@ const readFileAsync: (
  * gets the workspace folder by name
  * @param name Workspace folder name
  */
-const getWorkspaceFolderUri = (workspaceFolderName: string) => {
+export const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   const workspaceFolder = vscode.workspace.workspaceFolders!.find((folder) => {
     return folder.name === workspaceFolderName;
   });
