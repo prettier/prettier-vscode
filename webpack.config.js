@@ -20,8 +20,8 @@ const config = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      EXTENSION_NAME: JSON.stringify(extensionPackage.name),
-      EXTENSION_VERSION: JSON.stringify(extensionPackage.version),
+      EXTENSION_NAME: `${extensionPackage.publisher}.${extensionPackage.name}`,
+      EXTENSION_VERSION: extensionPackage.version,
     }),
   ],
   /* cspell: disable-next-line */

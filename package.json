@@ -120,7 +120,6 @@
     "prettier": "^2.0.2",
     "resolve": "^1.15.1",
     "semver": "^7.2.2",
-    "vscode-extension-telemetry": "^0.1.2",
     "vscode-nls": "^4.1.2"
   },
   "contributes": {
