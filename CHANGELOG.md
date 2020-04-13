@@ -8,6 +8,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Removed AppInsights telemetry as its no longer needed
 - Updated instructions on how to use linters
+- Added log warning about legacy linter integrations
 
 ## [4.2.0]
 

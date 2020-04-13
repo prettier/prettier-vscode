@@ -14,7 +14,7 @@ import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
-import { INVALID_PRETTIER_CONFIG } from "./message";
+import { INVALID_PRETTIER_CONFIG, LEGACY_LINTER_INTEGRATION } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
@@ -326,6 +326,7 @@ export default class PrettierEditService implements Disposable {
 
       if (prettierTslintModule) {
         this.loggingService.logInfo("Formatting using 'prettier-tslint'");
+        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
         return this.safeExecution(() => {
           const prettierTslintFormat = prettierTslintModule.format as PrettierTslintFormat;
 
@@ -345,6 +346,7 @@ export default class PrettierEditService implements Disposable {
       );
       if (prettierEslintModule) {
         this.loggingService.logInfo("Formatting using 'prettier-eslint'");
+        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
         return this.safeExecution(() => {
           const prettierEslintFormat = prettierEslintModule as PrettierEslintFormat;
 
@@ -364,6 +366,7 @@ export default class PrettierEditService implements Disposable {
       );
       if (prettierStylelintModule) {
         this.loggingService.logInfo("Formatting using 'prettier-stylelint'");
+        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
         const prettierStylelint = prettierStylelintModule as IPrettierStylelint;
         return this.safeExecution(
           prettierStylelint.format({

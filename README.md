@@ -290,3 +290,7 @@ When a `package.json` is present in your project and it contains prettier, plugi
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
 You must upgrade to a newer version of prettier.
+
+**You are using a legacy linter integration that will be removed in the future.**
+
+Support for prettier-eslint, prettier-tslint, and prettier-stylelint will be removed in a future version of this extension. You should switch to one of the [supported and recommended ways of integrating Prettier with linters](https://github.com/prettier/prettier-vscode#linter-integration).
