@@ -157,7 +157,15 @@ graphql
 
 ## Linter Integration
 
-The preferred way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. [You can see how this is done here](https://prettier.io/docs/en/integrating-with-linters.html). To continue to use Prettier and your linter we recommend you use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) or [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) extensions directly.
+There are two ways to use Prettier and linters together. The first approach is to simply let each tool do what it was meant for: Prettier formats and the linter lints. You do this by disabling any rules in your linter that check formatting and let Prettier automatically handle all the formatting. The second approach is to use the linter to run prettier though a plugin with the linter.
+
+### Disable Formatting Rules in the Linter
+
+The easiest way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would.
+
+- **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules)
+- **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules-1)
+- **Stylelint**: [Extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules-2).
 
 You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have formatting and quick fixes:
 
@@ -174,13 +182,13 @@ You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have f
 
 > NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
-### Legacy Prettier Linter Integration (unreliable, not recommended)
+### Run Prettier through Linters
 
-> WARNING: There are numerous issues with this type of integration due to problems in the libraries like `prettier-eslint`. See: [#870](https://github.com/prettier/prettier-vscode/issues/870), [#137](https://github.com/prettier/prettier-vscode/issues/137), [#494](https://github.com/prettier/prettier-vscode/issues/494), [#1191](https://github.com/prettier/prettier-vscode/issues/1191), and [others](https://github.com/prettier/prettier-vscode/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+linter). Due to these problems, this feature will likely to be removed completely in future versions of this extension.
+Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you DO NOT USE THIS EXTENSION. Instead you use the linter extensions to run the linter and Prettier.See the Prettier documentation for instructions on how to configure each linter.
 
-The legacy option for integrating linters with Prettier is to use `prettier-eslint`, `prettier-tslint`, or `prettier-stylelint`. In order to use these integrations you MUST install these modules in your project's `package.json` along with dependencies like `prettier`, `eslint`, `tslint`, `stylelint`, etc.
-
-This extension will automatically detect when you have these extensions installed and use them instead of `prettier` by itself. For configuration of these linter integrations, see their respective documentation.
+- **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-eslint-to-run-prettier)
+- **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-tslint-to-run-prettier)
+- **Stylelint**: [Extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-stylelint-to-run-prettier).
 
 ## Settings
 
