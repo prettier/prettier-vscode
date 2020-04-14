@@ -1,5 +1,4 @@
 import * as prettier from "prettier";
-import * as semver from "semver";
 import { LoggingService } from "./LoggingService";
 
 interface IResolveConfigResult {
@@ -19,7 +18,6 @@ export class ConfigResolver {
     fileName: string,
     parser: prettier.BuiltInParserName,
     vsCodeConfig: prettier.Options,
-    prettierVersion: string,
     resolveConfigOptions: prettier.ResolveConfigOptions,
     rangeFormattingOptions?: RangeFormattingOptions
   ): Promise<{ options?: Partial<prettier.Options>; error?: Error }> {
@@ -36,16 +34,10 @@ export class ConfigResolver {
 
     const fallbackToVSCodeConfig = configOptions === null;
 
-    const usePrettierV2Defaults = semver.gte(prettierVersion, "2.0.0");
-
     if (fallbackToVSCodeConfig) {
-      vsOpts.arrowParens = usePrettierV2Defaults
-        ? vsCodeConfig.arrowParens
-        : "avoid";
+      vsOpts.arrowParens = vsCodeConfig.arrowParens;
       vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
-      vsOpts.endOfLine = usePrettierV2Defaults
-        ? vsCodeConfig.endOfLine
-        : "auto";
+      vsOpts.endOfLine = vsCodeConfig.endOfLine;
       vsOpts.htmlWhitespaceSensitivity = vsCodeConfig.htmlWhitespaceSensitivity;
       vsOpts.insertPragma = vsCodeConfig.insertPragma;
       vsOpts.jsxBracketSameLine = vsCodeConfig.jsxBracketSameLine;
@@ -57,9 +49,7 @@ export class ConfigResolver {
       vsOpts.semi = vsCodeConfig.semi;
       vsOpts.singleQuote = vsCodeConfig.singleQuote;
       vsOpts.tabWidth = vsCodeConfig.tabWidth;
-      vsOpts.trailingComma = usePrettierV2Defaults
-        ? vsCodeConfig.trailingComma
-        : "none";
+      vsOpts.trailingComma = vsCodeConfig.trailingComma;
       vsOpts.useTabs = vsCodeConfig.useTabs;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
     }

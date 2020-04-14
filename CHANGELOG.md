@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [4.4.0]
+
+- Reverted change that attempts to resolve config based on prettier version.
+
 ## [4.3.0]
 
 - Removed AppInsights telemetry as its no longer needed

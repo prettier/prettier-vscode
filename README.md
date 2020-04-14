@@ -210,7 +210,7 @@ Disable format on save so this extension doesn't run and enable code actions to 
 
 All prettier options can be configured directly in this extension. These settings are used as a fallback when no configuration file is present in your project, see the [configuration](#configuration) section of this document for more details. For reference on the options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
-> The default values of these configurations are set to their Prettier 2.0 defaults. However, if this extension detects you have a version of prettier less than 2.0 installed, it will use the prettier 1.x default config values.
+> The default values of these configurations are always to their Prettier 2.0 defaults. In order to use defaults from ealier versions of prettier you must set them manually using your VS Code settings or local project configurations.
 
 ```
 prettier.arrowParens
