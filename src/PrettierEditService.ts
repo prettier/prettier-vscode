@@ -297,7 +297,6 @@ export default class PrettierEditService implements Disposable {
       fileName,
       parser as prettier.BuiltInParserName,
       vscodeConfig,
-      prettierInstance.version,
       {
         config: vscodeConfig.configPath
           ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
