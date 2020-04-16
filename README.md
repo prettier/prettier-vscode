@@ -184,7 +184,7 @@ You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have f
 
 ### Run Prettier through Linters
 
-Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you **DO NOT USE THIS EXTENSION**. Instead you use the linter extensions to run the linter and Prettier.See the Prettier documentation for instructions on how to configure each linter.
+Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you **DO NOT USE THIS EXTENSION**. Instead you use the linter extensions to run the linter and Prettier. See the Prettier documentation for instructions on how to configure each linter.
 
 - **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-eslint-to-run-prettier)
 - **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-tslint-to-run-prettier)
