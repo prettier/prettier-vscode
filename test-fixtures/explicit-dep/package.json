@@ -1,0 +1,15 @@
+{
+  "name": "test-explicit-dep",
+  "version": "1.0.0",
+  "description": "Test explicit prettier dep",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jhilker",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.0.2"
+  },
+  "dependencies": {}
+}
