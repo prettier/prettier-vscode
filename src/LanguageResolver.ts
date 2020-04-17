@@ -56,7 +56,7 @@ export class LanguageResolver {
       "javascriptreact",
       "typescript",
       "typescriptreact",
-      "json",      
+      "json",
       "graphql",
     ];
   }
