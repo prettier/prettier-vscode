@@ -8,6 +8,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Update loading implicit Prettier dep from `node_modules` to only occur if explicit `package.json` dep is not found in a parent directory
 
+## [4.5.0]
+
+- Updated prettier to 2.0.5
+
 ## [4.4.0]
 
 - Reverted change that attempts to resolve config based on prettier version.

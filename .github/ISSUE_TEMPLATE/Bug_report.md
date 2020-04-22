@@ -16,6 +16,8 @@ SEE THIS GUIDE ON OPENING A GOOD ISSUE: https://github.com/prettier/prettier-vsc
 - [ ] Include Prettier extension log
 
 PLEASE NOTE: Many of the issues with the extension are heavily based on your specific configuration and source code. In order to improve your chances of having your bug fixed, the number one thing you can do is create a github repository that can be used to reproduce the issue along with the detailed reproduction steps. If you don't provide this info, it is usually the case that we cannot reproduce the issue and the issue will be closed.
+
+**DO NOT PUT LOGS OR CODE SNIPPETS IN SCREENSHOTS. THIS MAKES IT IMPOSSIBLE TO COPY/PASTE**
 -->
 
 ### Summary
