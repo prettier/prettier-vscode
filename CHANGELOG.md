@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [4.5.0]
+
+- Updated prettier to 2.0.5
+
 ## [4.4.0]
 
 - Reverted change that attempts to resolve config based on prettier version.
