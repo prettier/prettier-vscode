@@ -118,7 +118,7 @@
     "ignore": "^5.1.4",
     "mem": "^6.1.0",
     "prettier": "^2.0.2",
-    "resolve": "^1.15.1",
+    "resolve": "^1.16.1",
     "semver": "^7.3.2",
     "vscode-nls": "^4.1.2"
   },
