@@ -51,7 +51,7 @@ export class LanguageResolver {
 
   public rangeSupportedLanguages(): string[] {
     return [
-      "arm-template",
+      "arm-template", // JSON
       "javascript",
       "javascriptreact",
       "typescript",
