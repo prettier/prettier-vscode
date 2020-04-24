@@ -87,5 +87,24 @@ suite("Test ModuleResolver", function () {
         )
       );
     });
+
+    test("it uses explicit dep if found instead fo a closer implicit module dep", () => {
+      const fileName = path.join(
+        getWorkspaceFolderUri("explicit-dep").fsPath,
+        "implicit-dep",
+        "index.js"
+      );
+      const prettierInstance = moduleResolver.getPrettierInstance(fileName);
+
+      assert.notEqual(prettierInstance, prettier);
+      assert.equal(prettierInstance.version, "2.0.2");
+      assert(
+        logInfoSpy.calledWith(
+          sinon.match(
+            /Loaded module 'prettier@2\.0\.2' from '.*[\/\\]explicit-dep[\/\\]node_modules[\/\\]prettier[\/\\]index\.js'/
+          )
+        )
+      );
+    });
   });
 });

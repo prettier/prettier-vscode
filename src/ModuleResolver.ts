@@ -309,7 +309,8 @@ export class ModuleResolver implements Disposable {
       finalPath = splitPath.slice(0, nodeModulesIndex).join("/");
     }
 
-    const resDir = findUp.sync(
+    // First look for an explicit package.json dep
+    const packageJsonResDir = findUp.sync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "package.json"))) {
           let packageJson;
@@ -331,6 +332,20 @@ export class ModuleResolver implements Disposable {
           }
         }
 
+        if (fs.existsSync(path.join(dir, ".prettier-vscode-root"))) {
+          return findUp.stop;
+        }
+      },
+      { cwd: finalPath, type: "directory" }
+    );
+
+    if (packageJsonResDir) {
+      return resolve.sync(pkgName, { basedir: packageJsonResDir });
+    }
+
+    // If no explicit package.json dep found, instead look for implicit dep
+    const nodeModulesResDir = findUp.sync(
+      (dir) => {
         if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {
           return dir;
         }
@@ -349,8 +364,8 @@ export class ModuleResolver implements Disposable {
       { cwd: finalPath, type: "directory" }
     );
 
-    if (resDir) {
-      return resolve.sync(pkgName, { basedir: resDir });
+    if (nodeModulesResDir) {
+      return resolve.sync(pkgName, { basedir: nodeModulesResDir });
     }
 
     return;

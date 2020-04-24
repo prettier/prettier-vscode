@@ -1,0 +1,14 @@
+{
+  "name": "test-implicit-dep",
+  "version": "1.0.0",
+  "description": "Test folder for implicit dep within explicit dep",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jhilker",
+  "license": "MIT",
+  "devDependencies": {
+    "module-dep": "../../module-dep"
+  }
+}

@@ -29,6 +29,9 @@
     },
     {
       "path": "no-dep"
+    },
+    {
+      "path": "explicit-dep"
     }
   ],
   "settings": {
