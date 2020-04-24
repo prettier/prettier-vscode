@@ -335,8 +335,15 @@ export class ModuleResolver implements Disposable {
           return dir;
         }
 
-        if (fs.existsSync(path.join(dir, ".prettier-vscode-root"))) {
-          return findUp.stop;
+        if (process.env.NODE_ENV !== "production") {
+          // This is for testing purposes only. This code is removed in the
+          // shipped version of this extension so do not use this in your
+          // project. It won't work.
+          if (
+            fs.existsSync(path.join(dir, ".do-not-use-prettier-vscode-root"))
+          ) {
+            return findUp.stop;
+          }
         }
       },
       { cwd: finalPath, type: "directory" }
