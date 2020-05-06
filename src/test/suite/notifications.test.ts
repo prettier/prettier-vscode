@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as assert from "assert";
 // tslint:disable-next-line: no-implicit-dependencies
 import * as sinon from "sinon";
@@ -8,6 +9,10 @@ import {
   INVALID_PRETTIER_PATH_MESSAGE,
 } from "../../message";
 import { format } from "./format.test";
+
+function isWindows(): boolean {
+  return process.platform === "win32";
+}
 
 suite("Test notifications", function () {
   let showWarningMessage: sinon.SinonStub<
@@ -35,7 +40,16 @@ suite("Test notifications", function () {
   test("shows error for invalid prettier instance", async () => {
     const settings = workspace.getConfiguration("prettier");
     const originalPrettierPath = settings.get("prettierPath");
-    await settings.update("prettierPath", "./node_modules/.bin/prettier");
+    if (isWindows()) {
+      // On windows the file in the bin won't be a JS file, so test against
+      // an arbitrary non-prettier file instead
+      await settings.update("prettierPath", path.join(".", "index.js"));
+    } else {
+      await settings.update(
+        "prettierPath",
+        path.join(".", "node_modules", ".bin", "prettier")
+      );
+    }
     await format("explicit-dep", "index.js");
 
     assert(showErrorMessage.calledWith(INVALID_PRETTIER_PATH_MESSAGE));
