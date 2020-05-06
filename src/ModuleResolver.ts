@@ -292,6 +292,17 @@ export class ModuleResolver implements Disposable {
     return undefined;
   }
 
+  private isInternalTestRoot(dir: string): boolean {
+    if (process.env.NODE_ENV !== "production") {
+      // This is for testing purposes only. This code is removed in the
+      // shipped version of this extension so do not use this in your
+      // project. It won't work.
+      return fs.existsSync(path.join(dir, ".do-not-use-prettier-vscode-root"));
+    } else {
+      return false;
+    }
+  }
+
   /**
    * Recursively search upwards for a given module definition based on
    * package.json or node_modules existence
@@ -332,7 +343,7 @@ export class ModuleResolver implements Disposable {
           }
         }
 
-        if (fs.existsSync(path.join(dir, ".prettier-vscode-root"))) {
+        if (this.isInternalTestRoot(dir)) {
           return findUp.stop;
         }
       },
@@ -350,15 +361,8 @@ export class ModuleResolver implements Disposable {
           return dir;
         }
 
-        if (process.env.NODE_ENV !== "production") {
-          // This is for testing purposes only. This code is removed in the
-          // shipped version of this extension so do not use this in your
-          // project. It won't work.
-          if (
-            fs.existsSync(path.join(dir, ".do-not-use-prettier-vscode-root"))
-          ) {
-            return findUp.stop;
-          }
+        if (this.isInternalTestRoot(dir)) {
+          return findUp.stop;
         }
       },
       { cwd: finalPath, type: "directory" }
