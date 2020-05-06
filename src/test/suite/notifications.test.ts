@@ -2,8 +2,11 @@ import * as assert from "assert";
 // tslint:disable-next-line: no-implicit-dependencies
 import * as sinon from "sinon";
 // tslint:disable-next-line: no-implicit-dependencies
-import { MessageItem, MessageOptions, window } from "vscode";
-import { OUTDATED_PRETTIER_VERSION_MESSAGE } from "../../message";
+import { MessageItem, MessageOptions, window, workspace } from "vscode";
+import {
+  OUTDATED_PRETTIER_VERSION_MESSAGE,
+  INVALID_PRETTIER_PATH_MESSAGE,
+} from "../../message";
 import { format } from "./format.test";
 
 suite("Test notifications", function () {
@@ -28,6 +31,18 @@ suite("Test notifications", function () {
     await format("outdated", "ugly.js");
     assert(showErrorMessage.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
   });
+
+  test("shows error for invalid prettier instance", async () => {
+    const settings = workspace.getConfiguration("prettier");
+    const originalPrettierPath = settings.get("prettierPath");
+    await settings.update("prettierPath", "./node_modules/.bin/prettier");
+    await format("explicit-dep", "index.js");
+
+    assert(showErrorMessage.calledWith(INVALID_PRETTIER_PATH_MESSAGE));
+
+    await settings.update("prettierPath", originalPrettierPath);
+  });
+
   test("does not show error with valid project", async () => {
     await format("plugins", "index.php");
     assert(showWarningMessage.notCalled);

@@ -90,6 +90,7 @@
     "[php]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "prettier.trailingComma": "all"
+    "prettier.trailingComma": "all",
+    "prettier.prettierPath": ""
   }
 }

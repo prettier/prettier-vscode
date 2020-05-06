@@ -10,7 +10,10 @@ import * as semver from "semver";
 import { Disposable, Uri } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
-import { FAILED_TO_LOAD_MODULE_MESSAGE } from "./message";
+import {
+  FAILED_TO_LOAD_MODULE_MESSAGE,
+  INVALID_PRETTIER_PATH_MESSAGE,
+} from "./message";
 import { NotificationService } from "./NotificationService";
 import { PackageManagers, PrettierModule } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
@@ -119,12 +122,25 @@ export class ModuleResolver implements Disposable {
     }
 
     if (moduleInstance) {
+      // If the instance is missing `format`, it's probably not an instance of
+      // Prettier
+      const isPrettierInstance = !!moduleInstance.format;
       const isValidVersion =
         moduleInstance.version &&
         !!moduleInstance.getSupportInfo &&
         !!moduleInstance.getFileInfo &&
         !!moduleInstance.resolveConfig &&
         semver.gte(moduleInstance.version, minPrettierVersion);
+
+      if (!isPrettierInstance && prettierPath) {
+        this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
+        if (options?.showNotifications) {
+          this.notificationService.showErrorMessage(
+            INVALID_PRETTIER_PATH_MESSAGE
+          );
+        }
+        return prettier;
+      }
 
       if (!isValidVersion) {
         if (options?.showNotifications) {
