@@ -103,7 +103,7 @@
     "mocha": "^7.1.2",
     "mocha-junit-reporter": "^1.23.3",
     "sinon": "^9.0.2",
-    "ts-loader": "^7.0.3",
+    "ts-loader": "^7.0.4",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "~3.8.3",
