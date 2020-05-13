@@ -93,7 +93,7 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "^12",
     "@types/prettier": "^2.0.0",
-    "@types/resolve": "^1.17.0",
+    "@types/resolve": "^1.17.1",
     "@types/semver": "^7.1.0",
     "@types/sinon": "^9.0.0",
     "@types/vscode": "1.41",
