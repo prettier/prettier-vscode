@@ -23,6 +23,7 @@
     "prettierrc",
     "promisify",
     "stylelint",
+    "userdata",
     "vsce"
   ]
 }

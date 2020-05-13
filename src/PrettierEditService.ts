@@ -146,35 +146,47 @@ export default class PrettierEditService implements Disposable {
       allRangeLanguages.sort()
     );
 
-    const globalLanguageSelector = allLanguages.filter(
-      (l) => !disableLanguages.includes(l)
-    );
-    const globalRangeLanguageSelector = allRangeLanguages.filter(
-      (l) => !disableLanguages.includes(l)
-    );
+    const specialLanguageSelector: DocumentFilter[] = [
+      // This selector is for settings.json files
+      {
+        language: "jsonc",
+        scheme: "vscode-userdata",
+      },
+    ];
+
+    const globalLanguageSelector: DocumentFilter[] = allLanguages
+      .filter((l) => !disableLanguages.includes(l))
+      .map((l) => ({ language: l }));
+    const globalRangeLanguageSelector: DocumentFilter[] = allRangeLanguages
+      .filter((l) => !disableLanguages.includes(l))
+      .map((l) => ({ language: l }));
     if (workspace.workspaceFolders === undefined) {
       // no workspace opened
       return {
-        languageSelector: globalLanguageSelector,
+        languageSelector: globalLanguageSelector.concat(
+          specialLanguageSelector
+        ),
         rangeLanguageSelector: globalRangeLanguageSelector,
       };
     }
 
     // at least 1 workspace
     const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      (l) => ({ language: l, scheme: "untitled" })
+      (l) => ({ language: l.language, scheme: "untitled" })
     );
     const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      (l) => ({ language: l, scheme: "untitled" })
+      (l) => ({ language: l.language, scheme: "untitled" })
     );
     const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      (l) => ({ language: l, scheme: "file" })
+      (l) => ({ language: l.language, scheme: "file" })
     );
     const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      (l) => ({ language: l, scheme: "file" })
+      (l) => ({ language: l.language, scheme: "file" })
     );
     return {
-      languageSelector: untitledLanguageSelector.concat(fileLanguageSelector),
+      languageSelector: untitledLanguageSelector
+        .concat(fileLanguageSelector)
+        .concat(specialLanguageSelector),
       rangeLanguageSelector: untitledRangeLanguageSelector.concat(
         fileRangeLanguageSelector
       ),
