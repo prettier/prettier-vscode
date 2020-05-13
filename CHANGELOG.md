@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [4.7.0]
+
+- Adds support for formatting VS Code settings files (settings.json). (#1343)
+
 ## [4.6.0]
 
 - Update loading implicit Prettier dep from `node_modules` to only occur if explicit `package.json` dep is not found in a parent directory
