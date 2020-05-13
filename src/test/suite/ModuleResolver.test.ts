@@ -54,8 +54,8 @@ suite("Test ModuleResolver", function () {
 
     test("it returns prettier version from package.json", () => {
       const fileName = path.join(
-        getWorkspaceFolderUri("eslint").fsPath,
-        "index.js"
+        getWorkspaceFolderUri("specific-version").fsPath,
+        "ugly.js"
       );
       const prettierInstance = moduleResolver.getPrettierInstance(fileName);
 
@@ -64,7 +64,7 @@ suite("Test ModuleResolver", function () {
       assert(
         logInfoSpy.calledWith(
           sinon.match(
-            /Loaded module 'prettier@2.0.2' from '.*[\/\\]eslint[\/\\]node_modules[\/\\]prettier[\/\\]index.js'/
+            /Loaded module 'prettier@2.0.2' from '.*[\/\\]specific-version[\/\\]node_modules[\/\\]prettier[\/\\]index.js'/
           )
         )
       );

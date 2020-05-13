@@ -63,7 +63,7 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "tslint --project .",
-    "pretest": "yarn test-compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install && cd ../plugins && yarn install && cd ../outdated && yarn install && cd ../module && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install",
+    "pretest": "yarn test-compile && cd test-fixtures/eslint && yarn install && cd ../tslint && yarn install && cd ../plugins && yarn install && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install",
     "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
     "test": "node ./out/test/runTests.js",
