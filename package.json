@@ -115,7 +115,7 @@
   },
   "dependencies": {
     "find-up": "^4.1.0",
-    "ignore": "^5.1.4",
+    "ignore": "^5.1.6",
     "mem": "^6.1.0",
     "prettier": "^2.0.5",
     "resolve": "^1.17.0",
