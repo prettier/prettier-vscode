@@ -255,7 +255,7 @@ Supply a custom path to the prettier configuration file.
 
 #### prettier.prettierPath
 
-Supply a custom path to the prettier module.
+Supply a custom path to the prettier module. This path should be to the module folder, not the bin/script path. i.e. `./node_modules/prettier`, not `./bin/prettier`.
 
 #### prettier.packageManager
 
