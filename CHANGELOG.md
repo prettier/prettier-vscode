@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.0.0]
+
+- Removed support for legacy linter integration. [See documentation](https://github.com/prettier/prettier-vscode#linter-integration) on how to configure linters.
+
 ## [4.7.0]
 
 - Adds support for formatting VS Code settings files (settings.json). (#1343)

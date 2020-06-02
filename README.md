@@ -210,7 +210,7 @@ Disable format on save so this extension doesn't run and enable code actions to 
 
 All prettier options can be configured directly in this extension. These settings are used as a fallback when no configuration file is present in your project, see the [configuration](#configuration) section of this document for more details. For reference on the options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
-> The default values of these configurations are always to their Prettier 2.0 defaults. In order to use defaults from ealier versions of prettier you must set them manually using your VS Code settings or local project configurations.
+> The default values of these configurations are always to their Prettier 2.0 defaults. In order to use defaults from earlier versions of prettier you must set them manually using your VS Code settings or local project configurations.
 
 ```
 prettier.arrowParens
@@ -290,7 +290,3 @@ When a `package.json` is present in your project and it contains prettier, plugi
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
 You must upgrade to a newer version of prettier.
-
-**You are using a legacy linter integration that will be removed in the future.**
-
-Support for prettier-eslint, prettier-tslint, and prettier-stylelint will be removed in a future version of this extension. You should switch to one of the [supported and recommended ways of integrating Prettier with linters](https://github.com/prettier/prettier-vscode#linter-integration).

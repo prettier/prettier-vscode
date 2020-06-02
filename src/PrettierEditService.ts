@@ -14,16 +14,11 @@ import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
-import { INVALID_PRETTIER_CONFIG, LEGACY_LINTER_INTEGRATION } from "./message";
+import { INVALID_PRETTIER_CONFIG } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormattingResult, StatusBarService } from "./StatusBarService";
-import {
-  IPrettierStylelint,
-  PrettierEslintFormat,
-  PrettierTslintFormat,
-} from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
 interface ISelectors {
@@ -329,109 +324,16 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
-    if (parser === "typescript") {
-      const prettierTslintModule = this.moduleResolver.getModuleInstance(
-        fileName,
-        "prettier-tslint"
-      );
-
-      if (prettierTslintModule) {
-        this.loggingService.logInfo("Formatting using 'prettier-tslint'");
-        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
-        return this.safeExecution(() => {
-          const prettierTslintFormat = prettierTslintModule.format as PrettierTslintFormat;
-
-          return prettierTslintFormat({
-            fallbackPrettierOptions: prettierOptions,
-            filePath: fileName,
-            text,
-          });
-        }, text);
-      }
-    }
-
-    if (this.languageResolver.doesLanguageSupportESLint(languageId)) {
-      const prettierEslintModule = this.moduleResolver.getModuleInstance(
-        fileName,
-        "prettier-eslint"
-      );
-      if (prettierEslintModule) {
-        this.loggingService.logInfo("Formatting using 'prettier-eslint'");
-        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
-        return this.safeExecution(() => {
-          const prettierEslintFormat = prettierEslintModule as PrettierEslintFormat;
-
-          return prettierEslintFormat({
-            fallbackPrettierOptions: prettierOptions,
-            filePath: fileName,
-            text,
-          });
-        }, text);
-      }
-    }
-
-    if (this.languageResolver.doesParserSupportStylelint(parser)) {
-      const prettierStylelintModule = this.moduleResolver.getModuleInstance(
-        fileName,
-        "prettier-stylelint"
-      );
-      if (prettierStylelintModule) {
-        this.loggingService.logInfo("Formatting using 'prettier-stylelint'");
-        this.loggingService.logWarning(LEGACY_LINTER_INTEGRATION);
-        const prettierStylelint = prettierStylelintModule as IPrettierStylelint;
-        return this.safeExecution(
-          prettierStylelint.format({
-            filePath: fileName,
-            prettierOptions,
-            text,
-          }),
-          text
-        );
-      }
-    }
-
-    return this.safeExecution(
-      () => prettierInstance.format(text, prettierOptions),
-      text
-    );
-  }
-
-  /**
-   * Execute a callback safely, if it doesn't work, return default and log messages.
-   *
-   * @param cb The function to be executed,
-   * @param defaultText The default value if execution of the cb failed
-   * @param fileName The filename of the current document
-   * @returns {string} formatted text or defaultText
-   */
-  private safeExecution(
-    cb: (() => string) | Promise<string>,
-    defaultText: string
-  ): string | Promise<string> {
-    if (cb instanceof Promise) {
-      return cb
-        .then((returnValue) => {
-          this.statusBarService.updateStatusBar(FormattingResult.Success);
-
-          return returnValue;
-        })
-        .catch((error: Error) => {
-          this.loggingService.logError("Error formatting document.", error);
-          this.statusBarService.updateStatusBar(FormattingResult.Error);
-
-          return defaultText;
-        });
-    }
     try {
-      const returnValue = cb();
+      const formattedText = prettierInstance.format(text, prettierOptions);
       this.statusBarService.updateStatusBar(FormattingResult.Success);
 
-      return returnValue;
+      return formattedText;
     } catch (error) {
       this.loggingService.logError("Error formatting document.", error);
       this.statusBarService.updateStatusBar(FormattingResult.Error);
 
-      return defaultText;
+      return text;
     }
   }
 

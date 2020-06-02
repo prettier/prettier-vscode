@@ -159,22 +159,6 @@ export class ModuleResolver implements Disposable {
     return moduleInstance || prettier;
   }
 
-  public getModuleInstance(fsPath: string, pkgName: string): any {
-    let { moduleInstance } = this.requireLocalPkg<any>(fsPath, pkgName);
-
-    const { packageManager, resolveGlobalModules } = getConfig();
-    if (resolveGlobalModules && !moduleInstance) {
-      const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
-        packageManager,
-        pkgName
-      );
-      if (globalModuleResult?.moduleInstance) {
-        moduleInstance = globalModuleResult.moduleInstance;
-      }
-    }
-    return moduleInstance;
-  }
-
   /**
    * Clears the module and config cache
    */

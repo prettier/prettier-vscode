@@ -7,5 +7,3 @@ export const FAILED_TO_LOAD_MODULE_MESSAGE =
   "Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`";
 export const INVALID_PRETTIER_CONFIG =
   "Invalid prettier configuration file detected. See log for details.";
-export const LEGACY_LINTER_INTEGRATION =
-  "You are using a legacy linter integration that will be removed in the future. See the documentation on setting up linters: https://github.com/prettier/prettier-vscode#linter-integration";
