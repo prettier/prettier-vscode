@@ -89,7 +89,7 @@
     ]
   },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
+    "@types/glob": "^7.1.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^12",
     "@types/prettier": "^2.0.1",
