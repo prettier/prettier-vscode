@@ -187,134 +187,218 @@
           "scope": "resource"
         },
         "prettier.printWidth": {
-          "type": "integer",
-          "default": 80,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
           "markdownDescription": "%ext.config.printWidth%",
           "scope": "resource"
         },
         "prettier.tabWidth": {
-          "type": "integer",
-          "default": 2,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
           "markdownDescription": "%ext.config.tabWidth%",
           "scope": "resource"
         },
         "prettier.singleQuote": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "enum": [
+            "default",
+            false,
+            true
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.singleQuote%",
           "scope": "resource"
         },
         "prettier.trailingComma": {
           "type": "string",
           "enum": [
+            "default",
             "none",
             "es5",
             "all"
           ],
-          "default": "es5",
+          "default": "default",
           "markdownDescription": "%ext.config.trailingComma%",
           "scope": "resource"
         },
         "prettier.bracketSpacing": {
-          "type": "boolean",
-          "default": true,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.bracketSpacing%",
           "scope": "resource"
         },
         "prettier.jsxBracketSameLine": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.jsxBracketSameLine%",
           "scope": "resource"
         },
         "prettier.semi": {
-          "type": "boolean",
-          "default": true,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.semi%",
           "scope": "resource"
         },
         "prettier.requirePragma": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.requirePragma%",
           "scope": "resource"
         },
         "prettier.insertPragma": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.insertPragma%",
           "scope": "resource"
         },
         "prettier.useTabs": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.useTabs%",
           "scope": "resource"
         },
         "prettier.proseWrap": {
           "type": "string",
           "enum": [
+            "default",
             "preserve",
             "always",
             "never"
           ],
-          "default": "preserve",
+          "default": "default",
           "markdownDescription": "%ext.config.proseWrap%",
           "scope": "resource"
         },
         "prettier.arrowParens": {
           "type": "string",
           "enum": [
+            "default",
             "avoid",
             "always"
           ],
-          "default": "always",
+          "default": "default",
           "markdownDescription": "%ext.config.arrowParens%",
           "scope": "resource"
         },
         "prettier.jsxSingleQuote": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.jsxSingleQuote%",
           "scope": "resource"
         },
         "prettier.htmlWhitespaceSensitivity": {
           "type": "string",
           "enum": [
+            "default",
             "css",
             "strict",
             "ignore"
           ],
-          "default": "css",
+          "default": "default",
           "markdownDescription": "%ext.config.htmlWhitespaceSensitivity%",
           "scope": "resource"
         },
         "prettier.vueIndentScriptAndStyle": {
-          "type": "boolean",
-          "default": false,
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            "default",
+            true,
+            false
+          ],
+          "default": "default",
           "markdownDescription": "%ext.config.vueIndentScriptAndStyle%",
           "scope": "resource"
         },
         "prettier.endOfLine": {
           "type": "string",
           "enum": [
+            "default",
             "auto",
             "lf",
             "crlf",
             "cr"
           ],
-          "default": "lf",
+          "default": "default",
           "markdownDescription": "%ext.config.endOfLine%",
           "scope": "resource"
         },
         "prettier.quoteProps": {
           "type": "string",
           "enum": [
+            "default",
             "as-needed",
             "consistent",
             "preserve"
           ],
-          "default": "as-needed",
+          "default": "default",
           "markdownDescription": "%ext.config.quoteProps%",
           "scope": "resource"
         }

@@ -28,5 +28,30 @@ export function getWorkspaceRelativePath(
 }
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
-  return workspace.getConfiguration("prettier", uri) as any;
+  const rawConfig = workspace.getConfiguration("prettier", uri) as any;
+  const config = { ...rawConfig };
+  [
+    "arrowParens",
+    "bracketSpacing",
+    "endOfLine",
+    "htmlWhitespaceSensitivity",
+    "insertPragma",
+    "jsxBracketSameLine",
+    "jsxSingleQuote",
+    "printWidth",
+    "proseWrap",
+    "quoteProps",
+    "requirePragma",
+    "semi",
+    "singleQuote",
+    "tabWidth",
+    "trailingComma",
+    "useTabs",
+    "vueIndentScriptAndStyle",
+  ].forEach((key) => {
+    if (config[key] === "default" || config[key] === null) {
+      delete config[key];
+    }
+  });
+  return config;
 }
