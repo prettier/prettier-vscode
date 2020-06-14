@@ -107,7 +107,7 @@
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.5",
-    "vsce": "^1.74.0",
+    "vsce": "^1.76.1",
     "vscode-nls-dev": "^3.3.1",
     "vscode-test": "^1.4.0",
     "webpack": "^4.43.0",
