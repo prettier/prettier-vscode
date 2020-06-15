@@ -7,7 +7,7 @@ steps:
       target: "$(Build.SourceVersion)"
       tagSource: "gitTag"
       tagPattern: "v.*"
-      releaseNotesInline: "See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/master/CHANGELOG.md) for details."
+      releaseNotesInline: "See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
       changeLogCompareToRelease: "lastFullRelease"
       changeLogType: "commitBased"
       assets: "$(Build.ArtifactStagingDirectory)"
