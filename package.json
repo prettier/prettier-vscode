@@ -104,7 +104,7 @@
     "glob": "^7.1.6",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
-    "mocha": "^7.2.0",
+    "mocha": "^8.0.1",
     "mocha-junit-reporter": "^2.0.0",
     "sinon": "^9.0.2",
     "ts-loader": "^7.0.5",
