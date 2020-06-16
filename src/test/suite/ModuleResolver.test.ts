@@ -64,7 +64,7 @@ suite("Test ModuleResolver", function () {
       assert(
         logInfoSpy.calledWith(
           sinon.match(
-            /Loaded module 'prettier@2.0.2' from '.*[\/\\]specific-version[\/\\]node_modules[\/\\]prettier[\/\\]index.js'/
+            /Loaded module 'prettier@2.0.2' from '.*[/\\]specific-version[/\\]node_modules[/\\]prettier[/\\]index.js'/
           )
         )
       );
@@ -82,7 +82,7 @@ suite("Test ModuleResolver", function () {
       assert(
         logInfoSpy.calledWith(
           sinon.match(
-            /Loaded module 'prettier@2\.0\.2' from '.*[\/\\]module[\/\\]node_modules[\/\\]prettier[\/\\]index\.js'/
+            /Loaded module 'prettier@2\.0\.2' from '.*[/\\]module[/\\]node_modules[/\\]prettier[/\\]index\.js'/
           )
         )
       );
@@ -101,7 +101,7 @@ suite("Test ModuleResolver", function () {
       assert(
         logInfoSpy.calledWith(
           sinon.match(
-            /Loaded module 'prettier@2\.0\.2' from '.*[\/\\]explicit-dep[\/\\]node_modules[\/\\]prettier[\/\\]index\.js'/
+            /Loaded module 'prettier@2\.0\.2' from '.*[/\\]explicit-dep[/\\]node_modules[/\\]prettier[/\\]index\.js'/
           )
         )
       );

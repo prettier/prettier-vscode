@@ -29,7 +29,7 @@ export function resolveGlobalNodePath(
     options.shell = true;
   }
 
-  // tslint:disable-next-line: no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handler = () => {};
   try {
     process.on("SIGPIPE", handler);
@@ -86,7 +86,7 @@ export function resolveGlobalYarnPath(
     options.shell = true;
   }
 
-  // tslint:disable-next-line: no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handler = () => {};
   try {
     process.on("SIGPIPE", handler);

@@ -62,7 +62,7 @@
   "main": "./dist/extension",
   "scripts": {
     "clean": "node ./scripts/clean.js",
-    "lint": "tslint --project .",
+    "lint": "eslint -c .eslintrc.js --ext .ts .",
     "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install",
     "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
@@ -85,7 +85,7 @@
       "prettier --write"
     ],
     "src/**/*.ts": [
-      "tslint --project ."
+      "eslint -c .eslintrc.js --ext .ts ."
     ]
   },
   "devDependencies": {
@@ -97,6 +97,10 @@
     "@types/semver": "^7.2.0",
     "@types/sinon": "^9.0.4",
     "@types/vscode": "1.41",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
@@ -104,8 +108,6 @@
     "mocha-junit-reporter": "^2.0.0",
     "sinon": "^9.0.2",
     "ts-loader": "^7.0.5",
-    "tslint": "^6.1.2",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.5",
     "vsce": "^1.76.1",
     "vscode-nls-dev": "^3.3.1",

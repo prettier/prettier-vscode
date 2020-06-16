@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
+    "source.fixAll.eslint": true
   },
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
