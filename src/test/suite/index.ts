@@ -11,13 +11,6 @@ export function run(): Promise<void> {
     color: true,
   });
 
-  if (process.env.AZURE_PIPELINES) {
-    /* cspell: disable-next-line */
-    mocha.reporter("mocha-junit-reporter", {
-      mochaFile: "./test-results.xml",
-    });
-  }
-
   const testsRoot = path.resolve(__dirname, "..");
 
   return new Promise((c, e) => {
