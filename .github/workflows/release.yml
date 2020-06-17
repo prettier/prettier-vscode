@@ -44,13 +44,13 @@ jobs:
           body: See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details.
           draft: false
           prerelease: false
-      - run: ::set-output name={vsix_path}::{$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)} & ::set-output name={vsix_name}::{$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))}
-        id: get_path
+      - run: echo ::set-env name=VSIX_PATH::$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)
+      - run: echo ::set-env name=VSIX_NAME::$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.get_path.outputs.vsix_path }}
-          asset_name: ${{ steps.get_path.outputs.vsix_name }}
+          asset_path: ${{ env.VSIX_PATH }}
+          asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
