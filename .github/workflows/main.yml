@@ -8,12 +8,12 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-    name: Build & Test on ${{ matrix.node }}
+    name: Build & Test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
+      - uses: actions/setup-node@v1
+      - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo ">>> Started xvfb"
+        shell: bash
+        if: ${{ matrix.os === 'ubuntu-latest' }}
       - run: yarn install
       - run: yarn test
