@@ -67,9 +67,8 @@ jobs:
       - run: yarn install
       - run: npm install -g vsce
       - run: vsce package
-      - uses: actions/upload-artifact@v2
-        with:
-          path: "*.vsix"
+      - run: echo ::set-env name=VSIX_PATH::$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)
+      - run: echo ::set-env name=VSIX_NAME::$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))
       - uses: actions/create-release@v1
         id: create_release
         env:
@@ -80,8 +79,6 @@ jobs:
           body: See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details.
           draft: false
           prerelease: false
-      - run: echo ::set-env name=VSIX_PATH::$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)
-      - run: echo ::set-env name=VSIX_NAME::$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
