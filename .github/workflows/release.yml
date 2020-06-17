@@ -1,0 +1,55 @@
+name: "Release"
+
+on:
+  tags:
+    - v*
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    name: Test on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
+        shell: bash
+        if: ${{ success() && matrix.os == 'ubuntu-latest' }}
+      - run: yarn install
+      - run: yarn test
+        env:
+          DISPLAY: ":99.0"
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Release
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: yarn install
+      - run: yarn vscode:package
+      - uses: actions/upload-artifact@v2
+        with:
+          path: "*.vsix"
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details.
+          draft: false
+          prerelease: false
+      - run: ::set-output name={vsix_path}::{$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)} & ::set-output name={vsix_name}::{$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))}
+        id: get_path
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.get_path.outputs.vsix_path }}
+          asset_name: ${{ steps.get_path.outputs.vsix_name }}
+          asset_content_type: application/zip

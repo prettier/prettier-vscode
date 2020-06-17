@@ -1,14 +1,14 @@
-name: "Release"
+name: "Build & Test"
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-    name: Build on ${{ matrix.os }}
+    name: Test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -33,7 +33,7 @@ jobs:
           DISPLAY: ":99.0"
   package:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     name: Package
     steps:
       - uses: actions/checkout@v2
@@ -54,5 +54,4 @@ jobs:
       - run: yarn vscode:package
       - uses: actions/upload-artifact@v2
         with:
-          name: vsix
           path: "*.vsix"
