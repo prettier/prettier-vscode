@@ -51,7 +51,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: yarn vscode:package
+      - run: npm install -g vsce
+      - run: vsce package
       - uses: actions/upload-artifact@v2
         with:
           path: "*.vsix"
@@ -64,7 +65,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: yarn install
-      - run: yarn vscode:package
+      - run: npm install -g vsce
+      - run: vsce package
       - uses: actions/upload-artifact@v2
         with:
           path: "*.vsix"
@@ -88,3 +90,4 @@ jobs:
           asset_path: ${{ env.VSIX_PATH }}
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
+      - run: vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
