@@ -19,3 +19,9 @@ jobs:
       - run: yarn test
         env:
           DISPLAY: ":99.0"
+      - run: yarn vscode:package
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: vsix
+          path: "**/*.vsix"
