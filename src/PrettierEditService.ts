@@ -279,14 +279,7 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         "Parser not inferred, using VS Code language."
       );
-      const dynamicParsers = this.languageResolver.getParsersFromLanguageId(
-        uri,
-        languageId
-      );
-      if (dynamicParsers.length > 0) {
-        parser = dynamicParsers[0];
-        this.loggingService.logInfo(`Resolved parser to '${parser}'`);
-      }
+      parser = this.languageResolver.getParserFromLanguageId(uri, languageId);
     }
 
     if (!parser) {

@@ -5,14 +5,19 @@ import { ModuleResolver } from "./ModuleResolver";
 
 export class LanguageResolver {
   constructor(private moduleResolver: ModuleResolver) {}
-  public getParsersFromLanguageId(
+  public getParserFromLanguageId(
     uri: Uri,
     languageId: string
-  ): prettier.BuiltInParserName[] | string[] {
-    if (uri.scheme === "untitled" && languageId === "html") {
-      // This is a workaround for the HTML language when it is unsaved. By default,
-      // the Angular parser matches first because both register the language 'html'
-      return ["html"];
+  ): prettier.BuiltInParserName | string | undefined {
+    // This is a workaround for when the vscodeLanguageId is duplicated in multiple
+    // prettier languages. In these cases the first match is not the preferred match
+    // so we override with the parser that exactly matches the languageId.
+    // Specific undesired cases here are:
+    //  `html` matching to `angular`
+    //  `json` matching to `json-stringify`
+    const languageParsers = ["html", "json"];
+    if (uri.scheme === "untitled" && languageParsers.includes(languageId)) {
+      return languageId;
     }
     const language = this.getSupportLanguages(uri.fsPath).find(
       (lang) =>
@@ -21,10 +26,9 @@ export class LanguageResolver {
         Array.isArray(lang.vscodeLanguageIds) &&
         lang.vscodeLanguageIds.includes(languageId)
     );
-    if (!language) {
-      return [];
+    if (language && language.parsers?.length > 0) {
+      return language.parsers[0];
     }
-    return language.parsers;
   }
 
   public allEnabledLanguages(fsPath?: string): string[] {
