@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.1.0]
+
+- Resolves issue where untitled JSON files were resolved to `json-stringify` parser. (#1435)
+
 ## [5.0.1]
 
 - Updated modules
