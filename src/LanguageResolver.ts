@@ -1,5 +1,5 @@
 import * as prettier from "prettier";
-// tslint:disable-next-line: no-implicit-dependencies
+
 import { Uri } from "vscode";
 import { ModuleResolver } from "./ModuleResolver";
 

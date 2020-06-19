@@ -1,4 +1,3 @@
-// tslint:disable-next-line: no-implicit-dependencies
 import { Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
 import { getConfig, getWorkspaceRelativePath } from "./util";

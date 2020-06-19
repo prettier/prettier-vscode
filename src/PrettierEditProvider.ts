@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   CancellationToken,
   DocumentFormattingEditProvider,
@@ -6,7 +7,6 @@ import {
   Range,
   TextDocument,
   TextEdit,
-  // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 
 import { RangeFormattingOptions } from "./ConfigResolver";

@@ -6,7 +6,7 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-// tslint:disable-next-line: no-implicit-dependencies
+
 import { Disposable, Uri } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
@@ -95,7 +95,6 @@ export class ModuleResolver implements Disposable {
       Uri.file(fileName)
     );
 
-    // tslint:disable-next-line: prefer-const
     let { moduleInstance, modulePath } = this.requireLocalPkg<PrettierModule>(
       fileName,
       "prettier",
@@ -170,7 +169,7 @@ export class ModuleResolver implements Disposable {
           ? __non_webpack_require__
           : require;
       try {
-        const mod: any = r.cache[r.resolve(modulePath)];
+        const mod = r.cache[r.resolve(modulePath)];
         mod?.exports?.clearConfigCache();
         delete r.cache[r.resolve(modulePath)];
       } catch (error) {
@@ -276,7 +275,7 @@ export class ModuleResolver implements Disposable {
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209
-  private loadNodeModule(moduleName: string): any | undefined {
+  private loadNodeModule(moduleName: string): unknown | undefined {
     const r =
       typeof __webpack_require__ === "function"
         ? __non_webpack_require__
