@@ -275,7 +275,8 @@ export class ModuleResolver implements Disposable {
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209
-  private loadNodeModule(moduleName: string): unknown | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private loadNodeModule(moduleName: string): any | undefined {
     const r =
       typeof __webpack_require__ === "function"
         ? __non_webpack_require__

@@ -18,7 +18,8 @@ export class LoggingService {
    *
    * @param message The message to append to the output channel
    */
-  public logInfo(message: string, data?: unknown): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public logInfo(message: string, data?: any): void {
     if (
       this.logLevel === "NONE" ||
       this.logLevel === "WARN" ||
@@ -37,7 +38,8 @@ export class LoggingService {
    *
    * @param message The message to append to the output channel
    */
-  public logWarning(message: string, data?: unknown): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public logWarning(message: string, data?: any): void {
     if (this.logLevel === "NONE" || this.logLevel === "ERROR") {
       return;
     }
@@ -70,7 +72,8 @@ export class LoggingService {
     this.outputChannel.show();
   }
 
-  private logObject(data: unknown): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private logObject(data: any): void {
     const message = prettier
       .format(JSON.stringify(data, null, 2), {
         parser: "json",
