@@ -13,7 +13,7 @@ const writeFileAsync: (
 
 export class TemplateService {
   constructor(private loggingService: LoggingService) {}
-  public async writeConfigFile(folderPath: Uri, options?: Map<string, any>) {
+  public async writeConfigFile(folderPath: Uri) {
     const settings = { tabWidth: 2, useTabs: false };
 
     const outputPath = path.join(folderPath.fsPath, ".prettierrc");
