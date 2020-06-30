@@ -1,4 +1,8 @@
-import { commands, ExtensionContext } from "vscode";
+import {
+  commands,
+  ExtensionContext,
+  // tslint:disable-next-line: no-implicit-dependencies
+} from "vscode";
 import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";

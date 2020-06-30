@@ -1,0 +1,9 @@
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["text-fixtures/**"]
+  },
+  "rules": {
+    "interface-name": false
+  }
+}

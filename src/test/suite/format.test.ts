@@ -1,12 +1,11 @@
-/* eslint-disable no-console */
 import * as assert from "assert";
 import { readFile, rename } from "fs";
-
+// tslint:disable-next-line: no-implicit-dependencies
 import { Done } from "mocha";
 import * as path from "path";
 import * as prettier from "prettier";
 import { promisify } from "util";
-
+// tslint:disable-next-line: no-implicit-dependencies
 import * as vscode from "vscode";
 
 const readFileAsync: (
@@ -18,9 +17,7 @@ const readFileAsync: (
  * gets the workspace folder by name
  * @param name Workspace folder name
  */
-export const getWorkspaceFolderUri = (
-  workspaceFolderName: string
-): vscode.Uri => {
+export const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   const workspaceFolder = vscode.workspace.workspaceFolders!.find((folder) => {
     return folder.name === workspaceFolderName;
   });
@@ -29,7 +26,7 @@ export const getWorkspaceFolderUri = (
       "Folder not found in workspace. Did you forget to add the test folder to test.code-workspace?"
     );
   }
-  return workspaceFolder.uri;
+  return workspaceFolder!.uri;
 };
 
 export async function getText(
@@ -67,12 +64,15 @@ export async function format(workspaceFolderName: string, testFile: string) {
   try {
     await vscode.window.showTextDocument(doc);
   } catch (error) {
+    // tslint:disable-next-line: no-console
     console.log(error);
     throw error;
   }
+  // tslint:disable-next-line: no-console
   console.time(testFile);
   await vscode.commands.executeCommand("editor.action.formatDocument");
 
+  // tslint:disable-next-line: no-console
   console.timeEnd(testFile);
 
   return { actual: doc.getText(), source: text };

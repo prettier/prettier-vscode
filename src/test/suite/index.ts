@@ -1,5 +1,6 @@
+// tslint:disable-next-line: no-implicit-dependencies
 import * as glob from "glob";
-
+// tslint:disable-next-line: no-implicit-dependencies
 import * as Mocha from "mocha";
 import * as path from "path";
 

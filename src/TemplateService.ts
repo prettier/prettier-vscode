@@ -2,7 +2,7 @@ import { writeFile } from "fs";
 import * as path from "path";
 import { format, Options } from "prettier";
 import { promisify } from "util";
-
+// tslint:disable-next-line: no-implicit-dependencies
 import { Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
 
@@ -14,7 +14,7 @@ const writeFileAsync: (
 
 export class TemplateService {
   constructor(private loggingService: LoggingService) {}
-  public async writeConfigFile(folderPath: Uri) {
+  public async writeConfigFile(folderPath: Uri, options?: Map<string, any>) {
     const settings = { tabWidth: 2, useTabs: false };
 
     const outputPath = path.join(folderPath.fsPath, ".prettierrc");

@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as path from "path";
 import * as prettier from "prettier";
-
+// tslint:disable-next-line: no-implicit-dependencies
 import * as sinon from "sinon";
 
 import { getWorkspaceFolderUri } from "./format.test";

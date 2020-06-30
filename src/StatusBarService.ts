@@ -5,6 +5,7 @@ import {
   StatusBarItem,
   TextEditor,
   window,
+  // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
