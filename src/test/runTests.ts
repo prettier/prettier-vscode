@@ -1,5 +1,4 @@
 import * as path from "path";
-// tslint:disable-next-line: no-implicit-dependencies
 import { runTests } from "vscode-test";
 
 async function main() {
@@ -22,7 +21,7 @@ async function main() {
       launchArgs: [workspace, "--disable-extensions"],
     });
   } catch (error) {
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     console.error("Failed to run tests");
     process.exit(1);
   }

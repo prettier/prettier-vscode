@@ -1,6 +1,5 @@
 import * as os from "os";
 import * as path from "path";
-// tslint:disable-next-line: no-implicit-dependencies
 import { Uri, workspace } from "vscode";
 import { PrettierVSCodeConfig } from "./types";
 

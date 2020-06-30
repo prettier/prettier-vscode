@@ -1,4 +1,3 @@
-// tslint:disable-next-line: no-implicit-dependencies
 import { window } from "vscode";
 import { TemplateService } from "./TemplateService";
 

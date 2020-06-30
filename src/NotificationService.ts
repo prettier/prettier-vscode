@@ -1,7 +1,4 @@
-import {
-  window,
-  // tslint:disable-next-line: no-implicit-dependencies
-} from "vscode";
+import { window } from "vscode";
 import { LoggingService } from "./LoggingService";
 import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,

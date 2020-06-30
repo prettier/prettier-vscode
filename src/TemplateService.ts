@@ -2,7 +2,6 @@ import { writeFile } from "fs";
 import * as path from "path";
 import { format, Options } from "prettier";
 import { promisify } from "util";
-// tslint:disable-next-line: no-implicit-dependencies
 import { Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
 

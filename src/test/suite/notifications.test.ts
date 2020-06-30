@@ -1,8 +1,6 @@
 import * as path from "path";
 import * as assert from "assert";
-// tslint:disable-next-line: no-implicit-dependencies
 import * as sinon from "sinon";
-// tslint:disable-next-line: no-implicit-dependencies
 import { MessageItem, MessageOptions, window, workspace } from "vscode";
 import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,

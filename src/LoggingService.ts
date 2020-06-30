@@ -1,5 +1,4 @@
 import * as prettier from "prettier";
-// tslint:disable-next-line: no-implicit-dependencies
 import { window } from "vscode";
 
 type LogLevel = "INFO" | "WARN" | "ERROR" | "NONE";

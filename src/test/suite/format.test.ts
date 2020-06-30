@@ -1,11 +1,9 @@
 import * as assert from "assert";
 import { readFile, rename } from "fs";
-// tslint:disable-next-line: no-implicit-dependencies
 import { Done } from "mocha";
 import * as path from "path";
 import * as prettier from "prettier";
 import { promisify } from "util";
-// tslint:disable-next-line: no-implicit-dependencies
 import * as vscode from "vscode";
 
 const readFileAsync: (
@@ -64,15 +62,15 @@ export async function format(workspaceFolderName: string, testFile: string) {
   try {
     await vscode.window.showTextDocument(doc);
   } catch (error) {
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     console.log(error);
     throw error;
   }
-  // tslint:disable-next-line: no-console
+  // eslint-disable-next-line no-console
   console.time(testFile);
   await vscode.commands.executeCommand("editor.action.formatDocument");
 
-  // tslint:disable-next-line: no-console
+  // eslint-disable-next-line no-console
   console.timeEnd(testFile);
 
   return { actual: doc.getText(), source: text };

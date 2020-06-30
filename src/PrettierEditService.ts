@@ -8,7 +8,6 @@ import {
   TextDocument,
   TextEdit,
   workspace,
-  // tslint:disable-next-line: no-implicit-dependencies
 } from "vscode";
 import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
