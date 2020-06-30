@@ -168,6 +168,7 @@ export class ModuleResolver implements Disposable {
           ? __non_webpack_require__
           : require;
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mod: any = r.cache[r.resolve(modulePath)];
         mod?.exports?.clearConfigCache();
         delete r.cache[r.resolve(modulePath)];
@@ -274,6 +275,7 @@ export class ModuleResolver implements Disposable {
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private loadNodeModule(moduleName: string): any | undefined {
     const r =
       typeof __webpack_require__ === "function"
