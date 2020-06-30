@@ -28,6 +28,5 @@ export function getWorkspaceRelativePath(
 }
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return workspace.getConfiguration("prettier", uri) as any;
+  return workspace.getConfiguration("prettier", uri) as unknown;
 }
