@@ -51,11 +51,17 @@ export class LoggingService {
       return;
     }
     this.logMessage(message, "ERROR");
-    if (error?.message) {
-      this.logMessage(error.message, "ERROR");
-    }
-    if (error?.stack) {
-      this.outputChannel.appendLine(error.stack);
+    if (error?.message || error?.stack) {
+      // Try to print the most useful error message
+      if (error?.message) {
+        this.logMessage(error.message, "ERROR");
+      }
+      if (error?.stack) {
+        this.outputChannel.appendLine(error.stack);
+      }
+    } else if (error) {
+      // Weird error returned, just output the whole thing
+      this.logObject(error);
     }
   }
 
