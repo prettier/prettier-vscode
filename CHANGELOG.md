@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [5.1.1]
+## [5.1.2]
 
 - Added error logging for unusual prettier exceptions.
 
