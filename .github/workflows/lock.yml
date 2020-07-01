@@ -13,7 +13,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-lock-inactive-days: "90"
           process-only: "issues"
-          issue-lock-labels: "locked due to inactivity"
+          issue-lock-labels: "locked"
           issue-lock-comment: >
             This issue has been automatically locked since there
             has not been any recent activity after it was closed.
