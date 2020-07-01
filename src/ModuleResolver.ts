@@ -182,12 +182,12 @@ export class ModuleResolver implements Disposable {
    * Require package explicitly installed relative to given path.
    * Fallback to bundled one if no package was found bottom up.
    * @param {string} fsPath file system path starting point to resolve package
-   * @param {string} pkgName package's name to require
+   * @param {string} moduleName package's name to require
    * @returns module
    */
   private requireLocalPkg<T>(
     fsPath: string,
-    pkgName: string,
+    moduleName: string,
     modulePath?: string,
     options?: ModuleResolutionOptions
   ): ModuleResult<T> {
@@ -198,18 +198,10 @@ export class ModuleResolver implements Disposable {
     try {
       modulePath = modulePath
         ? getWorkspaceRelativePath(fsPath, modulePath)
-        : this.findPkgMem(fsPath, pkgName);
+        : this.findPkgMem(fsPath, moduleName);
 
       if (modulePath !== undefined) {
-        const moduleInstance = this.loadNodeModule(modulePath);
-        if (this.resolvedModules.indexOf(modulePath) === -1) {
-          this.resolvedModules.push(modulePath);
-        }
-        this.loggingService.logInfo(
-          `Loaded module '${pkgName}@${
-            moduleInstance.version ?? "unknown"
-          }' from '${modulePath}'`
-        );
+        const moduleInstance = this.loadNodeModule(moduleName, modulePath);
         return { moduleInstance, modulePath };
       }
     } catch (error) {
@@ -225,7 +217,7 @@ export class ModuleResolver implements Disposable {
       }
 
       this.loggingService.logError(
-        `Failed to load local module ${pkgName}.`,
+        `Failed to load local module ${moduleName}.`,
         error
       );
 
@@ -233,7 +225,7 @@ export class ModuleResolver implements Disposable {
         this.notificationService.showErrorMessage(
           FAILED_TO_LOAD_MODULE_MESSAGE,
           [
-            `Attempted to load ${pkgName} from ${
+            `Attempted to load ${moduleName} from ${
               modulePath || moduleDirectory || "package.json"
             }`,
           ]
@@ -252,15 +244,7 @@ export class ModuleResolver implements Disposable {
       const modulePath = path.join(resolvedGlobalPackageManagerPath, pkgName);
       try {
         if (fs.existsSync(modulePath)) {
-          const moduleInstance = this.loadNodeModule(modulePath);
-          if (this.resolvedModules.indexOf(modulePath) === -1) {
-            this.resolvedModules.push(modulePath);
-          }
-          this.loggingService.logInfo(
-            `Loaded module '${pkgName}@${
-              moduleInstance.version ?? "unknown"
-            }' from '${modulePath}'`
-          );
+          const moduleInstance = this.loadNodeModule(pkgName, modulePath);
           return { moduleInstance, modulePath };
         }
       } catch (error) {
@@ -275,14 +259,28 @@ export class ModuleResolver implements Disposable {
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts#L209
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private loadNodeModule(moduleName: string): any | undefined {
+  private loadNodeModule(
+    moduleName: string,
+    modulePath: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): any | undefined {
     const r =
       typeof __webpack_require__ === "function"
         ? __non_webpack_require__
         : require;
     try {
-      return r(moduleName);
+      const moduleInstance = r(modulePath);
+      if (moduleInstance) {
+        if (this.resolvedModules.indexOf(modulePath) === -1) {
+          this.resolvedModules.push(modulePath);
+        }
+        this.loggingService.logInfo(
+          `Loaded module '${moduleName}@${
+            moduleInstance.version ?? "unknown"
+          }' from '${modulePath}'`
+        );
+      }
+      return moduleInstance;
     } catch (error) {
       this.loggingService.logError(
         `Error loading node module '${moduleName}'`,
