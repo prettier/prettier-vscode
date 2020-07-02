@@ -161,7 +161,7 @@ There are two ways to use Prettier and linters together. The first approach is t
 
 ### Disable Formatting Rules in the Linter
 
-The easiest way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would.
+The easiest and recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would.
 
 - **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules)
 - **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules-1)
@@ -184,7 +184,7 @@ You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have f
 
 ### Run Prettier through Linters
 
-Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you **DO NOT USE THIS EXTENSION**. Instead you use the linter extensions to run the linter and Prettier. See the Prettier documentation for instructions on how to configure each linter.
+Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you **DO NOT USE THIS EXTENSION**. Instead you use the linter extensions to run the linter and Prettier. See the Prettier documentation for instructions on how to configure each linter. This setup is generally **not recommended**, but can be useful in certain circumstances. To learn about why you probably should avoid this setup see [the prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html#notes).
 
 - **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-eslint-to-run-prettier)
 - **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-tslint-to-run-prettier)
