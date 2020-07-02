@@ -46,13 +46,16 @@ export class LoggingService {
     }
   }
 
-  public logError(message: string, error?: Error) {
+  public logError(message: string, error?: Error | string) {
     if (this.logLevel === "NONE") {
       return;
     }
     this.logMessage(message, "ERROR");
-    if (error?.message || error?.stack) {
-      // Try to print the most useful error message
+    if (typeof error === "string") {
+      // Errors as a string usually only happen with
+      // plugins that don't return the expected error.
+      this.outputChannel.appendLine(error);
+    } else if (error?.message || error?.stack) {
       if (error?.message) {
         this.logMessage(error.message, "ERROR");
       }
@@ -60,7 +63,6 @@ export class LoggingService {
         this.outputChannel.appendLine(error.stack);
       }
     } else if (error) {
-      // Weird error returned, just output the whole thing
       this.logObject(error);
     }
   }
