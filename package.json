@@ -90,7 +90,7 @@
     "@types/glob": "^7.1.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^12",
-    "@types/prettier": "^2.0.1",
+    "@types/prettier": "^2.0.2",
     "@types/resolve": "^1.17.0",
     "@types/semver": "^7.3.1",
     "@types/sinon": "^9.0.4",
