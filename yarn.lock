@@ -145,10 +145,10 @@
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.1.tgz#681df970358c82836b42f989188d133e218c458e"
   integrity sha512-yYezQwGWty8ziyYLdZjwxyMb0CZR49h8JALHGrxjQHWlqGgc8kLdHEgWrgL0uZ29DMvEVBDnHU2Wg36zKSIUtA==
 
-"@types/vscode@1.41":
-  version "1.41.0"
-  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.41.0.tgz#b0d75920220f84e07093285e59180c0f11d336cd"
-  integrity sha512-7SfeY5u9jgiELwxyLB3z7l6l/GbN9CqpCQGkcRlB7tKRFBxzbz2PoBfGrLxI1vRfUCIq5+hg5vtDHExwq5j3+A==
+"@types/vscode@1.47":
+  version "1.47.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.47.0.tgz#4a4051c21ecaadcf383a2c4387bea282540e96de"
+  integrity sha512-nJA37ykkz9FYA0ZOQUSc3OZnhuzEW2vUhUEo4MiduUo82jGwwcLfyvmgd/Q7b0WrZAAceojGhZybg319L24bTA==
 
 "@typescript-eslint/eslint-plugin@^3.5.0":
   version "3.5.0"
