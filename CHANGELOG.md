@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.2.0]
+
+- Updated prettier to 2.1.0
+
 ## [5.1.3]
 
 - Improved error output of certain plugin exceptions.
