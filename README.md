@@ -230,6 +230,7 @@ prettier.tabWidth
 prettier.trailingComma
 prettier.useTabs
 prettier.vueIndentScriptAndStyle
+prettier.embeddedLanguageFormatting
 ```
 
 ### Extension Settings

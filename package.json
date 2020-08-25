@@ -326,6 +326,16 @@
           "default": "as-needed",
           "markdownDescription": "%ext.config.quoteProps%",
           "scope": "resource"
+        },
+        "prettier.embeddedLanguageFormatting": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "off"
+          ],
+          "default": "auto",
+          "markdownDescription": "%ext.config.embeddedLanguageFormatting%",
+          "scope": "resource"
         }
       }
     },

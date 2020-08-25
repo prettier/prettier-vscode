@@ -29,5 +29,6 @@
   "ext.config.trailingComma": "Controls the printing of trailing commas wherever possible. Valid options:\n- `none` - No trailing commas\n- `es5` - Trailing commas where valid in ES5 (objects, arrays, etc)\n- `all` - Trailing commas wherever possible (function arguments)",
   "ext.config.useEditorConfig": "Whether or not to take `.editorconfig` into account when parsing configuration. See the [prettier.resolveConfig](https://prettier.io/docs/en/api.html) docs for details.",
   "ext.config.useTabs": "Indent lines with tabs",
-  "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files. Some people (like the creator of Vue) don’t indent to save an indentation level, but this might break code folding in your editor."
+  "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files. Some people (like the creator of Vue) don’t indent to save an indentation level, but this might break code folding in your editor.",
+  "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file."
 }

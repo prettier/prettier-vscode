@@ -30,29 +30,7 @@ export class ConfigResolver {
       return { error };
     }
 
-    const vsOpts: prettier.Options = {};
-
     const fallbackToVSCodeConfig = configOptions === null;
-
-    if (fallbackToVSCodeConfig) {
-      vsOpts.arrowParens = vsCodeConfig.arrowParens;
-      vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
-      vsOpts.endOfLine = vsCodeConfig.endOfLine;
-      vsOpts.htmlWhitespaceSensitivity = vsCodeConfig.htmlWhitespaceSensitivity;
-      vsOpts.insertPragma = vsCodeConfig.insertPragma;
-      vsOpts.jsxBracketSameLine = vsCodeConfig.jsxBracketSameLine;
-      vsOpts.jsxSingleQuote = vsCodeConfig.jsxSingleQuote;
-      vsOpts.printWidth = vsCodeConfig.printWidth;
-      vsOpts.proseWrap = vsCodeConfig.proseWrap;
-      vsOpts.quoteProps = vsCodeConfig.quoteProps;
-      vsOpts.requirePragma = vsCodeConfig.requirePragma;
-      vsOpts.semi = vsCodeConfig.semi;
-      vsOpts.singleQuote = vsCodeConfig.singleQuote;
-      vsOpts.tabWidth = vsCodeConfig.tabWidth;
-      vsOpts.trailingComma = vsCodeConfig.trailingComma;
-      vsOpts.useTabs = vsCodeConfig.useTabs;
-      vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
-    }
 
     this.loggingService.logInfo(
       fallbackToVSCodeConfig
@@ -61,7 +39,7 @@ export class ConfigResolver {
     );
 
     const options: prettier.Options = {
-      ...(fallbackToVSCodeConfig ? vsOpts : {}),
+      ...(fallbackToVSCodeConfig ? vsCodeConfig : {}),
       ...{
         /* cspell: disable-next-line */
         filepath: fileName,
