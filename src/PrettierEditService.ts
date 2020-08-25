@@ -31,11 +31,15 @@ interface ISelectors {
 const PRETTIER_CONFIG_FILES = [
   ".prettierrc",
   ".prettierrc.json",
+  ".prettierrc.json5",
   ".prettierrc.yaml",
   ".prettierrc.yml",
+  ".prettierrc.toml",
   ".prettierrc.js",
+  ".prettierrc.cjs",
   "package.json",
   "prettier.config.js",
+  "prettier.config.cjs",
   ".editorconfig",
 ];
 
