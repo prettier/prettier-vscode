@@ -1,3 +1,4 @@
+import throttle = require("lodash.throttle");
 import * as prettier from "prettier";
 import {
   Disposable,
@@ -59,9 +60,9 @@ export default class PrettierEditService implements Disposable {
 
   public registerDisposables(): Disposable[] {
     const packageWatcher = workspace.createFileSystemWatcher("**/package.json");
-    packageWatcher.onDidChange(this.registerFormatter);
-    packageWatcher.onDidCreate(this.registerFormatter);
-    packageWatcher.onDidDelete(this.registerFormatter);
+    packageWatcher.onDidChange(this.registerFormatterThrottled);
+    packageWatcher.onDidCreate(this.registerFormatterThrottled);
+    packageWatcher.onDidDelete(this.registerFormatterThrottled);
 
     const configurationWatcher = workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("prettier")) {
@@ -76,9 +77,9 @@ export default class PrettierEditService implements Disposable {
     const prettierConfigWatcher = workspace.createFileSystemWatcher(
       `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
     );
-    prettierConfigWatcher.onDidChange(this.registerFormatter);
-    prettierConfigWatcher.onDidCreate(this.registerFormatter);
-    prettierConfigWatcher.onDidDelete(this.registerFormatter);
+    prettierConfigWatcher.onDidChange(this.registerFormatterThrottled);
+    prettierConfigWatcher.onDidCreate(this.registerFormatterThrottled);
+    prettierConfigWatcher.onDidDelete(this.registerFormatterThrottled);
 
     return [
       packageWatcher,
@@ -101,6 +102,8 @@ export default class PrettierEditService implements Disposable {
       editProvider
     );
   };
+
+  private registerFormatterThrottled = throttle(this.registerFormatter, 300);
 
   public dispose = () => {
     this.moduleResolver.dispose();
