@@ -277,6 +277,29 @@ A list of languages IDs to disable this extension on.
 
 A list of [glob patterns](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) to register Prettier formatter. Typically these will be in the format of `**/*.abc` to tell this extension to register itself as the formatter for all files with the `abc` extension. This feature can be useful when you have [overrides](https://prettier.io/docs/en/configuration.html#configuration-overrides) set in your config file to map custom extensions to a parser.
 
+It is likely will need to also update your prettier config. For example, if I register the following document selector by itself, Prettier still won't know what to do with that file. I either need a Prettier extension that formats `.abc` file format or I need to configure Prettier.
+
+```json
+{
+  "prettier.documentSelectors": ["**/*.abc"]
+}
+```
+
+To tell Prettier how to format a file of type `.abc` I can set an override in the prettier config that makes this file type use the `babel` parser.
+
+```json
+{
+  "overrides": [
+    {
+      "files": "*.abc",
+      "options": {
+        "parser": "babel"
+      }
+    }
+  ]
+}
+```
+
 #### prettier.useEditorConfig (default: `true`)
 
 Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
@@ -294,3 +317,7 @@ When a `package.json` is present in your project and it contains prettier, plugi
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
 You must upgrade to a newer version of prettier.
+
+```
+
+```
