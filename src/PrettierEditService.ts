@@ -114,15 +114,15 @@ export default class PrettierEditService implements Disposable {
    * Build formatter selectors
    */
   private selectors = (): ISelectors => {
-    const { disableLanguages } = getConfig();
+    const { disableLanguages, documentSelectors } = getConfig();
 
     let allLanguages: string[];
     if (workspace.workspaceFolders === undefined) {
-      allLanguages = this.languageResolver.allEnabledLanguages();
+      allLanguages = this.languageResolver.getSupportedLanguages();
     } else {
       allLanguages = [];
       for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = this.languageResolver.allEnabledLanguages(
+        const allWorkspaceLanguages = this.languageResolver.getSupportedLanguages(
           folder.uri.fsPath
         );
         allWorkspaceLanguages.forEach((lang) => {
@@ -133,61 +133,73 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
+    let allExtensions: string[];
+    if (workspace.workspaceFolders === undefined) {
+      allExtensions = this.languageResolver.getSupportedFileExtensions();
+    } else {
+      allExtensions = [];
+      for (const folder of workspace.workspaceFolders) {
+        const allWorkspaceLanguages = this.languageResolver.getSupportedFileExtensions(
+          folder.uri.fsPath
+        );
+        allWorkspaceLanguages.forEach((lang) => {
+          if (!allExtensions.includes(lang)) {
+            allExtensions.push(lang);
+          }
+        });
+      }
+    }
+
     this.loggingService.logInfo(
-      "Enabling prettier for languages",
-      allLanguages.sort()
+      `Enabling prettier for languages: ${allLanguages.sort().join(", ")}`
     );
 
-    const allRangeLanguages = this.languageResolver.rangeSupportedLanguages();
     this.loggingService.logInfo(
-      "Enabling prettier for range supported languages",
-      allRangeLanguages.sort()
+      `Enabling prettier for file extensions: ${allExtensions
+        .sort()
+        .join(", ")}`
     );
 
-    const specialLanguageSelector: DocumentFilter[] = [
-      // This selector is for settings.json files
-      {
-        language: "jsonc",
-        scheme: "vscode-userdata",
-      },
-    ];
+    if (documentSelectors && documentSelectors.length > 0) {
+      this.loggingService.logInfo(
+        `Enabling prettier for user defined selectors: ${documentSelectors
+          .sort()
+          .join(", ")}`
+      );
+    }
 
+    const allRangeLanguages = this.languageResolver.getRangeSupportedLanguages();
+    this.loggingService.logInfo(
+      `Enabling prettier for range supported languages: ${allRangeLanguages
+        .sort()
+        .join(", ")}`
+    );
+
+    // Language selector for file extensions
+    const extensionLanguageSelector: DocumentFilter = {
+      pattern: `**/*.{${allExtensions.map((e) => e.substring(1)).join(",")}}`,
+    };
+
+    const customLanguageSelectors: DocumentFilter[] = [];
+    documentSelectors.forEach((pattern) => {
+      customLanguageSelectors.push({
+        pattern,
+      });
+    });
+
+    // Language selectors for language IDs
     const globalLanguageSelector: DocumentFilter[] = allLanguages
       .filter((l) => !disableLanguages.includes(l))
       .map((l) => ({ language: l }));
     const globalRangeLanguageSelector: DocumentFilter[] = allRangeLanguages
       .filter((l) => !disableLanguages.includes(l))
       .map((l) => ({ language: l }));
-    if (workspace.workspaceFolders === undefined) {
-      // no workspace opened
-      return {
-        languageSelector: globalLanguageSelector.concat(
-          specialLanguageSelector
-        ),
-        rangeLanguageSelector: globalRangeLanguageSelector,
-      };
-    }
 
-    // at least 1 workspace
-    const untitledLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      (l) => ({ language: l.language, scheme: "untitled" })
-    );
-    const untitledRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      (l) => ({ language: l.language, scheme: "untitled" })
-    );
-    const fileLanguageSelector: DocumentFilter[] = globalLanguageSelector.map(
-      (l) => ({ language: l.language, scheme: "file" })
-    );
-    const fileRangeLanguageSelector: DocumentFilter[] = globalRangeLanguageSelector.map(
-      (l) => ({ language: l.language, scheme: "file" })
-    );
     return {
-      languageSelector: untitledLanguageSelector
-        .concat(fileLanguageSelector)
-        .concat(specialLanguageSelector),
-      rangeLanguageSelector: untitledRangeLanguageSelector.concat(
-        fileRangeLanguageSelector
-      ),
+      languageSelector: globalLanguageSelector
+        .concat(customLanguageSelectors)
+        .concat(extensionLanguageSelector),
+      rangeLanguageSelector: globalRangeLanguageSelector,
     };
   };
 
@@ -278,16 +290,20 @@ export default class PrettierEditService implements Disposable {
     let parser: prettier.BuiltInParserName | string | undefined;
     if (fileInfo && fileInfo.inferredParser) {
       parser = fileInfo.inferredParser;
-    } else {
+    } else if (languageId !== "plaintext") {
+      // Don't attempt VS Code language for plaintext because we never have
+      // a formatter for plaintext and most likely the reason for this is
+      // somebody has registered a custom file extension without properly
+      // configuring the parser in their prettier config.
       this.loggingService.logWarning(
-        "Parser not inferred, using VS Code language."
+        `Parser not inferred, trying VS Code language.`
       );
       parser = this.languageResolver.getParserFromLanguageId(uri, languageId);
     }
 
     if (!parser) {
       this.loggingService.logError(
-        `Failed to resolve a parser, skipping file.`
+        `Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.`
       );
       this.statusBarService.updateStatusBar(FormattingResult.Error);
       return;

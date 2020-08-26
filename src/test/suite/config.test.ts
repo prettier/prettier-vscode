@@ -42,4 +42,9 @@ suite("Test configurations", function () {
     /* cspell: disable-next-line */
     testConfig("vscodeconfig/test.js", "vscodeconfig/test.result.js")
   );
+  test(
+    "it formats custom file extension ",
+    /* cspell: disable-next-line */
+    testConfig("customextension/test.abc", "customextension/test.result.abc")
+  );
 });

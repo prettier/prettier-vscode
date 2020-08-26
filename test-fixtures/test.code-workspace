@@ -88,6 +88,9 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "prettier.trailingComma": "all",
-    "prettier.prettierPath": ""
+    "prettier.prettierPath": "",
+    "prettier.documentSelectors": [
+      "**/*.abc"
+    ],
   }
 }

@@ -134,6 +134,14 @@
           "markdownDescription": "%ext.config.disableLanguages%",
           "scope": "window"
         },
+        "prettier.documentSelectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "%ext.config.documentSelectors%",
+          "scope": "window"
+        },
         "prettier.requireConfig": {
           "type": "boolean",
           "default": false,

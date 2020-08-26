@@ -70,7 +70,7 @@ export class StatusBarService {
         ? undefined
         : editor.document.fileName;
       const score = languages.match(
-        this.languageResolver.allEnabledLanguages(filePath),
+        this.languageResolver.getSupportedLanguages(filePath),
         editor.document
       );
       const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(

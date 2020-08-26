@@ -1,0 +1,10 @@
+{
+    "overrides": [
+        {
+            "files": "*.abc",
+            "options": {
+                "parser": "babel"
+            }
+        }
+    ]
+}

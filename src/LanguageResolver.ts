@@ -30,7 +30,7 @@ export class LanguageResolver {
     }
   }
 
-  public allEnabledLanguages(fsPath?: string): string[] {
+  public getSupportedLanguages(fsPath?: string): string[] {
     const enabledLanguages: string[] = [];
     this.getSupportLanguages(fsPath).forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
@@ -42,7 +42,7 @@ export class LanguageResolver {
     });
   }
 
-  public rangeSupportedLanguages(): string[] {
+  public getRangeSupportedLanguages(): string[] {
     return [
       "javascript",
       "javascriptreact",
@@ -51,6 +51,18 @@ export class LanguageResolver {
       "json",
       "graphql",
     ];
+  }
+
+  public getSupportedFileExtensions(fsPath?: string) {
+    const extensions: string[] = [];
+    this.getSupportLanguages(fsPath).forEach((lang) => {
+      if (lang && lang.extensions) {
+        extensions.push(...lang.extensions);
+      }
+    });
+    return extensions.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
   }
 
   private getSupportLanguages(fsPath?: string) {

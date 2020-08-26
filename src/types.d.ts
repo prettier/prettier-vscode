@@ -46,6 +46,10 @@ interface IExtensionConfig {
    * If true, this extension will process files in node_modules
    */
   withNodeModules: boolean;
+  /**
+   * Additional file patterns to register for formatting
+   */
+  documentSelectors: string[];
 }
 /**
  * Configuration for prettier-vscode
