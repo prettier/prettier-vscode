@@ -50,6 +50,10 @@ interface IExtensionConfig {
    * Additional file patterns to register for formatting
    */
   documentSelectors: string[];
+  /**
+   * If true, this extension will be enabled
+   */
+  enable: boolean;
 }
 /**
  * Configuration for prettier-vscode

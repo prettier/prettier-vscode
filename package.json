@@ -71,7 +71,7 @@
     "vscode:prepublish": "webpack --mode production",
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
-    "webpack": "webpack --mode production"
+    "webpack": "webpack --mode development"
   },
   "husky": {
     "hooks": {
@@ -143,6 +143,12 @@
           },
           "markdownDescription": "%ext.config.documentSelectors%",
           "scope": "window"
+        },
+        "prettier.enable": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%ext.config.enable%",
+          "scope": "resource"
         },
         "prettier.requireConfig": {
           "type": "boolean",

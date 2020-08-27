@@ -14,7 +14,7 @@ import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
 import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
-import { INVALID_PRETTIER_CONFIG } from "./message";
+import { INVALID_PRETTIER_CONFIG, RESTART_TO_ENABLE } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
@@ -65,7 +65,9 @@ export default class PrettierEditService implements Disposable {
     packageWatcher.onDidDelete(this.registerFormatterThrottled);
 
     const configurationWatcher = workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration("prettier")) {
+      if (event.affectsConfiguration("prettier.enable")) {
+        this.loggingService.logWarning(RESTART_TO_ENABLE);
+      } else if (event.affectsConfiguration("prettier")) {
         this.registerFormatter();
       }
     });

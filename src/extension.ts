@@ -1,4 +1,4 @@
-import { commands, ExtensionContext } from "vscode";
+import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
@@ -9,6 +9,8 @@ import { NotificationService } from "./NotificationService";
 import PrettierEditService from "./PrettierEditService";
 import { StatusBarService } from "./StatusBarService";
 import { TemplateService } from "./TemplateService";
+import { getConfig } from "./util";
+import { RESTART_TO_ENABLE } from "./message";
 
 // the application insights key (also known as instrumentation key)
 const extensionName = process.env.EXTENSION_NAME || "dev.prettier-vscode";
@@ -19,6 +21,21 @@ export function activate(context: ExtensionContext) {
 
   loggingService.logInfo(`Extension Name: ${extensionName}.`);
   loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
+
+  const { enable } = getConfig();
+  if (!enable) {
+    loggingService.logInfo(
+      "Extension is disabled. No formatters will be registered. To enable, change the `prettier.enable` to `true` and restart VS Code."
+    );
+    context.subscriptions.push(
+      workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration("prettier.enable")) {
+          loggingService.logWarning(RESTART_TO_ENABLE);
+        }
+      })
+    );
+    return;
+  }
 
   const templateService = new TemplateService(loggingService);
   const createConfigFileFunc = createConfigFile(templateService);
