@@ -91,7 +91,7 @@
     "@types/lodash": "^4.14.160",
     "@types/mocha": "^8.0.0",
     "@types/node": "^12",
-    "@types/prettier": "^2.0.2",
+    "@types/prettier": "^2.1.0",
     "@types/resolve": "^1.17.0",
     "@types/semver": "^7.3.1",
     "@types/sinon": "^9.0.4",
