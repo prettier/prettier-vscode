@@ -1,4 +1,4 @@
-import throttle = require("lodash.throttle");
+import { throttle } from "lodash";
 import * as prettier from "prettier";
 import {
   Disposable,
