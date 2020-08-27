@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.4.0]
+
+- Added [Embedded Language Formatting](https://prettier.io/docs/en/options.html#embedded-language-formatting) option.
+- Throttling of reloads on watched files to improve performance on large projects.
+
 ## [5.3.0]
 
 - Refactoring of how the extension registers formatters to support file extension that don't have a language ID.
