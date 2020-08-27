@@ -237,6 +237,10 @@ prettier.embeddedLanguageFormatting
 
 These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
 
+#### prettier.enable (default: `true`)
+
+Controls whether prettier is enabled or not. You must restart VS Code when you change this setting.
+
 #### prettier.requireConfig (default: `false`)
 
 Require a prettier configuration file to format files. Untitled files will still be formatted using the VS Code Prettier configuration even with this option set to `true`.
