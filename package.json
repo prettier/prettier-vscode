@@ -121,7 +121,7 @@
     "prettier": "^2.1.0",
     "resolve": "^1.17.0",
     "semver": "^7.3.2",
-    "vscode-nls": "^4.1.2"
+    "vscode-nls": "^5.0.0"
   },
   "contributes": {
     "configuration": {
