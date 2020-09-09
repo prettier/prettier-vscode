@@ -6,6 +6,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [5.5.0]
 
+- Activation on `onStartupFinished` to reduce impact on VS Code start.
+
+## [5.5.0]
+
 - Added [enable](https://github.com/prettier/prettier-vscode#enable) setting.
 
 ## [5.4.0]
