@@ -314,6 +314,18 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
+    let configPath: string | undefined;
+    try {
+      configPath = (await prettier.resolveConfigFile(fileName)) ?? undefined;
+    } catch (error) {
+      this.loggingService.logError(
+        `Error resolving prettier configuration for ${fileName}`,
+        error
+      );
+      this.statusBarService.updateStatusBar(FormattingResult.Error);
+      return;
+    }
+
     const {
       options: prettierOptions,
       error,
@@ -324,7 +336,7 @@ export default class PrettierEditService implements Disposable {
       {
         config: vscodeConfig.configPath
           ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-          : undefined,
+          : configPath,
         editorconfig: vscodeConfig.useEditorConfig,
       },
       rangeFormattingOptions

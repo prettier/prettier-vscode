@@ -59,6 +59,12 @@ export class ConfigResolver {
         : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
     );
 
+    if (resolveConfigOptions.config) {
+      this.loggingService.logInfo(
+        `Using config file at '${resolveConfigOptions.config}'`
+      );
+    }
+
     const options: prettier.Options = {
       ...(fallbackToVSCodeConfig ? vsOpts : {}),
       ...{
