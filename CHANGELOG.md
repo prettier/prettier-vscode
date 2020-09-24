@@ -4,7 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [5.5.0]
+## [5.7.0]
+
+- Updated prettier to 2.1.1
+
+## [5.6.0]
 
 - Activation on `onStartupFinished` to reduce impact on VS Code start.
 
