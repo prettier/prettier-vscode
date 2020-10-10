@@ -202,6 +202,11 @@ export class ModuleResolver implements Disposable {
 
       if (modulePath !== undefined) {
         const moduleInstance = this.loadNodeModule(moduleName, modulePath);
+        const workspacePath = getWorkspaceRelativePath(fsPath, "");
+        if (workspacePath) {
+          // Change current working directory
+          process.chdir(workspacePath);
+        }
         return { moduleInstance, modulePath };
       }
     } catch (error) {

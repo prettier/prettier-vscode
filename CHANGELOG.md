@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.7.2]
+
+- setting correct working directory when prettier is installed locally
+
 ## [5.7.1]
 
 - Log the location of the prettier config file
