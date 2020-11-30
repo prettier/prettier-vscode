@@ -118,7 +118,7 @@
     "ignore": "^5.1.8",
     "lodash": "^4.17.20",
     "mem": "^8.0.0",
-    "prettier": "^2.1.2",
+    "prettier": "^2.2.1",
     "resolve": "^1.17.0",
     "semver": "^7.3.2",
     "vscode-nls": "^5.0.0"
