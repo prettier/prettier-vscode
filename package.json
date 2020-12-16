@@ -172,11 +172,12 @@
           "scope": "resource",
           "type": "string",
           "enum": [
+            "auto",
             "npm",
             "yarn",
             "pnpm"
           ],
-          "default": "npm",
+          "default": "auto",
           "markdownDescription": "%ext.config.packageManager%"
         },
         "prettier.useEditorConfig": {

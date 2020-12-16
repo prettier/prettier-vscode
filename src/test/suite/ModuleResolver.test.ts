@@ -51,12 +51,14 @@ suite("Test ModuleResolver", function () {
       );
     });
 
-    test("it returns prettier version from package.json", () => {
+    test("it returns prettier version from package.json", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("specific-version").fsPath,
         "ugly.js"
       );
-      const prettierInstance = moduleResolver.getPrettierInstance(fileName);
+      const prettierInstance = await moduleResolver.getPrettierInstance(
+        fileName
+      );
 
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");
@@ -69,12 +71,14 @@ suite("Test ModuleResolver", function () {
       );
     });
 
-    test("it returns prettier version from module dep", () => {
+    test("it returns prettier version from module dep", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("module").fsPath,
         "index.js"
       );
-      const prettierInstance = moduleResolver.getPrettierInstance(fileName);
+      const prettierInstance = await moduleResolver.getPrettierInstance(
+        fileName
+      );
 
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");
@@ -87,13 +91,15 @@ suite("Test ModuleResolver", function () {
       );
     });
 
-    test("it uses explicit dep if found instead fo a closer implicit module dep", () => {
+    test("it uses explicit dep if found instead fo a closer implicit module dep", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("explicit-dep").fsPath,
         "implicit-dep",
         "index.js"
       );
-      const prettierInstance = moduleResolver.getPrettierInstance(fileName);
+      const prettierInstance = await moduleResolver.getPrettierInstance(
+        fileName
+      );
 
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");

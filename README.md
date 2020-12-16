@@ -264,7 +264,7 @@ Supply a custom path to the prettier module. This path should be to the module f
 
 #### prettier.packageManager
 
-Controls the package manager to be used to resolve modules. This has only an influence if the `prettier.resolveGlobalModules` setting is `true` and modules are resolved globally. Valid values are `"npm"` or `"yarn"` or `"pnpm"`.
+Controls the package manager to be used to resolve modules. This has only an influence if the `prettier.resolveGlobalModules` setting is `true` and modules are resolved globally. Valid values are `"auto"` or `"npm"` or `"yarn"` or `"pnpm"`.
 
 #### prettier.resolveGlobalModules (default: `false`)
 

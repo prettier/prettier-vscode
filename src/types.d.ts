@@ -4,7 +4,7 @@ type PrettierModule = typeof prettier;
 
 type TrailingCommaOption = "none" | "es5" | "all";
 
-export type PackageManagers = "npm" | "yarn" | "pnpm";
+export type PackageManagers = "auto" | "npm" | "yarn" | "pnpm";
 
 /**
  * prettier-vscode specific configuration
