@@ -4,7 +4,7 @@ type PrettierModule = typeof prettier;
 
 type TrailingCommaOption = "none" | "es5" | "all";
 
-export type PackageManagers = "auto" | "npm" | "yarn" | "pnpm";
+export type PackageManagers = "npm" | "yarn" | "pnpm";
 
 /**
  * prettier-vscode specific configuration
@@ -26,10 +26,6 @@ interface IExtensionConfig {
    * If true will skip formatting if a prettier config isn't found.
    */
   requireConfig: boolean;
-  /**
-   * The package manager to use when resolving global modules.
-   */
-  packageManager: PackageManagers;
   /**
    * Array of language IDs to ignore
    */
