@@ -23,25 +23,30 @@ suite("Test ModuleResolver", function () {
   });
 
   suite("getPrettierInstance", () => {
-    test("it returns the bundled version of Prettier if local isn't found", () => {
+    test("it returns the bundled version of Prettier if local isn't found", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("no-dep").fsPath,
         "index.js"
       );
-      const prettierInstance = moduleResolver.getPrettierInstance(fileName, {
-        showNotifications: true,
-      });
+      const prettierInstance = await moduleResolver.getPrettierInstance(
+        fileName,
+        {
+          showNotifications: true,
+        }
+      );
 
       assert.equal(prettierInstance, prettier);
       assert(logInfoSpy.calledWith("Using bundled version of prettier."));
     });
 
-    test("it returns the bundled version of Prettier if local is outdated", () => {
+    test("it returns the bundled version of Prettier if local is outdated", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("outdated").fsPath,
         "ugly.js"
       );
-      const prettierInstance = moduleResolver.getPrettierInstance(fileName);
+      const prettierInstance = await moduleResolver.getPrettierInstance(
+        fileName
+      );
 
       assert.equal(prettierInstance, prettier);
       assert(
