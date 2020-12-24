@@ -177,10 +177,10 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.4.tgz#43d7168fec6fa0988bb1a513a697b29296721afb"
   integrity sha512-+nVsLKlcUCeMzD2ufHEYuJ9a2ovstb6Dp52A5VsoKxDXgvE051XgHI/33I1EymwkRGQkwnA0LkhnUzituGs4EQ==
 
-"@types/sinon@^9.0.7":
-  version "9.0.8"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-9.0.8.tgz#1ed0038d356784f75b086104ef83bfd4130bb81b"
-  integrity sha512-IVnI820FZFMGI+u1R+2VdRaD/82YIQTdqLYC9DLPszZuynAJDtCvCtCs3bmyL66s7FqRM3+LPX7DhHnVTaagDw==
+"@types/sinon@^9.0.10":
+  version "9.0.10"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-9.0.10.tgz#7fb9bcb6794262482859cab66d59132fca18fcf7"
+  integrity sha512-/faDC0erR06wMdybwI/uR8wEKV/E83T0k4sepIpB7gXuy2gzx2xiOjmztq6a2Y6rIGJ04D+6UU0VBmWy+4HEMA==
   dependencies:
     "@types/sinonjs__fake-timers" "*"
 
