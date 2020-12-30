@@ -52,7 +52,9 @@ export class StatusBarService {
     this.statusBarItem.show();
   }
 
-  private toggleStatusBarItem(editor: TextEditor | undefined): void {
+  private async toggleStatusBarItem(
+    editor: TextEditor | undefined
+  ): Promise<void> {
     if (editor !== undefined) {
       // The function will be triggered every time the active "editor" instance changes
       // It also triggers when we focus on the output panel or on the debug panel
@@ -70,7 +72,7 @@ export class StatusBarService {
         ? undefined
         : editor.document.fileName;
       const score = languages.match(
-        this.languageResolver.getSupportedLanguages(filePath),
+        await this.languageResolver.getSupportedLanguages(filePath),
         editor.document
       );
       const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(

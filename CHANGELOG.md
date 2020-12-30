@@ -4,6 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.9.0]
+- Automatically detect package manager
+
 ## [5.8.0]
 
 - Updated prettier to 2.2.0

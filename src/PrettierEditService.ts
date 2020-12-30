@@ -91,9 +91,9 @@ export default class PrettierEditService implements Disposable {
     ];
   }
 
-  public registerFormatter = () => {
+  public registerFormatter = async () => {
     this.dispose();
-    const { languageSelector, rangeLanguageSelector } = this.selectors();
+    const { languageSelector, rangeLanguageSelector } = await this.selectors();
     const editProvider = new PrettierEditProvider(this.provideEdits);
     this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
       rangeLanguageSelector,
@@ -118,16 +118,16 @@ export default class PrettierEditService implements Disposable {
   /**
    * Build formatter selectors
    */
-  private selectors = (): ISelectors => {
+  private selectors = async (): Promise<ISelectors> => {
     const { disableLanguages, documentSelectors } = getConfig();
 
     let allLanguages: string[];
     if (workspace.workspaceFolders === undefined) {
-      allLanguages = this.languageResolver.getSupportedLanguages();
+      allLanguages = await this.languageResolver.getSupportedLanguages();
     } else {
       allLanguages = [];
       for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = this.languageResolver.getSupportedLanguages(
+        const allWorkspaceLanguages = await this.languageResolver.getSupportedLanguages(
           folder.uri.fsPath
         );
         allWorkspaceLanguages.forEach((lang) => {
@@ -140,11 +140,11 @@ export default class PrettierEditService implements Disposable {
 
     let allExtensions: string[];
     if (workspace.workspaceFolders === undefined) {
-      allExtensions = this.languageResolver.getSupportedFileExtensions();
+      allExtensions = await this.languageResolver.getSupportedFileExtensions();
     } else {
       allExtensions = [];
       for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = this.languageResolver.getSupportedFileExtensions(
+        const allWorkspaceLanguages = await this.languageResolver.getSupportedFileExtensions(
           folder.uri.fsPath
         );
         allWorkspaceLanguages.forEach((lang) => {
@@ -272,9 +272,12 @@ export default class PrettierEditService implements Disposable {
 
     const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
 
-    const prettierInstance = this.moduleResolver.getPrettierInstance(fileName, {
-      showNotifications: true,
-    });
+    const prettierInstance = await this.moduleResolver.getPrettierInstance(
+      fileName,
+      {
+        showNotifications: true,
+      }
+    );
 
     let fileInfo: prettier.FileInfoResult | undefined;
     if (fileName) {
@@ -303,7 +306,10 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`
       );
-      parser = this.languageResolver.getParserFromLanguageId(uri, languageId);
+      parser = await this.languageResolver.getParserFromLanguageId(
+        uri,
+        languageId
+      );
     }
 
     if (!parser) {

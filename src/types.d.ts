@@ -27,10 +27,6 @@ interface IExtensionConfig {
    */
   requireConfig: boolean;
   /**
-   * The package manager to use when resolving global modules.
-   */
-  packageManager: PackageManagers;
-  /**
    * Array of language IDs to ignore
    */
   disableLanguages: string[];
