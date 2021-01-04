@@ -98,7 +98,7 @@
     "@types/vscode": "1.46",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
-    "eslint": "^7.10.0",
+    "eslint": "^7.17.0",
     "eslint-config-prettier": "^6.12.0",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
