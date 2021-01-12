@@ -48,7 +48,7 @@ export class StatusBarService {
    * @param icon The the icon to use
    */
   public updateStatusBar(result: FormattingResult): void {
-    this.statusBarItem.text = `Prettier: $(${result.toString()})`;
+    this.statusBarItem.text = `$(${result.toString()}) Prettier`;
     this.statusBarItem.show();
   }
 

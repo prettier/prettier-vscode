@@ -6,6 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [5.9.0]
 - Automatically detect package manager
+- Move check mark in status bar to left side to match ESLint
 
 ## [5.8.0]
 
