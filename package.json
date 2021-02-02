@@ -107,7 +107,7 @@
     "sinon": "^9.1.0",
     "ts-loader": "^8.0.1",
     "typescript": "^4.0.2",
-    "vsce": "^1.80.0",
+    "vsce": "^1.85.0",
     "vscode-nls-dev": "^3.3.2",
     "vscode-test": "^1.4.0",
     "webpack": "^5.4.0",
