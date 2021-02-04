@@ -4,7 +4,6 @@ import {
   StatusBarAlignment,
   StatusBarItem,
   TextEditor,
-  ThemeColor,
   window,
 } from "vscode";
 import { LanguageResolver } from "./LanguageResolver";
