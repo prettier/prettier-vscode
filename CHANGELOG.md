@@ -5,8 +5,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [5.9.0]
+
 - Automatically detect package manager
 - Move check mark in status bar to left side to match ESLint
+- Status bar background to `statusBarItem.errorBackground` color on error
 
 ## [5.8.0]
 

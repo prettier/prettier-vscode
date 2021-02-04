@@ -4,6 +4,7 @@ import {
   StatusBarAlignment,
   StatusBarItem,
   TextEditor,
+  ThemeColor,
   window,
 } from "vscode";
 import { LanguageResolver } from "./LanguageResolver";
@@ -49,6 +50,13 @@ export class StatusBarService {
    */
   public updateStatusBar(result: FormattingResult): void {
     this.statusBarItem.text = `$(${result.toString()}) Prettier`;
+    if (result == FormattingResult.Error) {
+      this.statusBarItem.backgroundColor = new ThemeColor(
+        "statusBarItem.errorBackground"
+      );
+    } else {
+      this.statusBarItem.backgroundColor = undefined;
+    }
     this.statusBarItem.show();
   }
 
