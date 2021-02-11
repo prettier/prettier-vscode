@@ -116,7 +116,6 @@
   "dependencies": {
     "find-up": "^5.0.0",
     "ignore": "^5.1.8",
-    "lodash": "^4.17.20",
     "prettier": "^2.2.1",
     "resolve": "^1.17.0",
     "semver": "^7.3.4",

@@ -1,4 +1,3 @@
-import throttle = require("lodash/throttle");
 import * as prettier from "prettier";
 import {
   Disposable,
@@ -8,7 +7,9 @@ import {
   Range,
   TextDocument,
   TextEdit,
+  Uri,
   workspace,
+  WorkspaceFolder,
 } from "vscode";
 import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
@@ -47,6 +48,7 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private registeredWorkspaces = new Set<string>();
 
   constructor(
     private moduleResolver: ModuleResolver,
@@ -60,52 +62,73 @@ export default class PrettierEditService implements Disposable {
 
   public registerDisposables(): Disposable[] {
     const packageWatcher = workspace.createFileSystemWatcher("**/package.json");
-    packageWatcher.onDidChange(this.registerFormatterThrottled);
-    packageWatcher.onDidCreate(this.registerFormatterThrottled);
-    packageWatcher.onDidDelete(this.registerFormatterThrottled);
+    packageWatcher.onDidChange(this.resetFormatters);
+    packageWatcher.onDidCreate(this.resetFormatters);
+    packageWatcher.onDidDelete(this.resetFormatters);
 
     const configurationWatcher = workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("prettier.enable")) {
         this.loggingService.logWarning(RESTART_TO_ENABLE);
-      } else if (event.affectsConfiguration("prettier")) {
-        this.registerFormatter();
       }
+      // } else if (event.affectsConfiguration("prettier")) {
+      //   this.resetFormatters();
+      // }
     });
-
-    const workspaceWatcher = workspace.onDidChangeWorkspaceFolders(
-      this.registerFormatter
-    );
 
     const prettierConfigWatcher = workspace.createFileSystemWatcher(
       `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
     );
-    prettierConfigWatcher.onDidChange(this.registerFormatterThrottled);
-    prettierConfigWatcher.onDidCreate(this.registerFormatterThrottled);
-    prettierConfigWatcher.onDidDelete(this.registerFormatterThrottled);
+    prettierConfigWatcher.onDidChange(this.prettierConfigChanged);
+    prettierConfigWatcher.onDidCreate(this.prettierConfigChanged);
+    prettierConfigWatcher.onDidDelete(this.prettierConfigChanged);
+
+    const textDocumentListener = workspace.onDidOpenTextDocument(
+      this.registerFormatterForTextDocument
+    );
 
     return [
       packageWatcher,
       configurationWatcher,
-      workspaceWatcher,
+      // workspaceWatcher,
       prettierConfigWatcher,
+      textDocumentListener,
     ];
   }
 
-  public registerFormatter = async () => {
-    this.dispose();
-    const { languageSelector, rangeLanguageSelector } = await this.selectors();
-    const editProvider = new PrettierEditProvider(this.provideEdits);
-    this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
-      rangeLanguageSelector,
-      editProvider
-    );
-    this.formatterHandler = languages.registerDocumentFormattingEditProvider(
-      languageSelector,
-      editProvider
-    );
+  private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
+
+  private resetFormatters = async (uri: Uri) => {
+    const workspaceFolder = workspace.getWorkspaceFolder(uri);
+    this.registeredWorkspaces.delete(workspaceFolder?.uri.fsPath ?? "global");
   };
 
-  private registerFormatterThrottled = throttle(this.registerFormatter, 300);
+  private registerFormatterForTextDocument = async (
+    textDocument: TextDocument
+  ) => {
+    if (textDocument.uri.scheme !== "file") {
+      return;
+    }
+    const workspaceFolder = workspace.getWorkspaceFolder(textDocument.uri);
+
+    const isRegistered = this.registeredWorkspaces.has(
+      workspaceFolder?.uri.fsPath ?? "global"
+    );
+    if (!isRegistered) {
+      const { languageSelector, rangeLanguageSelector } = await this.selectors(
+        workspaceFolder
+      );
+      const editProvider = new PrettierEditProvider(this.provideEdits);
+      this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
+        rangeLanguageSelector,
+        editProvider
+      );
+      this.formatterHandler = languages.registerDocumentFormattingEditProvider(
+        languageSelector,
+        editProvider
+      );
+      this.registeredWorkspaces.add(workspaceFolder?.uri.fsPath ?? "global");
+    }
+  };
 
   public dispose = () => {
     this.moduleResolver.dispose();
@@ -118,42 +141,40 @@ export default class PrettierEditService implements Disposable {
   /**
    * Build formatter selectors
    */
-  private selectors = async (): Promise<ISelectors> => {
-    const { disableLanguages, documentSelectors } = getConfig();
-
+  private selectors = async (
+    workspaceFolder: WorkspaceFolder | undefined
+  ): Promise<ISelectors> => {
     let allLanguages: string[];
-    if (workspace.workspaceFolders === undefined) {
-      allLanguages = await this.languageResolver.getSupportedLanguages();
-    } else {
+    if (workspaceFolder) {
       allLanguages = [];
-      for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = await this.languageResolver.getSupportedLanguages(
-          folder.uri.fsPath
-        );
-        allWorkspaceLanguages.forEach((lang) => {
-          if (!allLanguages.includes(lang)) {
-            allLanguages.push(lang);
-          }
-        });
-      }
+      const allWorkspaceLanguages = await this.languageResolver.getSupportedLanguages(
+        workspaceFolder.uri.fsPath
+      );
+      allWorkspaceLanguages.forEach((lang) => {
+        if (!allLanguages.includes(lang)) {
+          allLanguages.push(lang);
+        }
+      });
+    } else {
+      allLanguages = await this.languageResolver.getSupportedFileExtensions();
     }
 
     let allExtensions: string[];
-    if (workspace.workspaceFolders === undefined) {
-      allExtensions = await this.languageResolver.getSupportedFileExtensions();
-    } else {
+    if (workspaceFolder) {
       allExtensions = [];
-      for (const folder of workspace.workspaceFolders) {
-        const allWorkspaceLanguages = await this.languageResolver.getSupportedFileExtensions(
-          folder.uri.fsPath
-        );
-        allWorkspaceLanguages.forEach((lang) => {
-          if (!allExtensions.includes(lang)) {
-            allExtensions.push(lang);
-          }
-        });
-      }
+      const allWorkspaceLanguages = await this.languageResolver.getSupportedFileExtensions(
+        workspaceFolder.uri.fsPath
+      );
+      allWorkspaceLanguages.forEach((lang) => {
+        if (!allExtensions.includes(lang)) {
+          allExtensions.push(lang);
+        }
+      });
+    } else {
+      allExtensions = await this.languageResolver.getSupportedFileExtensions();
     }
+
+    const { disableLanguages, documentSelectors } = getConfig();
 
     this.loggingService.logInfo(
       `Enabling prettier for languages: ${allLanguages.sort().join(", ")}`

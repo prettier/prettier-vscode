@@ -11,6 +11,8 @@ const readFileAsync: (
   encoding: "utf8"
 ) => Promise<string> = promisify(readFile);
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /**
  * gets the workspace folder by name
  * @param name Workspace folder name
@@ -98,8 +100,10 @@ async function formatSameAsPrettier(
 
 suite("Test format Document", function () {
   this.timeout(10000);
-  test("it formats JavaScript", () =>
-    formatSameAsPrettier("formatTest/ugly.js"));
+  test("it formats JavaScript", async () => {
+    await wait(500);
+    await formatSameAsPrettier("formatTest/ugly.js");
+  });
   test("it formats TypeScript", () =>
     formatSameAsPrettier("formatTest/ugly.ts"));
   test("it formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));

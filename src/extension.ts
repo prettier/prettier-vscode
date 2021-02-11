@@ -79,7 +79,6 @@ export function activate(context: ExtensionContext) {
     notificationService,
     statusBarService
   );
-  editService.registerFormatter();
 
   context.subscriptions.push(
     editService,
