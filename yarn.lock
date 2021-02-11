@@ -2891,10 +2891,10 @@ to-regex-range@^5.0.1:
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
   integrity sha1-cXuPIgzAu3tE5AUUwisui7xw2Lk=
 
-ts-loader@^8.0.15:
-  version "8.0.15"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-8.0.15.tgz#c41bed94220aad78310cbee8be48a76683acec24"
-  integrity sha512-WYXfCEglgUPU6adGcx6I9DsMwSxYFU99rzteIEoZKDQn4IMbe4KpO934zRkwSOFcwEzh+gx/RaH8hhgoCAfF9w==
+ts-loader@^8.0.17:
+  version "8.0.17"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-8.0.17.tgz#98f2ccff9130074f4079fd89b946b4c637b1f2fc"
+  integrity sha512-OeVfSshx6ot/TCxRwpBHQ/4lRzfgyTkvi7ghDVrLXOHzTbSK413ROgu/xNqM72i3AFeAIJgQy78FwSMKmOW68w==
   dependencies:
     chalk "^4.1.0"
     enhanced-resolve "^4.0.0"
