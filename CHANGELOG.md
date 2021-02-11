@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [6.0.0]
+
+- Automatically detect package manager
+- Prompt for us
+
 ## [5.9.2]
 
 - Reverted automatical detection of package manager

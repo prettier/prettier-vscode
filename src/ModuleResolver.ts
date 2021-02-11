@@ -1,7 +1,6 @@
 import { execSync } from "child_process";
 import * as findUp from "find-up";
 import * as fs from "fs";
-import * as mem from "mem";
 import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
@@ -14,6 +13,7 @@ import {
   INVALID_PRETTIER_PATH_MESSAGE,
 } from "./message";
 import { NotificationService } from "./NotificationService";
+import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
 import { PackageManagers, PrettierModule } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
@@ -66,17 +66,12 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 }
 
 export class ModuleResolver implements Disposable {
-  private findPkgMem: (fsPath: string, pkgName: string) => string | undefined;
   private resolvedModules = new Array<string>();
 
   constructor(
     private loggingService: LoggingService,
     private notificationService: NotificationService
-  ) {
-    this.findPkgMem = mem(this.findPkg, {
-      cacheKey: (args) => `${args[0]}:${args[1]}`,
-    });
-  }
+  ) {}
 
   /**
    * Returns an instance of the prettier module.
@@ -102,10 +97,7 @@ export class ModuleResolver implements Disposable {
     );
 
     if (resolveGlobalModules && !moduleInstance) {
-      const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
-        (await commands.executeCommand<"npm" | "pnpm" | "yarn">(
-          "npm.packageManager"
-        ))!,
+      const globalModuleResult = await this.requireGlobalPkg<PrettierModule>(
         "prettier"
       );
       if (
@@ -200,7 +192,7 @@ export class ModuleResolver implements Disposable {
     try {
       modulePath = modulePath
         ? getWorkspaceRelativePath(fsPath, modulePath)
-        : this.findPkgMem(fsPath, moduleName);
+        : this.findPkg(fsPath, moduleName);
 
       if (modulePath !== undefined) {
         const moduleInstance = this.loadNodeModule(moduleName, modulePath);
@@ -237,10 +229,10 @@ export class ModuleResolver implements Disposable {
     return { moduleInstance: undefined, modulePath };
   }
 
-  private requireGlobalPkg<T>(
-    packageManager: PackageManagers,
-    pkgName: string
-  ): ModuleResult<T> {
+  private async requireGlobalPkg<T>(pkgName: string): Promise<ModuleResult<T>> {
+    const packageManager = (await commands.executeCommand<
+      "npm" | "pnpm" | "yarn"
+    >("npm.packageManager"))!;
     const resolvedGlobalPackageManagerPath = globalPathGet(packageManager);
     if (resolvedGlobalPackageManagerPath) {
       const modulePath = path.join(resolvedGlobalPackageManagerPath, pkgName);
@@ -311,6 +303,12 @@ export class ModuleResolver implements Disposable {
    * @returns {string} resolved path to module
    */
   private findPkg(fsPath: string, pkgName: string): string | undefined {
+    const stateKey = `${fsPath}:${pkgName}`;
+    const packagePathState = getFromWorkspaceState(stateKey, false);
+    if (packagePathState) {
+      return packagePathState;
+    }
+
     // Only look for a module definition outside of any `node_modules` directories
     const splitPath = fsPath.split("/");
     let finalPath = fsPath;
@@ -351,7 +349,9 @@ export class ModuleResolver implements Disposable {
     );
 
     if (packageJsonResDir) {
-      return resolve.sync(pkgName, { basedir: packageJsonResDir });
+      const packagePath = resolve.sync(pkgName, { basedir: packageJsonResDir });
+      updateWorkspaceState(stateKey, packagePath);
+      return packagePath;
     }
 
     // If no explicit package.json dep found, instead look for implicit dep
@@ -369,7 +369,9 @@ export class ModuleResolver implements Disposable {
     );
 
     if (nodeModulesResDir) {
-      return resolve.sync(pkgName, { basedir: nodeModulesResDir });
+      const packagePath = resolve.sync(pkgName, { basedir: nodeModulesResDir });
+      updateWorkspaceState(stateKey, packagePath);
+      return packagePath;
     }
 
     return;
