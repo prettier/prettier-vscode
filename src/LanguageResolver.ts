@@ -4,10 +4,10 @@ import { ModuleResolver } from "./ModuleResolver";
 
 export class LanguageResolver {
   constructor(private moduleResolver: ModuleResolver) {}
-  public async getParserFromLanguageId(
+  public getParserFromLanguageId(
     uri: Uri,
     languageId: string
-  ): Promise<prettier.BuiltInParserName | string | undefined> {
+  ): prettier.BuiltInParserName | string | undefined {
     // This is a workaround for when the vscodeLanguageId is duplicated in multiple
     // prettier languages. In these cases the first match is not the preferred match
     // so we override with the parser that exactly matches the languageId.
@@ -18,7 +18,7 @@ export class LanguageResolver {
     if (uri.scheme === "untitled" && languageParsers.includes(languageId)) {
       return languageId;
     }
-    const language = (await this.getSupportLanguages(uri.fsPath)).find(
+    const language = this.getSupportLanguages(uri.fsPath).find(
       (lang) =>
         lang &&
         lang.extensions &&
@@ -30,9 +30,9 @@ export class LanguageResolver {
     }
   }
 
-  public async getSupportedLanguages(fsPath?: string): Promise<string[]> {
+  public getSupportedLanguages(fsPath?: string): string[] {
     const enabledLanguages: string[] = [];
-    (await this.getSupportLanguages(fsPath)).forEach((lang) => {
+    this.getSupportLanguages(fsPath).forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
         enabledLanguages.push(...lang.vscodeLanguageIds);
       }
@@ -53,9 +53,9 @@ export class LanguageResolver {
     ];
   }
 
-  public async getSupportedFileExtensions(fsPath?: string) {
+  public getSupportedFileExtensions(fsPath?: string) {
     const extensions: string[] = [];
-    (await this.getSupportLanguages(fsPath)).forEach((lang) => {
+    this.getSupportLanguages(fsPath).forEach((lang) => {
       if (lang && lang.extensions) {
         extensions.push(...lang.extensions);
       }
@@ -65,10 +65,8 @@ export class LanguageResolver {
     });
   }
 
-  private async getSupportLanguages(fsPath?: string) {
-    const prettierInstance = await this.moduleResolver.getPrettierInstance(
-      fsPath
-    );
+  private getSupportLanguages(fsPath?: string) {
+    const prettierInstance = this.moduleResolver.getPrettierInstance(fsPath);
     return prettierInstance.getSupportInfo().languages;
   }
 }

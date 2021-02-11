@@ -168,6 +168,17 @@
           "markdownDescription": "%ext.config.withNodeModules%",
           "scope": "resource"
         },
+        "prettier.packageManager": {
+          "scope": "resource",
+          "type": "string",
+          "enum": [
+            "npm",
+            "yarn",
+            "pnpm"
+          ],
+          "default": "npm",
+          "markdownDescription": "%ext.config.packageManager%"
+        },
         "prettier.useEditorConfig": {
           "type": "boolean",
           "default": true,

@@ -262,6 +262,10 @@ Supply a custom path to the prettier configuration file.
 
 Supply a custom path to the prettier module. This path should be to the module folder, not the bin/script path. i.e. `./node_modules/prettier`, not `./bin/prettier`.
 
+#### prettier.packageManager
+
+Controls the package manager to be used to resolve modules. This has only an influence if the `prettier.resolveGlobalModules` setting is `true` and modules are resolved globally. Valid values are `"npm"` or `"yarn"` or `"pnpm"`.
+
 #### prettier.resolveGlobalModules (default: `false`)
 
 When enabled, this extension will attempt to use global npm or yarn modules if local modules cannot be resolved.
