@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [5.9.2]
+
+- Reverted automatical detection of package manager
+
 ## [5.9.1]
 
 - Removed Status bar color
