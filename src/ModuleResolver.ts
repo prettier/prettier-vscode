@@ -6,7 +6,7 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-import { Disposable, Uri } from "vscode";
+import { commands, Disposable, Uri } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import {
@@ -82,15 +82,15 @@ export class ModuleResolver implements Disposable {
    * Returns an instance of the prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
-  public getPrettierInstance(
+  public async getPrettierInstance(
     fileName?: string,
     options?: ModuleResolutionOptions
-  ): PrettierModule {
+  ): Promise<PrettierModule> {
     if (!fileName) {
       return prettier;
     }
 
-    const { prettierPath, packageManager, resolveGlobalModules } = getConfig(
+    const { prettierPath, resolveGlobalModules } = getConfig(
       Uri.file(fileName)
     );
 
@@ -103,7 +103,9 @@ export class ModuleResolver implements Disposable {
 
     if (resolveGlobalModules && !moduleInstance) {
       const globalModuleResult = this.requireGlobalPkg<PrettierModule>(
-        packageManager,
+        (await commands.executeCommand<"npm" | "pnpm" | "yarn">(
+          "npm.packageManager"
+        ))!,
         "prettier"
       );
       if (
@@ -160,8 +162,8 @@ export class ModuleResolver implements Disposable {
   /**
    * Clears the module and config cache
    */
-  public dispose() {
-    this.getPrettierInstance().clearConfigCache();
+  public async dispose() {
+    (await this.getPrettierInstance()).clearConfigCache();
     this.resolvedModules.forEach((modulePath) => {
       const r =
         typeof __webpack_require__ === "function"

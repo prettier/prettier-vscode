@@ -177,6 +177,7 @@
             "pnpm"
           ],
           "default": "npm",
+          "deprecationMessage": "%ext.config.packageManagerDeprecation%",
           "markdownDescription": "%ext.config.packageManager%"
         },
         "prettier.useEditorConfig": {
