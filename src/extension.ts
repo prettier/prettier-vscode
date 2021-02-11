@@ -7,7 +7,7 @@ import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import PrettierEditService from "./PrettierEditService";
-import { StatusBarService } from "./StatusBarService";
+import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
 import { getConfig } from "./util";
 import { RESTART_TO_ENABLE } from "./message";
@@ -65,10 +65,7 @@ export function activate(context: ExtensionContext) {
 
   const languageResolver = new LanguageResolver(moduleResolver);
 
-  const statusBarService = new StatusBarService(
-    languageResolver,
-    loggingService
-  );
+  const statusBar = new StatusBar();
 
   const editService = new PrettierEditService(
     moduleResolver,
@@ -77,14 +74,13 @@ export function activate(context: ExtensionContext) {
     configResolver,
     loggingService,
     notificationService,
-    statusBarService
+    statusBar
   );
 
   context.subscriptions.push(
     editService,
     createConfigFileCommand,
     openOutputCommand,
-    ...editService.registerDisposables(),
-    ...statusBarService.registerDisposables()
+    ...editService.registerDisposables()
   );
 }
