@@ -388,6 +388,10 @@
       {
         "command": "prettier.createConfigFile",
         "title": "%ext.command.createConfigFile.title%"
+      },
+      {
+        "command": "prettier.resetModuleExecutionState",
+        "title": "%ext.command.resetModuleExecutionState.title%"
       }
     ]
   }

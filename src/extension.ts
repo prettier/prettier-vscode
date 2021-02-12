@@ -2,7 +2,6 @@ import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
 import { IgnorerResolver } from "./IgnorerResolver";
-import { LanguageResolver } from "./LanguageResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
@@ -42,18 +41,6 @@ export function activate(context: ExtensionContext) {
   setWorkspaceState(context.workspaceState);
 
   const templateService = new TemplateService(loggingService);
-  const createConfigFileFunc = createConfigFile(templateService);
-  const createConfigFileCommand = commands.registerCommand(
-    "prettier.createConfigFile",
-    createConfigFileFunc
-  );
-  const openOutputCommand = commands.registerCommand(
-    "prettier.openOutput",
-    () => {
-      loggingService.show();
-    }
-  );
-
   const ignoreResolver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
   const notificationService = new NotificationService(loggingService);
@@ -63,13 +50,10 @@ export function activate(context: ExtensionContext) {
     notificationService
   );
 
-  const languageResolver = new LanguageResolver(moduleResolver);
-
   const statusBar = new StatusBar();
 
   const editService = new PrettierEditService(
     moduleResolver,
-    languageResolver,
     ignoreResolver,
     configResolver,
     loggingService,
@@ -77,9 +61,26 @@ export function activate(context: ExtensionContext) {
     statusBar
   );
 
+  const createConfigFileFunc = createConfigFile(templateService);
+  const createConfigFileCommand = commands.registerCommand(
+    "prettier.createConfigFile",
+    createConfigFileFunc
+  );
+  const resetModuleExecutionStateCommand = commands.registerCommand(
+    "prettier.resetModuleExecutionState",
+    moduleResolver.resetModuleExecutionState
+  );
+  const openOutputCommand = commands.registerCommand(
+    "prettier.openOutput",
+    () => {
+      loggingService.show();
+    }
+  );
+
   context.subscriptions.push(
     editService,
     createConfigFileCommand,
+    resetModuleExecutionStateCommand,
     openOutputCommand,
     ...editService.registerDisposables()
   );

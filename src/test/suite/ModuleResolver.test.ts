@@ -65,6 +65,9 @@ suite("Test ModuleResolver", function () {
         fileName
       );
 
+      if (!prettierInstance) {
+        assert.fail("Prettier is undefined.");
+      }
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");
       assert(
@@ -85,6 +88,9 @@ suite("Test ModuleResolver", function () {
         fileName
       );
 
+      if (!prettierInstance) {
+        assert.fail("Prettier is undefined.");
+      }
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");
       assert(
@@ -105,7 +111,9 @@ suite("Test ModuleResolver", function () {
       const prettierInstance = await moduleResolver.getPrettierInstance(
         fileName
       );
-
+      if (!prettierInstance) {
+        assert.fail("Prettier is undefined.");
+      }
       assert.notEqual(prettierInstance, prettier);
       assert.equal(prettierInstance.version, "2.0.2");
       assert(

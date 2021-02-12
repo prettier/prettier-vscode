@@ -7,5 +7,7 @@ export const FAILED_TO_LOAD_MODULE_MESSAGE =
   "Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`";
 export const INVALID_PRETTIER_CONFIG =
   "Invalid prettier configuration file detected. See log for details.";
+export const UNABLE_TO_LOAD_PRETTIER =
+  "Unable to load the configured Prettier module. Prettier will not run. Check logs.";
 export const RESTART_TO_ENABLE =
   "To enable or disable prettier after changing the `enable` setting, you must restart VS Code.";
