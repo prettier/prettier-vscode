@@ -11,6 +11,8 @@ import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_PATH_MESSAGE,
+  OUTDATED_PRETTIER_INSTALLED,
+  USING_BUNDLED_PRETTIER,
 } from "./message";
 import {
   ConfirmationSelection,
@@ -200,7 +202,7 @@ export class ModuleResolver implements Disposable {
     }
 
     if (!moduleInstance && options?.showNotifications) {
-      this.loggingService.logInfo("Using bundled version of prettier.");
+      this.loggingService.logInfo(USING_BUNDLED_PRETTIER);
     }
 
     if (moduleInstance) {
@@ -230,9 +232,7 @@ export class ModuleResolver implements Disposable {
           // could be lots of these notifications which would be annoying.
           this.notificationService.warnOutdatedPrettierVersion(modulePath);
         }
-        this.loggingService.logError(
-          "Outdated version of prettier installed. You must upgrade in order to use the Prettier extension."
-        );
+        this.loggingService.logError(OUTDATED_PRETTIER_INSTALLED);
         return undefined;
       }
     }

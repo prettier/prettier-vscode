@@ -9,7 +9,7 @@ import PrettierEditService from "./PrettierEditService";
 import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
 import { getConfig } from "./util";
-import { RESTART_TO_ENABLE } from "./message";
+import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
 import { setGlobalState, setWorkspaceState } from "./stateUtils";
 
 // the application insights key (also known as instrumentation key)
@@ -24,9 +24,7 @@ export function activate(context: ExtensionContext) {
 
   const { enable } = getConfig();
   if (!enable) {
-    loggingService.logInfo(
-      "Extension is disabled. No formatters will be registered. To enable, change the `prettier.enable` to `true` and restart VS Code."
-    );
+    loggingService.logInfo(EXTENSION_DISABLED);
     context.subscriptions.push(
       workspace.onDidChangeConfiguration((event) => {
         if (event.affectsConfiguration("prettier.enable")) {

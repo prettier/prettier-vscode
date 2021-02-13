@@ -7,6 +7,10 @@ import { getWorkspaceFolderUri } from "./format.test";
 import { ModuleResolver } from "../../ModuleResolver";
 import { LoggingService } from "../../LoggingService";
 import { NotificationService } from "../../NotificationService";
+import {
+  OUTDATED_PRETTIER_INSTALLED,
+  USING_BUNDLED_PRETTIER,
+} from "../../message";
 
 suite("Test ModuleResolver", function () {
   let moduleResolver: ModuleResolver;
@@ -35,8 +39,8 @@ suite("Test ModuleResolver", function () {
         }
       );
 
-      assert.equal(prettierInstance, prettier);
-      assert(logInfoSpy.calledWith("Using bundled version of prettier."));
+      assert.strictEqual(prettierInstance, prettier);
+      assert(logInfoSpy.calledWith(USING_BUNDLED_PRETTIER));
     });
 
     test("it returns the bundled version of Prettier if local is outdated", async () => {
@@ -48,12 +52,8 @@ suite("Test ModuleResolver", function () {
         fileName
       );
 
-      assert.equal(prettierInstance, prettier);
-      assert(
-        logErrorSpy.calledWith(
-          "Outdated version of prettier installed. Falling back to bundled version of prettier."
-        )
-      );
+      assert.strictEqual(prettierInstance, undefined);
+      assert(logErrorSpy.calledWith(OUTDATED_PRETTIER_INSTALLED));
     });
 
     test("it returns prettier version from package.json", async () => {
@@ -68,15 +68,8 @@ suite("Test ModuleResolver", function () {
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");
       }
-      assert.notEqual(prettierInstance, prettier);
-      assert.equal(prettierInstance.version, "2.0.2");
-      assert(
-        logInfoSpy.calledWith(
-          sinon.match(
-            /Loaded module 'prettier@2.0.2' from '.*[/\\]specific-version[/\\]node_modules[/\\]prettier[/\\]index.js'/
-          )
-        )
-      );
+      assert.notStrictEqual(prettierInstance, prettier);
+      assert.strictEqual(prettierInstance.version, "2.0.2");
     });
 
     test("it returns prettier version from module dep", async () => {
@@ -91,15 +84,8 @@ suite("Test ModuleResolver", function () {
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");
       }
-      assert.notEqual(prettierInstance, prettier);
-      assert.equal(prettierInstance.version, "2.0.2");
-      assert(
-        logInfoSpy.calledWith(
-          sinon.match(
-            /Loaded module 'prettier@2\.0\.2' from '.*[/\\]module[/\\]node_modules[/\\]prettier[/\\]index\.js'/
-          )
-        )
-      );
+      assert.notStrictEqual(prettierInstance, prettier);
+      assert.strictEqual(prettierInstance.version, "2.0.2");
     });
 
     test("it uses explicit dep if found instead fo a closer implicit module dep", async () => {
@@ -114,15 +100,8 @@ suite("Test ModuleResolver", function () {
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");
       }
-      assert.notEqual(prettierInstance, prettier);
-      assert.equal(prettierInstance.version, "2.0.2");
-      assert(
-        logInfoSpy.calledWith(
-          sinon.match(
-            /Loaded module 'prettier@2\.0\.2' from '.*[/\\]explicit-dep[/\\]node_modules[/\\]prettier[/\\]index\.js'/
-          )
-        )
-      );
+      assert.notStrictEqual(prettierInstance, prettier);
+      assert.strictEqual(prettierInstance.version, "2.0.2");
     });
   });
 });

@@ -11,7 +11,7 @@ export enum ConfirmationSelection {
   alwaysAllow = 3,
 }
 
-interface ConfirmMessageItem extends MessageItem {
+export interface ConfirmMessageItem extends MessageItem {
   value: ConfirmationSelection;
 }
 

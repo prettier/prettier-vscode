@@ -21,6 +21,7 @@ suite("Test notifications", function () {
     [string, MessageOptions, ...MessageItem[]],
     Thenable<MessageItem | undefined>
   >;
+
   this.timeout(10000);
   this.beforeEach(() => {
     showWarningMessage = sinon.stub(window, "showWarningMessage");
@@ -30,6 +31,7 @@ suite("Test notifications", function () {
     showWarningMessage.restore();
     showErrorMessage.restore();
   });
+
   test("shows error for outdated prettier instance", async () => {
     await format("outdated", "ugly.js");
     assert(showErrorMessage.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));

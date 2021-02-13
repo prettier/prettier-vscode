@@ -11,3 +11,8 @@ export const UNABLE_TO_LOAD_PRETTIER =
   "Unable to load the configured Prettier module. Prettier will not run. Check logs.";
 export const RESTART_TO_ENABLE =
   "To enable or disable prettier after changing the `enable` setting, you must restart VS Code.";
+export const USING_BUNDLED_PRETTIER = "Using bundled version of prettier.";
+export const OUTDATED_PRETTIER_INSTALLED =
+  "Outdated version of prettier installed. You must upgrade in order to use the Prettier extension.";
+export const EXTENSION_DISABLED =
+  "Extension is disabled. No formatters will be registered. To enable, change the `prettier.enable` to `true` and restart VS Code.";
