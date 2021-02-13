@@ -29,8 +29,12 @@ import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormatterStatus, StatusBar } from "./StatusBar";
-import { PrettierModule, PrettierVSCodeConfig } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import { PrettierModule } from "./types";
+import {
+  getConfig,
+  getWorkspaceRelativePath,
+  isDefaultFormatterOrUnset,
+} from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -200,11 +204,9 @@ export default class PrettierEditService implements Disposable {
     }
 
     const score = languages.match(languageSelector, document);
-    const disabledLanguages: PrettierVSCodeConfig["disableLanguages"] = getConfig(
-      document.uri
-    ).disableLanguages;
+    const isFormatterEnabled = isDefaultFormatterOrUnset(document.uri);
 
-    if (disabledLanguages.includes(document.languageId)) {
+    if (!isFormatterEnabled) {
       this.statusBar.update(FormatterStatus.Disabled);
     } else if (score > 0) {
       this.statusBar.update(FormatterStatus.Ready);
@@ -231,7 +233,7 @@ export default class PrettierEditService implements Disposable {
 
     const allExtensions = await getSupportedFileExtensions(prettierInstance);
 
-    const { disableLanguages, documentSelectors } = getConfig();
+    const { documentSelectors } = getConfig();
 
     const allRangeLanguages = getRangeSupportedLanguages();
 
@@ -255,12 +257,12 @@ export default class PrettierEditService implements Disposable {
     });
 
     // Language selectors for language IDs
-    const globalLanguageSelector: DocumentFilter[] = allLanguages
-      .filter((l) => !disableLanguages.includes(l))
-      .map((l) => ({ language: l }));
-    const globalRangeLanguageSelector: DocumentFilter[] = allRangeLanguages
-      .filter((l) => !disableLanguages.includes(l))
-      .map((l) => ({ language: l }));
+    const globalLanguageSelector: DocumentFilter[] = allLanguages.map((l) => ({
+      language: l,
+    }));
+    const globalRangeLanguageSelector: DocumentFilter[] = allRangeLanguages.map(
+      (l) => ({ language: l })
+    );
 
     const languageSelector = globalLanguageSelector
       .concat(customLanguageSelectors)
@@ -302,14 +304,6 @@ export default class PrettierEditService implements Disposable {
     this.loggingService.logInfo(`Formatting ${fileName}`);
 
     const vscodeConfig = getConfig(uri);
-
-    // This has to stay, as it allows to skip in sub workspaceFolders. Sadly noop.
-    // wf1  (with "lang") -> glob: "wf1/**"
-    // wf1/wf2  (without "lang") -> match "wf1/**"
-    if (vscodeConfig.disableLanguages.includes(languageId)) {
-      this.statusBar.update(FormatterStatus.Ignore);
-      return;
-    }
 
     try {
       const hasConfig = await this.configResolver.checkHasPrettierConfig(
@@ -355,7 +349,7 @@ export default class PrettierEditService implements Disposable {
     if (fileName) {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath,
-        resolveConfig: true, // Fix for 1.19 (https://prettier.io/blog/2019/11/09/1.19.0.html#api)
+        resolveConfig: true,
         withNodeModules: vscodeConfig.withNodeModules,
       });
       this.loggingService.logInfo("File Info:", fileInfo);

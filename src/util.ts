@@ -30,3 +30,9 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return workspace.getConfiguration("prettier", uri) as any;
 }
+
+export function isDefaultFormatterOrUnset(uri?: Uri): boolean {
+  const config = workspace.getConfiguration("editor", uri);
+  const defaultFormatter = config.get("defaultFormatter");
+  return !defaultFormatter || defaultFormatter === "esbenp.prettier-vscode";
+}

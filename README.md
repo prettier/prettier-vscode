@@ -249,10 +249,6 @@ When enabled, this extension will attempt to use global npm or yarn modules if l
 
 > NOTE: This setting can have a negative performance impact, particularly on Windows when you have attached network drives. Only enable this if you must use global modules. It is recommended that you always use local modules when possible.
 
-#### prettier.disableLanguages
-
-A list of languages IDs to disable this extension on.
-
 **Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
 
 #### prettier.documentSelectors
@@ -299,7 +295,3 @@ When a `package.json` is present in your project and it contains prettier, plugi
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
 You must upgrade to a newer version of prettier.
-
-```
-
-```

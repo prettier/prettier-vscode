@@ -1,7 +1,7 @@
 {
-    "prettier.disableLanguages": [
-        "javascript"
-    ],
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
     "javascript.format.enable": true,
     "files.eol": "\n"
 }

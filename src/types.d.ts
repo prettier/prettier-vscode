@@ -27,10 +27,6 @@ interface IExtensionConfig {
    */
   requireConfig: boolean;
   /**
-   * Array of language IDs to ignore
-   */
-  disableLanguages: string[];
-  /**
    * If true, take into account the .editorconfig file when resolving configuration.
    */
   useEditorConfig: boolean;

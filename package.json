@@ -111,7 +111,6 @@
   },
   "dependencies": {
     "find-up": "^5.0.0",
-    "ignore": "^5.1.8",
     "prettier": "^2.2.1",
     "resolve": "^1.17.0",
     "semver": "^7.3.4",
@@ -127,6 +126,7 @@
           "items": {
             "type": "string"
           },
+          "deprecationMessage": "%ext.config.disableLanguagesDeprecation%",
           "markdownDescription": "%ext.config.disableLanguages%",
           "scope": "window"
         },
