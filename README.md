@@ -74,6 +74,30 @@ To ensure that this extension is used over other extensions you may have install
 }
 ```
 
+If you want to disable Prettier on a particular language you can either create a `.prettierignore` file or you can use VS Code's `editor.defaultFormatter` settings.
+
+The following will use Prettier for all languages except Javascript.
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": null
+  }
+}
+```
+
+The following will use Prettier for only Javascript.
+
+```json
+{
+  "editor.defaultFormatter": null,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
 ### Prettier Resolution
 
 This extension will use prettier from your project's local dependencies (recommended). When the `prettier.resolveGlobalModules` is set to `true` the extension can also attempt to resolve global modules. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
@@ -159,52 +183,7 @@ graphql
 
 ## Linter Integration
 
-There are two ways to use Prettier and linters together. The first approach is to simply let each tool do what it was meant for: Prettier formats and the linter lints. You do this by disabling any rules in your linter that check formatting and let Prettier automatically handle all the formatting. The second approach is to use the linter to run prettier through a plugin with the linter.
-
-### Disable Formatting Rules in the Linter
-
-The easiest and recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would.
-
-- **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules)
-- **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules-1)
-- **Stylelint**: [Extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#disable-formatting-rules-2)
-
-You can enable Auto-Fix on Save for ESLint, TSLint or Stylelint and still have formatting and quick fixes:
-
-```
-"editor.codeActionsOnSave": {
-    // For ESLint
-    "source.fixAll.eslint": true,
-    // For TSLint
-    "source.fixAll.tslint": true,
-    // For Stylelint
-    "source.fixAll.stylelint": true
-}
-```
-
-> NOTE: If you are seeing conflicts between Prettier and ESLint this is because you don't have the right ESLint or TSLint rules set as explained in the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
-
-### Run Prettier through Linters
-
-Another option to run Prettier and linters together is to have the linters run Prettier. For these configurations you **DO NOT USE THIS EXTENSION**. Instead you use the linter extensions to run the linter and Prettier. See the Prettier documentation for instructions on how to configure each linter. This setup is generally **not recommended**, but can be useful in certain circumstances. To learn about why you probably should avoid this setup see [the prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html#notes).
-
-- **ESLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-eslint-to-run-prettier)
-- **TSLint**: [Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-tslint-to-run-prettier)
-- **Stylelint**: [Extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) | [Configuration](https://prettier.io/docs/en/integrating-with-linters.html#use-stylelint-to-run-prettier)
-
-Disable format on save so this extension doesn't run and enable code actions to run the linters on save.
-
-```
-"editor.formatOnSave": false,
-"editor.codeActionsOnSave": {
-    // For ESLint
-    "source.fixAll.eslint": true,
-    // For TSLint
-    "source.fixAll.tslint": true,
-    // For Stylelint
-    "source.fixAll.stylelint": true
-}
-```
+The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refere to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html]).
 
 ## Settings
 
