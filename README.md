@@ -84,6 +84,8 @@ To install prettier in your project and pin its version [as recommended](https:/
 npm install prettier -D --save-exact
 ```
 
+> NOTE: You will be prompted to confirm that you want the extension to load a Prettier module. This is done to ensure that you are not loading a module or script that is not trusted.
+
 ### Plugins
 
 This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally or globally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
