@@ -183,7 +183,7 @@ graphql
 
 ## Linter Integration
 
-The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refere to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html]).
+The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refere to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
 ## Settings
 
