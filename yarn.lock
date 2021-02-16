@@ -3034,10 +3034,10 @@ vscode-nls@^5.0.0:
   resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-5.0.0.tgz#99f0da0bd9ea7cda44e565a74c54b1f2bc257840"
   integrity sha512-u0Lw+IYlgbEJFF6/qAqG2d1jQmJl0eyAGJHoAJqr2HT4M2BNuQYSEiSE75f52pXHSJm8AlTjnLLbBFPrdz2hpA==
 
-vscode-test@^1.4.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/vscode-test/-/vscode-test-1.5.0.tgz#7bcb6b1aeac41d35c29f4404f8ca3399ae52e78e"
-  integrity sha512-svwE/mhBBqrB77C1U7pkUKfUmxnkzg0dLGi1vEmitsleu88oNsqZEhG3ANZrL/Ia4m0CW0oYEKRw2EojpFxLlQ==
+vscode-test@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/vscode-test/-/vscode-test-1.5.1.tgz#68430a4def0f0c07187e0e1dfd3299fabb4c58e0"
+  integrity sha512-tDloz6euDne+GeUSglhufL0c2xhuYAPAT74hjsuGxfflALfXF9bYnJ7ehZEeVkr/ZnQEh/T8EBrfPL+m0h5qEQ==
   dependencies:
     http-proxy-agent "^4.0.1"
     https-proxy-agent "^5.0.0"
