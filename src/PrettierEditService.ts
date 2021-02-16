@@ -12,13 +12,12 @@ import {
   workspace,
 } from "vscode";
 import { ConfigResolver, RangeFormattingOptions } from "./ConfigResolver";
-import { IgnorerResolver } from "./IgnorerResolver";
 import {
   getSupportedLanguages,
   getSupportedFileExtensions,
   getRangeSupportedLanguages,
   getParserFromLanguageId,
-} from "./LanguageResolver";
+} from "./languageFilters";
 import { LoggingService } from "./LoggingService";
 import {
   INVALID_PRETTIER_CONFIG,
@@ -29,12 +28,7 @@ import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormatterStatus, StatusBar } from "./StatusBar";
-import { PrettierModule } from "./types";
-import {
-  getConfig,
-  getWorkspaceRelativePath,
-  isDefaultFormatterOrUnset,
-} from "./util";
+import { getConfig, getIgnorePath, getWorkspaceRelativePath } from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -66,7 +60,6 @@ export default class PrettierEditService implements Disposable {
 
   constructor(
     private moduleResolver: ModuleResolver,
-    private ignoreResolver: IgnorerResolver,
     private configResolver: ConfigResolver,
     private loggingService: LoggingService,
     private notificationService: NotificationService,
@@ -164,8 +157,10 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
+    const supportInfo = prettierInstance.getSupportInfo();
+
     const { rangeLanguageSelector, languageSelector } = await this.selectors(
-      prettierInstance
+      supportInfo.languages
     );
 
     if (!isRegistered) {
@@ -204,8 +199,7 @@ export default class PrettierEditService implements Disposable {
     }
 
     const score = languages.match(languageSelector, document);
-    const isFormatterEnabled = isDefaultFormatterOrUnset(document.uri);
-
+    const isFormatterEnabled = true;
     if (!isFormatterEnabled) {
       this.statusBar.update(FormatterStatus.Disabled);
     } else if (score > 0) {
@@ -227,11 +221,13 @@ export default class PrettierEditService implements Disposable {
    * Build formatter selectors
    */
   private selectors = async (
-    prettierInstance: PrettierModule
+    languages: prettier.SupportLanguage[]
   ): Promise<ISelectors> => {
-    const allLanguages = await getSupportedLanguages(prettierInstance);
+    const allLanguages = getSupportedLanguages(languages);
 
-    const allExtensions = await getSupportedFileExtensions(prettierInstance);
+    const allExtensions = getSupportedFileExtensions(languages);
+
+    //const allFileNames = getSupportedFileNames(languages);
 
     const { documentSelectors } = getConfig();
 
@@ -327,7 +323,10 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    const ignorePath = this.ignoreResolver.getIgnorePath(fileName);
+    const ignorePath = getIgnorePath(fileName);
+    if (ignorePath) {
+      this.loggingService.logInfo(`Using ignore file at ${ignorePath}`);
+    }
 
     const prettierInstance = await this.moduleResolver.getPrettierInstance(
       fileName,
@@ -372,7 +371,8 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`
       );
-      parser = await getParserFromLanguageId(prettierInstance, uri, languageId);
+      const languages = prettierInstance.getSupportInfo().languages;
+      parser = getParserFromLanguageId(languages, uri, languageId);
     }
 
     if (!parser) {

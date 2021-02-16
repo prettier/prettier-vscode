@@ -1,12 +1,11 @@
 import * as prettier from "prettier";
 import { Uri } from "vscode";
-import { PrettierModule } from "./types";
 
-export async function getParserFromLanguageId(
-  prettierInstance: PrettierModule,
+export function getParserFromLanguageId(
+  languages: prettier.SupportLanguage[],
   uri: Uri,
   languageId: string
-): Promise<prettier.BuiltInParserName | string | undefined> {
+): prettier.BuiltInParserName | string | undefined {
   // This is a workaround for when the vscodeLanguageId is duplicated in multiple
   // prettier languages. In these cases the first match is not the preferred match
   // so we override with the parser that exactly matches the languageId.
@@ -17,7 +16,7 @@ export async function getParserFromLanguageId(
   if (uri.scheme === "untitled" && languageParsers.includes(languageId)) {
     return languageId;
   }
-  const language = (await getSupportLanguages(prettierInstance)).find(
+  const language = languages.find(
     (lang) =>
       lang &&
       lang.extensions &&
@@ -29,11 +28,11 @@ export async function getParserFromLanguageId(
   }
 }
 
-export async function getSupportedLanguages(
-  prettierInstance: PrettierModule
-): Promise<string[]> {
+export function getSupportedLanguages(
+  languages: prettier.SupportLanguage[]
+): string[] {
   const enabledLanguages: string[] = [];
-  (await getSupportLanguages(prettierInstance)).forEach((lang) => {
+  languages.forEach((lang) => {
     if (lang && lang.vscodeLanguageIds) {
       enabledLanguages.push(...lang.vscodeLanguageIds);
     }
@@ -54,11 +53,11 @@ export function getRangeSupportedLanguages(): string[] {
   ];
 }
 
-export async function getSupportedFileExtensions(
-  prettierInstance: PrettierModule
+export function getSupportedFileExtensions(
+  languages: prettier.SupportLanguage[]
 ) {
   const extensions: string[] = [];
-  (await getSupportLanguages(prettierInstance)).forEach((lang) => {
+  languages.forEach((lang) => {
     if (lang && lang.extensions) {
       extensions.push(...lang.extensions);
     }
@@ -68,6 +67,14 @@ export async function getSupportedFileExtensions(
   });
 }
 
-async function getSupportLanguages(prettierInstance: PrettierModule) {
-  return prettierInstance.getSupportInfo().languages;
+export function getSupportedFileNames(languages: prettier.SupportLanguage[]) {
+  const fileNames: string[] = [];
+  languages.forEach((lang) => {
+    if (lang && lang.filenames) {
+      fileNames.push(...lang.filenames);
+    }
+  });
+  return fileNames.filter((value, index, self) => {
+    return self.indexOf(value) === index;
+  });
 }

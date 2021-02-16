@@ -1,7 +1,6 @@
 import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
 import { ConfigResolver } from "./ConfigResolver";
-import { IgnorerResolver } from "./IgnorerResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
@@ -39,7 +38,6 @@ export function activate(context: ExtensionContext) {
   setWorkspaceState(context.workspaceState);
 
   const templateService = new TemplateService(loggingService);
-  const ignoreResolver = new IgnorerResolver(loggingService);
   const configResolver = new ConfigResolver(loggingService);
   const notificationService = new NotificationService(loggingService);
 
@@ -52,7 +50,6 @@ export function activate(context: ExtensionContext) {
 
   const editService = new PrettierEditService(
     moduleResolver,
-    ignoreResolver,
     configResolver,
     loggingService,
     notificationService,

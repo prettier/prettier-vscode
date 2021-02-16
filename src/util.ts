@@ -31,8 +31,11 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   return workspace.getConfiguration("prettier", uri) as any;
 }
 
-export function isDefaultFormatterOrUnset(uri?: Uri): boolean {
-  const config = workspace.getConfiguration("editor", uri);
-  const defaultFormatter = config.get("defaultFormatter");
-  return !defaultFormatter || defaultFormatter === "esbenp.prettier-vscode";
+export function getIgnorePath(filePath: string): string | undefined {
+  const { ignorePath } = getConfig(Uri.file(filePath));
+  // Configuration `prettier.ignorePath` is set to `null`
+  if (!ignorePath) {
+    return;
+  }
+  return getWorkspaceRelativePath(filePath, ignorePath);
 }
