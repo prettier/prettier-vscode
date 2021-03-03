@@ -49,7 +49,7 @@
     <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
 </p>
 
-** NOTICE: THIS PAGE AND DOCUMENTATION ARE FOR THE BETA VERSION OF THIS EXTENSION. **
+**NOTICE: THIS PAGE AND DOCUMENTATION ARE FOR THE BETA VERSION OF THIS EXTENSION.**
 
 See [here for instructions on how to install and configure the preview release](https://github.com/prettier/prettier-vscode/wiki/Testing-Preview-Releases).
 
