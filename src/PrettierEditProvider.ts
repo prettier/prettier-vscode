@@ -7,8 +7,7 @@ import {
   TextDocument,
   TextEdit,
 } from "vscode";
-
-import { RangeFormattingOptions } from "./ConfigResolver";
+import { RangeFormattingOptions } from "./types";
 
 export class PrettierEditProvider
   implements

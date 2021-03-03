@@ -196,6 +196,12 @@
           "markdownDescription": "%ext.config.configPath%",
           "scope": "resource"
         },
+        "prettier.enableDebugLogs": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.enableDebugLogs%",
+          "scope": "resource"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,

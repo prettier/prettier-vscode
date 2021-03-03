@@ -34,5 +34,6 @@
   "ext.config.useTabs": "Indent lines with tabs",
   "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files. Some people (like the creator of Vue) don’t indent to save an indentation level, but this might break code folding in your editor.",
   "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file.",
-  "ext.config.enable": "Controls whether prettier is enabled or not."
+  "ext.config.enable": "Controls whether prettier is enabled or not.",
+  "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting."
 }

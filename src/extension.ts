@@ -1,6 +1,5 @@
 import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
-import { ConfigResolver } from "./ConfigResolver";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
@@ -21,7 +20,12 @@ export function activate(context: ExtensionContext) {
   loggingService.logInfo(`Extension Name: ${extensionName}.`);
   loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
-  const { enable } = getConfig();
+  const { enable, enableDebugLogs } = getConfig();
+
+  if (enableDebugLogs) {
+    loggingService.setOutputLevel("DEBUG");
+  }
+
   if (!enable) {
     loggingService.logInfo(EXTENSION_DISABLED);
     context.subscriptions.push(
@@ -38,7 +42,6 @@ export function activate(context: ExtensionContext) {
   setWorkspaceState(context.workspaceState);
 
   const templateService = new TemplateService(loggingService);
-  const configResolver = new ConfigResolver(loggingService);
   const notificationService = new NotificationService(loggingService);
 
   const moduleResolver = new ModuleResolver(
@@ -50,11 +53,11 @@ export function activate(context: ExtensionContext) {
 
   const editService = new PrettierEditService(
     moduleResolver,
-    configResolver,
     loggingService,
     notificationService,
     statusBar
   );
+  editService.registerGlobal();
 
   const createConfigFileFunc = createConfigFile(templateService);
   const createConfigFileCommand = commands.registerCommand(

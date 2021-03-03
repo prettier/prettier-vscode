@@ -46,10 +46,17 @@ interface IExtensionConfig {
    * If true, this extension will be enabled
    */
   enable: boolean;
+  /**
+   * If true, enabled debug logs
+   */
+  enableDebugLogs: boolean;
 }
 /**
  * Configuration for prettier-vscode
  */
 export type PrettierVSCodeConfig = IExtensionConfig & prettier.Options;
 
-type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
+export interface RangeFormattingOptions {
+  rangeStart: number;
+  rangeEnd: number;
+}

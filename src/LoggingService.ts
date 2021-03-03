@@ -1,7 +1,7 @@
 import * as prettier from "prettier";
 import { window } from "vscode";
 
-type LogLevel = "INFO" | "WARN" | "ERROR" | "NONE";
+type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "NONE";
 
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
@@ -10,6 +10,26 @@ export class LoggingService {
 
   public setOutputLevel(logLevel: LogLevel) {
     this.logLevel = logLevel;
+  }
+
+  /**
+   * Append messages to the output channel and format it with a title
+   *
+   * @param message The message to append to the output channel
+   */
+  public logDebug(message: string, data?: unknown): void {
+    if (
+      this.logLevel === "NONE" ||
+      this.logLevel === "INFO" ||
+      this.logLevel === "WARN" ||
+      this.logLevel === "ERROR"
+    ) {
+      return;
+    }
+    this.logMessage(message, "INFO");
+    if (data) {
+      this.logObject(data);
+    }
   }
 
   /**

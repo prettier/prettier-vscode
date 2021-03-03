@@ -15,12 +15,12 @@ import {
 suite("Test ModuleResolver", function () {
   let moduleResolver: ModuleResolver;
   let logErrorSpy: sinon.SinonSpy;
-  let logInfoSpy: sinon.SinonSpy;
+  let logDebugSpy: sinon.SinonSpy;
 
   this.beforeEach(() => {
     const loggingService = new LoggingService();
     logErrorSpy = sinon.spy(loggingService, "logError");
-    logInfoSpy = sinon.spy(loggingService, "logInfo");
+    logDebugSpy = sinon.spy(loggingService, "logDebug");
     const notificationService = new NotificationService(loggingService);
 
     moduleResolver = new ModuleResolver(loggingService, notificationService);
@@ -33,14 +33,11 @@ suite("Test ModuleResolver", function () {
         "index.js"
       );
       const prettierInstance = await moduleResolver.getPrettierInstance(
-        fileName,
-        {
-          showNotifications: true,
-        }
+        fileName
       );
 
       assert.strictEqual(prettierInstance, prettier);
-      assert(logInfoSpy.calledWith(USING_BUNDLED_PRETTIER));
+      assert(logDebugSpy.calledWith(USING_BUNDLED_PRETTIER));
     });
 
     test("it returns the bundled version of Prettier if local is outdated", async () => {

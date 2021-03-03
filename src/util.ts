@@ -30,12 +30,3 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return workspace.getConfiguration("prettier", uri) as any;
 }
-
-export function getIgnorePath(filePath: string): string | undefined {
-  const { ignorePath } = getConfig(Uri.file(filePath));
-  // Configuration `prettier.ignorePath` is set to `null`
-  if (!ignorePath) {
-    return;
-  }
-  return getWorkspaceRelativePath(filePath, ignorePath);
-}

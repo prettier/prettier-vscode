@@ -38,10 +38,6 @@ interface PrettierExecutionState {
   libs: { [key: string]: boolean };
 }
 
-interface ModuleResolutionOptions {
-  showNotifications: boolean;
-}
-
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
 } = {
@@ -91,8 +87,7 @@ export class ModuleResolver implements Disposable {
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public async getPrettierInstance(
-    fileName?: string,
-    options?: ModuleResolutionOptions
+    fileName?: string
   ): Promise<PrettierModule | undefined> {
     if (!fileName) {
       return prettier;
@@ -124,16 +119,12 @@ export class ModuleResolver implements Disposable {
 
       this.loggingService.logError(`Failed to local Prettier module.`, error);
 
-      if (options?.showNotifications) {
-        this.notificationService.showErrorMessage(
-          FAILED_TO_LOAD_MODULE_MESSAGE,
-          [
-            `Attempted to load Prettier module from ${
-              modulePath || moduleDirectory || "package.json"
-            }`,
-          ]
-        );
-      }
+      this.notificationService.showErrorMessage(FAILED_TO_LOAD_MODULE_MESSAGE, [
+        `Attempted to load Prettier module from ${
+          modulePath || moduleDirectory || "package.json"
+        }`,
+      ]);
+
       // Return here because there is a local module, but we can't resolve it.
       // Must do NPM install for prettier to work.
       return undefined;
@@ -184,16 +175,14 @@ export class ModuleResolver implements Disposable {
             error
           );
 
-          if (options?.showNotifications) {
-            this.notificationService.showErrorMessage(
-              FAILED_TO_LOAD_MODULE_MESSAGE,
-              [
-                `Attempted to load Prettier module from ${
-                  modulePath || "package.json"
-                }`,
-              ]
-            );
-          }
+          this.notificationService.showErrorMessage(
+            FAILED_TO_LOAD_MODULE_MESSAGE,
+            [
+              `Attempted to load Prettier module from ${
+                modulePath || "package.json"
+              }`,
+            ]
+          );
 
           // Returning here because module didn't load.
           return undefined;
@@ -201,8 +190,8 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    if (!moduleInstance && options?.showNotifications) {
-      this.loggingService.logInfo(USING_BUNDLED_PRETTIER);
+    if (!moduleInstance) {
+      this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
     }
 
     if (moduleInstance) {
@@ -218,20 +207,16 @@ export class ModuleResolver implements Disposable {
 
       if (!isPrettierInstance && prettierPath) {
         this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
-        if (options?.showNotifications) {
-          this.notificationService.showErrorMessage(
-            INVALID_PRETTIER_PATH_MESSAGE
-          );
-        }
+        this.notificationService.showErrorMessage(
+          INVALID_PRETTIER_PATH_MESSAGE
+        );
         return undefined;
       }
 
       if (!isValidVersion) {
-        if (options?.showNotifications) {
-          // We only prompt when formatting a file. If we did it on load there
-          // could be lots of these notifications which would be annoying.
-          this.notificationService.warnOutdatedPrettierVersion(modulePath);
-        }
+        // We only prompt when formatting a file. If we did it on load there
+        // could be lots of these notifications which would be annoying.
+        this.notificationService.warnOutdatedPrettierVersion(modulePath);
         this.loggingService.logError(OUTDATED_PRETTIER_INSTALLED);
         return undefined;
       }
