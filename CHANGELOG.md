@@ -7,9 +7,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [6.0.0]
 
 - Automatically detect package manager
-- Delayed prettier registration, should perform better on large projects
+- Delayed prettier registration to improve performance on large projects
 - Status bar state and icons updates
 - Prompt to allow Prettier module to load
+- Added debug mode for logging
 
 ## [5.9.2]
 
