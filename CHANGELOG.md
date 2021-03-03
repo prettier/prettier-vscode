@@ -4,13 +4,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [6.0.0]
+## [6.0.0] Beta
 
 - Automatically detect package manager
 - Delayed prettier registration to improve performance on large projects
 - Status bar state and icons updates
 - Prompt to allow Prettier module to load
 - Added debug mode for logging
+- Removed config for `disabledLanguages` (work in progress for beta)
 
 ## [5.9.2]
 

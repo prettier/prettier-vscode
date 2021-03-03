@@ -5,11 +5,12 @@
   "version": "6.0.0",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
+  "preview": true,
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode-beta",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"
