@@ -107,7 +107,7 @@
     "vsce": "^1.80.0",
     "vscode-nls-dev": "^3.3.2",
     "vscode-test": "^1.4.0",
-    "webpack": "^5.4.0",
+    "webpack": "^5.24.4",
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
