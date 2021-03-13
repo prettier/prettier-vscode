@@ -74,12 +74,17 @@ export function activate(context: ExtensionContext) {
       loggingService.show();
     }
   );
+  const forceFormatDocumentCommand = commands.registerCommand(
+    "prettier.forceFormatDocument",
+    editService.forceFormatDocument
+  );
 
   context.subscriptions.push(
     editService,
     createConfigFileCommand,
     resetModuleExecutionStateCommand,
     openOutputCommand,
+    forceFormatDocumentCommand,
     ...editService.registerDisposables()
   );
 }

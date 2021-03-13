@@ -1,6 +1,7 @@
 {
   "ext.command.createConfigFile.title": "Prettier: Create Configuration File",
   "ext.command.resetModuleExecutionState.title": "Prettier: Reset Module Execution State",
+  "ext.command.forceFormatDocument.title": "Format Document (Forced)",
   "ext.config.arrowParens": "Include parentheses around a sole arrow function parameter",
   "ext.config.bracketSpacing": "Controls the printing of spaces inside object literals",
   "ext.config.configPath": "Path to the prettier configuration file",

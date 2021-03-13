@@ -27,7 +27,11 @@ import { ModuleResolver } from "./ModuleResolver";
 import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormatterStatus, StatusBar } from "./StatusBar";
-import { PrettierModule, RangeFormattingOptions } from "./types";
+import {
+  ExtensionFormattingOptions,
+  PrettierModule,
+  RangeFormattingOptions,
+} from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
 interface ISelectors {
@@ -99,6 +103,25 @@ export default class PrettierEditService implements Disposable {
       textEditorChange,
     ];
   }
+
+  public forceFormatDocument = async () => {
+    const editor = window.activeTextEditor;
+    if (!editor) {
+      this.loggingService.logInfo("No active document. Nothing was formatted.");
+      return;
+    }
+
+    this.loggingService.logInfo("Forced formatting will not use ignore files.");
+
+    const edits = await this.provideEdits(editor.document, { force: true });
+    if (edits.length !== 1) {
+      return;
+    }
+
+    await editor.edit((editBuilder) => {
+      editBuilder.replace(edits[0].range, edits[0].newText);
+    });
+  };
 
   private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
 
@@ -303,7 +326,7 @@ export default class PrettierEditService implements Disposable {
 
   private provideEdits = async (
     document: TextDocument,
-    options?: RangeFormattingOptions
+    options: ExtensionFormattingOptions
   ): Promise<TextEdit[]> => {
     const hrStart = process.hrtime();
     const result = await this.format(document.getText(), document, options);
@@ -327,7 +350,7 @@ export default class PrettierEditService implements Disposable {
   private async format(
     text: string,
     { fileName, languageId, uri, isUntitled }: TextDocument,
-    rangeFormattingOptions?: RangeFormattingOptions
+    options: ExtensionFormattingOptions
   ): Promise<string | undefined> {
     this.loggingService.logInfo(`Formatting ${fileName}`);
 
@@ -421,7 +444,7 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logInfo("File Info:", fileInfo);
     }
 
-    if (fileInfo && fileInfo.ignored) {
+    if (!options.force && fileInfo && fileInfo.ignored) {
       this.loggingService.logInfo("File is ignored, skipping.");
       this.statusBar.update(FormatterStatus.Ignore);
       return;
@@ -448,6 +471,14 @@ export default class PrettierEditService implements Disposable {
       );
       this.statusBar.update(FormatterStatus.Error);
       return;
+    }
+
+    let rangeFormattingOptions: RangeFormattingOptions | undefined;
+    if (options.rangeEnd && options.rangeStart) {
+      rangeFormattingOptions = {
+        rangeEnd: options.rangeEnd,
+        rangeStart: options.rangeStart,
+      };
     }
 
     const prettierOptions = this.getPrettierOptions(

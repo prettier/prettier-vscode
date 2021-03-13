@@ -2,7 +2,7 @@
   "name": "prettier-vscode-beta",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "preview": true,
@@ -395,6 +395,11 @@
       {
         "command": "prettier.resetModuleExecutionState",
         "title": "%ext.command.resetModuleExecutionState.title%"
+      },
+      {
+        "command": "prettier.forceFormatDocument",
+        "title": "%ext.command.forceFormatDocument.title%",
+        "when": "editorFocus"
       }
     ]
   }

@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [6.1.0] Beta
+
+- Added command to force formatting regardless of ignores `Format Document (Forced)`
+
 ## [6.0.0] Beta
 
 - Automatically detect package manager

@@ -7,7 +7,7 @@ import {
   TextDocument,
   TextEdit,
 } from "vscode";
-import { RangeFormattingOptions } from "./types";
+import { ExtensionFormattingOptions } from "./types";
 
 export class PrettierEditProvider
   implements
@@ -16,7 +16,7 @@ export class PrettierEditProvider
   constructor(
     private provideEdits: (
       document: TextDocument,
-      options?: RangeFormattingOptions
+      options: ExtensionFormattingOptions
     ) => Promise<TextEdit[]>
   ) {}
 
@@ -31,6 +31,7 @@ export class PrettierEditProvider
     return this.provideEdits(document, {
       rangeEnd: document.offsetAt(range.end),
       rangeStart: document.offsetAt(range.start),
+      force: false,
     });
   }
 
@@ -41,6 +42,8 @@ export class PrettierEditProvider
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     token: CancellationToken
   ): Promise<TextEdit[]> {
-    return this.provideEdits(document);
+    return this.provideEdits(document, {
+      force: false,
+    });
   }
 }
