@@ -1,16 +1,15 @@
 {
-  "name": "prettier-vscode-beta",
+  "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "6.1.0",
-  "publisher": "prettier",
+  "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
-  "preview": true,
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode-beta",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"

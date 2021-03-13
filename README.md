@@ -49,22 +49,16 @@
     <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
 </p>
 
-**NOTICE: THIS PAGE AND DOCUMENTATION ARE FOR THE BETA VERSION OF THIS EXTENSION.**
-
-See [here for instructions on how to install and configure the preview release](https://github.com/prettier/prettier-vscode/wiki/Testing-Preview-Releases).
-
-For documentation and installation of the stable release go to the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
-
 ## Installation
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode-beta)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install prettier.prettier-vscode-beta
+ext install esbenp.prettier-vscode
 ```
 
 ### Default Formatter
@@ -73,9 +67,9 @@ To ensure that this extension is used over other extensions you may have install
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode-beta",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode-beta"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 ```
@@ -86,7 +80,7 @@ The following will use Prettier for all languages except Javascript.
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode-beta",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": null
   }
@@ -99,7 +93,7 @@ The following will use Prettier for only Javascript.
 {
   "editor.defaultFormatter": null,
   "[javascript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode-beta"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 ```

@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "prettier.prettier-vscode-beta",
+    "esbenp.prettier-vscode",
     "streetsidesoftware.code-spell-checker"
   ]
 }
