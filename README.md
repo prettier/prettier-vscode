@@ -98,6 +98,16 @@ The following will use Prettier for only Javascript.
 }
 ```
 
+Additionally, you can disable format on save for secific languages if you don't want them to be automatically formatted.
+
+```json
+{
+  "[javascript]": {
+    "editor.formatOnSave": false
+  }
+}
+```
+
 ### Prettier Resolution
 
 This extension will use prettier from your project's local dependencies (recommended). When the `prettier.resolveGlobalModules` is set to `true` the extension can also attempt to resolve global modules. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
@@ -122,9 +132,7 @@ Using [Prettier Configuration files](https://prettier.io/docs/en/configuration.h
 
 ### Configuring Default Options
 
-Some users may not wish to create a new Prettier config for every project or use the VS Code settings. Because Prettier searches recursively up the file path, you can place a global prettier config at `~/.prettierrc` to be used as a fallback.
-
-You can also use the setting [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath) to provide a global configuration. However, be careful, if this is set this value will always be used and local configuration files will be ignored.
+Some users may not wish to create a new Prettier config for every project or use the VS Code settings. In order to set a default configuraiton, set [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath). However, be careful, if this is set this value will always be used and local configuration files will be ignored.
 
 ### Visual Studio Code Settings
 
@@ -180,6 +188,10 @@ typescriptreact
 json
 graphql
 ```
+
+### Format Document (Forced)
+
+If you would like to format a document that is configured to be ignored by Prettier either because it is in a `.prettierignore` file or part of a normally excluded location like `node_modules`, you can run the command **Format Document (Forced)** to force the document to be formatted.
 
 ## Linter Integration
 
