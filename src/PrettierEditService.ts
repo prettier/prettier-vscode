@@ -257,6 +257,7 @@ export default class PrettierEditService implements Disposable {
     const languageSelector: DocumentFilter[] = [
       ...buildSelector(allLanguages, "file"),
       ...buildSelector(allLanguages, "untitled"),
+      ...buildSelector(["jsonc"], "vscode-userdata"), // Selector for VSCode settings.json
     ];
 
     const rangeLanguageSelector: DocumentFilter[] = [
