@@ -28,45 +28,6 @@ export function getParserFromLanguageId(
   }
 }
 
-export function getSupportedLanguages(
-  languages: prettier.SupportLanguage[]
-): string[] {
-  const enabledLanguages: string[] = [];
-  languages.forEach((lang) => {
-    if (lang && lang.vscodeLanguageIds) {
-      enabledLanguages.push(...lang.vscodeLanguageIds);
-    }
-  });
-  return enabledLanguages.filter((value, index, self) => {
-    return self.indexOf(value) === index;
-  });
-}
-
-export function getRangeSupportedLanguages(): string[] {
-  return [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "graphql",
-  ];
-}
-
-export function getSupportedFileExtensions(
-  languages: prettier.SupportLanguage[]
-) {
-  const extensions: string[] = [];
-  languages.forEach((lang) => {
-    if (lang && lang.extensions) {
-      extensions.push(...lang.extensions);
-    }
-  });
-  return extensions.filter((value, index, self) => {
-    return self.indexOf(value) === index;
-  });
-}
-
 export function getSupportedFileNames(languages: prettier.SupportLanguage[]) {
   const fileNames: string[] = [];
   languages.forEach((lang) => {

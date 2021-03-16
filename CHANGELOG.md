@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [6.3.1]
+
+- Updates to formatter registration
+
 ## [6.3.0]
 
 - Removed notifications, all messages logged with status icon update.

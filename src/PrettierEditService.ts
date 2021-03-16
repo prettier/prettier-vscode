@@ -11,12 +11,7 @@ import {
   window,
   workspace,
 } from "vscode";
-import {
-  getSupportedLanguages,
-  getSupportedFileExtensions,
-  getRangeSupportedLanguages,
-  getParserFromLanguageId,
-} from "./languageFilters";
+import { getParserFromLanguageId } from "./languageFilters";
 import { LoggingService } from "./LoggingService";
 import { INVALID_PRETTIER_CONFIG, RESTART_TO_ENABLE } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
@@ -56,6 +51,17 @@ export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
+
+  private allLanguages: string[] = [];
+  private allExtensions: string[] = [];
+  private allRangeLanguages: string[] = [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "graphql",
+  ];
 
   constructor(
     private moduleResolver: ModuleResolver,
@@ -157,7 +163,7 @@ export default class PrettierEditService implements Disposable {
     }
 
     const prettierInstance = await this.moduleResolver.getPrettierInstance(
-      workspaceFolder.uri.fsPath
+      workspaceFolder?.uri.fsPath
     );
 
     const isRegistered = this.registeredWorkspaces.has(
@@ -181,7 +187,7 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    const selectors = await this.getWorkspaceSelectors(
+    const selectors = await this.getSelectors(
       prettierInstance,
       workspaceFolder.uri
     );
@@ -190,9 +196,9 @@ export default class PrettierEditService implements Disposable {
       this.registerDocumentFormatEditorProviders(selectors);
       this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);
       this.loggingService.logDebug(
-        `Enabling Prettier for Workspace ${workspaceFolder.uri.fsPath}`
+        `Enabling Prettier for Workspace ${workspaceFolder.uri.fsPath}`,
+        selectors
       );
-      this.loggingService.logDebug("Workspace enabled selectors", selectors);
     }
 
     const score = languages.match(selectors.languageSelector, document);
@@ -207,10 +213,9 @@ export default class PrettierEditService implements Disposable {
   };
 
   public async registerGlobal() {
-    const selectors = this.getGlobalSelectors();
+    const selectors = await this.getSelectors(prettier);
     this.registerDocumentFormatEditorProviders(selectors);
-    this.loggingService.logDebug(`Enabling Prettier globally`);
-    this.loggingService.logDebug("Globally enabled selectors", selectors);
+    this.loggingService.logDebug("Enabling Prettier globally", selectors);
   }
 
   public dispose = () => {
@@ -225,6 +230,7 @@ export default class PrettierEditService implements Disposable {
     languageSelector,
     rangeLanguageSelector,
   }: ISelectors) {
+    this.dispose();
     this.statusBar.update(FormatterStatus.Loading);
     const editProvider = new PrettierEditProvider(this.provideEdits);
     this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
@@ -237,83 +243,81 @@ export default class PrettierEditService implements Disposable {
     );
   }
 
-  private getGlobalSelectors() {
-    const { languages } = prettier.getSupportInfo();
-
-    const allLanguages = getSupportedLanguages(languages);
-    //TODO: const allFileNames = getSupportedFileNames(languages);
-    const allRangeLanguages = getRangeSupportedLanguages();
-
-    const buildSelector = (languages: string[], scheme: string) =>
-      languages.map((l) => ({ language: l, scheme }));
-
-    const languageSelector: DocumentFilter[] = [
-      ...buildSelector(allLanguages, "file"),
-      ...buildSelector(allLanguages, "untitled"),
-      ...buildSelector(["jsonc"], "vscode-userdata"), // Selector for VSCode settings.json
-    ];
-
-    const rangeLanguageSelector: DocumentFilter[] = [
-      ...buildSelector(allRangeLanguages, "file"),
-      ...buildSelector(allRangeLanguages, "untitled"),
-    ];
-
-    return { languageSelector, rangeLanguageSelector };
-  }
-
   /**
    * Build formatter selectors
    */
-  private getWorkspaceSelectors = async (
+  private getSelectors = async (
     prettierInstance: PrettierModule,
-    uri: Uri
+    uri?: Uri
   ): Promise<ISelectors> => {
     const { languages } = prettierInstance.getSupportInfo();
 
-    const allLanguages = getSupportedLanguages(languages);
-    const allExtensions = getSupportedFileExtensions(languages);
-    //TODO: const allFileNames = getSupportedFileNames(languages);
-    const allRangeLanguages = getRangeSupportedLanguages();
+    languages.forEach((lang) => {
+      if (lang && lang.vscodeLanguageIds) {
+        this.allLanguages.push(...lang.vscodeLanguageIds);
+      }
+    });
+    this.allLanguages = this.allLanguages.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
+
+    languages.forEach((lang) => {
+      if (lang && lang.extensions) {
+        this.allExtensions.push(...lang.extensions);
+      }
+    });
+    this.allExtensions = this.allExtensions.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
 
     const { documentSelectors } = getConfig();
 
     // Language selector for file extensions
-    const extensionLanguageSelector: DocumentFilter[] =
-      allExtensions.length === 0
+    const extensionLanguageSelector: DocumentFilter[] = uri
+      ? this.allExtensions.length === 0
         ? []
         : [
             {
-              pattern: `${uri.fsPath}/**/*.{${allExtensions
+              pattern: `${uri.fsPath}/**/*.{${this.allExtensions
                 .map((e) => e.substring(1))
                 .join(",")}}`,
               scheme: "file",
             },
-          ];
+          ]
+      : [];
 
-    const customLanguageSelectors: DocumentFilter[] = documentSelectors.map(
-      (pattern) => ({
-        pattern: `${uri.fsPath}/${pattern}`,
-        scheme: "file",
-      })
-    );
+    const customLanguageSelectors: DocumentFilter[] = uri
+      ? documentSelectors.map((pattern) => ({
+          pattern: `${uri.fsPath}/${pattern}`,
+          scheme: "file",
+        }))
+      : [];
 
-    const defaultLanguageSelectors: DocumentFilter[] = allLanguages.map(
-      (language) => ({
-        pattern: `${uri.fsPath}/**/*.*`,
-        scheme: "file",
+    const defaultLanguageSelectors: DocumentFilter[] = [
+      ...this.allLanguages.map((language) => ({ language, scheme: "file" })),
+      ...this.allLanguages.map((language) => ({
         language,
-      })
-    );
-
-    const languageSelector = [
-      ...defaultLanguageSelectors,
-      ...customLanguageSelectors,
-      ...extensionLanguageSelector,
+        scheme: "untitled",
+      })),
+      { language: "jsonc", scheme: "vscode-userdata" }, // Selector for VSCode settings.json
     ];
 
-    const rangeLanguageSelector: DocumentFilter[] = allRangeLanguages.map(
-      (l) => ({ language: l })
-    );
+    const languageSelector = [
+      ...customLanguageSelectors,
+      ...extensionLanguageSelector,
+      ...defaultLanguageSelectors,
+    ];
+
+    const rangeLanguageSelector: DocumentFilter[] = [
+      ...this.allRangeLanguages.map((language) => ({
+        language,
+        scheme: "file",
+      })),
+      ...this.allRangeLanguages.map((language) => ({
+        language,
+        scheme: "untitled",
+      })),
+    ];
 
     return { languageSelector, rangeLanguageSelector };
   };
