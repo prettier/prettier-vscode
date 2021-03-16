@@ -1,12 +1,12 @@
 import * as glob from "glob";
 import * as Mocha from "mocha";
 import * as path from "path";
+import { MessageItem, MessageOptions, window } from "vscode";
+import * as sinon from "sinon";
 import {
   ConfirmationSelection,
   ConfirmMessageItem,
-} from "../../NotificationService";
-import { MessageItem, MessageOptions, window } from "vscode";
-import * as sinon from "sinon";
+} from "../../ModuleResolver";
 
 const showInformationMessage: sinon.SinonStub<
   [string, MessageOptions, ...MessageItem[]],

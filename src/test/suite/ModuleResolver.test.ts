@@ -6,9 +6,8 @@ import * as sinon from "sinon";
 import { getWorkspaceFolderUri } from "./format.test";
 import { ModuleResolver } from "../../ModuleResolver";
 import { LoggingService } from "../../LoggingService";
-import { NotificationService } from "../../NotificationService";
 import {
-  OUTDATED_PRETTIER_INSTALLED,
+  OUTDATED_PRETTIER_VERSION_MESSAGE,
   USING_BUNDLED_PRETTIER,
 } from "../../message";
 
@@ -21,9 +20,7 @@ suite("Test ModuleResolver", function () {
     const loggingService = new LoggingService();
     logErrorSpy = sinon.spy(loggingService, "logError");
     logDebugSpy = sinon.spy(loggingService, "logDebug");
-    const notificationService = new NotificationService(loggingService);
-
-    moduleResolver = new ModuleResolver(loggingService, notificationService);
+    moduleResolver = new ModuleResolver(loggingService);
   });
 
   suite("getPrettierInstance", () => {
@@ -50,7 +47,7 @@ suite("Test ModuleResolver", function () {
       );
 
       assert.strictEqual(prettierInstance, undefined);
-      assert(logErrorSpy.calledWith(OUTDATED_PRETTIER_INSTALLED));
+      assert(logErrorSpy.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
     });
 
     test("it returns prettier version from package.json", async () => {

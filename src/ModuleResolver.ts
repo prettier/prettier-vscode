@@ -5,19 +5,22 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-import { commands, Disposable, Uri } from "vscode";
+import {
+  commands,
+  Disposable,
+  MessageItem,
+  Uri,
+  window,
+  workspace,
+} from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_PATH_MESSAGE,
-  OUTDATED_PRETTIER_INSTALLED,
+  OUTDATED_PRETTIER_VERSION_MESSAGE,
   USING_BUNDLED_PRETTIER,
 } from "./message";
-import {
-  ConfirmationSelection,
-  NotificationService,
-} from "./NotificationService";
 import {
   getFromGlobalState,
   getFromWorkspaceState,
@@ -33,6 +36,16 @@ declare const __non_webpack_require__: typeof require;
 
 const alwaysAllowedExecutionStateKey = "PRETTIER_MODULE_ALWAYS_ALLOWED";
 const moduleExecutionStateKey = "moduleExecutionState";
+
+export enum ConfirmationSelection {
+  deny = 1,
+  allow = 2,
+  alwaysAllow = 3,
+}
+
+export interface ConfirmMessageItem extends MessageItem {
+  value: ConfirmationSelection;
+}
 
 interface PrettierExecutionState {
   libs: { [key: string]: boolean };
@@ -73,14 +86,46 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
   return undefined;
 }
 
+async function askForModuleApproval(
+  modulePath: string,
+  isGlobal: boolean
+): Promise<ConfirmationSelection> {
+  const libraryUri = Uri.file(modulePath);
+  const folder = workspace.getWorkspaceFolder(libraryUri);
+  let message: string;
+  if (folder !== undefined) {
+    const relativePath = workspace.asRelativePath(libraryUri);
+    message = `The Prettier extension will use '${relativePath}' for validation, which is installed locally in folder '${folder.name}'. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Allow Everywhere' to remember the choice for all workspaces.`;
+  } else {
+    message = isGlobal
+      ? `The Prettier extension will use a globally installed Prettier library for validation. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Always Allow' to remember the choice for all workspaces.`
+      : `The Prettier extension will use a locally installed Prettier library for validation. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Always Allow' to remember the choice for all workspaces.`;
+  }
+
+  const messageItems: ConfirmMessageItem[] = [
+    { title: "Allow Everywhere", value: ConfirmationSelection.alwaysAllow },
+    { title: "Allow", value: ConfirmationSelection.allow },
+    { title: "Deny", value: ConfirmationSelection.deny },
+  ];
+  const item = await window.showInformationMessage<ConfirmMessageItem>(
+    message,
+    { modal: true },
+    ...messageItems
+  );
+
+  // Dialog got canceled.
+  if (item === undefined) {
+    return ConfirmationSelection.deny;
+  } else {
+    return item.value;
+  }
+}
+
 export class ModuleResolver implements Disposable {
   private path2Module = new Map<string, PrettierModule>();
   private deniedModules = new Set<string>();
 
-  constructor(
-    private loggingService: LoggingService,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private loggingService: LoggingService) {}
 
   /**
    * Returns an instance of the prettier module.
@@ -117,13 +162,12 @@ export class ModuleResolver implements Disposable {
         }
       }
 
-      this.loggingService.logError(`Failed to local Prettier module.`, error);
-
-      this.notificationService.showErrorMessage(FAILED_TO_LOAD_MODULE_MESSAGE, [
+      this.loggingService.logInfo(
         `Attempted to load Prettier module from ${
           modulePath || moduleDirectory || "package.json"
-        }`,
-      ]);
+        }`
+      );
+      this.loggingService.logError(FAILED_TO_LOAD_MODULE_MESSAGE, error);
 
       // Return here because there is a local module, but we can't resolve it.
       // Must do NPM install for prettier to work.
@@ -170,19 +214,12 @@ export class ModuleResolver implements Disposable {
             return undefined;
           }
         } catch (error) {
-          this.loggingService.logError(
-            `Failed to load Prettier module.`,
-            error
+          this.loggingService.logInfo(
+            `Attempted to load Prettier module from ${
+              modulePath || "package.json"
+            }`
           );
-
-          this.notificationService.showErrorMessage(
-            FAILED_TO_LOAD_MODULE_MESSAGE,
-            [
-              `Attempted to load Prettier module from ${
-                modulePath || "package.json"
-              }`,
-            ]
-          );
+          this.loggingService.logError(FAILED_TO_LOAD_MODULE_MESSAGE, error);
 
           // Returning here because module didn't load.
           return undefined;
@@ -207,17 +244,14 @@ export class ModuleResolver implements Disposable {
 
       if (!isPrettierInstance && prettierPath) {
         this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
-        this.notificationService.showErrorMessage(
-          INVALID_PRETTIER_PATH_MESSAGE
-        );
         return undefined;
       }
 
       if (!isValidVersion) {
-        // We only prompt when formatting a file. If we did it on load there
-        // could be lots of these notifications which would be annoying.
-        this.notificationService.warnOutdatedPrettierVersion(modulePath);
-        this.loggingService.logError(OUTDATED_PRETTIER_INSTALLED);
+        this.loggingService.logInfo(
+          `Attempted to load Prettier module from ${modulePath}`
+        );
+        this.loggingService.logError(OUTDATED_PRETTIER_VERSION_MESSAGE);
         return undefined;
       }
     }
@@ -269,10 +303,7 @@ export class ModuleResolver implements Disposable {
 
     let isTrustedModule = moduleState.libs[modulePath];
     if (!isTrustedModule) {
-      const approvalResult = await this.notificationService.askForModuleApproval(
-        modulePath,
-        isGlobal
-      );
+      const approvalResult = await askForModuleApproval(modulePath, isGlobal);
 
       if (approvalResult === ConfirmationSelection.alwaysAllow) {
         isTrustedModule = true;

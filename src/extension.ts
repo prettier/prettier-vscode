@@ -2,7 +2,6 @@ import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
-import { NotificationService } from "./NotificationService";
 import PrettierEditService from "./PrettierEditService";
 import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
@@ -42,19 +41,14 @@ export function activate(context: ExtensionContext) {
   setWorkspaceState(context.workspaceState);
 
   const templateService = new TemplateService(loggingService);
-  const notificationService = new NotificationService(loggingService);
 
-  const moduleResolver = new ModuleResolver(
-    loggingService,
-    notificationService
-  );
+  const moduleResolver = new ModuleResolver(loggingService);
 
   const statusBar = new StatusBar();
 
   const editService = new PrettierEditService(
     moduleResolver,
     loggingService,
-    notificationService,
     statusBar
   );
   editService.registerGlobal();

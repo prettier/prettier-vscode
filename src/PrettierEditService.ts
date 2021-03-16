@@ -18,13 +18,8 @@ import {
   getParserFromLanguageId,
 } from "./languageFilters";
 import { LoggingService } from "./LoggingService";
-import {
-  INVALID_PRETTIER_CONFIG,
-  RESTART_TO_ENABLE,
-  UNABLE_TO_LOAD_PRETTIER,
-} from "./message";
+import { INVALID_PRETTIER_CONFIG, RESTART_TO_ENABLE } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
-import { NotificationService } from "./NotificationService";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormatterStatus, StatusBar } from "./StatusBar";
 import {
@@ -65,7 +60,6 @@ export default class PrettierEditService implements Disposable {
   constructor(
     private moduleResolver: ModuleResolver,
     private loggingService: LoggingService,
-    private notificationService: NotificationService,
     private statusBar: StatusBar
   ) {}
 
@@ -182,7 +176,6 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logError(
         "The Prettier extension is blocked from execution in this project."
       );
-      //this.notificationService.showErrorMessage(INVALID_PRETTIER_CONFIG);
       this.statusBar.update(FormatterStatus.Disabled);
       this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);
       return;
@@ -390,7 +383,7 @@ export default class PrettierEditService implements Disposable {
         "Invalid prettier configuration file detected.",
         error
       );
-      this.notificationService.showErrorMessage(INVALID_PRETTIER_CONFIG);
+      this.loggingService.logError(INVALID_PRETTIER_CONFIG);
       this.statusBar.update(FormatterStatus.Error);
       return;
     }
@@ -430,7 +423,6 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logError(
         "Prettier could not be loaded. See previous logs for more information."
       );
-      this.notificationService.showErrorMessage(UNABLE_TO_LOAD_PRETTIER);
       this.statusBar.update(FormatterStatus.Error);
       return;
     }
