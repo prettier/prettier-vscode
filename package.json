@@ -113,7 +113,7 @@
     "find-up": "^5.0.0",
     "prettier": "^2.2.1",
     "resolve": "^1.17.0",
-    "semver": "^7.3.4",
+    "semver": "^7.3.5",
     "vscode-nls": "^5.0.0"
   },
   "contributes": {
