@@ -98,7 +98,7 @@ The following will use Prettier for only Javascript.
 }
 ```
 
-Additionally, you can disable format on save for secific languages if you don't want them to be automatically formatted.
+Additionally, you can disable format on save for specific languages if you don't want them to be automatically formatted.
 
 ```json
 {
