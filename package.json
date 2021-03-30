@@ -93,7 +93,7 @@
     "@types/sinon": "^9.0.11",
     "@types/vscode": "1.53.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
-    "@typescript-eslint/parser": "^4.3.0",
+    "@typescript-eslint/parser": "^4.20.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^8.1.0",
     "glob": "^7.1.6",
