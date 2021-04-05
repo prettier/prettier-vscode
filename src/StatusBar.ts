@@ -6,7 +6,6 @@ export enum FormatterStatus {
   Ignore = "x",
   Error = "alert",
   Disabled = "circle-slash",
-  Loading = "loading",
 }
 
 export class StatusBar {
