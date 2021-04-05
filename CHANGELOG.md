@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [6.3.2]
+
+- Removed loading status bar state
+
 ## [6.3.1]
 
 - Updates to formatter registration
