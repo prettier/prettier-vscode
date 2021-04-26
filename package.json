@@ -101,7 +101,7 @@
     "lint-staged": "^10.5.3",
     "mocha": "^8.0.1",
     "sinon": "^10.0.0",
-    "ts-loader": "^8.0.18",
+    "ts-loader": "^9.1.1",
     "typescript": "^4.2.4",
     "vsce": "^1.80.0",
     "vscode-nls-dev": "^3.3.2",
