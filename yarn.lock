@@ -183,10 +183,10 @@
   resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.0.tgz#11325a379b6f63b858fed49552fd4178495ee087"
   integrity sha512-SFT3jdUNlLkjxUWwH/0QjLiEsV38hjdDX8oMcX9jZAD8KWNzRLdg6INZE7UMz9O86b2BOHzA3dR8nF+DbonX2Q==
 
-"@types/semver@^7.3.1":
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.4.tgz#43d7168fec6fa0988bb1a513a697b29296721afb"
-  integrity sha512-+nVsLKlcUCeMzD2ufHEYuJ9a2ovstb6Dp52A5VsoKxDXgvE051XgHI/33I1EymwkRGQkwnA0LkhnUzituGs4EQ==
+"@types/semver@^7.3.5":
+  version "7.3.5"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.5.tgz#74deebbbcb1e86634dbf10a5b5e8798626f5a597"
+  integrity sha512-iotVxtCCsPLRAvxMFFgxL8HD2l4mAZ2Oin7/VJ2ooWO0VOK4EGOGmZWZn1uCq7RofR3I/1IOSjCHlFT71eVK0Q==
 
 "@types/sinon@^9.0.11":
   version "9.0.11"
