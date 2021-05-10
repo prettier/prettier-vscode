@@ -11,7 +11,9 @@ jobs:
     name: Test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
@@ -37,7 +39,9 @@ jobs:
     name: Package
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
       - run: yarn install
       - name: Cache node modules
         uses: actions/cache@v2
@@ -66,7 +70,9 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
       - run: yarn install
       - run: npm install -g vsce
       - run: vsce package
