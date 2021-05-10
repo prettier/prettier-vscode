@@ -12,7 +12,8 @@ import { ExtensionFormattingOptions } from "./types";
 export class PrettierEditProvider
   implements
     DocumentRangeFormattingEditProvider,
-    DocumentFormattingEditProvider {
+    DocumentFormattingEditProvider
+{
   constructor(
     private provideEdits: (
       document: TextDocument,

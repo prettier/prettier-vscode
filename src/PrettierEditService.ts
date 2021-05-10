@@ -232,10 +232,11 @@ export default class PrettierEditService implements Disposable {
   }: ISelectors) {
     this.dispose();
     const editProvider = new PrettierEditProvider(this.provideEdits);
-    this.rangeFormatterHandler = languages.registerDocumentRangeFormattingEditProvider(
-      rangeLanguageSelector,
-      editProvider
-    );
+    this.rangeFormatterHandler =
+      languages.registerDocumentRangeFormattingEditProvider(
+        rangeLanguageSelector,
+        editProvider
+      );
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
       editProvider

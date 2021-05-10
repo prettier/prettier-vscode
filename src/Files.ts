@@ -33,8 +33,11 @@ export function resolveGlobalNodePath(
   const handler = () => {};
   try {
     process.on("SIGPIPE", handler);
-    const stdout = spawnSync(npmCommand, ["config", "get", "prefix"], options)
-      .stdout;
+    const stdout = spawnSync(
+      npmCommand,
+      ["config", "get", "prefix"],
+      options
+    ).stdout;
 
     if (!stdout) {
       if (tracer) {
