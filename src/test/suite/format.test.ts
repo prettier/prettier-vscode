@@ -6,10 +6,8 @@ import * as prettier from "prettier";
 import { promisify } from "util";
 import * as vscode from "vscode";
 
-const readFileAsync: (
-  filePath: string,
-  encoding: "utf8"
-) => Promise<string> = promisify(readFile);
+const readFileAsync: (filePath: string, encoding: "utf8") => Promise<string> =
+  promisify(readFile);
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
