@@ -470,20 +470,12 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    let rangeFormattingOptions: RangeFormattingOptions | undefined;
-    if (options.rangeEnd && options.rangeStart) {
-      rangeFormattingOptions = {
-        rangeEnd: options.rangeEnd,
-        rangeStart: options.rangeStart,
-      };
-    }
-
     const prettierOptions = this.getPrettierOptions(
       fileName,
       parser as prettier.BuiltInParserName,
       vscodeConfig,
       resolvedConfig,
-      rangeFormattingOptions
+      options
     );
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
@@ -506,7 +498,7 @@ export default class PrettierEditService implements Disposable {
     parser: prettier.BuiltInParserName,
     vsCodeConfig: prettier.Options,
     configOptions: prettier.Options | null,
-    rangeFormattingOptions?: RangeFormattingOptions
+    extentionFormattingOptions: ExtensionFormattingOptions
   ): Partial<prettier.Options> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -537,6 +529,17 @@ export default class PrettierEditService implements Disposable {
         : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
     );
 
+    let rangeFormattingOptions: RangeFormattingOptions | undefined;
+    if (
+      extentionFormattingOptions.rangeEnd &&
+      extentionFormattingOptions.rangeStart
+    ) {
+      rangeFormattingOptions = {
+        rangeEnd: extentionFormattingOptions.rangeEnd,
+        rangeStart: extentionFormattingOptions.rangeStart,
+      };
+    }
+
     const options: prettier.Options = {
       ...(fallbackToVSCodeConfig ? vsOpts : {}),
       ...{
@@ -547,6 +550,10 @@ export default class PrettierEditService implements Disposable {
       ...(rangeFormattingOptions || {}),
       ...(configOptions || {}),
     };
+
+    if (extentionFormattingOptions.force && options.requirePragma === true) {
+      options.requirePragma = false;
+    }
 
     return options;
   }

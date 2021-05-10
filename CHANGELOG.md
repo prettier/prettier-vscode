@@ -4,9 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [NEXT]
+## [Unreleased]
 
 - Updated Prettier to 2.3.0
+- Forced mode now ignores `requirePragma` config
 - Fix mismatch of option name `ignore` in description of HTML Whitespace Sensitivity ([#1941](https://github.com/prettier/prettier-vscode/pull/1941))
 
 ## [6.3.2]
