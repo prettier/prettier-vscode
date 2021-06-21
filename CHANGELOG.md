@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [UNRELEASED]
+
+- Updated Prettier to 2.3.1
+
 ## [7.1.0]
 
 - Revert bad changes from 7.0.0, will republish as 8.0.0
