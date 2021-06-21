@@ -1,6 +1,5 @@
 {
   "ext.command.createConfigFile.title": "Prettier: Create Configuration File",
-  "ext.command.resetModuleExecutionState.title": "Prettier: Reset Module Execution State",
   "ext.command.forceFormatDocument.title": "Format Document (Forced)",
   "ext.config.arrowParens": "Include parentheses around a sole arrow function parameter",
   "ext.config.bracketSpacing": "Controls the printing of spaces inside object literals",
@@ -36,5 +35,6 @@
   "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files. Some people (like the creator of Vue) don’t indent to save an indentation level, but this might break code folding in your editor.",
   "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file.",
   "ext.config.enable": "Controls whether prettier is enabled or not.",
-  "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting."
+  "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting.",
+  "ext.capabilities.untrustedWorkspaces.description": "Only the built-in version of Prettier will be used when running in untrusted mode."
 }
