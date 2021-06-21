@@ -5,14 +5,13 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-import { commands, Disposable, Uri, workspace } from "vscode";
+import { commands, Disposable, Uri } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_PATH_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
-  UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
 import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
@@ -68,10 +67,9 @@ export class ModuleResolver implements Disposable {
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public async getPrettierInstance(
-    fileName: string
+    fileName?: string
   ): Promise<PrettierModule | undefined> {
-    if (!workspace.isTrusted) {
-      this.loggingService.logDebug(UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER);
+    if (!fileName) {
       return prettier;
     }
 
@@ -153,6 +151,10 @@ export class ModuleResolver implements Disposable {
       }
     }
 
+    if (!moduleInstance) {
+      this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
+    }
+
     if (moduleInstance) {
       // If the instance is missing `format`, it's probably
       // not an instance of Prettier
@@ -176,11 +178,11 @@ export class ModuleResolver implements Disposable {
         this.loggingService.logError(OUTDATED_PRETTIER_VERSION_MESSAGE);
         return undefined;
       }
-      return moduleInstance;
-    } else {
-      this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
-      return prettier;
     }
+
+    // If we made it this far, either a valid module was loaded or
+    // no modules where found anywhere so we fall back to bundled instance
+    return moduleInstance || prettier;
   }
 
   /**
