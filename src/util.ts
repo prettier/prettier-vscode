@@ -28,22 +28,5 @@ export function getWorkspaceRelativePath(
 
 export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const config = workspace.getConfiguration(
-    "prettier",
-    uri
-  ) as unknown as PrettierVSCodeConfig;
-
-  // Some settings are disabled for untrusted workspaces
-  // because they can be used for bad things.
-  if (!workspace.isTrusted) {
-    config.prettierPath = undefined;
-    config.configPath = undefined;
-    config.ignorePath = ".prettierignore";
-    config.documentSelectors = [];
-    config.useEditorConfig = false;
-    config.withNodeModules = false;
-    config.resolveGlobalModules = false;
-  }
-
-  return config;
+  return workspace.getConfiguration("prettier", uri) as any;
 }
