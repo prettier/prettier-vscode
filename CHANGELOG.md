@@ -4,10 +4,6 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [UNRELEASED]
-
-- Updated Prettier to 2.3.1
-
 ## [6.4.0]
 
 - Updated Prettier to 2.3.0
