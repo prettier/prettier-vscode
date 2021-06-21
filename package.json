@@ -125,7 +125,10 @@
         "prettier.resolveGlobalModules",
         "prettier.ignorePath",
         "prettier.prettierPath",
-        "prettier.configPath"
+        "prettier.configPath",
+        "prettier.useEditorConfig",
+        "prettier.resolveGlobalModules",
+        "prettier.withNodeModules"
       ]
     }
   },
