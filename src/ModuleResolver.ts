@@ -5,7 +5,14 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-import { commands, Disposable, Uri } from "vscode";
+import {
+  commands,
+  Disposable,
+  MessageItem,
+  Uri,
+  window,
+  workspace,
+} from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import {
@@ -14,13 +21,35 @@ import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   USING_BUNDLED_PRETTIER,
 } from "./message";
-import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
+import {
+  getFromGlobalState,
+  getFromWorkspaceState,
+  updateGlobalState,
+  updateWorkspaceState,
+} from "./stateUtils";
 import { PackageManagers, PrettierModule } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
 const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
+
+const alwaysAllowedExecutionStateKey = "PRETTIER_MODULE_ALWAYS_ALLOWED";
+const moduleExecutionStateKey = "moduleExecutionState";
+
+export enum ConfirmationSelection {
+  deny = 1,
+  allow = 2,
+  alwaysAllow = 3,
+}
+
+export interface ConfirmMessageItem extends MessageItem {
+  value: ConfirmationSelection;
+}
+
+interface PrettierExecutionState {
+  libs: { [key: string]: boolean };
+}
 
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
@@ -57,8 +86,44 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
   return undefined;
 }
 
+async function askForModuleApproval(
+  modulePath: string,
+  isGlobal: boolean
+): Promise<ConfirmationSelection> {
+  const libraryUri = Uri.file(modulePath);
+  const folder = workspace.getWorkspaceFolder(libraryUri);
+  let message: string;
+  if (folder !== undefined) {
+    const relativePath = workspace.asRelativePath(libraryUri);
+    message = `The Prettier extension will use '${relativePath}' for validation, which is installed locally in folder '${folder.name}'. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Allow Everywhere' to remember the choice for all workspaces.`;
+  } else {
+    message = isGlobal
+      ? `The Prettier extension will use a globally installed Prettier library for validation. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Always Allow' to remember the choice for all workspaces.`
+      : `The Prettier extension will use a locally installed Prettier library for validation. Do you allow the execution of this Prettier version including all plugins and configuration files it will load on your behalf?\n\nPress 'Always Allow' to remember the choice for all workspaces.`;
+  }
+
+  const messageItems: ConfirmMessageItem[] = [
+    { title: "Allow Everywhere", value: ConfirmationSelection.alwaysAllow },
+    { title: "Allow", value: ConfirmationSelection.allow },
+    { title: "Deny", value: ConfirmationSelection.deny },
+  ];
+  const item = await window.showInformationMessage<ConfirmMessageItem>(
+    message,
+    { modal: true },
+    ...messageItems
+  );
+
+  // Dialog got canceled.
+  if (item === undefined) {
+    return ConfirmationSelection.deny;
+  } else {
+    return item.value;
+  }
+}
+
 export class ModuleResolver implements Disposable {
   private path2Module = new Map<string, PrettierModule>();
+  private deniedModules = new Set<string>();
 
   constructor(private loggingService: LoggingService) {}
 
@@ -79,6 +144,7 @@ export class ModuleResolver implements Disposable {
 
     // Look for local module
     let modulePath: string | undefined = undefined;
+    let isGlobalModule = false;
 
     try {
       modulePath = prettierPath
@@ -121,6 +187,7 @@ export class ModuleResolver implements Disposable {
         );
         if (fs.existsSync(globalModulePath)) {
           modulePath = globalModulePath;
+          isGlobalModule = true;
         }
       }
     }
@@ -133,9 +200,18 @@ export class ModuleResolver implements Disposable {
         return moduleInstance;
       } else {
         try {
-          moduleInstance = this.loadNodeModule<PrettierModule>(modulePath);
-          if (moduleInstance) {
-            this.path2Module.set(modulePath, moduleInstance);
+          const isAllowed = await this.isTrustedModule(
+            modulePath,
+            isGlobalModule
+          );
+          if (isAllowed) {
+            moduleInstance = this.loadNodeModule<PrettierModule>(modulePath);
+            if (moduleInstance) {
+              this.path2Module.set(modulePath, moduleInstance);
+            }
+          } else {
+            // Module is not allowed
+            return undefined;
           }
         } catch (error) {
           this.loggingService.logInfo(
@@ -186,6 +262,18 @@ export class ModuleResolver implements Disposable {
   }
 
   /**
+   * Removes all saved module states.
+   */
+  public resetModuleExecutionState = async () => {
+    updateGlobalState(alwaysAllowedExecutionStateKey, false);
+    updateGlobalState(moduleExecutionStateKey, {
+      libs: {},
+    });
+    this.deniedModules.clear();
+    this.path2Module.clear();
+  };
+
+  /**
    * Clears the module and config cache
    */
   public async dispose() {
@@ -198,6 +286,44 @@ export class ModuleResolver implements Disposable {
       }
     });
     this.path2Module.clear();
+  }
+
+  private async isTrustedModule(modulePath: string, isGlobal: boolean) {
+    if (getFromGlobalState(alwaysAllowedExecutionStateKey, false)) {
+      return true;
+    }
+
+    const moduleState = getFromGlobalState(moduleExecutionStateKey, {
+      libs: {},
+    }) as PrettierExecutionState;
+
+    if (this.deniedModules.has(modulePath)) {
+      return false;
+    }
+
+    let isTrustedModule = moduleState.libs[modulePath];
+    if (!isTrustedModule) {
+      const approvalResult = await askForModuleApproval(modulePath, isGlobal);
+
+      if (approvalResult === ConfirmationSelection.alwaysAllow) {
+        isTrustedModule = true;
+        updateGlobalState(alwaysAllowedExecutionStateKey, isTrustedModule);
+      } else {
+        isTrustedModule = approvalResult === ConfirmationSelection.allow;
+
+        if (isTrustedModule) {
+          moduleState.libs[modulePath] = isTrustedModule;
+          updateGlobalState(moduleExecutionStateKey, moduleState);
+        } else {
+          this.loggingService.logWarning(
+            `Module is not allowed to loaded from '${modulePath}'`
+          );
+          this.deniedModules.add(modulePath);
+        }
+      }
+    }
+
+    return isTrustedModule;
   }
 
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts

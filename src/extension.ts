@@ -58,6 +58,10 @@ export function activate(context: ExtensionContext) {
     "prettier.createConfigFile",
     createConfigFileFunc
   );
+  const resetModuleExecutionStateCommand = commands.registerCommand(
+    "prettier.resetModuleExecutionState",
+    moduleResolver.resetModuleExecutionState
+  );
   const openOutputCommand = commands.registerCommand(
     "prettier.openOutput",
     () => {
@@ -72,6 +76,7 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     editService,
     createConfigFileCommand,
+    resetModuleExecutionStateCommand,
     openOutputCommand,
     forceFormatDocumentCommand,
     ...editService.registerDisposables()
