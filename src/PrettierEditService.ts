@@ -163,27 +163,17 @@ export default class PrettierEditService implements Disposable {
     }
 
     const prettierInstance = await this.moduleResolver.getPrettierInstance(
-      workspaceFolder?.uri.fsPath
+      workspaceFolder.uri.fsPath
     );
 
     const isRegistered = this.registeredWorkspaces.has(
       workspaceFolder.uri.fsPath
     );
 
-    // Already registered and no instances means that the user
-    // already blocked the execution so we don't do anything
-    if (isRegistered && !prettierInstance) {
-      return;
-    }
-
-    // If there isn't an instance here, it is the first time trying to load
-    // prettier and the user denied. Log the deny and mark as registered.
+    // If there isn't an instance here, it is because the module
+    // could not be loaded either locally or globably when specified
     if (!prettierInstance) {
-      this.loggingService.logError(
-        "The Prettier extension is blocked from execution in this project."
-      );
-      this.statusBar.update(FormatterStatus.Disabled);
-      this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);
+      this.statusBar.update(FormatterStatus.Error);
       return;
     }
 
@@ -202,13 +192,10 @@ export default class PrettierEditService implements Disposable {
     }
 
     const score = languages.match(selectors.languageSelector, document);
-    const isFormatterEnabled = true;
-    if (!isFormatterEnabled) {
-      this.statusBar.update(FormatterStatus.Disabled);
-    } else if (score > 0) {
+    if (score > 0) {
       this.statusBar.update(FormatterStatus.Ready);
     } else {
-      this.statusBar.hide();
+      this.statusBar.update(FormatterStatus.Disabled);
     }
   };
 

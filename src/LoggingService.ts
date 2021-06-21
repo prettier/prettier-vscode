@@ -26,7 +26,7 @@ export class LoggingService {
     ) {
       return;
     }
-    this.logMessage(message, "INFO");
+    this.logMessage(message, "DEBUG");
     if (data) {
       this.logObject(data);
     }
