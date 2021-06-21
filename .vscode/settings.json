@@ -4,6 +4,7 @@
     "source.fixAll.eslint": true
   },
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnType": false,
   "files.eol": "\n",
   "cSpell.words": [

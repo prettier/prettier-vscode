@@ -14,3 +14,5 @@ export const RESTART_TO_ENABLE =
 export const USING_BUNDLED_PRETTIER = "Using bundled version of prettier.";
 export const EXTENSION_DISABLED =
   "Extension is disabled. No formatters will be registered. To enable, change the `prettier.enable` to `true` and restart VS Code.";
+export const UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER =
+  "This workspace is not trusted. Using the bundled version of prettier.";
