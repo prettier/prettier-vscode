@@ -8,6 +8,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Updated Prettier to 2.3.1
 - Minimum supported VS Code version is now 1.57.0
+- Added `id` and `name` properties to status bar (#2003)
 
 ## [7.1.0]
 
