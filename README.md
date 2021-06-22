@@ -197,6 +197,10 @@ If you would like to format a document that is configured to be ignored by Prett
 
 The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refere to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
+## Workspace Trust
+
+This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.
+
 ## Settings
 
 ### Prettier Settings
@@ -245,15 +249,21 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 
 **Note, if this is set, this value will always be used and local ignore files will be ignored.**
 
+**Disabled on untrusted workspaces**
+
 #### prettier.configPath
 
 Supply a custom path to the prettier configuration file.
 
 **Note, if this is set, this value will always be used and local configuration files will be ignored. A better option for global defaults is to put a `~/.prettierrc` file in your home directory.**
 
+**Disabled on untrusted workspaces**
+
 #### prettier.prettierPath
 
 Supply a custom path to the prettier module. This path should be to the module folder, not the bin/script path. i.e. `./node_modules/prettier`, not `./bin/prettier`.
+
+**Disabled on untrusted workspaces**
 
 #### prettier.resolveGlobalModules (default: `false`)
 
@@ -262,6 +272,8 @@ When enabled, this extension will attempt to use global npm or yarn modules if l
 > NOTE: This setting can have a negative performance impact, particularly on Windows when you have attached network drives. Only enable this if you must use global modules. It is recommended that you always use local modules when possible.
 
 **Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
+
+**Disabled on untrusted workspaces**
 
 #### prettier.documentSelectors
 
@@ -290,13 +302,19 @@ To tell Prettier how to format a file of type `.abc` I can set an override in th
 }
 ```
 
+**Disabled on untrusted workspaces**
+
 #### prettier.useEditorConfig (default: `true`)
 
 Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
 
+**Disabled on untrusted workspaces (always false)**
+
 #### prettier.withNodeModules (default: `false`)
 
 Whether or not to process files in the `node_modules` folder.
+
+**Disabled on untrusted workspaces**
 
 ## Error Messages
 
@@ -307,3 +325,7 @@ When a `package.json` is present in your project and it contains prettier, plugi
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 
 You must upgrade to a newer version of prettier.
+
+**This workspace is not trusted. Using the bundled version of prettier.**
+
+You must trust this workspace to use plugins and local/global modules. See: [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust)
