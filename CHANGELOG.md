@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [8.0.0]
 
 - Updated Prettier to 2.3.1
+- Minimum supported VS Code version is now 1.57.0
 
 ## [7.1.0]
 
