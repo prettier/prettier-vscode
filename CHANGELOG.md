@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [UNRELEASED]
+## [8.0.0]
 
 - Updated Prettier to 2.3.1
 - Minimum supported VS Code version is now 1.57.0
@@ -14,6 +14,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [7.1.0]
 
 - Revert bad changes from 7.0.0, will republish as 8.0.0
+
+## [7.0.0]
+
+- Bad release, do not use.
 
 ## [6.4.0]
 
