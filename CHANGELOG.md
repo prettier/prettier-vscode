@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [8.0.1]
+
+- Forced version of vsce on build
+
 ## [8.0.0]
 
 - Updated Prettier to 2.3.1
