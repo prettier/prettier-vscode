@@ -13,9 +13,11 @@ export class StatusBar {
   constructor() {
     // Setup the statusBarItem
     this.statusBarItem = window.createStatusBarItem(
+      "prettier.status",
       StatusBarAlignment.Right,
       -1
     );
+    this.statusBarItem.name = "Prettier";
     this.statusBarItem.text = "Prettier";
     this.statusBarItem.command = "prettier.openOutput";
     this.update(FormatterStatus.Ready);
