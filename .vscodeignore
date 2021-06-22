@@ -17,7 +17,7 @@ CONTRIBUTORS.md
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 
-node_modules
+node_modules/*
 !node_modules/prettier
 !node_modules/spdx-exceptions
 !node_modules/spdx-license-ids
