@@ -116,19 +116,6 @@
     "semver": "^7.3.4",
     "vscode-nls": "^5.0.0"
   },
-  "capabilities": {
-    "untrustedWorkspaces": {
-      "supported": "limited",
-      "description": "%ext.capabilities.untrustedWorkspaces.description%",
-      "restrictedConfigurations": [
-        "prettier.documentSelectors",
-        "prettier.resolveGlobalModules",
-        "prettier.ignorePath",
-        "prettier.prettierPath",
-        "prettier.configPath"
-      ]
-    }
-  },
   "contributes": {
     "configuration": {
       "type": "object",
@@ -403,6 +390,10 @@
       {
         "command": "prettier.createConfigFile",
         "title": "%ext.command.createConfigFile.title%"
+      },
+      {
+        "command": "prettier.resetModuleExecutionState",
+        "title": "%ext.command.resetModuleExecutionState.title%"
       },
       {
         "command": "prettier.forceFormatDocument",

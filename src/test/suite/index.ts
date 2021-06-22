@@ -1,6 +1,17 @@
 import * as glob from "glob";
 import * as Mocha from "mocha";
 import * as path from "path";
+import { MessageItem, MessageOptions, window } from "vscode";
+import * as sinon from "sinon";
+import {
+  ConfirmationSelection,
+  ConfirmMessageItem,
+} from "../../ModuleResolver";
+
+const showInformationMessage: sinon.SinonStub<
+  [string, MessageOptions, ...MessageItem[]],
+  Thenable<MessageItem | undefined>
+> = sinon.stub(window, "showInformationMessage");
 
 export function run(): Promise<void> {
   // Create the mocha test
@@ -16,6 +27,18 @@ export function run(): Promise<void> {
       if (err) {
         return e(err);
       }
+
+      mocha.globalSetup(() => {
+        showInformationMessage.returns(
+          Promise.resolve({
+            title: "Allow",
+            value: ConfirmationSelection.allow,
+          } as ConfirmMessageItem)
+        );
+      });
+      mocha.globalTeardown(() => {
+        showInformationMessage.reset();
+      });
 
       // Add files to the test suite
       files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
