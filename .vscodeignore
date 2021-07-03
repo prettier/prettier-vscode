@@ -20,5 +20,3 @@ yarn.lock
 
 node_modules/
 !node_modules/prettier
-!node_modules/spdx-exceptions
-!node_modules/spdx-license-ids
