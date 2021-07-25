@@ -379,7 +379,12 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    if (!isUntitled && !resolvedConfig && vscodeConfig.requireConfig) {
+    if (
+      !isUntitled &&
+      !vscodeConfig.configPath &&
+      !configPath &&
+      vscodeConfig.requireConfig
+    ) {
       this.loggingService.logInfo(
         "Require config set to true and no config present. Skipping file."
       );
