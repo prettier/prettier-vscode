@@ -295,6 +295,16 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
+"@vscode/test-electron@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@vscode/test-electron/-/test-electron-1.6.1.tgz#2b282154097e250ee9b94b6a284eb5804e53a3d7"
+  integrity sha512-WTs+OK9YrKSVJNZ9IjytNibHSJG2YslZXuS3pw9gedF25TgYF/+FQhQYL0ZPX4uupS0SGAPKzMnhYDkjPDxowA==
+  dependencies:
+    http-proxy-agent "^4.0.1"
+    https-proxy-agent "^5.0.0"
+    rimraf "^3.0.2"
+    unzipper "^0.10.11"
+
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.11.1.tgz#2bfd767eae1a6996f432ff7e8d7fc75679c0b6a7"
@@ -3030,16 +3040,6 @@ vscode-nls@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-5.0.0.tgz#99f0da0bd9ea7cda44e565a74c54b1f2bc257840"
   integrity sha512-u0Lw+IYlgbEJFF6/qAqG2d1jQmJl0eyAGJHoAJqr2HT4M2BNuQYSEiSE75f52pXHSJm8AlTjnLLbBFPrdz2hpA==
-
-vscode-test@^1.4.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/vscode-test/-/vscode-test-1.6.1.tgz#44254c67036de92b00fdd72f6ace5f1854e1a563"
-  integrity sha512-086q88T2ca1k95mUzffvbzb7esqQNvJgiwY4h29ukPhFo8u+vXOOmelUoU5EQUHs3Of8+JuQ3oGdbVCqaxuTXA==
-  dependencies:
-    http-proxy-agent "^4.0.1"
-    https-proxy-agent "^5.0.0"
-    rimraf "^3.0.2"
-    unzipper "^0.10.11"
 
 watchpack@^2.2.0:
   version "2.2.0"

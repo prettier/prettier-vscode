@@ -1,5 +1,5 @@
 import * as path from "path";
-import { runTests } from "vscode-test";
+import { runTests } from "@vscode/test-electron";
 import * as tmp from "tmp";
 import * as fs from "fs-extra";
 
