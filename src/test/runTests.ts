@@ -53,7 +53,6 @@ async function main() {
         .concat(["--skip-welcome"])
         .concat(["--skip-release-notes"])
         .concat(["--enable-proposed-api"])
-        .concat(["--timeout", "5000"])
         .concat(["--user-data-dir", userDataDirectory]),
     });
   } catch (error) {
