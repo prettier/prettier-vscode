@@ -31,13 +31,6 @@ const config = {
   externals: {
     vscode: "commonjs vscode",
     prettier: "commonjs prettier",
-    /* cspell: disable-next-line */
-    "spdx-exceptions": "spdx-exceptions",
-    /* cspell: disable-next-line */
-    "spdx-license-ids": "spdx-license-ids",
-    /* cspell: disable-next-line */
-    "spdx-license-ids/deprecated": "spdx-license-ids/deprecated",
-    "applicationinsights-native-metrics": "applicationinsights-native-metrics", // This isn't actually used, it is just to disable a webpack error we don't care about.
   },
   resolve: {
     extensions: [".ts", ".js"],
