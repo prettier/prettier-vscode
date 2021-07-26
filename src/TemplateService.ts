@@ -1,26 +1,17 @@
-import { writeFile } from "fs";
-import * as path from "path";
 import { format, Options } from "prettier";
-import { promisify } from "util";
-import { Uri } from "vscode";
+import { Uri, workspace } from "vscode";
 import { LoggingService } from "./LoggingService";
-
-const writeFileAsync: (
-  filePath: string,
-  data: string,
-  encoding: "utf8"
-) => Promise<void> = promisify(writeFile);
 
 export class TemplateService {
   constructor(private loggingService: LoggingService) {}
   public async writeConfigFile(folderPath: Uri) {
     const settings = { tabWidth: 2, useTabs: false };
 
-    const outputPath = path.join(folderPath.fsPath, ".prettierrc");
+    const outputPath = Uri.joinPath(folderPath, `.prettierrc`);
 
     const formatterOptions: Options = {
       /* cspell: disable-next-line */
-      filepath: outputPath,
+      filepath: outputPath.path,
       tabWidth: settings.tabWidth,
       useTabs: settings.useTabs,
     };
@@ -31,6 +22,7 @@ export class TemplateService {
     );
 
     this.loggingService.logInfo(`Writing .prettierrc to '${outputPath}'`);
-    await writeFileAsync(outputPath, templateSource, "utf8");
+    const content = Buffer.from(templateSource, "utf-8");
+    workspace.fs.writeFile(outputPath, content);
   }
 }
