@@ -1,5 +1,33 @@
 import * as path from "path";
 import { runTests } from "vscode-test";
+import * as tmp from "tmp";
+import * as fs from "fs-extra";
+
+async function createTempDir() {
+  return new Promise<string>((resolve, reject) => {
+    tmp.dir((err, dir) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(dir);
+    });
+  });
+}
+
+async function createSettings(): Promise<string> {
+  const userDataDirectory = await createTempDir();
+  process.env.VSC_JUPYTER_VSCODE_SETTINGS_DIR = userDataDirectory;
+  const settingsFile = path.join(userDataDirectory, "User", "settings.json");
+  const defaultSettings: Record<string, string | boolean | string[]> = {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.enableDebugLogs": true,
+    "security.workspace.trust.enabled": false, // Disable trusted workspaces.
+  };
+
+  fs.ensureDirSync(path.dirname(settingsFile));
+  fs.writeFileSync(settingsFile, JSON.stringify(defaultSettings, undefined, 4));
+  return userDataDirectory;
+}
 
 async function main() {
   try {
@@ -12,13 +40,21 @@ async function main() {
     const extensionTestsPath = path.resolve(__dirname, "./suite/index");
 
     // The path to the workspace file
-    const workspace = path.resolve("test-fixtures", "test.code-workspace");
+    const workspacePath = path.resolve("test-fixtures", "test.code-workspace");
+
+    // Default settings for test env
+    const userDataDirectory = await createSettings();
 
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
-      launchArgs: [workspace, "--disable-extensions"],
+      launchArgs: [workspacePath]
+        .concat(["--skip-welcome"])
+        .concat(["--skip-release-notes"])
+        .concat(["--enable-proposed-api"])
+        .concat(["--timeout", "5000"])
+        .concat(["--user-data-dir", userDataDirectory]),
     });
   } catch (error) {
     // eslint-disable-next-line no-console
