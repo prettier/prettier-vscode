@@ -36,13 +36,17 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   // Some settings are disabled for untrusted workspaces
   // because they can be used for bad things.
   if (!workspace.isTrusted) {
-    config.prettierPath = undefined;
-    config.configPath = undefined;
-    config.ignorePath = ".prettierignore";
-    config.documentSelectors = [];
-    config.useEditorConfig = false;
-    config.withNodeModules = false;
-    config.resolveGlobalModules = false;
+    const newConfig = {
+      ...config,
+      prettierPath: undefined,
+      configPath: undefined,
+      ignorePath: ".prettierignore",
+      documentSelectors: [],
+      useEditorConfig: false,
+      withNodeModules: false,
+      resolveGlobalModules: false,
+    };
+    return newConfig;
   }
 
   return config;
