@@ -58,5 +58,5 @@ _Feel free to attach a screenshot_.
 <!-- SEE THIS GUIDE ON HOW TO GET YOUR LOGS: https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue -->
 
 ```
-LOG GOES HERE. DO NOT USE A SCREESHOT, COPY AND PASTE THE TEXT
+LOG GOES HERE. DO NOT USE A SCREENSHOT, COPY AND PASTE THE TEXT
 ```
