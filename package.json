@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "8.2.0",
+  "version": "9.0.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -99,7 +99,7 @@
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "@vscode/test-electron": "^1.6.2",
-    "@vscode/test-web": "^0.0.11",
+    "@vscode/test-web": "^0.0.12",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "fs-extra": "^10.0.0",
@@ -127,6 +127,7 @@
     "vscode-nls": "^5.0.0"
   },
   "capabilities": {
+    "virtualWorkspaces": true,
     "untrustedWorkspaces": {
       "supported": "limited",
       "description": "%ext.capabilities.untrustedWorkspaces.description%",

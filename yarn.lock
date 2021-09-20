@@ -64,7 +64,7 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@koa/router@^10.0.0":
+"@koa/router@^10.1.1":
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/@koa/router/-/router-10.1.1.tgz#8e5a85c9b243e0bc776802c0de564561e57a5f78"
   integrity sha512-ORNjq5z4EmQPriKbR0ER3k4Gh7YGNhWDL7JBW+8wXDrHLbWYKYSJaOJ9aN06npF5tbTxe2JBOsurpJDAvjiXKw==
@@ -323,12 +323,12 @@
     rimraf "^3.0.2"
     unzipper "^0.10.11"
 
-"@vscode/test-web@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.11.tgz#62e05bd9115d5f4ddfc45d32842c49de327b57f8"
-  integrity sha512-us0DtOqzqBZwE6UfBvFwEWcOPg2cX20nJsD8ZkeJ6ozn2KyJ8pewtt5D8ybtAsVKtds/nQ/wegq/SdMmjTBaWQ==
+"@vscode/test-web@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.12.tgz#0d2eda3c2740bf4c59997e7e8658f0794af2f042"
+  integrity sha512-PtmyN0SUI3iQbPgcTAQ23IFCrbSvdahY0I2KL5TlBplY3vpFOc3To497GXYuVNYG6YIA7KKDPAADLB/HIXPOPA==
   dependencies:
-    "@koa/router" "^10.0.0"
+    "@koa/router" "^10.1.1"
     decompress "^4.2.1"
     decompress-targz "^4.1.1"
     http-proxy-agent "^4.0.1"
@@ -338,7 +338,7 @@
     koa-mount "^4.0.0"
     koa-static "^5.0.0"
     minimist "^1.2.5"
-    playwright "^1.12.2"
+    playwright "^1.14.1"
     vscode-uri "^3.0.2"
 
 "@webassemblyjs/ast@1.11.1":
@@ -3064,7 +3064,7 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright@^1.12.2:
+playwright@^1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.14.1.tgz#73913d3044a85a58edf13148245279231072532e"
   integrity sha512-JYNjhwWcfsBkg0FMGLbFO9e58FVdmICE4k97/glIQV7cBULL7oxNjRQC7Ffe+Y70XVNnP0HSJLaA0W5SukyftQ==

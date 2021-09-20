@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.0.0]
+
+- Support for browser VS Code
+- Support for virtual file systems
+
 ## [8.2.0]
 
 - Updated Prettier to 2.4.1
