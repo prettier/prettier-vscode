@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import * as findUp from "find-up";
+import { findUpStop, findUpSync } from "find-up";
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
@@ -88,7 +88,7 @@ export class ModuleResolver implements Disposable {
         : this.findPkg(fileName, "prettier");
     } catch (error) {
       let moduleDirectory = "";
-      if (!modulePath) {
+      if (!modulePath && error instanceof Error) {
         // If findPkg threw an error from `resolve.sync`, attempt to parse the
         // directory it failed on to provide a better error message
         const resolveSyncPathRegex = /Cannot find module '.*' from '(.*)'/;
@@ -250,7 +250,7 @@ export class ModuleResolver implements Disposable {
     }
 
     // First look for an explicit package.json dep
-    const packageJsonResDir = findUp.sync(
+    const packageJsonResDir = findUpSync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "package.json"))) {
           let packageJson;
@@ -273,7 +273,7 @@ export class ModuleResolver implements Disposable {
         }
 
         if (this.isInternalTestRoot(dir)) {
-          return findUp.stop;
+          return findUpStop;
         }
       },
       { cwd: finalPath, type: "directory" }
@@ -286,14 +286,14 @@ export class ModuleResolver implements Disposable {
     }
 
     // If no explicit package.json dep found, instead look for implicit dep
-    const nodeModulesResDir = findUp.sync(
+    const nodeModulesResDir = findUpSync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {
           return dir;
         }
 
         if (this.isInternalTestRoot(dir)) {
-          return findUp.stop;
+          return findUpStop;
         }
       },
       { cwd: finalPath, type: "directory" }
