@@ -60,6 +60,7 @@
   ],
   "icon": "icon.png",
   "main": "./dist/extension",
+  "browser": "./dist/web-extension",
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
@@ -72,7 +73,8 @@
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "lint-staged": {
     "**/*.{ts,json,md,yml,js}": [
@@ -97,6 +99,7 @@
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "@vscode/test-electron": "^1.6.2",
+    "@vscode/test-web": "^0.0.11",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "fs-extra": "^10.0.0",
@@ -104,10 +107,13 @@
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "mocha": "^9.1.1",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "sinon": "^11.1.2",
     "tmp": "^0.2.1",
     "ts-loader": "^9.2.5",
     "typescript": "^4.4.3",
+    "util": "^0.12.4",
     "vsce": "^1.80.0",
     "vscode-nls-dev": "^3.3.2",
     "webpack": "^5.53.0",

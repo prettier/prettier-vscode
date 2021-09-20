@@ -4,7 +4,7 @@ import * as prettier from "prettier";
 import * as sinon from "sinon";
 
 import { getWorkspaceFolderUri } from "./format.test";
-import { ModuleResolver } from "../../ModuleResolver";
+import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolver";
 import { LoggingService } from "../../LoggingService";
 import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,
@@ -55,9 +55,9 @@ suite("Test ModuleResolver", function () {
         getWorkspaceFolderUri("specific-version").fsPath,
         "ugly.js"
       );
-      const prettierInstance = await moduleResolver.getPrettierInstance(
+      const prettierInstance = (await moduleResolver.getPrettierInstance(
         fileName
-      );
+      )) as PrettierNodeModule;
 
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");

@@ -40,9 +40,12 @@ export function activate(context: ExtensionContext) {
   setGlobalState(context.globalState);
   setWorkspaceState(context.workspaceState);
 
-  const templateService = new TemplateService(loggingService);
-
   const moduleResolver = new ModuleResolver(loggingService);
+
+  const templateService = new TemplateService(
+    loggingService,
+    moduleResolver.getGlobalPrettierInstance()
+  );
 
   const statusBar = new StatusBar();
 

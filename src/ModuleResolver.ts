@@ -5,23 +5,32 @@ import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
-import { commands, Disposable, Uri, workspace } from "vscode";
+import { commands, TextDocument, Uri, workspace } from "vscode";
 import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
 import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
+  INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
 import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
-import { PackageManagers, PrettierModule } from "./types";
+import {
+  ModuleResolverInterface,
+  PackageManagers,
+  PrettierOptions,
+  PrettierResolveConfigOptions,
+  PrettierVSCodeConfig,
+} from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 
 const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
 declare const __non_webpack_require__: typeof require;
+
+export type PrettierNodeModule = typeof prettier;
 
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
@@ -58,10 +67,14 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
   return undefined;
 }
 
-export class ModuleResolver implements Disposable {
-  private path2Module = new Map<string, PrettierModule>();
+export class ModuleResolver implements ModuleResolverInterface {
+  private path2Module = new Map<string, PrettierNodeModule>();
 
   constructor(private loggingService: LoggingService) {}
+
+  public getGlobalPrettierInstance(): PrettierNodeModule {
+    return prettier;
+  }
 
   /**
    * Returns an instance of the prettier module.
@@ -69,7 +82,7 @@ export class ModuleResolver implements Disposable {
    */
   public async getPrettierInstance(
     fileName: string
-  ): Promise<PrettierModule | undefined> {
+  ): Promise<PrettierNodeModule | undefined> {
     if (!workspace.isTrusted) {
       this.loggingService.logDebug(UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER);
       return prettier;
@@ -127,7 +140,7 @@ export class ModuleResolver implements Disposable {
       }
     }
 
-    let moduleInstance: PrettierModule | undefined = undefined;
+    let moduleInstance: PrettierNodeModule | undefined = undefined;
     if (modulePath !== undefined) {
       // First check module cache
       moduleInstance = this.path2Module.get(modulePath);
@@ -135,7 +148,7 @@ export class ModuleResolver implements Disposable {
         return moduleInstance;
       } else {
         try {
-          moduleInstance = this.loadNodeModule<PrettierModule>(modulePath);
+          moduleInstance = this.loadNodeModule<PrettierNodeModule>(modulePath);
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
           }
@@ -181,6 +194,64 @@ export class ModuleResolver implements Disposable {
       this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
       return prettier;
     }
+  }
+
+  public async getResolvedConfig(
+    { fileName, uri }: TextDocument,
+    vscodeConfig: PrettierVSCodeConfig
+  ): Promise<"error" | "disabled" | PrettierOptions | null> {
+    const isVirtual = uri.scheme !== "file";
+
+    let configPath: string | undefined;
+    try {
+      if (!isVirtual) {
+        configPath = (await prettier.resolveConfigFile(fileName)) ?? undefined;
+      }
+    } catch (error) {
+      this.loggingService.logError(
+        `Error resolving prettier configuration for ${fileName}`,
+        error
+      );
+
+      return "error";
+    }
+
+    const resolveConfigOptions: PrettierResolveConfigOptions = {
+      config: isVirtual
+        ? undefined
+        : vscodeConfig.configPath
+        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+        : configPath,
+      editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
+    };
+
+    let resolvedConfig: PrettierOptions | null;
+    try {
+      resolvedConfig = isVirtual
+        ? null
+        : await prettier.resolveConfig(fileName, resolveConfigOptions);
+    } catch (error) {
+      this.loggingService.logError(
+        "Invalid prettier configuration file detected.",
+        error
+      );
+      this.loggingService.logError(INVALID_PRETTIER_CONFIG);
+
+      return "error";
+    }
+    if (resolveConfigOptions.config) {
+      this.loggingService.logInfo(
+        `Using config file at '${resolveConfigOptions.config}'`
+      );
+    }
+
+    if (!isVirtual && !resolvedConfig && vscodeConfig.requireConfig) {
+      this.loggingService.logInfo(
+        "Require config set to true and no config present. Skipping file."
+      );
+      return "disabled";
+    }
+    return resolvedConfig;
   }
 
   /**

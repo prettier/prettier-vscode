@@ -46,6 +46,7 @@ _Describe what actually happened instead_.
 _Feel free to attach a screenshot_.
 
 **VS Code Version**:
+
 <!-- In VS Code select "Help" > "About", then click on "Copy" and paste the text here -->
 
 **Prettier Extension Version**:

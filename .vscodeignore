@@ -2,6 +2,7 @@
 .husky/
 .vscode/
 .vscode-test/
+.vscode-test-web/
 out/
 scripts/
 src/
