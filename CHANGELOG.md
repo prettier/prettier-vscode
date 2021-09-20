@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [8.2.0]
+
+- Updated Prettier to 2.4.0
+
 ## [8.1.0]
 
 - Setting `requireConfig` no longer accepts `.editorconfig` as a valid config.
