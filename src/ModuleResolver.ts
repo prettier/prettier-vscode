@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { findUpStop, findUpSync } from "find-up";
+import * as findUp from "find-up";
 import * as fs from "fs";
 import * as path from "path";
 import * as prettier from "prettier";
@@ -250,7 +250,7 @@ export class ModuleResolver implements Disposable {
     }
 
     // First look for an explicit package.json dep
-    const packageJsonResDir = findUpSync(
+    const packageJsonResDir = findUp.sync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "package.json"))) {
           let packageJson;
@@ -273,7 +273,7 @@ export class ModuleResolver implements Disposable {
         }
 
         if (this.isInternalTestRoot(dir)) {
-          return findUpStop;
+          return findUp.stop;
         }
       },
       { cwd: finalPath, type: "directory" }
@@ -286,14 +286,14 @@ export class ModuleResolver implements Disposable {
     }
 
     // If no explicit package.json dep found, instead look for implicit dep
-    const nodeModulesResDir = findUpSync(
+    const nodeModulesResDir = findUp.sync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {
           return dir;
         }
 
         if (this.isInternalTestRoot(dir)) {
-          return findUpStop;
+          return findUp.stop;
         }
       },
       { cwd: finalPath, type: "directory" }
