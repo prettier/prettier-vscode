@@ -65,7 +65,7 @@ export class LoggingService {
     }
   }
 
-  public logError(message: string, error?: Error | string) {
+  public logError(message: string, error?: unknown) {
     if (this.logLevel === "NONE") {
       return;
     }
@@ -74,7 +74,7 @@ export class LoggingService {
       // Errors as a string usually only happen with
       // plugins that don't return the expected error.
       this.outputChannel.appendLine(error);
-    } else if (error?.message || error?.stack) {
+    } else if (error instanceof Error) {
       if (error?.message) {
         this.logMessage(error.message, "ERROR");
       }

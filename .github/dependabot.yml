@@ -156,3 +156,6 @@ updates:
   - dependency-name: "@types/resolve"
     versions:
     - 1.20.0
+  - dependency-name: "find-up"
+    versions:
+    - ">= 6, < 7"

@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [8.2.0]
 
 - Updated Prettier to 2.4.1
+- VS Code version to 1.60.0
 
 ## [8.1.0]
 
