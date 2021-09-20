@@ -88,7 +88,7 @@ export class ModuleResolver implements Disposable {
         : this.findPkg(fileName, "prettier");
     } catch (error) {
       let moduleDirectory = "";
-      if (!modulePath) {
+      if (!modulePath && error instanceof Error) {
         // If findPkg threw an error from `resolve.sync`, attempt to parse the
         // directory it failed on to provide a better error message
         const resolveSyncPathRegex = /Cannot find module '.*' from '(.*)'/;
