@@ -129,7 +129,7 @@ export default class PrettierEditService implements Disposable {
         editBuilder.replace(edits[0].range, edits[0].newText);
       });
     } catch (e) {
-      this.loggingService.logError(e);
+      this.loggingService.logError("Error formatting document", e);
     }
   };
 
