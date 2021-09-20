@@ -82,7 +82,7 @@ The following will use Prettier for all languages except Javascript.
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": null
+    "editor.defaultFormatter": "<another formatter>"
   }
 }
 ```
@@ -91,7 +91,7 @@ The following will use Prettier for only Javascript.
 
 ```json
 {
-  "editor.defaultFormatter": null,
+  "editor.defaultFormatter": "<another formatter>",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
