@@ -93,7 +93,7 @@
     "@types/prettier": "^2.3.1",
     "@types/resolve": "^1.17.0",
     "@types/semver": "^7.3.1",
-    "@types/sinon": "^10.0.0",
+    "@types/sinon": "^10.0.4",
     "@types/tmp": "^0.2.1",
     "@types/vscode": "^1.60.0",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
