@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.0.1]
+
+- Changed schemastore.com URLs to use HTTPS
+
 ## [9.0.0]
 
 - Support for browser VS Code

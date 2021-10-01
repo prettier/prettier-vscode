@@ -3,7 +3,7 @@
   "properties": {
     "prettier": {
       "description": "Prettier configuration",
-      "$ref": "http://json.schemastore.org/prettierrc"
+      "$ref": "https://json.schemastore.org/prettierrc"
     }
   }
 }
