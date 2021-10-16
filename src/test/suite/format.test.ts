@@ -120,4 +120,5 @@ suite("Test format Document", function () {
   test("it formats HTML with literals", () =>
     formatSameAsPrettier("formatTest/htmlWithLiterals.html"));
   test("it formats Vue", () => formatSameAsPrettier("formatTest/ugly.vue"));
+  test("it formats HBS", () => formatSameAsPrettier("formatTest/ugly.hbs"));
 });

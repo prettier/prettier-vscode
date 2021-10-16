@@ -78,6 +78,9 @@
     "[html]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[handlebars]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[vue]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },

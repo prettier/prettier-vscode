@@ -26,6 +26,7 @@
     "prettier",
     "formatter",
     "javascript",
+    "handlebars",
     "js",
     "jsx",
     "flow",
@@ -47,6 +48,8 @@
     "swift",
     "html",
     "vue",
+    "ember",
+    "glimmer",
     "angular",
     "graphql",
     "yaml",
@@ -65,7 +68,7 @@
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
     "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install",
-    "prettier": "prettier --write '**/*.{ts,json,md,yml,js}'",
+    "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
@@ -77,7 +80,7 @@
     "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "lint-staged": {
-    "**/*.{ts,json,md,yml,js}": [
+    "**/*.{ts,json,md,yml,hbs,js}": [
       "prettier --write"
     ],
     "src/**/*.ts": [
@@ -410,6 +413,15 @@
         "id": "vue",
         "extensions": [
           ".vue"
+        ]
+      },
+      {
+        "id": "handlebars",
+        "extensions": [
+          ".hbs",
+          ".gjs",
+          ".gts",
+          ".handlebars"
         ]
       }
     ],
