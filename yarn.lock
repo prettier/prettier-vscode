@@ -3911,10 +3911,10 @@ vinyl@^2.1.0:
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
 
-vsce@^1.80.0:
-  version "1.99.0"
-  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.99.0.tgz#ae27e32cb16a4eaa38adf431003f75c7ef0fefdc"
-  integrity sha512-fyzOLcmcgBmA+CYg0NyYU3JMmcOBcf94ZzZZYi83mIoXBRU391mYByoJEPnkl8xZGa3/OW5lH438/JOThlYPNA==
+vsce@^1.100.2:
+  version "1.100.2"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.100.2.tgz#c4ed5e87e3aa6341e9941715ce088a2d69a565c1"
+  integrity sha512-eDeubJNc0iav6mbTESZ90E9WcSzqAAl/lunb4KbNjRrz9tf+657i1mKhnWUyvK7Y4D8kN5NBD2FXD4FFMZj7ig==
   dependencies:
     azure-devops-node-api "^11.0.1"
     chalk "^2.4.2"
