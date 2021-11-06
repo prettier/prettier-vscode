@@ -5,8 +5,9 @@ Feel free to open issues or PRs!
 ## Running extension
 
 - Open this repository inside VSCode
+- `yarn install`
 - Debug sidebar
-- `Launch Extension`
+- `Run Extension`
 
 ## Running tests
 

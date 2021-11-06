@@ -376,11 +376,11 @@
     "jsonValidation": [
       {
         "fileMatch": ".prettierrc",
-        "url": "http://json.schemastore.org/prettierrc"
+        "url": "https://json.schemastore.org/prettierrc"
       },
       {
         "fileMatch": ".prettierrc.json",
-        "url": "http://json.schemastore.org/prettierrc"
+        "url": "https://json.schemastore.org/prettierrc"
       },
       {
         "fileMatch": "package.json",
