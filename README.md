@@ -57,7 +57,7 @@ Install through VS Code extensions. Search for `Prettier - Code formatter`
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
-```
+```bash
 ext install esbenp.prettier-vscode
 ```
 
@@ -114,7 +114,7 @@ This extension will use prettier from your project's local dependencies (recomme
 
 To install prettier in your project and pin its version [as recommended](https://prettier.io/docs/en/install.html), run:
 
-```
+```bash
 npm install prettier -D --save-exact
 ```
 
@@ -132,7 +132,7 @@ Using [Prettier Configuration files](https://prettier.io/docs/en/configuration.h
 
 ### Configuring Default Options
 
-Some users may not wish to create a new Prettier config for every project or use the VS Code settings. In order to set a default configuraiton, set [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath). However, be careful, if this is set this value will always be used and local configuration files will be ignored.
+Some users may not wish to create a new Prettier config for every project or use the VS Code settings. In order to set a default configuration, set [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath). However, be careful, if this is set this value will always be used and local configuration files will be ignored.
 
 ### Visual Studio Code Settings
 
@@ -148,7 +148,7 @@ You can use [VS Code settings](#prettier-settings) to configure prettier. Settin
 
 ### Using Command Palette (CMD/CTRL + Shift + P)
 
-```
+```text
 1. CMD + Shift + P -> Format Document
 OR
 1. Select the text you want to Prettify
@@ -180,7 +180,7 @@ You can turn on format-on-save on a per-language basis by scoping the setting:
 
 Format selection works on several languages depending on what Prettier itself supports. The following languages currently are supported:
 
-```
+```text
 javascript
 javascriptreact
 typescript
@@ -209,7 +209,7 @@ All prettier options can be configured directly in this extension. These setting
 
 > The default values of these configurations are always to their Prettier 2.0 defaults. In order to use defaults from earlier versions of prettier you must set them manually using your VS Code settings or local project configurations.
 
-```
+```text
 prettier.arrowParens
 prettier.bracketSpacing
 prettier.endOfLine
@@ -249,7 +249,7 @@ Files which match will not be formatted. Set to `null` to not read ignore files.
 
 **Note, if this is set, this value will always be used and local ignore files will be ignored.**
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 #### prettier.configPath
 
@@ -257,13 +257,13 @@ Supply a custom path to the prettier configuration file.
 
 **Note, if this is set, this value will always be used and local configuration files will be ignored. A better option for global defaults is to put a `~/.prettierrc` file in your home directory.**
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 #### prettier.prettierPath
 
 Supply a custom path to the prettier module. This path should be to the module folder, not the bin/script path. i.e. `./node_modules/prettier`, not `./bin/prettier`.
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 #### prettier.resolveGlobalModules (default: `false`)
 
@@ -271,9 +271,9 @@ When enabled, this extension will attempt to use global npm or yarn modules if l
 
 > NOTE: This setting can have a negative performance impact, particularly on Windows when you have attached network drives. Only enable this if you must use global modules. It is recommended that you always use local modules when possible.
 
-**Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run**
+**Note: Disabling a language enabled in a parent folder will prevent formatting instead of letting any other formatter to run.**
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 #### prettier.documentSelectors
 
@@ -302,19 +302,19 @@ To tell Prettier how to format a file of type `.abc` I can set an override in th
 }
 ```
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 #### prettier.useEditorConfig (default: `true`)
 
 Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
 
-**Disabled on untrusted workspaces (always false)**
+**Disabled on untrusted workspaces (always false).**
 
 #### prettier.withNodeModules (default: `false`)
 
 Whether or not to process files in the `node_modules` folder.
 
-**Disabled on untrusted workspaces**
+**Disabled on untrusted workspaces.**
 
 ## Error Messages
 
