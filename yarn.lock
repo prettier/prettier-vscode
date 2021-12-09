@@ -227,10 +227,10 @@
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.2.1.tgz#83ecf4ec22a8c218c71db25f316619fe5b986011"
   integrity sha512-7cTXwKP/HLOPVgjg+YhBdQ7bMiobGMuoBmrGmqwIWJv8elC6t1DfVc/mn4fD9UE1IjhwmhaQ5pGVXkmXbH0rhg==
 
-"@types/vscode@^1.60.0":
-  version "1.60.0"
-  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.60.0.tgz#9330c317691b4f53441a18b598768faeeb71618a"
-  integrity sha512-wZt3VTmzYrgZ0l/3QmEbCq4KAJ71K3/hmMQ/nfpv84oH8e81KKwPEoQ5v8dNCxfHFVJ1JabHKmCvqdYOoVm1Ow==
+"@types/vscode@^1.63.0":
+  version "1.63.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.63.0.tgz#3bddb5b79a93e8fcdd420bb00f7066658c79c70c"
+  integrity sha512-iePu1axOi5WSThV6l2TYcciBIpAlMarjBC8H0y8L8ocsZLxh7MttzwFU3pjoItF5fRVGxHS0Hsvje9jO3yJsfw==
 
 "@types/yauzl@^2.9.1":
   version "2.9.2"
