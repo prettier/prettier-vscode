@@ -51,6 +51,7 @@ async function main() {
       extensionTestsPath,
       launchArgs: [workspacePath]
         .concat(["--skip-welcome"])
+        .concat(["--disable-extensions"])
         .concat(["--skip-release-notes"])
         .concat(["--enable-proposed-api"])
         .concat(["--user-data-dir", userDataDirectory]),
