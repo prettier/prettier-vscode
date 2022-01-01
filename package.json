@@ -120,7 +120,7 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "find-up": "^5.0.0",
+    "find-up": "5.0.0",
     "prettier": "^2.5.1",
     "resolve": "^1.20.0",
     "semver": "^7.3.5",
