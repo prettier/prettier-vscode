@@ -10,6 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@prettier/plugin-php": "^0.14.0"
+    "@prettier/plugin-php": "^0.17.6"
   }
 }

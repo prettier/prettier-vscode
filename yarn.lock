@@ -288,10 +288,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prettier@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "@types/prettier@npm:2.4.1"
-  checksum: df330c2d6fe7c282839b0f17701e069a9c6c96d2ff54704e933a1b3c1b98844d963a7cb00c5629d173604892ceee802312bbaeb8a97f5da21e13db8f653b519e
+"@types/prettier@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "@types/prettier@npm:2.4.2"
+  checksum: 76e230b2d11028af11fe12e09b2d5b10b03738e9abf819ae6ebb0f78cac13d39f860755ce05ac3855b608222518d956628f5d00322dc206cc6d1f2d8d1519f1e
   languageName: node
   linkType: hard
 
@@ -4539,7 +4539,7 @@ __metadata:
     "@types/lodash": ^4.14.178
     "@types/mocha": ^9.0.0
     "@types/node": 16.11.17
-    "@types/prettier": ^2.4.1
+    "@types/prettier": ^2.4.2
     "@types/resolve": ^1.17.0
     "@types/semver": ^7.3.1
     "@types/sinon": ^10.0.6
@@ -4558,7 +4558,7 @@ __metadata:
     lint-staged: ^11.2.6
     mocha: ^9.1.3
     path-browserify: ^1.0.1
-    prettier: ^2.4.1
+    prettier: ^2.5.1
     process: ^0.11.10
     resolve: ^1.17.0
     semver: ^7.3.4
@@ -4575,12 +4575,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"prettier@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
+"prettier@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "prettier@npm:2.5.1"
   bin:
     prettier: bin-prettier.js
-  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
+  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
   languageName: node
   linkType: hard
 

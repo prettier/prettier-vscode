@@ -9,8 +9,7 @@
   "author": "jarrodldavis",
   "license": "MIT",
   "devDependencies": {
-    "@prettier/plugin-php": "^0.11.2",
-    "prettier": "^1.19.1"
-  },
-  "dependencies": {}
+    "@prettier/plugin-php": "^0.17.6",
+    "prettier": "^2.5.1"
+  }
 }
