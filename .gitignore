@@ -7,3 +7,11 @@ node_modules
 .DS_STORE
 *.log
 test-results.xml
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
