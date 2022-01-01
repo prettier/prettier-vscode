@@ -95,7 +95,7 @@
     "@types/semver": "^7.3.9",
     "@types/sinon": "^10.0.6",
     "@types/tmp": "^0.2.3",
-    "@types/vscode": "^1.60.0",
+    "@types/vscode": "^1.63.1",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "@vscode/test-electron": "^2.0.1",
