@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.1.0]
+
+- Upgraded to Prettier 2.5.1
+- Handlebars support ([@lifeart](https://github.com/lifeart))
+
 ## [9.0.1]
 
 - Changed schemastore.com URLs to use HTTPS
