@@ -22,6 +22,11 @@
     · Vue
     · Angular
   </em>
+  <em>
+    HANDLEBARS
+    · Ember
+    · Glimmer
+  </em>
   <br />
   <em>
     GraphQL
@@ -187,6 +192,7 @@ typescript
 typescriptreact
 json
 graphql
+handlebars
 ```
 
 ### Format Document (Forced)

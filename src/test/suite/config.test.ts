@@ -34,6 +34,11 @@ suite("Test configurations", function () {
     testConfig("jsfile/test.js", "jsfile/test.result.js")
   );
   test(
+    "it uses config from .prettierrc.js file for hbs files",
+    /* cspell: disable-next-line */
+    testConfig("hbsfile/test.hbs", "hbsfile/test.result.hbs")
+  );
+  test(
     "it uses config from .editorconfig file ",
     testConfig("editorconfig/test.js", "editorconfig/test.result.js")
   );
