@@ -132,7 +132,7 @@ Using [Prettier Configuration files](https://prettier.io/docs/en/configuration.h
 
 ### Configuring Default Options
 
-Some users may not wish to create a new Prettier config for every project or use the VS Code settings. In order to set a default configuraiton, set [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath). However, be careful, if this is set this value will always be used and local configuration files will be ignored.
+Some users may not wish to create a new Prettier config for every project or use the VS Code settings. In order to set a default configuration, set [`prettier.configPath`](https://github.com/prettier/prettier-vscode#prettierconfigpath). However, be careful, if this is set this value will always be used and local configuration files will be ignored.
 
 ### Visual Studio Code Settings
 
