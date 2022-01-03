@@ -6,7 +6,6 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnType": false,
-  "npm.packageManager": "yarn",
   "files.eol": "\n",
   "cSpell.words": [
     "Parens",
