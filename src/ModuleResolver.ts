@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import * as findUp from "find-up";
 import * as fs from "fs";
+import mem from "mem";
 import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
@@ -16,7 +17,6 @@ import {
   UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
-import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
 import {
   ModuleResolverInterface,
   PackageManagers,
@@ -68,9 +68,14 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 }
 
 export class ModuleResolver implements ModuleResolverInterface {
+  private findPkgMem: (fsPath: string, pkgName: string) => string | undefined;
   private path2Module = new Map<string, PrettierNodeModule>();
 
-  constructor(private loggingService: LoggingService) {}
+  constructor(private loggingService: LoggingService) {
+    this.findPkgMem = mem(this.findPkg, {
+      cacheKey: (args) => `${args[0]}:${args[1]}`,
+    });
+  }
 
   public getGlobalPrettierInstance(): PrettierNodeModule {
     return prettier;
@@ -98,7 +103,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       modulePath = prettierPath
         ? getWorkspaceRelativePath(fileName, prettierPath)
-        : this.findPkg(fileName, "prettier");
+        : this.findPkgMem(fileName, "prettier");
     } catch (error) {
       let moduleDirectory = "";
       if (!modulePath && error instanceof Error) {
@@ -305,12 +310,6 @@ export class ModuleResolver implements ModuleResolverInterface {
    * @returns {string} resolved path to module
    */
   private findPkg(fsPath: string, pkgName: string): string | undefined {
-    const stateKey = `module-path:${fsPath}:${pkgName}`;
-    const packagePathState = getFromWorkspaceState(stateKey, false);
-    if (packagePathState) {
-      return packagePathState;
-    }
-
     // Only look for a module definition outside of any `node_modules` directories
     const splitPath = fsPath.split("/");
     let finalPath = fsPath;
@@ -351,9 +350,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     );
 
     if (packageJsonResDir) {
-      const packagePath = resolve.sync(pkgName, { basedir: packageJsonResDir });
-      updateWorkspaceState(stateKey, packagePath);
-      return packagePath;
+      return resolve.sync(pkgName, { basedir: packageJsonResDir });
     }
 
     // If no explicit package.json dep found, instead look for implicit dep
@@ -371,9 +368,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     );
 
     if (nodeModulesResDir) {
-      const packagePath = resolve.sync(pkgName, { basedir: nodeModulesResDir });
-      updateWorkspaceState(stateKey, packagePath);
-      return packagePath;
+      return resolve.sync(pkgName, { basedir: nodeModulesResDir });
     }
 
     return;

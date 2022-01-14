@@ -124,6 +124,7 @@
   },
   "dependencies": {
     "find-up": "5.0.0",
+    "mem": "^9.0.1",
     "prettier": "^2.5.1",
     "resolve": "^1.21.0",
     "semver": "^7.3.5",
