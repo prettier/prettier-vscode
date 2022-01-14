@@ -6,7 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [9.1.1]
 
-- Clear cache on reload (#2370)
+- Clear cache on reload (#2371)
 
 ## [9.1.0]
 
