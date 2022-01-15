@@ -1,7 +1,6 @@
 import { execSync } from "child_process";
 import * as findUp from "find-up";
 import * as fs from "fs";
-import mem from "mem";
 import * as path from "path";
 import * as prettier from "prettier";
 import * as resolve from "resolve";
@@ -68,13 +67,11 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 }
 
 export class ModuleResolver implements ModuleResolverInterface {
-  private findPkgMem: (fsPath: string, pkgName: string) => string | undefined;
+  private findPkgCache: Map<string, string>;
   private path2Module = new Map<string, PrettierNodeModule>();
 
   constructor(private loggingService: LoggingService) {
-    this.findPkgMem = mem(this.findPkg, {
-      cacheKey: (args) => `${args[0]}:${args[1]}`,
-    });
+    this.findPkgCache = new Map();
   }
 
   public getGlobalPrettierInstance(): PrettierNodeModule {
@@ -103,7 +100,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       modulePath = prettierPath
         ? getWorkspaceRelativePath(fileName, prettierPath)
-        : this.findPkgMem(fileName, "prettier");
+        : this.findPkg(fileName, "prettier");
     } catch (error) {
       let moduleDirectory = "";
       if (!modulePath && error instanceof Error) {
@@ -310,6 +307,12 @@ export class ModuleResolver implements ModuleResolverInterface {
    * @returns {string} resolved path to module
    */
   private findPkg(fsPath: string, pkgName: string): string | undefined {
+    const cacheKey = `${fsPath}:${pkgName}`;
+    const packagePathState = this.findPkgCache.get(cacheKey);
+    if (packagePathState) {
+      return packagePathState;
+    }
+
     // Only look for a module definition outside of any `node_modules` directories
     const splitPath = fsPath.split("/");
     let finalPath = fsPath;
@@ -350,7 +353,9 @@ export class ModuleResolver implements ModuleResolverInterface {
     );
 
     if (packageJsonResDir) {
-      return resolve.sync(pkgName, { basedir: packageJsonResDir });
+      const packagePath = resolve.sync(pkgName, { basedir: packageJsonResDir });
+      this.findPkgCache.set(cacheKey, packagePath);
+      return packagePath;
     }
 
     // If no explicit package.json dep found, instead look for implicit dep
@@ -368,7 +373,9 @@ export class ModuleResolver implements ModuleResolverInterface {
     );
 
     if (nodeModulesResDir) {
-      return resolve.sync(pkgName, { basedir: nodeModulesResDir });
+      const packagePath = resolve.sync(pkgName, { basedir: nodeModulesResDir });
+      this.findPkgCache.set(cacheKey, packagePath);
+      return packagePath;
     }
 
     return;
