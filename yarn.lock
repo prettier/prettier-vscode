@@ -308,10 +308,10 @@
     rimraf "^3.0.2"
     unzipper "^0.10.11"
 
-"@vscode/test-web@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.15.tgz#8caca6d902d5b9e18b8e0c4cc0f6a69d467dd39c"
-  integrity sha512-jYuDcoG66xXEnZnmrHuRkOdZj4BAk/BFzsqa8c/ASFP4Rkua6bCHIDUqii7sVOdmtf2YuTbI3nSqzmn4YvTUfw==
+"@vscode/test-web@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.17.tgz#fb14a3e2416cadbb115d85cdb27f5ac2d2b4a2e4"
+  integrity sha512-9pb8kcTK1//vw/KfKcdw2ipGY1z4hkRDvDqv4UR2PaKT8t0xwrndTXKBtF37+di3sduVUHWEpWsZkwEFWWvw0g==
   dependencies:
     "@koa/router" "^10.1.1"
     decompress "^4.2.1"
