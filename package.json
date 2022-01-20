@@ -102,7 +102,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
     "@vscode/test-electron": "^2.0.1",
-    "@vscode/test-web": "^0.0.15",
+    "@vscode/test-web": "^0.0.18",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "fs-extra": "^10.0.0",
