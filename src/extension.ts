@@ -8,10 +8,12 @@ import { TemplateService } from "./TemplateService";
 import { getConfig } from "./util";
 import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
 import { setGlobalState, setWorkspaceState } from "./stateUtils";
+import * as vscode from "vscode";
 
 // the application insights key (also known as instrumentation key)
 const extensionName = process.env.EXTENSION_NAME || "dev.prettier-vscode";
 const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
+let formatStatusBar: vscode.StatusBarItem;
 
 export function activate(context: ExtensionContext) {
   const loggingService = new LoggingService();
@@ -79,4 +81,37 @@ export function activate(context: ExtensionContext) {
     forceFormatDocumentCommand,
     ...editService.registerDisposables()
   );
+
+  formatStatusBar = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  formatStatusBar.command = "prettier.forceFormatDocument";
+  context.subscriptions.push(formatStatusBar);
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(updateStatusBar)
+  );
+  context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(updateStatusBar)
+  );
+  updateStatusBar();
+}
+
+function updateStatusBar(): void {
+  if (vscode.window.activeTextEditor) {
+    formatStatusBar.text = `$(edit)`;
+    formatStatusBar.tooltip = "Format Document";
+    formatStatusBar.show();
+  } else {
+    hide();
+  }
+}
+
+export function deactivate() {
+  formatStatusBar.dispose();
+}
+
+export function hide() {
+  formatStatusBar.hide();
 }
