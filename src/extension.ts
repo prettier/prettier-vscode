@@ -13,6 +13,7 @@ import * as vscode from "vscode";
 // the application insights key (also known as instrumentation key)
 const extensionName = process.env.EXTENSION_NAME || "dev.prettier-vscode";
 const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
+
 let formatStatusBar: vscode.StatusBarItem;
 
 export function activate(context: ExtensionContext) {
