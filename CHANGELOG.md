@@ -10,7 +10,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [9.1.1]
 
-- Status Bar Icon for Formatting a Document
+- Changed build target to ES2020 to reduce module size
 
 ## [9.1.0]
 

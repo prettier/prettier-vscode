@@ -16,7 +16,6 @@ import {
   UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
-import { getFromWorkspaceState, updateWorkspaceState } from "./stateUtils";
 import {
   ModuleResolverInterface,
   PackageManagers,
@@ -68,9 +67,12 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 }
 
 export class ModuleResolver implements ModuleResolverInterface {
+  private findPkgCache: Map<string, string>;
   private path2Module = new Map<string, PrettierNodeModule>();
 
-  constructor(private loggingService: LoggingService) {}
+  constructor(private loggingService: LoggingService) {
+    this.findPkgCache = new Map();
+  }
 
   public getGlobalPrettierInstance(): PrettierNodeModule {
     return prettier;
@@ -305,8 +307,8 @@ export class ModuleResolver implements ModuleResolverInterface {
    * @returns {string} resolved path to module
    */
   private findPkg(fsPath: string, pkgName: string): string | undefined {
-    const stateKey = `module-path:${fsPath}:${pkgName}`;
-    const packagePathState = getFromWorkspaceState(stateKey, false);
+    const cacheKey = `${fsPath}:${pkgName}`;
+    const packagePathState = this.findPkgCache.get(cacheKey);
     if (packagePathState) {
       return packagePathState;
     }
@@ -352,7 +354,7 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     if (packageJsonResDir) {
       const packagePath = resolve.sync(pkgName, { basedir: packageJsonResDir });
-      updateWorkspaceState(stateKey, packagePath);
+      this.findPkgCache.set(cacheKey, packagePath);
       return packagePath;
     }
 
@@ -372,7 +374,7 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     if (nodeModulesResDir) {
       const packagePath = resolve.sync(pkgName, { basedir: nodeModulesResDir });
-      updateWorkspaceState(stateKey, packagePath);
+      this.findPkgCache.set(cacheKey, packagePath);
       return packagePath;
     }
 
