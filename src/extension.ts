@@ -7,7 +7,6 @@ import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
 import { getConfig } from "./util";
 import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
-import { setGlobalState, setWorkspaceState } from "./stateUtils";
 import * as vscode from "vscode";
 
 // the application insights key (also known as instrumentation key)
@@ -39,9 +38,6 @@ export function activate(context: ExtensionContext) {
     );
     return;
   }
-
-  setGlobalState(context.globalState);
-  setWorkspaceState(context.workspaceState);
 
   const moduleResolver = new ModuleResolver(loggingService);
 

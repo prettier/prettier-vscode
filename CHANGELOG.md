@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.2.0]
+
+- Clear cache on reload (#2371)
+
 ## [9.1.1]
 
 - Status Bar Icon for Formatting a Document
