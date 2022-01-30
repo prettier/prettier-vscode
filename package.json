@@ -419,8 +419,6 @@
         "id": "handlebars",
         "extensions": [
           ".hbs",
-          ".gjs",
-          ".gts",
           ".handlebars"
         ]
       }
