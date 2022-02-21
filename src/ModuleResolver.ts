@@ -114,7 +114,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
 
       this.loggingService.logInfo(
-        `Attempted to load Prettier module from ${
+        `Attempted to determine module path from ${
           modulePath || moduleDirectory || "package.json"
         }`
       );
@@ -144,6 +144,9 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     let moduleInstance: PrettierNodeModule | undefined = undefined;
     if (modulePath !== undefined) {
+      this.loggingService.logDebug(
+        `Local prettier module path: '${modulePath}'`
+      );
       // First check module cache
       moduleInstance = this.path2Module.get(modulePath);
       if (moduleInstance) {
@@ -190,6 +193,10 @@ export class ModuleResolver implements ModuleResolverInterface {
         );
         this.loggingService.logError(OUTDATED_PRETTIER_VERSION_MESSAGE);
         return undefined;
+      } else {
+        this.loggingService.logDebug(
+          `Using prettier version ${moduleInstance.version}`
+        );
       }
       return moduleInstance;
     } else {
