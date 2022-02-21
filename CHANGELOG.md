@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## Unreleased
 
 - Remove `.gts` and `.gjs` from Handlebars extensions
+- Changed the initial contents of a newly generated config file to use the extension settings defined in VSCode
 
 ## [9.2.0]
 
