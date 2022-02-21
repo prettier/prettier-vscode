@@ -1,7 +1,7 @@
 import * as os from "os";
 import * as path from "path";
 import { Uri, workspace } from "vscode";
-import { PrettierVSCodeConfig } from "./types";
+import { PrettierVSCodeConfig, PrettierOptions } from "./types";
 
 export function getWorkspaceRelativePath(
   filePath: string,
@@ -50,4 +50,30 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   }
 
   return config;
+}
+
+export function filterFormattingOptions(
+  vsCodeConfig: PrettierOptions
+): PrettierOptions {
+  const formattingOptions: PrettierOptions = {
+    arrowParens: vsCodeConfig.arrowParens,
+    bracketSpacing: vsCodeConfig.bracketSpacing,
+    endOfLine: vsCodeConfig.endOfLine,
+    htmlWhitespaceSensitivity: vsCodeConfig.htmlWhitespaceSensitivity,
+    insertPragma: vsCodeConfig.insertPragma,
+    jsxBracketSameLine: vsCodeConfig.jsxBracketSameLine,
+    jsxSingleQuote: vsCodeConfig.jsxSingleQuote,
+    printWidth: vsCodeConfig.printWidth,
+    proseWrap: vsCodeConfig.proseWrap,
+    quoteProps: vsCodeConfig.quoteProps,
+    requirePragma: vsCodeConfig.requirePragma,
+    semi: vsCodeConfig.semi,
+    singleQuote: vsCodeConfig.singleQuote,
+    tabWidth: vsCodeConfig.tabWidth,
+    trailingComma: vsCodeConfig.trailingComma,
+    useTabs: vsCodeConfig.useTabs,
+    vueIndentScriptAndStyle: vsCodeConfig.vueIndentScriptAndStyle,
+  };
+
+  return formattingOptions;
 }

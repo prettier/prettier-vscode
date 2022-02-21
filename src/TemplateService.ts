@@ -2,6 +2,7 @@ import { TextEncoder } from "util";
 import { Uri, workspace } from "vscode";
 import { LoggingService } from "./LoggingService";
 import { PrettierModule, PrettierOptions } from "./types";
+import { filterFormattingOptions, getConfig } from "./util";
 
 export class TemplateService {
   constructor(
@@ -9,7 +10,12 @@ export class TemplateService {
     private prettierModule: PrettierModule
   ) {}
   public async writeConfigFile(folderPath: Uri) {
-    const settings = { tabWidth: 2, useTabs: false };
+    const vsCodeConfig = getConfig();
+    const settings = {
+      tabWidth: 2,
+      useTabs: false,
+      ...filterFormattingOptions(vsCodeConfig),
+    };
 
     const outputPath = Uri.joinPath(folderPath, ".prettierrc");
 

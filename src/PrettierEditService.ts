@@ -24,7 +24,11 @@ import {
   PrettierOptions,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import {
+  getConfig,
+  getWorkspaceRelativePath,
+  filterFormattingOptions,
+} from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -454,23 +458,7 @@ export default class PrettierEditService implements Disposable {
 
     const vsOpts: PrettierOptions = {};
     if (fallbackToVSCodeConfig) {
-      vsOpts.arrowParens = vsCodeConfig.arrowParens;
-      vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
-      vsOpts.endOfLine = vsCodeConfig.endOfLine;
-      vsOpts.htmlWhitespaceSensitivity = vsCodeConfig.htmlWhitespaceSensitivity;
-      vsOpts.insertPragma = vsCodeConfig.insertPragma;
-      vsOpts.jsxBracketSameLine = vsCodeConfig.jsxBracketSameLine;
-      vsOpts.jsxSingleQuote = vsCodeConfig.jsxSingleQuote;
-      vsOpts.printWidth = vsCodeConfig.printWidth;
-      vsOpts.proseWrap = vsCodeConfig.proseWrap;
-      vsOpts.quoteProps = vsCodeConfig.quoteProps;
-      vsOpts.requirePragma = vsCodeConfig.requirePragma;
-      vsOpts.semi = vsCodeConfig.semi;
-      vsOpts.singleQuote = vsCodeConfig.singleQuote;
-      vsOpts.tabWidth = vsCodeConfig.tabWidth;
-      vsOpts.trailingComma = vsCodeConfig.trailingComma;
-      vsOpts.useTabs = vsCodeConfig.useTabs;
-      vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
+      Object.assign(vsOpts, filterFormattingOptions(vsCodeConfig));
     }
 
     this.loggingService.logInfo(
