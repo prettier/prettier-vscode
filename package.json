@@ -99,7 +99,7 @@
     "@types/sinon": "^10.0.9",
     "@types/tmp": "^0.2.3",
     "@types/vscode": "^1.60.0",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.10.1",
     "@vscode/test-electron": "^2.1.1",
     "@vscode/test-web": "^0.0.19",
