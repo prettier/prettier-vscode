@@ -8,6 +8,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Fix `"editor.formatOnSaveMode": "modifications"`/`"modificationsIfAvailable"`
 
+## [9.4.0]
+
+- Prettier 2.6.1
+
 ## [9.3.0]
 
 - Remove `.gts` and `.gjs` from Handlebars extensions

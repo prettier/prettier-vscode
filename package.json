@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "9.3.0",
+  "version": "9.4.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -93,7 +93,7 @@
     "@types/lodash": "^4.14.178",
     "@types/mocha": "^9.1.0",
     "@types/node": "16.11.17",
-    "@types/prettier": "^2.4.3",
+    "@types/prettier": "^2.4.4",
     "@types/resolve": "^1.20.1",
     "@types/semver": "^7.3.9",
     "@types/sinon": "^10.0.9",
@@ -124,7 +124,7 @@
   },
   "dependencies": {
     "find-up": "5.0.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.1",
     "resolve": "^1.21.0",
     "semver": "^7.3.5",
     "vscode-nls": "^5.0.0"
