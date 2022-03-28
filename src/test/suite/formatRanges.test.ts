@@ -2,14 +2,8 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 
 suite("Test format Document Ranges", function () {
-  // const c = await vscode.commands.getCommands();
-  // // eslint-disable-next-line no-console
-  // console.log(c);
-  // const text = doc.getText();
   this.timeout(10000);
   test("it formats JavaScript ranges", async () => {
-    await wait(500);
-
     const input = `\
   let i    ="format me!"
   let  j  = "leave me alone"
