@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [9.5.0]
 
 - Fix `"editor.formatOnSaveMode": "modifications"`/`"modificationsIfAvailable"`
 
