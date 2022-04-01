@@ -4,6 +4,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.5.0]
+
+- Fix `"editor.formatOnSaveMode": "modifications"`/`"modificationsIfAvailable"`
+
+## [9.4.0]
+
+- Prettier 2.6.1
+
 ## [Unreleased]
 
 - Allow formatting ranges in `vue`.
