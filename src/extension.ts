@@ -1,5 +1,6 @@
-import { commands, ExtensionContext, workspace } from "vscode";
+import { commands, ExtensionContext, languages, workspace } from "vscode";
 import { createConfigFile } from "./commands";
+import CodeActionOnSave from "./CodeActionOnSave";
 import { LoggingService } from "./LoggingService";
 import { ModuleResolver } from "./ModuleResolver";
 import PrettierEditService from "./PrettierEditService";
@@ -75,4 +76,11 @@ export function activate(context: ExtensionContext) {
     forceFormatDocumentCommand,
     ...editService.registerDisposables()
   );
+
+  const forceFormatDocumentCodeActionProvider =
+    languages.registerCodeActionsProvider("*", new CodeActionOnSave(), {
+      providedCodeActionKinds: CodeActionOnSave.providedCodeActionKinds,
+    });
+
+  context.subscriptions.push(forceFormatDocumentCodeActionProvider);
 }
