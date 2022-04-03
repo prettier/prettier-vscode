@@ -476,7 +476,7 @@ export default class PrettierEditService implements Disposable {
     parser: PrettierBuiltInParserName,
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
-    extentionFormattingOptions: ExtensionFormattingOptions
+    extensionFormattingOptions: ExtensionFormattingOptions
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -509,12 +509,12 @@ export default class PrettierEditService implements Disposable {
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;
     if (
-      extentionFormattingOptions.rangeEnd &&
-      extentionFormattingOptions.rangeStart
+      extensionFormattingOptions.rangeEnd &&
+      extensionFormattingOptions.rangeStart
     ) {
       rangeFormattingOptions = {
-        rangeEnd: extentionFormattingOptions.rangeEnd,
-        rangeStart: extentionFormattingOptions.rangeStart,
+        rangeEnd: extensionFormattingOptions.rangeEnd,
+        rangeStart: extensionFormattingOptions.rangeStart,
       };
     }
 
@@ -529,7 +529,7 @@ export default class PrettierEditService implements Disposable {
       ...(configOptions || {}),
     };
 
-    if (extentionFormattingOptions.force && options.requirePragma === true) {
+    if (extensionFormattingOptions.force && options.requirePragma === true) {
       options.requirePragma = false;
     }
 
