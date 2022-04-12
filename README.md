@@ -312,7 +312,7 @@ To tell Prettier how to format a file of type `.abc` I can set an override in th
 
 #### prettier.useEditorConfig (default: `true`)
 
-Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
+Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html#prettierresolveconfigfilepath--options) for details.
 
 **Disabled on untrusted workspaces (always false)**
 
