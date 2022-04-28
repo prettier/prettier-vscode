@@ -61,7 +61,12 @@ export class ModuleResolver implements ModuleResolverInterface {
         return {
           languages: [
             {
-              vscodeLanguageIds: ["javascript", "mongo", "javascriptreact"],
+              vscodeLanguageIds: [
+                "javascript",
+                "javascriptreact",
+                "mongo",
+                "mongodb",
+              ],
               extensions: [],
               parsers: [
                 "babel",
