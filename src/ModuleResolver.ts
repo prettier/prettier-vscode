@@ -254,6 +254,10 @@ export class ModuleResolver implements ModuleResolverInterface {
       );
     }
 
+    if (resolvedConfig) {
+      resolvedConfig = this.resolveConfigPlugins(resolvedConfig, fileName);
+    }
+
     if (!isVirtual && !resolvedConfig && vscodeConfig.requireConfig) {
       this.loggingService.logInfo(
         "Require config set to true and no config present. Skipping file."
@@ -278,14 +282,16 @@ export class ModuleResolver implements ModuleResolverInterface {
     this.path2Module.clear();
   }
 
+  private get nodeModuleLoader() {
+    return typeof __webpack_require__ === "function"
+      ? __non_webpack_require__
+      : require;
+  }
+
   // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
   private loadNodeModule<T>(moduleName: string): T | undefined {
-    const r =
-      typeof __webpack_require__ === "function"
-        ? __non_webpack_require__
-        : require;
     try {
-      return r(moduleName);
+      return this.nodeModuleLoader(moduleName);
     } catch (error) {
       this.loggingService.logError(
         `Error loading node module '${moduleName}'`,
@@ -293,6 +299,43 @@ export class ModuleResolver implements ModuleResolverInterface {
       );
     }
     return undefined;
+  }
+
+  private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
+    try {
+      return this.nodeModuleLoader.resolve(moduleName, options);
+    } catch (error) {
+      this.loggingService.logError(
+        `Error resolve node module '${moduleName}'`,
+        error
+      );
+    }
+    return undefined;
+  }
+
+  /**
+   * Resolve plugin package path for symlink structure dirs
+   * See https://github.com/prettier/prettier/issues/8056
+   */
+  private resolveConfigPlugins(
+    config: PrettierOptions,
+    fileName: string
+  ): PrettierOptions {
+    if (config?.plugins?.length) {
+      config.plugins = config.plugins.map((plugin) => {
+        if (
+          typeof plugin === "string" &&
+          !plugin.startsWith(".") &&
+          !path.isAbsolute(plugin)
+        ) {
+          return (
+            this.resolveNodeModule(plugin, { paths: [fileName] }) || plugin
+          );
+        }
+        return plugin;
+      });
+    }
+    return config;
   }
 
   private isInternalTestRoot(dir: string): boolean {
