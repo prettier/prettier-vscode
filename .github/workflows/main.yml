@@ -10,6 +10,10 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     name: Test on ${{ matrix.os }}
     steps:
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+          run_install: false
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
