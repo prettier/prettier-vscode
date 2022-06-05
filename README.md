@@ -221,6 +221,8 @@ prettier.bracketSpacing
 prettier.endOfLine
 prettier.htmlWhitespaceSensitivity
 prettier.insertPragma
+prettier.singleAttributePerLine
+prettier.bracketSameLine
 prettier.jsxBracketSameLine
 prettier.jsxSingleQuote
 prettier.printWidth
