@@ -13,7 +13,7 @@ import {
   INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
-  UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
+  UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
 import {
@@ -87,7 +87,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     fileName: string
   ): Promise<PrettierNodeModule | undefined> {
     if (!workspace.isTrusted) {
-      this.loggingService.logDebug(UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER);
+      this.loggingService.logDebug(UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER);
       return prettier;
     }
 
