@@ -62,6 +62,7 @@ export default class PrettierEditService implements Disposable {
     "typescript",
     "typescriptreact",
     "json",
+    "jsonc",
     "graphql",
     "handlebars",
   ];
