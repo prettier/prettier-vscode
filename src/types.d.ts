@@ -26,6 +26,10 @@ type PrettierModule = {
 
 type ModuleResolverInterface = {
   getPrettierInstance(fileName: string): Promise<PrettierModule | undefined>;
+  getResolvedIgnorePath(
+    fileName: string,
+    ignorePath: string
+  ): Promise<string | undefined>;
   getGlobalPrettierInstance(): PrettierModule;
   getResolvedConfig(
     doc: TextDocument,

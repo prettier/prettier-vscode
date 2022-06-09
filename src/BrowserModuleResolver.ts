@@ -28,6 +28,7 @@ import * as yamlPlugin from "prettier/parser-yaml";
 
 import { TextDocument } from "vscode";
 import { LoggingService } from "./LoggingService";
+import { getWorkspaceRelativePath } from "./util";
 
 const plugins = [
   angularPlugin,
@@ -49,6 +50,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     _fileName: string
   ): Promise<PrettierModule | undefined> {
     return this.getGlobalPrettierInstance();
+  }
+
+  public async getResolvedIgnorePath(
+    fileName: string,
+    ignorePath: string
+  ): Promise<string | undefined> {
+    return getWorkspaceRelativePath(fileName, ignorePath);
   }
 
   public getGlobalPrettierInstance(): PrettierModule {

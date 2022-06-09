@@ -24,7 +24,7 @@ import {
   PrettierOptions,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import { getConfig } from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -397,7 +397,7 @@ export default class PrettierEditService implements Disposable {
 
     let resolvedIgnorePath: string | undefined;
     if (vscodeConfig.ignorePath) {
-      resolvedIgnorePath = getWorkspaceRelativePath(
+      resolvedIgnorePath = await this.moduleResolver.getResolvedIgnorePath(
         fileName,
         vscodeConfig.ignorePath
       );
