@@ -96,7 +96,7 @@ export class LoggingService {
     //     parser: "json",
     //   })
     //   .trim();
-    const message = JSON.stringify(data, null, 2); // dont use prettrer to keep it simple
+    const message = JSON.stringify(data, null, 2); // dont use prettier to keep it simple
 
     this.outputChannel.appendLine(message);
   }

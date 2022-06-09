@@ -62,6 +62,7 @@ export default class PrettierEditService implements Disposable {
     "typescript",
     "typescriptreact",
     "json",
+    "jsonc",
     "graphql",
     "handlebars",
   ];
@@ -179,7 +180,7 @@ export default class PrettierEditService implements Disposable {
     );
 
     // If there isn't an instance here, it is because the module
-    // could not be loaded either locally or globably when specified
+    // could not be loaded either locally or globally when specified
     if (!prettierInstance) {
       this.statusBar.update(FormatterStatus.Error);
       return;
@@ -474,7 +475,7 @@ export default class PrettierEditService implements Disposable {
     parser: PrettierBuiltInParserName,
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
-    extentionFormattingOptions: ExtensionFormattingOptions
+    extensionFormattingOptions: ExtensionFormattingOptions
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -507,12 +508,12 @@ export default class PrettierEditService implements Disposable {
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;
     if (
-      extentionFormattingOptions.rangeEnd &&
-      extentionFormattingOptions.rangeStart
+      extensionFormattingOptions.rangeEnd &&
+      extensionFormattingOptions.rangeStart
     ) {
       rangeFormattingOptions = {
-        rangeEnd: extentionFormattingOptions.rangeEnd,
-        rangeStart: extentionFormattingOptions.rangeStart,
+        rangeEnd: extensionFormattingOptions.rangeEnd,
+        rangeStart: extensionFormattingOptions.rangeStart,
       };
     }
 
@@ -527,7 +528,7 @@ export default class PrettierEditService implements Disposable {
       ...(configOptions || {}),
     };
 
-    if (extentionFormattingOptions.force && options.requirePragma === true) {
+    if (extensionFormattingOptions.force && options.requirePragma === true) {
       options.requirePragma = false;
     }
 
