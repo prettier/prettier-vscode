@@ -321,9 +321,7 @@ export default class PrettierEditService implements Disposable {
       return [];
     }
     const duration = new Date().getTime() - startTime;
-    this.loggingService.logInfo(
-      `Formatting completed in ${duration / 1000}ms.`
-    );
+    this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
     const edit = this.minimalEdit(document, result);
     return [edit];
   };

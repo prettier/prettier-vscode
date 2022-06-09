@@ -4,8 +4,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## Unreleased
 
+- Fix wrong time unit in log.
 - Allow formatting ranges in `jsonc` (JSON with Comments).
 
 ## [9.5.0]
