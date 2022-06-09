@@ -24,7 +24,7 @@ import {
   PrettierOptions,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import { getConfig } from "./util";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -62,6 +62,7 @@ export default class PrettierEditService implements Disposable {
     "typescript",
     "typescriptreact",
     "json",
+    "jsonc",
     "graphql",
     "handlebars",
   ];
@@ -179,7 +180,7 @@ export default class PrettierEditService implements Disposable {
     );
 
     // If there isn't an instance here, it is because the module
-    // could not be loaded either locally or globably when specified
+    // could not be loaded either locally or globally when specified
     if (!prettierInstance) {
       this.statusBar.update(FormatterStatus.Error);
       return;
@@ -320,9 +321,7 @@ export default class PrettierEditService implements Disposable {
       return [];
     }
     const duration = new Date().getTime() - startTime;
-    this.loggingService.logInfo(
-      `Formatting completed in ${duration / 1000}ms.`
-    );
+    this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
     const edit = this.minimalEdit(document, result);
     return [edit];
   };
@@ -398,7 +397,7 @@ export default class PrettierEditService implements Disposable {
 
     let resolvedIgnorePath: string | undefined;
     if (vscodeConfig.ignorePath) {
-      resolvedIgnorePath = getWorkspaceRelativePath(
+      resolvedIgnorePath = await this.moduleResolver.getResolvedIgnorePath(
         fileName,
         vscodeConfig.ignorePath
       );
@@ -476,7 +475,7 @@ export default class PrettierEditService implements Disposable {
     parser: PrettierBuiltInParserName,
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
-    extentionFormattingOptions: ExtensionFormattingOptions
+    extensionFormattingOptions: ExtensionFormattingOptions
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -509,12 +508,12 @@ export default class PrettierEditService implements Disposable {
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;
     if (
-      extentionFormattingOptions.rangeEnd &&
-      extentionFormattingOptions.rangeStart
+      extensionFormattingOptions.rangeEnd &&
+      extensionFormattingOptions.rangeStart
     ) {
       rangeFormattingOptions = {
-        rangeEnd: extentionFormattingOptions.rangeEnd,
-        rangeStart: extentionFormattingOptions.rangeStart,
+        rangeEnd: extensionFormattingOptions.rangeEnd,
+        rangeStart: extensionFormattingOptions.rangeStart,
       };
     }
 
@@ -529,7 +528,7 @@ export default class PrettierEditService implements Disposable {
       ...(configOptions || {}),
     };
 
-    if (extentionFormattingOptions.force && options.requirePragma === true) {
+    if (extensionFormattingOptions.force && options.requirePragma === true) {
       options.requirePragma = false;
     }
 
