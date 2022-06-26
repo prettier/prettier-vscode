@@ -20,7 +20,7 @@ import * as meriyahPlugin from "prettier/parser-meriyah";
 import * as typescriptPlugin from "prettier/parser-typescript";
 import * as yamlPlugin from "prettier/parser-yaml";
 
-// commente out as the cod uses `new Function("return this") which
+// commented out as the cod uses `new Function("return this") which
 // is not allowed in the VS Code extension host as it enforces
 // the Trusted Types Content Security Policy
 //import * as flowPlugin from "prettier/parser-flow";
@@ -28,6 +28,7 @@ import * as yamlPlugin from "prettier/parser-yaml";
 
 import { TextDocument } from "vscode";
 import { LoggingService } from "./LoggingService";
+import { getWorkspaceRelativePath } from "./util";
 
 const plugins = [
   angularPlugin,
@@ -51,6 +52,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     return this.getGlobalPrettierInstance();
   }
 
+  public async getResolvedIgnorePath(
+    fileName: string,
+    ignorePath: string
+  ): Promise<string | undefined> {
+    return getWorkspaceRelativePath(fileName, ignorePath);
+  }
+
   public getGlobalPrettierInstance(): PrettierModule {
     this.loggingService.logInfo("Using standalone prettier");
     return {
@@ -61,7 +69,12 @@ export class ModuleResolver implements ModuleResolverInterface {
         return {
           languages: [
             {
-              vscodeLanguageIds: ["javascript", "mongo", "javascriptreact"],
+              vscodeLanguageIds: [
+                "javascript",
+                "javascriptreact",
+                "mongo",
+                "mongodb",
+              ],
               extensions: [],
               parsers: [
                 "babel",

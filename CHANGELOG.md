@@ -6,6 +6,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## Unreleased
 
+- Register `mongodb` in `vscodeLanguageIds` to support formatting mongodb queries in VS Code
+- Search for ignore file in all containing workspace folders, not just innermost
+- Fix wrong time unit in log.
+- Allow formatting ranges in `jsonc` (JSON with Comments).
 - Add `prettier.forceFormatDocument` to code actions
 
 ## [9.5.0]
