@@ -11,6 +11,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Fix wrong time unit in log.
 - Allow formatting ranges in `jsonc` (JSON with Comments).
 
+## [9.6.0]
+
+- Upgraded Prettier to the [latest stable](https://prettier.io/versions.html) version `2.7.1`
+
 ## [9.5.0]
 
 - Fix `"editor.formatOnSaveMode": "modifications"`/`"modificationsIfAvailable"`
