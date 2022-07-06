@@ -13,7 +13,7 @@ import {
   INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
-  UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER,
+  UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
 import {
@@ -68,6 +68,7 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 
 export class ModuleResolver implements ModuleResolverInterface {
   private findPkgCache: Map<string, string>;
+  private ignorePathCache = new Map<string, string>();
   private path2Module = new Map<string, PrettierNodeModule>();
 
   constructor(private loggingService: LoggingService) {
@@ -86,7 +87,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     fileName: string
   ): Promise<PrettierNodeModule | undefined> {
     if (!workspace.isTrusted) {
-      this.loggingService.logDebug(UNTRUSED_WORKSPACE_USING_BUNDLED_PRETTIER);
+      this.loggingService.logDebug(UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER);
       return prettier;
     }
 
@@ -203,6 +204,53 @@ export class ModuleResolver implements ModuleResolverInterface {
       this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
       return prettier;
     }
+  }
+
+  public async getResolvedIgnorePath(
+    fileName: string,
+    ignorePath: string
+  ): Promise<string | undefined> {
+    const cacheKey = `${fileName}:${ignorePath}`;
+    // cache resolvedIgnorePath because resolving it checks the file system
+    let resolvedIgnorePath = this.ignorePathCache.get(cacheKey);
+    if (!resolvedIgnorePath) {
+      resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
+      // if multiple different workspace folders contain this same file, we
+      // may have chosen one that doesn't actually contain .prettierignore
+      if (workspace.workspaceFolders) {
+        // all workspace folders that contain the file
+        const folders = workspace.workspaceFolders
+          .map((folder) => folder.uri.fsPath)
+          .filter((folder) => {
+            // https://stackoverflow.com/a/45242825
+            const relative = path.relative(folder, fileName);
+            return (
+              relative &&
+              !relative.startsWith("..") &&
+              !path.isAbsolute(relative)
+            );
+          })
+          // sort folders innermost to outermost
+          .sort((a, b) => b.length - a.length);
+        for (const folder of folders) {
+          const p = path.join(folder, ignorePath);
+          if (
+            // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
+            await fs.promises.stat(p).then(
+              () => true,
+              () => false
+            )
+          ) {
+            resolvedIgnorePath = p;
+            break;
+          }
+        }
+      }
+    }
+    if (resolvedIgnorePath) {
+      this.ignorePathCache.set(cacheKey, resolvedIgnorePath);
+    }
+    return resolvedIgnorePath;
   }
 
   public async getResolvedConfig(

@@ -4,6 +4,9 @@
       "path": "project"
     },
     {
+      "path": "project/ignoreMe"
+    },
+    {
       "path": "workspace"
     },
     {

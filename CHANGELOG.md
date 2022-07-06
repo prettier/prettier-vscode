@@ -4,9 +4,12 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [9.6.0]
+## Unreleased
 
-- Support correctly resolve plugins path in symlink `node_modules` structure dirs (e.g. pnpm)
+- Register `mongodb` in `vscodeLanguageIds` to support formatting mongodb queries in VS Code
+- Search for ignore file in all containing workspace folders, not just innermost
+- Fix wrong time unit in log.
+- Allow formatting ranges in `jsonc` (JSON with Comments).
 
 ## [9.5.0]
 
