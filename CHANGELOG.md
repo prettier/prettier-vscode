@@ -20,6 +20,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 - Prettier 2.6.1
 
+## [Unreleased]
+
+- Allow formatting ranges in `vue`.
+
 ## [9.3.0]
 
 - Remove `.gts` and `.gjs` from Handlebars extensions
