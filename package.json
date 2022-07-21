@@ -434,5 +434,11 @@
         "when": "editorFocus"
       }
     ]
+  },
+  "__metadata": {
+    "id": "96fa4707-6983-4489-b7c5-d5ffdfdcce90",
+    "publisherDisplayName": "Prettier",
+    "publisherId": "d16f4e39-2ffb-44e3-9c0d-79d873570e3a",
+    "isPreReleaseVersion": false
   }
 }
