@@ -267,6 +267,18 @@
           "markdownDescription": "%ext.config.bracketSpacing%",
           "scope": "resource"
         },
+        "prettier.singleAttributePerLine": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.singleAttributePerLine%",
+          "scope": "resource"
+        },
+        "prettier.bracketSameLine": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.bracketSameLine%",
+          "scope": "resource"
+        },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
