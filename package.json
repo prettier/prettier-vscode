@@ -283,6 +283,7 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.jsxBracketSameLine%",
+          "deprecationMessage": "%ext.config.jsxBracketSameLineDeprecation%",
           "scope": "resource"
         },
         "prettier.semi": {
