@@ -201,7 +201,7 @@ If you would like to format a document that is configured to be ignored by Prett
 
 ## Linter Integration
 
-The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refere to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
+The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refer to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
 ## Workspace Trust
 
@@ -314,7 +314,7 @@ To tell Prettier how to format a file of type `.abc` I can set an override in th
 
 #### prettier.useEditorConfig (default: `true`)
 
-Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html) for details.
+Whether or not to take .editorconfig into account when parsing configuration. See the [prettier.resolveConfig docs](https://prettier.io/docs/en/api.html#prettierresolveconfigfilepath--options) for details.
 
 **Disabled on untrusted workspaces (always false)**
 

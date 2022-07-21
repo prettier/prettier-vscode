@@ -9,6 +9,15 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Added [`singleAttributePerLine`](https://prettier.io/docs/en/options.html#single-attribute-per-line) setting (Prettier 2.6.0)
 - Added [`bracketSameLine`](https://prettier.io/docs/en/options.html#bracket-line) setting (Prettier 2.4.0)
 - Added deprecation notice for [`jsxBracketSameLine`](https://prettier.io/docs/en/options.html#deprecated-jsx-brackets) setting (Prettier 2.4.0)
+- Allow formatting ranges in `vue`.
+- 
+## [9.6.0]
+
+- Prettier 2.7.1
+- Register `mongodb` in `vscodeLanguageIds` to support formatting mongodb queries in VS Code
+- Search for ignore file in all containing workspace folders, not just innermost
+- Fix wrong time unit in log.
+- Allow formatting ranges in `jsonc` (JSON with Comments).
 
 ## [9.5.0]
 
