@@ -10,7 +10,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Added [`bracketSameLine`](https://prettier.io/docs/en/options.html#bracket-line) setting (Prettier 2.4.0)
 - Added deprecation notice for [`jsxBracketSameLine`](https://prettier.io/docs/en/options.html#deprecated-jsx-brackets) setting (Prettier 2.4.0)
 - Allow formatting ranges in `vue`.
-- 
+- Use config from `.prettierrc` when formatting VS Code user `settings.json`. Fixes [[#2226](https://github.com/prettier/prettier-vscode/issues/2226)].
+-
+
 ## [9.6.0]
 
 - Prettier 2.7.1
