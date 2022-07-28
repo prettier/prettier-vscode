@@ -257,7 +257,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     { fileName, uri }: TextDocument,
     vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
-    const isVirtual = uri.scheme !== "file";
+    const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
 
     let configPath: string | undefined;
     try {
