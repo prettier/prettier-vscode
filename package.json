@@ -2,12 +2,15 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "9.6.0",
+  "version": "9.7.0",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
+  },
+  "sponsor": {
+    "url": "https://opencollective.com/prettier"
   },
   "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
@@ -92,7 +95,7 @@
     "@types/glob": "^7.2.0",
     "@types/lodash": "^4.14.182",
     "@types/mocha": "^9.1.0",
-    "@types/node": "16.11.17",
+    "@types/node": "18.7.8",
     "@types/prettier": "^2.6.3",
     "@types/resolve": "^1.20.1",
     "@types/semver": "^7.3.9",
