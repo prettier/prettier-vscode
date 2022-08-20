@@ -1,0 +1,34 @@
+lockfileVersion: 5.4
+
+specifiers:
+  prettier: ^2.6.2
+  prettier-plugin-organize-imports: 2.3.4
+
+devDependencies:
+  prettier: registry.npmjs.org/prettier/2.6.2
+  prettier-plugin-organize-imports: registry.npmjs.org/prettier-plugin-organize-imports/2.3.4_prettier@2.6.2
+
+packages:
+
+  registry.npmjs.org/prettier-plugin-organize-imports/2.3.4_prettier@2.6.2:
+    resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prettier-plugin-organize-imports/-/prettier-plugin-organize-imports-2.3.4.tgz}
+    id: registry.npmjs.org/prettier-plugin-organize-imports/2.3.4
+    name: prettier-plugin-organize-imports
+    version: 2.3.4
+    peerDependencies:
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      prettier: registry.npmjs.org/prettier/2.6.2
+    dev: true
+
+  registry.npmjs.org/prettier/2.6.2:
+    resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prettier/-/prettier-2.6.2.tgz}
+    name: prettier
+    version: 2.6.2
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true

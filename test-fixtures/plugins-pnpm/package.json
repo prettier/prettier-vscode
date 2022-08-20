@@ -1,0 +1,15 @@
+{
+  "name": "plugins-pnpm",
+  "version": "1.0.0",
+  "description": "Test resolve plugin in pnpm",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-plugin-organize-imports": "2.3.4"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": ["typescript"]
+    }
+  }
+}

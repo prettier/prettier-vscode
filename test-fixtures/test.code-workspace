@@ -13,6 +13,9 @@
       "path": "plugins"
     },
     {
+      "path": "plugins-pnpm"
+    },
+    {
       "path": "config"
     },
     {
