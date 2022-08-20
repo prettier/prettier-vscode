@@ -369,7 +369,7 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(`Formatting ${uri}`);
 
-    const vscodeConfig = getConfig(uri);
+    const vscodeConfig = getConfig(uri, languageId);
 
     const resolvedConfig = await this.moduleResolver.getResolvedConfig(
       doc,

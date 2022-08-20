@@ -52,4 +52,12 @@ suite("Test configurations", function () {
     /* cspell: disable-next-line */
     testConfig("customextension/test.abc", "customextension/test.result.abc")
   );
+  test(
+    "it formats a with langauge override settings ",
+    /* cspell: disable-next-line */
+    testConfig(
+      "vscodeconfig/lang-override.css",
+      "vscodeconfig/lang-override.result.css"
+    )
+  );
 });

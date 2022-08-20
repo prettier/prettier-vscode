@@ -61,7 +61,8 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[css]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "prettier.tabWidth": 6
     },
     "[postcss]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"

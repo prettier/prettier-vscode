@@ -26,11 +26,19 @@ export function getWorkspaceRelativePath(
   }
 }
 
-export function getConfig(uri?: Uri): PrettierVSCodeConfig {
+export function getConfig(
+  uri?: Uri,
+  languageId?: string
+): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const config = workspace.getConfiguration(
     "prettier",
-    uri
+    languageId
+      ? {
+          uri,
+          languageId,
+        }
+      : uri
   ) as unknown as PrettierVSCodeConfig;
 
   // Some settings are disabled for untrusted workspaces
