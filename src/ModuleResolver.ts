@@ -128,9 +128,14 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     // If global modules allowed, look for global module
     if (resolveGlobalModules && !modulePath) {
+      let workspaceFolder;
+      if (workspace.workspaceFolders) {
+        const folder = workspace.getWorkspaceFolder(Uri.file(fileName));
+        if (folder) workspaceFolder = folder.uri;
+      }
       const packageManager = (await commands.executeCommand<
         "npm" | "pnpm" | "yarn"
-      >("npm.packageManager"))!;
+      >("npm.packageManager", workspaceFolder))!;
       const resolvedGlobalPackageManagerPath = globalPathGet(packageManager);
       if (resolvedGlobalPackageManagerPath) {
         const globalModulePath = path.join(

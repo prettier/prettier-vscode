@@ -23,6 +23,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Search for ignore file in all containing workspace folders, not just innermost
 - Fix wrong time unit in log.
 - Allow formatting ranges in `jsonc` (JSON with Comments).
+- Fix support for using a globally installed version of prettier.
 
 ## [9.5.0]
 
