@@ -9,6 +9,9 @@
     "color": "#ffe04b",
     "theme": "light"
   },
+  "sponsor": {
+    "url": "https://opencollective.com/prettier"
+  },
   "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
