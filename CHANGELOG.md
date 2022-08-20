@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [9.8.0]
 
 - Added VS Code sponsorship link
 - Use config from `.prettierrc` when formatting VS Code user `settings.json`. Fixes [[#2226](https://github.com/prettier/prettier-vscode/issues/2226)].
