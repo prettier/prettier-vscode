@@ -10,6 +10,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Use config from `.prettierrc` when formatting VS Code user `settings.json`. Fixes [[#2226](https://github.com/prettier/prettier-vscode/issues/2226)].
 - Improved support for pnpm ([@fz6m](https://github.com/fz6m))
 - Improved support for global modules ([@ehoogeveen-medweb](https://github.com/ehoogeveen-medweb))
+- Reduce extension size ([@kidonng](https://github.com/kidonng))
 
 ## [9.7.0]
 
