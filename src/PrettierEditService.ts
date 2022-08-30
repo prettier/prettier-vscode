@@ -64,8 +64,6 @@ export default class PrettierEditService implements Disposable {
     "json",
     "jsonc",
     "graphql",
-    "handlebars",
-    "vue",
   ];
 
   constructor(
