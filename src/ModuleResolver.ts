@@ -311,7 +311,12 @@ export class ModuleResolver implements ModuleResolverInterface {
       resolvedConfig = this.resolveConfigPlugins(resolvedConfig, fileName);
     }
 
-    if (!isVirtual && !resolvedConfig && vscodeConfig.requireConfig) {
+    if (
+      !isVirtual &&
+      !vscodeConfig.configPath &&
+      !configPath &&
+      vscodeConfig.requireConfig
+    ) {
       this.loggingService.logInfo(
         "Require config set to true and no config present. Skipping file."
       );
