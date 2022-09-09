@@ -1,4 +1,4 @@
-import { StatusBarAlignment, StatusBarItem, window } from "vscode";
+import { StatusBarAlignment, StatusBarItem, window, ThemeColor } from "vscode";
 
 export enum FormatterStatus {
   Ready = "check-all",
