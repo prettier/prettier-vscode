@@ -11,6 +11,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Improved support for pnpm ([@fz6m](https://github.com/fz6m))
 - Improved support for global modules ([@ehoogeveen-medweb](https://github.com/ehoogeveen-medweb))
 - Disallow range formatting for Vue and Handlebars as Prettier doesn't support that
+- Reduce extension size ([@kidonng](https://github.com/kidonng))
 
 ## [9.7.0]
 

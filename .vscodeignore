@@ -18,6 +18,8 @@ CONTRIBUTORS.md
 tsconfig.json
 webpack.config.js
 yarn.lock
+dist/*.map
 
 node_modules/
-!node_modules/prettier
+!node_modules/prettier/*
+node_modules/prettier/esm
