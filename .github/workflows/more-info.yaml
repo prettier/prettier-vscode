@@ -20,4 +20,4 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            This bug is missing information needed to diagnose the problem. Please see our [guide on how to open a good issue](https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue) and provide the missing information.
+            This bug is missing information needed to diagnose the problem. Please see our [guide on how to open a good issue](https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue) and provide the missing information. Most configuration related issues can only be resolved by [providing a full repro](https://github.com/prettier/prettier-vscode/wiki/Writing-a-Good-Issue#5-provide-a-sample-github-repo), without that your bug will most likely be closed.
