@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.9.0]
+
+- Use theme colors on status bar background for errors and warnings ([@zardoy](https://github.com/zardoy))
+- Reduce extension size ([@kidonng](https://github.com/kidonng))
+
 ## [9.8.0]
 
 - Added VS Code sponsorship link
@@ -11,7 +16,6 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Improved support for pnpm ([@fz6m](https://github.com/fz6m))
 - Improved support for global modules ([@ehoogeveen-medweb](https://github.com/ehoogeveen-medweb))
 - Disallow range formatting for Vue and Handlebars as Prettier doesn't support that
-- Reduce extension size ([@kidonng](https://github.com/kidonng))
 
 ## [9.7.0]
 
