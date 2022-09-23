@@ -31,7 +31,7 @@ export class StatusBar {
    * @param icon The the icon to use
    */
   public update(result: FormatterStatus): void {
-    this.statusBarItem.text = "Prettier";
+    this.statusBarItem.text = `$(${result.toString()}) Prettier`;
     switch (result) {
       case FormatterStatus.Ignore:
       case FormatterStatus.Warn:
@@ -44,15 +44,10 @@ export class StatusBar {
           "statusBarItem.errorBackground"
         );
         break;
-
       default:
-        {
-          this.statusBarItem.text = `$(${result.toString()}) Prettier`;
-          this.statusBarItem.backgroundColor = new ThemeColor(
-            "statusBarItem.fourgroundBackground"
-          );
-        }
-
+        this.statusBarItem.backgroundColor = new ThemeColor(
+          "statusBarItem.fourgroundBackground"
+        );
         break;
     }
     this.statusBarItem.show();
