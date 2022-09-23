@@ -38,7 +38,7 @@ jobs:
       - name: Run ESLint
         run: npx eslint .
           --config .eslintrc.js
-          --ext .js,.jsx,.ts,.tsx
+          --ext .ts
           --format @microsoft/eslint-formatter-sarif 
           --output-file eslint-results.sarif
         continue-on-error: true
