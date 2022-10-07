@@ -3950,10 +3950,10 @@ vsce@^2.11.0:
     yauzl "^2.3.1"
     yazl "^2.2.2"
 
-vscode-nls-dev@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/vscode-nls-dev/-/vscode-nls-dev-4.0.1.tgz#f000ea21ae771efe99b0826c0fc790b91a2740ce"
-  integrity sha512-G3MFv2gFmfa9hHEclQVKpSvwa5XnyI6YfQdoUTCFcVncnE1/08feS9CaXQ2N/aJZjolDOX+y4XvvdNjpMQzPgA==
+vscode-nls-dev@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/vscode-nls-dev/-/vscode-nls-dev-4.0.3.tgz#e55e8a7bd35c719454af17c0c5c3516ff2971d15"
+  integrity sha512-Y+wUSLwmBwLD8uN+6hBbR4MICuURQ1DoW5k3Z34kPyDlr9ZRQxCPIWaK64IFzPpjloMbb0ORIHkpI8qjMd4L8w==
   dependencies:
     ansi-colors "^4.1.1"
     clone "^2.1.2"
