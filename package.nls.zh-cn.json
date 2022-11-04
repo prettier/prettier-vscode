@@ -27,7 +27,7 @@
   "ext.config.trailingComma": "指定添加尾后逗号的方式。选项：`none`──无尾后逗号、 `es5`──在 ES5 中有效的尾后逗号（如对象与数组等）、 `all`──尽可能添加尾后逗号（如函数参数）",
   "ext.config.useEditorConfig": "使用 `.editorconfig` 中的配置方案。[参考文档 prettier.resolveConfig](https://prettier.io/docs/en/api.html)",
   "ext.config.useTabs": "使用 `Tab` 缩进，而不是空格缩进",
-  "ext.config.vueIndentScriptAndStyle": "缩进 Vue 的 `<script>` 和 `<style>` 标签。有些人（如 [Vue 的作者](https://github.com/prettier/prettier/issues/3888#issuecomment-459521863)）为了减少缩进层级是不缩进的，可能会影响到编辑器的代码折叠功能。",
+  "ext.config.vueIndentScriptAndStyle": "缩进 Vue 的 `<script>` 和 `<style>` 标签。",
   "ext.config.embeddedLanguageFormatting": "对引号中代码使用智能格式化",
   "ext.config.enable": "启用 Prettier。更改后需要重启 VS Code",
   "ext.config.enableDebugLogs": "启用调试日志",
