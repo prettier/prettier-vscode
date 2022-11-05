@@ -1,0 +1,25 @@
+using System;
+
+class Program{
+	public static void Main(string[] args){
+		string opcao = "S";
+		do{
+			double valorGasolina, valorEtanol, valor;
+			Console.WriteLine("Valor Gasolina: ");
+			valorGasolina = double.Parse(Console.ReadLine());
+			Console.WriteLine("Valor Etanol: ");
+			valorEtanol = double.Parse(Console.ReadLine(), valor = valorGasolina / valorEtanol;
+			valor = double.Parse(Console.ReadLine());
+			if (valorGasolina * 0.70 > valorEtanol)
+			{
+				Console.WriteLine("Melhor abastecer com Gasolina, cara");
+				if (valorGasolina * 0.70 < valorEtanol)
+				{
+					Console.WriteLine("Melhor abastecer com Etanol");
+				}
+
+				Console.WriteLine("Deseja fazer uma nova consulta? S/N: ");
+			}
+
+									   }while (opcao.Equals("s") || opcao.Equals("s"));
+			opcao == (s) }
