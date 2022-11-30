@@ -94,10 +94,10 @@ export default class PrettierEditService implements Disposable {
     prettierConfigWatcher.onDidDelete(this.prettierConfigChanged);
 
     const textEditorChange = window.onDidChangeActiveTextEditor(
-      this.handleActiveTextEditorChanged
+      this.handleActiveTextEditorChangedSync
     );
 
-    this.handleActiveTextEditorChanged(window.activeTextEditor);
+    this.handleActiveTextEditorChangedSync(window.activeTextEditor);
 
     return [
       packageWatcher,
@@ -136,7 +136,7 @@ export default class PrettierEditService implements Disposable {
 
   private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
 
-  private resetFormatters = async (uri?: Uri) => {
+  private resetFormatters = (uri?: Uri) => {
     if (uri) {
       const workspaceFolder = workspace.getWorkspaceFolder(uri);
       this.registeredWorkspaces.delete(workspaceFolder?.uri.fsPath ?? "global");
@@ -145,6 +145,14 @@ export default class PrettierEditService implements Disposable {
       this.registeredWorkspaces.clear();
     }
     this.statusBar.update(FormatterStatus.Ready);
+  };
+
+  private handleActiveTextEditorChangedSync = (
+    textEditor: TextEditor | undefined
+  ) => {
+    this.handleActiveTextEditorChanged(textEditor).catch((err) => {
+      this.loggingService.logError("Error handling text editor change", err);
+    });
   };
 
   private handleActiveTextEditorChanged = async (

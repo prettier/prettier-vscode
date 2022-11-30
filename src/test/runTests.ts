@@ -63,4 +63,5 @@ async function main() {
   }
 }
 
-main();
+// eslint-disable-next-line no-console
+main().catch((err) => console.error(err));
