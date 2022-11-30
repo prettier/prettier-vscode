@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.10.0]
+
+- Prettier 2.8.0
+
 ## [9.9.0]
 
 - Use theme colors on status bar background for errors and warnings ([@zardoy](https://github.com/zardoy))
