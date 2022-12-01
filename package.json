@@ -122,7 +122,7 @@
     "vsce": "^2.11.0",
     "vscode-nls-dev": "^4.0.3",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^5.0.0"
   },
   "dependencies": {
     "find-up": "5.0.0",
