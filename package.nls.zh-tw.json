@@ -32,7 +32,7 @@
   "ext.config.trailingComma": "在可能的情況下控制結尾的逗號。可用的選項：\n- `none` - 不要結尾逗號\n- `es5` - 只要合乎 ES5 規範就加上結尾逗號（物件、陣列等其他）\n- `all` - 只要可以就加上結尾逗號（函式引數）",
   "ext.config.useEditorConfig": "在解析組態時是否要涵蓋 `.editorconfig` 。參閱 [prettier.resolveConfig](https://prettier.io/docs/en/api.html) 文件取得更多細節",
   "ext.config.useTabs": "使用 tabs 來縮排",
-  "ext.config.vueIndentScriptAndStyle": "是否要在 Vue 檔案中對 `<script>` 和 `<style>` 標籤內的程式碼縮排。有些人（譬如 Vue 的作者）為了減少縮排層級而選擇不縮排，但這或許會破壞編輯器的摺疊程式碼。",
+  "ext.config.vueIndentScriptAndStyle": "是否要在 Vue 檔案中對 `<script>` 和 `<style>` 標籤內的程式碼縮排。",
   "ext.config.embeddedLanguageFormatting": "控制 Prettier 是否要針對遷入在檔案內的引用程式碼進行排版。",
   "ext.config.enable": "控制 prettier 啟用與否。",
   "ext.config.enableDebugLogs": "啟用偵錯紀錄來協助疑難排解。",
