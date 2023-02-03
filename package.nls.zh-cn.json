@@ -28,7 +28,7 @@
   "ext.config.useEditorConfig": "使用 `.editorconfig` 中的配置选项。详见 [`prettier.resolveConfig`](https://prettier.io/docs/en/api.html) 文档。",
   "ext.config.useTabs": "使用制表符缩进，而不是空格缩进。",
   "ext.config.vueIndentScriptAndStyle": "缩进 Vue 的 `<script>` 和 `<style>` 标签。",
-  "ext.config.embeddedLanguageFormatting": "对引号中代码使用智能格式化。",
+  "ext.config.embeddedLanguageFormatting": "控制嵌入的其他语言代码格式化",
   "ext.config.enable": "启用 Prettier。",
   "ext.config.enableDebugLogs": "启用调试日志。",
   "ext.capabilities.untrustedWorkspaces.description": "在不受信任模式下只会使用内置的 Prettier 版本。"
