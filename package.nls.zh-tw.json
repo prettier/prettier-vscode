@@ -2,7 +2,7 @@
   "ext.command.createConfigFile.title": "Prettier: 建立組態檔",
   "ext.command.forceFormatDocument.title": "排版文件（強制）",
   "ext.config.arrowParens": "箭頭函式中只有一個參數也加上括號",
-  "ext.config.bracketSpacing": "控制物件字面值中兩側的留白",
+  "ext.config.bracketSpacing": "控制物件字面值中兩側的留白。",
   "ext.config.configPath": "Prettier 組態檔的路徑",
   "ext.config.disableLanguages": "針對這個套件要在某些語言停用的的 ID 清單",
   "ext.config.disableLanguagesDeprecation": "這個功能已不再支援。請改用 VS Code 的 [default formatters](https://github.com/prettier/prettier-vscode#default-formatter) 或用 .prettierignore",
