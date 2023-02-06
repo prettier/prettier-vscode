@@ -6,7 +6,7 @@
   "ext.config.configPath": "指定 Prettier 配置文件的路径",
   "ext.config.documentSelectors": "指定一个 [glob patterns](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) 列表，使匹配的文件也启用 Prettier",
   "ext.config.endOfLine": "指定 Prettier 使用的换行符。",
-  "ext.config.htmlWhitespaceSensitivity": "指定 HTML 文件的空白字符敏感度。\n可选项：\n- `css` - 以 CSS 的 display 属性为准。\n- `strict` - 空白字符敏感。\n- `ignore` - 空白字符不敏感。",
+  "ext.config.htmlWhitespaceSensitivity": "指定 HTML 文件的[空白字符敏感度](https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting)。\n可选项：\n- `css` - 以 CSS 的 display 属性为准。\n- `strict` - 空白字符敏感。\n- `ignore` - 空白字符不敏感。",
   "ext.config.ignorePath": "指定 `.prettierignore` 文件路径",
   "ext.config.insertPragma": "Prettier 可以在文件头部插入特定的 @format 标记以表示该文件已被 Prettier 格式化过。该选项一般和 `--require-pragma` 选项配合使用。如果文件头部已有 docblock 注释，则会在其之后新增一行并插入 @format 标记。",
   "ext.config.singleAttributePerLine": "会在 HTML、Vue 和 JSX 中格式化为每个属性单独占一行。",
