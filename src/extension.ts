@@ -78,6 +78,6 @@ export function activate(context: ExtensionContext) {
       );
     })
     .catch((err) => {
-      loggingService.logError("Eerror registering extension", err);
+      loggingService.logError("Error registering extension", err);
     });
 }
