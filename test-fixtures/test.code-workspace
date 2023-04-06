@@ -35,6 +35,9 @@
     },
     {
       "path": "explicit-dep"
+    },
+    {
+      "path": "v3"
     }
   ],
   "settings": {
