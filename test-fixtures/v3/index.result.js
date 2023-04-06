@@ -1,3 +1,6 @@
-function ugly(a, b, c) {
-    return a + b;
-}
+const Counter = decorator("my-counter")((props: {
+    initialCount?: number,
+    label?: string,
+}) => {
+    // ...
+});
