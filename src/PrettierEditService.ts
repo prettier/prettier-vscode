@@ -255,7 +255,8 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule,
     uri?: Uri
   ): Promise<ISelectors> => {
-    const { languages } = prettierInstance.getSupportInfo();
+    const supportInfo = await prettierInstance.getSupportInfo();
+    const { languages } = supportInfo;
 
     languages.forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
