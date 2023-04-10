@@ -506,6 +506,8 @@ export default class PrettierEditService implements Disposable {
       vsOpts.tabWidth = vsCodeConfig.tabWidth;
       vsOpts.trailingComma = vsCodeConfig.trailingComma;
       vsOpts.useTabs = vsCodeConfig.useTabs;
+      vsOpts.embeddedLanguageFormatting =
+        vsCodeConfig.embeddedLanguageFormatting;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
     }
 
