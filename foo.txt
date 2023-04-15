@@ -1,0 +1,3 @@
+Prettier Version: 2.8.7,
+Prettier config file /Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/.prettierrc,
+fileName /Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/test-fixtures/v3/index.ts
