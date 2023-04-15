@@ -466,12 +466,11 @@ export default class PrettierEditService implements Disposable {
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
     try {
-      const formattedResult = prettierInstance.format(text, prettierOptions);
       // Since Prettier v3, `format` returns Promise.
-      const formattedText =
-        typeof formattedResult === "string"
-          ? formattedResult
-          : await formattedResult;
+      const formattedText = await prettierInstance.format(
+        text,
+        prettierOptions
+      );
       this.statusBar.update(FormatterStatus.Success);
 
       return formattedText;
