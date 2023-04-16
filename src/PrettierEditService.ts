@@ -443,7 +443,7 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`
       );
-      const languages = prettierInstance.getSupportInfo().languages;
+      const languages = (await prettierInstance.getSupportInfo()).languages;
       parser = getParserFromLanguageId(languages, uri, languageId);
     }
 
