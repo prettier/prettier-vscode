@@ -4,6 +4,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.11.0]
+
+- Prettier 2.8.7
+
+## [9.10.4]
+
+- Update description of vueIndentScriptAndStyle option
+
 ## [9.10.3]
 
 - Prettier 2.8.0
