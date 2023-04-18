@@ -92,7 +92,7 @@ async function formatSameAsPrettier(
     },
   };
   const { actual, source } = await format("project", file);
-  const prettierFormatted = prettier.format(source, prettierOptions);
+  const prettierFormatted = await prettier.format(source, prettierOptions);
   assert.equal(actual, prettierFormatted);
 }
 
