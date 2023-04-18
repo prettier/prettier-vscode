@@ -6,7 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [9.12.0]
 
-- Support 3.0.0
+- Support Prettier v3
 
 ## [9.11.0]
 
