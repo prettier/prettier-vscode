@@ -4,10 +4,14 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.12.1]
+
+- Fix typo in translations for zh-cn - Thanks to [@fisker](https://github.com/fisker)
+
 ## [9.12.0]
 
 - Support Prettier v3. Not shipped by default, requires project install - Thanks to [@sosukesuzuki](https://github.com/sosukesuzuki)
-- Improved translations fo zh-tw and zh-cn - Thanks to [@fisker](https://github.com/fisker) and [@Mrbunker](https://github.com/Mrbunker)
+- Improved translations for zh-tw and zh-cn - Thanks to [@fisker](https://github.com/fisker) and [@Mrbunker](https://github.com/Mrbunker)
 
 ## [9.11.0]
 
