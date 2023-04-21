@@ -20,7 +20,7 @@ export class TemplateService {
       useTabs: settings.useTabs,
     };
 
-    const templateSource = this.prettierModule.format(
+    const templateSource = await this.prettierModule.format(
       JSON.stringify(settings, null, 2),
       formatterOptions
     );

@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.12.0]
+
+- Support Prettier v3
+
 ## [9.11.0]
 
 - Prettier 2.8.7

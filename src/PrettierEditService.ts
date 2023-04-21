@@ -255,7 +255,7 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule,
     uri?: Uri
   ): Promise<ISelectors> => {
-    const { languages } = prettierInstance.getSupportInfo();
+    const { languages } = await prettierInstance.getSupportInfo();
 
     languages.forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
@@ -442,7 +442,7 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`
       );
-      const languages = prettierInstance.getSupportInfo().languages;
+      const { languages } = await prettierInstance.getSupportInfo();
       parser = getParserFromLanguageId(languages, uri, languageId);
     }
 
@@ -465,7 +465,11 @@ export default class PrettierEditService implements Disposable {
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
     try {
-      const formattedText = prettierInstance.format(text, prettierOptions);
+      // Since Prettier v3, `format` returns Promise.
+      const formattedText = await prettierInstance.format(
+        text,
+        prettierOptions
+      );
       this.statusBar.update(FormatterStatus.Success);
 
       return formattedText;

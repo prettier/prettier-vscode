@@ -324,7 +324,7 @@ export class ModuleResolver implements ModuleResolverInterface {
    * Clears the module and config cache
    */
   public async dispose() {
-    prettier.clearConfigCache();
+    await prettier.clearConfigCache();
     this.path2Module.forEach((module) => {
       try {
         module.clearConfigCache();
