@@ -6,7 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [9.12.0]
 
-- Support Prettier v3
+- Support Prettier v3. Not shipped by default, requires project install - Thanks to [@sosukesuzuki](https://github.com/sosukesuzuki)
+- Improved translations fo zh-tw and zh-cn - Thanks to [@fisker](https://github.com/fisker) and [@Mrbunker](https://github.com/Mrbunker)
 
 ## [9.11.0]
 
