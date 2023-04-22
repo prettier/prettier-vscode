@@ -11,4 +11,3 @@ jobs:
         with:
           stale-issue-message: "This issue has been labeled as stale due to inactivity. Reply to keep this issue open."
           stale-pr-message: "This pull request has been labeled as stale due to inactivity. Reply to keep this pull request open."
-          stale-pr-label: "stale"
