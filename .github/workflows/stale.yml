@@ -15,5 +15,5 @@ jobs:
 
       - uses: actions/stale@v8
         with:
-          only-labels: "needs more info"
           stale-issue-label: "needs more info"
+          days-before-stale: -1
