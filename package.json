@@ -131,9 +131,6 @@
     "semver": "^7.3.8",
     "vscode-nls": "^5.2.0"
   },
-  "extensionDependencies": [
-    "vscode.npm"
-  ],
   "capabilities": {
     "virtualWorkspaces": true,
     "untrustedWorkspaces": {
