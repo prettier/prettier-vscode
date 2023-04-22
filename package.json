@@ -121,8 +121,8 @@
     "util": "^0.12.4",
     "vsce": "^2.15.0",
     "vscode-nls-dev": "^4.0.3",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.2"
   },
   "dependencies": {
     "find-up": "5.0.0",
