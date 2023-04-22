@@ -125,7 +125,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "find-up": "5.0.0",
+    "find-up": "6.3.0",
     "prettier": "^2.8.7",
     "resolve": "^1.22.2",
     "semver": "^7.3.8",
