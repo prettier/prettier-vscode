@@ -10,10 +10,14 @@ jobs:
     steps:
       - uses: actions/stale@v8
         with:
+          exempt-issue-labels: "needs more info"
           stale-issue-message: "This issue has been labeled as stale due to inactivity. Reply to keep this issue open."
           stale-pr-message: "This pull request has been labeled as stale due to inactivity. Reply to keep this pull request open."
-
+  stale-info:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/stale@v8
         with:
           stale-issue-label: "needs more info"
           days-before-stale: -1
+          days-before-close: 7
