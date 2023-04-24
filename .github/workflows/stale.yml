@@ -12,6 +12,7 @@ jobs:
         with:
           operations-per-run: 1000
           stale-issue-label: "needs more info"
+          any-of-labels: "needs more info"
           exempt-issue-labels: enhancement, help wanted
           days-before-stale: -1
           days-before-close: 7
