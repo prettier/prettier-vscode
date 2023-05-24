@@ -5,7 +5,7 @@ on:
       - labeled
 jobs:
   add-comment:
-    if: github.event.label.name == 'need more info'
+    if: github.event.label.name == 'need-more-info'
     runs-on: ubuntu-latest
     permissions:
       issues: write

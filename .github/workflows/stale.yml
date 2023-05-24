@@ -7,18 +7,21 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # only for delete-branch option
+      issues: write
+      pull-requests: write
+
     steps:
       - uses: actions/stale@v8
         with:
-          operations-per-run: 1000
-          stale-issue-label: "needs more info"
-          any-of-labels: "needs more info"
-          exempt-issue-labels: enhancement, help wanted
+          stale-issue-label: needs-more-info
+          any-of-labels: need-more-info
+          exempt-issue-labels: enhancement, help-wanted
           days-before-stale: -1
           days-before-close: 7
       - uses: actions/stale@v8
         with:
-          operations-per-run: 1000
-          exempt-issue-labels: needs more info, enhancement, help wanted
+          exempt-issue-labels: need-more-info, enhancement, help-wanted
           stale-issue-message: "This issue has been labeled as stale due to inactivity. Reply to keep this issue open."
           stale-pr-message: "This pull request has been labeled as stale due to inactivity. Reply to keep this pull request open."

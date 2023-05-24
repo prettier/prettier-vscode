@@ -1,9 +1,0 @@
-# Configuration for probot-no-response - https://github.com/probot/no-response
-
-daysUntilClose: 3
-responseRequiredLabel: "need more info"
-closeComment: >
-  This issue has been automatically closed because there has been no response
-  to our request for more information from the original author. Currently, there
-  is not enough information provided for us to take action. Please reply and 
-  reopen this issue if you need additional assistance.
