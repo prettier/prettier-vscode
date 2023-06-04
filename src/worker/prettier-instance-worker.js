@@ -69,7 +69,13 @@ parentPort.on("message", ({ type, payload }) => {
         break;
       }
       const result = prettierInstance[moduleName](...methodArgs);
-      parentPort.postMessage({ type, payload: { result, id } });
+      if (result instanceof Promise) {
+        result.then((value) => {
+          parentPort.postMessage({ type, payload: { result: value, id } });
+        });
+      } else {
+        parentPort.postMessage({ type, payload: { result, id } });
+      }
       break;
     }
     default:
