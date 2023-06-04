@@ -96,7 +96,7 @@ parentPort.on("message", ({ type, payload }) => {
         break;
       }
       log("callMethod (" + methodName + ") result " + JSON.stringify(result));
-      parentPort.postMessage({ type, payload: { result: {}, id } });
+      parentPort.postMessage({ type, payload: { result, id } });
       break;
     }
     default:
