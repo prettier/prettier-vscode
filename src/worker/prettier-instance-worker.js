@@ -68,7 +68,7 @@ parentPort.on("message", ({ type, payload }) => {
         sendError(`Module patth ${modulePath} has not been imported.`);
         break;
       }
-      const result = prettierInstance[moduleName](...methodArgs);
+      const result = prettierInstance[methodName](...methodArgs);
       if (result instanceof Promise) {
         result.then((value) => {
           parentPort.postMessage({ type, payload: { result: value, id } });
