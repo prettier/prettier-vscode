@@ -59,6 +59,7 @@ parentPort.on("message", ({ type, payload }) => {
     }
     case "callMethod": {
       const { modulePath, methodName, methodArgs, id } = payload;
+      log("callMethod with " + JSON.stringify(payload));
       if (!allowedMethodNames.has(methodName)) {
         sendError(`Method ${methodName} cannot be called in worker.`);
         break;
@@ -71,9 +72,11 @@ parentPort.on("message", ({ type, payload }) => {
       const result = prettierInstance[methodName](...methodArgs);
       if (result instanceof Promise) {
         result.then((value) => {
+          log("method result(promise) " + JSON.stringify(value));
           parentPort.postMessage({ type, payload: { result: value, id } });
         });
       } else {
+        log("method result " + JSON.stringify(result));
         parentPort.postMessage({ type, payload: { result, id } });
       }
       break;
