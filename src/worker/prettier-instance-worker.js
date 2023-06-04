@@ -30,7 +30,7 @@ function log(value) {
 }
 
 parentPort.on("message", ({ type, payload }) => {
-  log("Receive message " + JSON.stringify({ type }));
+  log("Receive message " + JSON.stringify({ type, payload }));
   switch (type) {
     case "import": {
       const { modulePath } = payload;

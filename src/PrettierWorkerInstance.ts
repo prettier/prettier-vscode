@@ -20,7 +20,12 @@ function log(value: string) {
   );
 }
 
-log("HELLO");
+worker.on("error", (error) => {
+  log(`error
+  error.name    ${error.name}
+  error.message ${error.message}
+  error.stack   ${error.stack}`);
+});
 
 export class PrettierWorkerInstance {
   private importResolver: {
