@@ -13,6 +13,17 @@ const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
+worker.on("exit", () => {
+  log("worker exit");
+});
+
+worker.on("error", (e) => {
+  log(`worker error
+  error name   : ${e.name}
+  error message: ${e.message}
+  error stack  : ${e.stack}`);
+});
+
 function log(value: string) {
   fs.appendFileSync(
     "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
@@ -98,6 +109,7 @@ export class PrettierWorkerInstance {
 
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callMethodId = this.currentCallMethodId++;
+    log(JSON.stringify({ methodName, methodArgs, callMethodId }));
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.push({ id: callMethodId, resolve, reject });
     });

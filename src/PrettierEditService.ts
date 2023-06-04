@@ -395,7 +395,7 @@ export default class PrettierEditService implements Disposable {
       fileName
     );
 
-    this.loggingService.logDebug("prettierInstance ", prettierInstance);
+    this.loggingService.logInfo(JSON.stringify(prettierInstance));
 
     if (!prettierInstance) {
       this.loggingService.logError(
@@ -420,6 +420,7 @@ export default class PrettierEditService implements Disposable {
 
     let fileInfo: PrettierFileInfoResult | undefined;
     if (fileName) {
+      this.loggingService.logInfo(JSON.stringify({ fileName }));
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
         resolveConfig: true,

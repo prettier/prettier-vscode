@@ -30,6 +30,7 @@ function log(value) {
 }
 
 parentPort.on("message", ({ type, payload }) => {
+  log("Receive message " + JSON.stringify({ type }));
   switch (type) {
     case "import": {
       const { modulePath } = payload;
@@ -40,7 +41,11 @@ parentPort.on("message", ({ type, payload }) => {
           // If the instance is missing `format`, it's probably
           // not an instance of Prettier
           if (!prettierInstance.format) {
-            throw new Error("");
+            parentPort.postMessage({
+              type,
+              payload: { version: null },
+            });
+            break;
           }
           path2ModuleCache.set(modulePath, prettierInstance);
         } catch {
@@ -72,13 +77,19 @@ parentPort.on("message", ({ type, payload }) => {
       const result = prettierInstance[methodName](...methodArgs);
       if (result instanceof Promise) {
         result.then((value) => {
-          log("method result(promise) " + JSON.stringify(value));
-          parentPort.postMessage({ type, payload: { result: value, id } });
+          try {
+            // TODO: avoid DataCloneError for getSupportInfo
+            parentPort.postMessage({ type, payload: { result: value, id } });
+          } catch (e) {
+            log(`worker error
+  error name   : ${e.name}
+  error message: ${e.message}
+  error stack  : ${e.stack}`);
+          }
         });
-      } else {
-        log("method result " + JSON.stringify(result));
-        parentPort.postMessage({ type, payload: { result, id } });
+        break;
       }
+      parentPort.postMessage({ type, payload: { result: {}, id } });
       break;
     }
     default:
