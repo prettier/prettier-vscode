@@ -1,9 +1,5 @@
 const { parentPort } = require("worker_threads");
 
-function sendError(message) {
-  parentPort.postMessage({ type: "error", payload: { message } });
-}
-
 const path2ModuleCache = new Map();
 
 function log(value) {
