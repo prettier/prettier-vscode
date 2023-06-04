@@ -28,8 +28,21 @@ parentPort.on("message", ({ type, payload }) => {
       const { modulePath } = payload;
       let prettierInstance = path2ModuleCache.get(modulePath);
       if (!prettierInstance) {
-        prettierInstance = loadNodeModule(modulePath);
-        path2ModuleCache.set(modulePath, prettierInstance);
+        try {
+          prettierInstance = loadNodeModule(modulePath);
+          // If the instance is missing `format`, it's probably
+          // not an instance of Prettier
+          if (!Object.prototype.hasOwnProperty(prettierInstance, "format")) {
+            throw new Error("");
+          }
+          path2ModuleCache.set(modulePath, prettierInstance);
+        } catch {
+          parentPort.postMessage({
+            type,
+            payload: { version: null },
+          });
+          break;
+        }
       }
       parentPort.postMessage({
         type,
