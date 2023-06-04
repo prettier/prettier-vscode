@@ -78,19 +78,19 @@ parentPort.on("message", ({ type, payload }) => {
       if (result instanceof Promise) {
         result.then((value) => {
           try {
-            // TODO: avoid DataCloneError for getSupportInfo
             log(
               "callMethod (" +
                 methodName +
                 ") promise result " +
                 JSON.stringify(value)
             );
+            // For prettier-vscode, `languages` are enough
+            if (methodName === "getSupportInfo") {
+              value = { languages: value.languages };
+            }
             parentPort.postMessage({ type, payload: { result: value, id } });
-          } catch (e) {
-            log(`worker error
-  error name   : ${e.name}
-  error message: ${e.message}
-  error stack  : ${e.stack}`);
+          } catch (error) {
+            sendError(error.message, error);
           }
         });
         break;
