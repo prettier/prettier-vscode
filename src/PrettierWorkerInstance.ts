@@ -27,6 +27,10 @@ worker.on("error", (error) => {
   error.stack   ${error.stack}`);
 });
 
+worker.on("exit", () => {
+  log("worker exit");
+});
+
 export class PrettierWorkerInstance {
   private importResolver: {
     resolve: (version: string) => void;
@@ -55,7 +59,13 @@ export class PrettierWorkerInstance {
           const resolver = this.callMethodResolvers.find(({ id }) => {
             return id === payload.id;
           });
-          resolver?.resolve(payload.result);
+          if (resolver) {
+            if (payload.isError) {
+              resolver.reject(payload.result);
+            } else {
+              resolver.resolve(payload.result);
+            }
+          }
           break;
         }
         default:
