@@ -79,6 +79,12 @@ parentPort.on("message", ({ type, payload }) => {
         result.then((value) => {
           try {
             // TODO: avoid DataCloneError for getSupportInfo
+            log(
+              "callMethod (" +
+                methodName +
+                ") promise result " +
+                JSON.stringify(value)
+            );
             parentPort.postMessage({ type, payload: { result: value, id } });
           } catch (e) {
             log(`worker error
@@ -89,6 +95,7 @@ parentPort.on("message", ({ type, payload }) => {
         });
         break;
       }
+      log("callMethod (" + methodName + ") result " + JSON.stringify(result));
       parentPort.postMessage({ type, payload: { result: {}, id } });
       break;
     }
