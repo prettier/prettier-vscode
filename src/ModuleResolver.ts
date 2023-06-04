@@ -151,22 +151,21 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     }
 
-    let moduleIns: PrettierWorkerInstance | undefined = undefined;
+    let moduleInstance: PrettierWorkerInstance | undefined = undefined;
 
-    // let moduleInstance: PrettierNodeModule | undefined = undefined;
     if (modulePath !== undefined) {
       this.loggingService.logDebug(
         `Local prettier module path: '${modulePath}'`
       );
       // First check module cache
-      moduleIns = this.path2ModuleIns.get(modulePath);
-      if (moduleIns) {
-        return moduleIns;
+      moduleInstance = this.path2ModuleIns.get(modulePath);
+      if (moduleInstance) {
+        return moduleInstance;
       } else {
         try {
-          moduleIns = new PrettierWorkerInstance(modulePath); // this.loadNodeModule<PrettierNodeModule>(modulePath);
-          if (moduleIns) {
-            this.path2ModuleIns.set(modulePath, moduleIns);
+          moduleInstance = new PrettierWorkerInstance(modulePath);
+          if (moduleInstance) {
+            this.path2ModuleIns.set(modulePath, moduleInstance);
           }
         } catch (error) {
           this.loggingService.logInfo(
@@ -182,16 +181,15 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     }
 
-    if (moduleIns) {
-      const version = await moduleIns.import();
-
-      // const isPrettierInstance = !!moduleInstance.format;
-      const isValidVersion = version && semver.gte(version, minPrettierVersion);
+    if (moduleInstance) {
+      const version = await moduleInstance.import();
 
       if (!version && prettierPath) {
         this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
         return undefined;
       }
+
+      const isValidVersion = version && semver.gte(version, minPrettierVersion);
 
       if (!isValidVersion) {
         this.loggingService.logInfo(
@@ -202,7 +200,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       } else {
         this.loggingService.logDebug(`Using prettier version ${version}`);
       }
-      return moduleIns;
+      return moduleInstance;
     } else {
       this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
       return prettier;

@@ -68,8 +68,6 @@ export class PrettierWorkerInstance {
           }
           break;
         }
-        default:
-          throw new Error(`Type ${type} isn't supported`);
       }
     });
   }
