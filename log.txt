@@ -1,0 +1,15 @@
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[WORKER THREAD]undefined
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[WORKER THREAD]undefined
+[MAIN THREAD]HELLO
+[MAIN THREAD]HELLO
+[WORKER THREAD]undefined
+[MAIN THREAD]HELLO
+[WORKER THREAD]{"__debug":{},"util":{},"doc":{"builders":{"breakParent":{"type":"break-parent"},"cursor":{"type":"cursor"},"hardline":[{"type":"line","hard":true},{"type":"break-parent"}],"hardlineWithoutBreakParent":{"type":"line","hard":true},"line":{"type":"line"},"lineSuffixBoundary":{"type":"line-suffix-boundary"},"literalline":[{"type":"line","hard":true,"literal":true},{"type":"break-parent"}],"literallineWithoutBreakParent":{"type":"line","hard":true,"literal":true},"softline":{"type":"line","soft":true},"trim":{"type":"trim"}},"debug":{},"printer":{},"utils":{}},"version":"3.0.0-alpha.6"}

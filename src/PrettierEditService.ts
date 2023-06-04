@@ -395,6 +395,8 @@ export default class PrettierEditService implements Disposable {
       fileName
     );
 
+    this.loggingService.logDebug("prettierInstance ", prettierInstance);
+
     if (!prettierInstance) {
       this.loggingService.logError(
         "Prettier could not be loaded. See previous logs for more information."

@@ -4,14 +4,14 @@ function sendError(message, error) {
   parentPort.postMessage({ type: "error", payload: { message, error } });
 }
 
-function nodeModuleLoader() {
-  return typeof __webpack_require__ === "function"
-    ? __non_webpack_require__
-    : require;
-}
+// function nodeModuleLoader() {
+//   return typeof __webpack_require__ === "function"
+//     ? __non_webpack_require__
+//     : require;
+// }
 function loadNodeModule(modulePath) {
   try {
-    return nodeModuleLoader(moduleName);
+    return require(modulePath);
   } catch (error) {
     sendError(`Error loading node module '${modulePath}'`, error);
   }
@@ -21,6 +21,13 @@ function loadNodeModule(modulePath) {
 const path2ModuleCache = new Map();
 
 const allowedMethodNames = new Set(["getSupportInfo", "getFileInfo", "format"]);
+
+function log(value) {
+  require("fs").appendFileSync(
+    "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
+    "[WORKER THREAD]" + value + "\n"
+  );
+}
 
 parentPort.on("message", ({ type, payload }) => {
   switch (type) {
@@ -32,7 +39,7 @@ parentPort.on("message", ({ type, payload }) => {
           prettierInstance = loadNodeModule(modulePath);
           // If the instance is missing `format`, it's probably
           // not an instance of Prettier
-          if (!Object.prototype.hasOwnProperty(prettierInstance, "format")) {
+          if (!prettierInstance.format) {
             throw new Error("");
           }
           path2ModuleCache.set(modulePath, prettierInstance);

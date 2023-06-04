@@ -1,4 +1,7 @@
 import { Worker } from "worker_threads";
+import * as url from "url";
+import * as path from "path";
+import * as fs from "fs";
 import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
@@ -6,7 +9,18 @@ import {
   PrettierSupportLanguage,
 } from "./types";
 
-const worker = new Worker("./worker/prettier-instance-worker.js");
+const worker = new Worker(
+  url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
+);
+
+function log(value: string) {
+  fs.appendFileSync(
+    "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
+    "[MAIN THREAD]" + value + "\n"
+  );
+}
+
+log("HELLO");
 
 export class PrettierWorkerInstance {
   private importResolver: {
@@ -91,7 +105,7 @@ export class PrettierWorkerInstance {
       type: "callMethod",
       payload: {
         id: callMethodId,
-        modulePatth: this.modulePath,
+        modulePath: this.modulePath,
         methodName,
         methodArgs,
       },
