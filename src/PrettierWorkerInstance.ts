@@ -1,7 +1,6 @@
 import { Worker } from "worker_threads";
 import * as url from "url";
 import * as path from "path";
-import * as fs from "fs";
 import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
@@ -13,22 +12,12 @@ const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
-function log(value: string) {
-  // fs.appendFileSync(
-  //   "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
-  //   "[MAIN THREAD]" + value + "\n"
-  // );
-}
-
-worker.on("error", (error) => {
-  log(`error
-  error.name    ${error.name}
-  error.message ${error.message}
-  error.stack   ${error.stack}`);
+worker.on("error", () => {
+  // do nothing
 });
 
 worker.on("exit", () => {
-  log("worker exit");
+  // do nothing
 });
 
 export class PrettierWorkerInstance {
@@ -111,7 +100,7 @@ export class PrettierWorkerInstance {
 
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callMethodId = this.currentCallMethodId++;
-    log(JSON.stringify({ methodName, methodArgs, callMethodId }));
+    // log(JSON.stringify({ methodName, methodArgs, callMethodId }));
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.push({ id: callMethodId, resolve, reject });
     });
