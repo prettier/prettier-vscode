@@ -14,10 +14,10 @@ const worker = new Worker(
 );
 
 function log(value: string) {
-  fs.appendFileSync(
-    "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
-    "[MAIN THREAD]" + value + "\n"
-  );
+  // fs.appendFileSync(
+  //   "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
+  //   "[MAIN THREAD]" + value + "\n"
+  // );
 }
 
 worker.on("error", (error) => {
