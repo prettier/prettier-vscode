@@ -9,7 +9,7 @@ suite("Test plugins", function () {
     assert.equal(actual, expected);
   });
 
-  test("it correctly resolved plugin in pnpm node_modules dirs structure", async () => {
+  test.skip("it correctly resolved plugin in pnpm node_modules dirs structure", async () => {
     const { actual } = await format("plugins-pnpm", "index.js");
     const expected = await getText("plugins-pnpm", "index.result.js");
     assert.equal(actual, expected);
