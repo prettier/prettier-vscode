@@ -68,6 +68,9 @@ export async function format(workspaceFolderName: string, testFile: string) {
   }
   // eslint-disable-next-line no-console
   console.time(testFile);
+  if (testFile === "index.php") {
+    await wait(1000);
+  }
   await vscode.commands.executeCommand("editor.action.formatDocument");
 
   // eslint-disable-next-line no-console
