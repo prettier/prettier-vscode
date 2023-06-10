@@ -54,7 +54,11 @@ export function putBackPrettierRC(done: Done) {
  * @param base base URI
  * @returns source code and resulting code
  */
-export async function format(workspaceFolderName: string, testFile: string) {
+export async function format(
+  workspaceFolderName: string,
+  testFile: string,
+  shouldRetry = false
+) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
   const absPath = path.join(base.fsPath, testFile);
   const doc = await vscode.workspace.openTextDocument(absPath);
@@ -68,15 +72,25 @@ export async function format(workspaceFolderName: string, testFile: string) {
   }
   // eslint-disable-next-line no-console
   console.time(testFile);
-  if (testFile === "index.php") {
-    await wait(1000);
-  }
   await vscode.commands.executeCommand("editor.action.formatDocument");
+
+  let actual = doc.getText();
+
+  if (shouldRetry) {
+    for (let i = 0; i < 10; i++) {
+      if (text !== actual) {
+        break;
+      }
+      await wait(150);
+      await vscode.commands.executeCommand("editor.action.formatDocument");
+      actual = doc.getText();
+    }
+  }
 
   // eslint-disable-next-line no-console
   console.timeEnd(testFile);
 
-  return { actual: doc.getText(), source: text };
+  return { actual, source: text };
 }
 /**
  * Compare prettier's output (default settings)
