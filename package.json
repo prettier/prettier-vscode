@@ -75,7 +75,7 @@
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
-    "vscode:prepublish": "webpack --mode production",
+    "vscode:prepublish": "webpack --mode production && cp -r ./src/worker ./dist",
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development && cp -r ./src/worker ./dist",
