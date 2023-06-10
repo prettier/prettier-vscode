@@ -105,7 +105,6 @@ export class PrettierWorkerInstance {
 
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callMethodId = this.currentCallMethodId++;
-    // log(JSON.stringify({ methodName, methodArgs, callMethodId }));
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.push({ id: callMethodId, resolve, reject });
     });
