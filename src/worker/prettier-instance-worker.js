@@ -2,13 +2,6 @@ const { parentPort } = require("worker_threads");
 
 const path2ModuleCache = new Map();
 
-// function log(value) {
-// require("fs").appendFileSync(
-//   "/Users/sosuke.suzuki/ghq/github.com/sosukesuzuki/prettier-vscode/log.txt",
-//   "[WORKER THREAD]" + value + "\n"
-// );
-// }
-
 parentPort.on("message", ({ type, payload }) => {
   switch (type) {
     case "import": {

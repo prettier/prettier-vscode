@@ -17,7 +17,11 @@ suite("Test module resolution", function () {
   });
 
   test("it loads plugin referenced in dependency module", async () => {
-    const { actual } = await format("module-plugin", "index.js");
+    const { actual } = await format(
+      "module-plugin",
+      "index.js",
+      /* shouldRetry */ true
+    );
     const expected = await getText("module-plugin", "index.result.js");
     assert.equal(actual, expected);
   });

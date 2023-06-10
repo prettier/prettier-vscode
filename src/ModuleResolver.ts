@@ -70,9 +70,8 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 export class ModuleResolver implements ModuleResolverInterface {
   private findPkgCache: Map<string, string>;
   private ignorePathCache = new Map<string, string>();
-  private path2Module = new Map<string, PrettierNodeModule>();
 
-  private path2ModuleIns = new Map<string, PrettierWorkerInstance>();
+  private path2Module = new Map<string, PrettierWorkerInstance>();
 
   constructor(private loggingService: LoggingService) {
     this.findPkgCache = new Map();
@@ -158,14 +157,14 @@ export class ModuleResolver implements ModuleResolverInterface {
         `Local prettier module path: '${modulePath}'`
       );
       // First check module cache
-      moduleInstance = this.path2ModuleIns.get(modulePath);
+      moduleInstance = this.path2Module.get(modulePath);
       if (moduleInstance) {
         return moduleInstance;
       } else {
         try {
           moduleInstance = new PrettierWorkerInstance(modulePath);
           if (moduleInstance) {
-            this.path2ModuleIns.set(modulePath, moduleInstance);
+            this.path2Module.set(modulePath, moduleInstance);
           }
         } catch (error) {
           this.loggingService.logInfo(
@@ -323,6 +322,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     await prettier.clearConfigCache();
     this.path2Module.forEach((module) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         module.clearConfigCache();
       } catch (error) {
         this.loggingService.logError("Error clearing module cache.", error);
@@ -336,19 +336,6 @@ export class ModuleResolver implements ModuleResolverInterface {
       ? __non_webpack_require__
       : require;
   }
-
-  // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
-  // private loadNodeModule<T>(moduleName: string): T | undefined {
-  //   try {
-  //     return this.nodeModuleLoader(moduleName);
-  //   } catch (error) {
-  //     this.loggingService.logError(
-  //       `Error loading node module '${moduleName}'`,
-  //       error
-  //     );
-  //   }
-  //   return undefined;
-  // }
 
   private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
     try {

@@ -12,14 +12,6 @@ const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
-worker.on("error", () => {
-  // do nothing
-});
-
-worker.on("exit", () => {
-  // do nothing
-});
-
 export class PrettierWorkerInstance {
   private importResolver: {
     resolve: (version: string) => void;
@@ -85,6 +77,10 @@ export class PrettierWorkerInstance {
   }> {
     const result = await this.callMethod("getSupportInfo", []);
     return result;
+  }
+
+  public async clearConfigCache(): Promise<void> {
+    await this.callMethod("clearConfigCache", []);
   }
 
   public async getFileInfo(

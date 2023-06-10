@@ -395,8 +395,6 @@ export default class PrettierEditService implements Disposable {
       fileName
     );
 
-    this.loggingService.logInfo(JSON.stringify(prettierInstance));
-
     if (!prettierInstance) {
       this.loggingService.logError(
         "Prettier could not be loaded. See previous logs for more information."
@@ -420,7 +418,6 @@ export default class PrettierEditService implements Disposable {
 
     let fileInfo: PrettierFileInfoResult | undefined;
     if (fileName) {
-      this.loggingService.logInfo(JSON.stringify({ fileName }));
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
         resolveConfig: true,
