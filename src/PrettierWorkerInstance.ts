@@ -12,6 +12,15 @@ const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
+function findAndRemove<T>(array: Array<T>, predicate: (element: T) => boolean) {
+  const index = array.findIndex(predicate);
+  if (index === -1) {
+    return null;
+  } else {
+    return array.splice(index, 1)[0];
+  }
+}
+
 export class PrettierWorkerInstance {
   private importResolver: {
     resolve: (version: string) => void;
@@ -37,7 +46,7 @@ export class PrettierWorkerInstance {
           break;
         }
         case "callMethod": {
-          const resolver = this.callMethodResolvers.find(({ id }) => {
+          const resolver = findAndRemove(this.callMethodResolvers, ({ id }) => {
             return id === payload.id;
           });
           if (resolver) {
