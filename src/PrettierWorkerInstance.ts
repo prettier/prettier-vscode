@@ -12,26 +12,19 @@ const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
-function findAndRemove<T>(array: Array<T>, predicate: (element: T) => boolean) {
-  const index = array.findIndex(predicate);
-  if (index === -1) {
-    return null;
-  } else {
-    return array.splice(index, 1)[0];
-  }
-}
-
 export class PrettierWorkerInstance {
   private importResolver: {
     resolve: (version: string) => void;
     reject: (version: string) => void;
   } | null = null;
 
-  private callMethodResolvers: {
-    id: number;
-    resolve: (value: unknown) => void;
-    reject: (value: unknown) => void;
-  }[] = [];
+  private callMethodResolvers: Map<
+    number,
+    {
+      resolve: (value: unknown) => void;
+      reject: (value: unknown) => void;
+    }
+  > = new Map();
 
   private currentCallMethodId = 0;
 
@@ -46,9 +39,8 @@ export class PrettierWorkerInstance {
           break;
         }
         case "callMethod": {
-          const resolver = findAndRemove(this.callMethodResolvers, ({ id }) => {
-            return id === payload.id;
-          });
+          const resolver = this.callMethodResolvers.get(payload.id);
+          this.callMethodResolvers.delete(payload.id);
           if (resolver) {
             if (payload.isError) {
               resolver.reject(payload.result);
@@ -106,7 +98,7 @@ export class PrettierWorkerInstance {
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callMethodId = this.currentCallMethodId++;
     const promise = new Promise((resolve, reject) => {
-      this.callMethodResolvers.push({ id: callMethodId, resolve, reject });
+      this.callMethodResolvers.set(callMethodId, { resolve, reject });
     });
     worker.postMessage({
       type: "callMethod",
