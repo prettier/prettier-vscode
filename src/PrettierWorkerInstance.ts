@@ -77,7 +77,7 @@ export class PrettierWorkerInstance {
     source: string,
     options?: PrettierOptions
   ): Promise<string> {
-    const result = this.callMethod("format", [source, options]);
+    const result = await this.callMethod("format", [source, options]);
     return result;
   }
 
