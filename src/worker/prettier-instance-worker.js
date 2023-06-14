@@ -81,7 +81,7 @@ parentPort.on("message", ({ type, payload }) => {
           (reason) => {
             parentPort.postMessage({
               type,
-              payload: { resuslt: reason, id, isError: true },
+              payload: { result: reason, id, isError: true },
             });
           }
         );
