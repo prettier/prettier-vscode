@@ -14,4 +14,10 @@ suite("Test plugins", function () {
     const expected = await getText("plugins-pnpm", "index.result.js");
     assert.equal(actual, expected);
   });
+
+  test("it should be able to obtain the `inferredParser` of the plugin", async () => {
+    const { actual } = await format("plugins-pnpm", "index.php");
+    const expected = await getText("plugins-pnpm", "index.result.php");
+    assert.equal(actual, expected);
+  });
 });

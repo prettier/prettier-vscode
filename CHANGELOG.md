@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [Unreleased]
 
 - Fixes a bug in Remote SSH that had been occurring since VSCode 1.79.
+- Fix plugins `parser` not inferred - Thanks to [@u3u](https://github.com/u3u)
 
 ## [9.13.0]
 
