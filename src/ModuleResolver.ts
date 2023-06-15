@@ -31,6 +31,30 @@ declare const __non_webpack_require__: typeof require;
 
 export type PrettierNodeModule = typeof prettier;
 
+const origFsStatSync = fs.statSync;
+const fsStatSyncWorkaround = (
+  path: fs.PathLike,
+  options: fs.StatSyncOptions
+) => {
+  if (
+    options?.throwIfNoEntry === true ||
+    options?.throwIfNoEntry === undefined
+  ) {
+    return origFsStatSync(path, options);
+  }
+  options.throwIfNoEntry = true;
+  try {
+    return origFsStatSync(path, options);
+  } catch (error: any) {
+    if (error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  }
+};
+// @ts-expect-error Workaround for https://github.com/prettier/prettier-vscode/issues/3020
+fs.statSync = fsStatSyncWorkaround;
+
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
 } = {
