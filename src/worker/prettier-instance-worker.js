@@ -14,6 +14,17 @@ function requireInstance(modulePath) {
   return prettierInstance;
 }
 
+function serializeError(errorObj) {
+  if (errorObj instanceof Error) {
+    return {
+      name: errorObj.name,
+      message: errorObj.message,
+      stack: errorObj.stack,
+    };
+  }
+  return errorObj;
+}
+
 parentPort.on("message", ({ type, payload }) => {
   switch (type) {
     case "import": {
@@ -34,25 +45,25 @@ parentPort.on("message", ({ type, payload }) => {
     }
     case "callMethod": {
       const { modulePath, methodName, methodArgs, id } = payload;
+      const postError = (error) => {
+        parentPort.postMessage({
+          type,
+          payload: { result: serializeError(error), id, isError: true },
+        });
+      };
       let prettierInstance = path2ModuleCache.get(modulePath);
       if (!prettierInstance) {
         try {
           prettierInstance = requireInstance(modulePath);
         } catch (error) {
-          parentPort.postMessage({
-            type,
-            payload: { result: error, id, isError: true },
-          });
+          postError(error);
         }
       }
       let result;
       try {
         result = prettierInstance[methodName](...methodArgs);
       } catch (error) {
-        parentPort.postMessage({
-          type,
-          payload: { result: error, id, isError: true },
-        });
+        postError(error);
       }
       if (result instanceof Promise) {
         result.then(
@@ -67,17 +78,11 @@ parentPort.on("message", ({ type, payload }) => {
                 payload: { result: value, id, isError: false },
               });
             } catch (error) {
-              parentPort.postMessage({
-                type,
-                payload: { result: error, id, isError: true },
-              });
+              postError(error);
             }
           },
           (reason) => {
-            parentPort.postMessage({
-              type,
-              payload: { result: reason, id, isError: true },
-            });
+            postError(reason);
           }
         );
         break;
@@ -92,10 +97,7 @@ parentPort.on("message", ({ type, payload }) => {
           payload: { result, id, isError: false },
         });
       } catch (error) {
-        parentPort.postMessage({
-          type,
-          payload: { result: error, id, isError: true },
-        });
+        postError(error);
       }
       break;
     }
