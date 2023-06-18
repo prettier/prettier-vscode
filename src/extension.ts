@@ -1,12 +1,12 @@
 import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands";
 import { LoggingService } from "./LoggingService";
+import { EXTENSION_DISABLED, RESTART_TO_ENABLE } from "./message";
 import { ModuleResolver } from "./ModuleResolver";
 import PrettierEditService from "./PrettierEditService";
 import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
 import { getConfig } from "./util";
-import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
 
 // the application insights key (also known as instrumentation key)
 const extensionName = process.env.EXTENSION_NAME || "dev.prettier-vscode";
@@ -64,15 +64,22 @@ export function activate(context: ExtensionContext) {
           loggingService.show();
         }
       );
+
       const forceFormatDocumentCommand = commands.registerCommand(
         "prettier.forceFormatDocument",
         editService.forceFormatDocument
+      );
+
+      const formatDocumentCommand = commands.registerCommand(
+        "prettier.formatDocument",
+        editService.formatDocument
       );
 
       context.subscriptions.push(
         editService,
         createConfigFileCommand,
         openOutputCommand,
+        formatDocumentCommand,
         forceFormatDocumentCommand,
         ...editService.registerDisposables()
       );

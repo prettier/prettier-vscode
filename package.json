@@ -444,6 +444,11 @@
         "title": "%ext.command.createConfigFile.title%"
       },
       {
+        "command": "prettier.formatDocument",
+        "title": "%ext.command.formatDocument.title%",
+        "when": "editorFocus"
+      },
+      {
         "command": "prettier.forceFormatDocument",
         "title": "%ext.command.forceFormatDocument.title%",
         "when": "editorFocus"

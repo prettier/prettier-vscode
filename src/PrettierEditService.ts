@@ -13,6 +13,7 @@ import {
 import { getParserFromLanguageId } from "./languageFilters";
 import { LoggingService } from "./LoggingService";
 import { RESTART_TO_ENABLE } from "./message";
+import { PrettierFormatDocumentAction } from "./PrettierActionProviders";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { FormatterStatus, StatusBar } from "./StatusBar";
 import {
@@ -52,6 +53,8 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private formatDocumentAction: undefined | Disposable;
+  private formatChangedAction: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
   private allLanguages: string[] = [];
@@ -134,6 +137,29 @@ export default class PrettierEditService implements Disposable {
     }
   };
 
+  public formatDocument = async () => {
+    try {
+      const editor = window.activeTextEditor;
+      if (!editor) {
+        this.loggingService.logInfo(
+          "No active document. Nothing was formatted."
+        );
+        return;
+      }
+
+      const edits = await this.provideEdits(editor.document, { force: false });
+      if (edits.length !== 1) {
+        return;
+      }
+
+      await editor.edit((editBuilder) => {
+        editBuilder.replace(edits[0].range, edits[0].newText);
+      });
+    } catch (e) {
+      this.loggingService.logError("Error formatting document", e);
+    }
+  };
+
   private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
 
   private resetFormatters = (uri?: Uri) => {
@@ -200,6 +226,7 @@ export default class PrettierEditService implements Disposable {
 
     if (!isRegistered) {
       this.registerDocumentFormatEditorProviders(selectors);
+      this.registerCodeActions(selectors);
       this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);
       this.loggingService.logDebug(
         `Enabling Prettier for Workspace ${workspaceFolder.uri.fsPath}`,
@@ -225,10 +252,18 @@ export default class PrettierEditService implements Disposable {
 
   public dispose = () => {
     this.moduleResolver.dispose();
+
     this.formatterHandler?.dispose();
-    this.rangeFormatterHandler?.dispose();
     this.formatterHandler = undefined;
+
+    this.rangeFormatterHandler?.dispose();
     this.rangeFormatterHandler = undefined;
+
+    this.formatDocumentAction?.dispose();
+    this.formatDocumentAction = undefined;
+
+    this.formatChangedAction?.dispose();
+    this.formatChangedAction = undefined;
   };
 
   private registerDocumentFormatEditorProviders({
@@ -246,6 +281,38 @@ export default class PrettierEditService implements Disposable {
       languageSelector,
       editProvider
     );
+  }
+
+  private registerCodeActions({
+    languageSelector,
+    rangeLanguageSelector,
+  }: ISelectors) {
+    this.dispose();
+    const formatDocumentAction = new PrettierFormatDocumentAction(
+      this.provideEdits,
+      this.loggingService
+    );
+    this.formatDocumentAction = languages.registerCodeActionsProvider(
+      languageSelector,
+      formatDocumentAction,
+      {
+        providedCodeActionKinds:
+          PrettierFormatDocumentAction.providedCodeActionKinds,
+      }
+    );
+
+    // const formatRangeAction = new PrettierFormatRangeAction(
+    //   this.provideEdits,
+    //   this.loggingService
+    // );
+    // this.formatChangedAction = languages.registerCodeActionsProvider(
+    //   rangeLanguageSelector,
+    //   formatRangeAction,
+    //   {
+    //     providedCodeActionKinds:
+    //       PrettierFormatDocumentAction.providedCodeActionKinds,
+    //   }
+    // );
   }
 
   /**

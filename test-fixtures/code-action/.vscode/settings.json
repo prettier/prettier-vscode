@@ -1,0 +1,8 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.format.prettier": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false,
+  "prettier.enableDebugLogs": true
+}
