@@ -420,8 +420,8 @@ export default class PrettierEditService implements Disposable {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
         plugins: resolvedConfig?.plugins?.filter(
-          (item) => typeof item === "string"
-        ) as string[],
+          (item): item is string => typeof item === "string"
+        ),
         resolveConfig: true,
         withNodeModules: vscodeConfig.withNodeModules,
       });
