@@ -15,14 +15,10 @@ function requireInstance(modulePath) {
 }
 
 function serializeError(errorObj) {
-  if (errorObj instanceof Error) {
-    return {
-      name: errorObj.name,
-      message: errorObj.message,
-      stack: errorObj.stack,
-    };
-  }
-  return errorObj;
+  return {
+    error: errorObj,
+    errorData: { ...errorObj },
+  };
 }
 
 parentPort.on("message", ({ type, payload }) => {
