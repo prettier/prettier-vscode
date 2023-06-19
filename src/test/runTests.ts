@@ -57,8 +57,16 @@ async function main() {
         .concat(["--user-data-dir", userDataDirectory]),
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
+    /* eslint-disable no-console */
     console.error("Failed to run tests");
+    if (error instanceof Error) {
+      console.error("error message: " + error.message);
+      console.error("error name: " + error.name);
+      console.error("error stack: " + error.stack);
+    } else {
+      console.error("No error object: " + JSON.stringify(error));
+    }
+    /* eslint-enable no-console */
     process.exit(1);
   }
 }

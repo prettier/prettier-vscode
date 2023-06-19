@@ -16,8 +16,13 @@ jobs:
           run_install: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        if: runner.os != 'Windows'
         with:
-          node-version: "14"
+          node-version-file: ".nvmrc"
+      - uses: actions/setup-node@v3
+        if: runner.os == 'Windows'
+        with:
+          node-version: 14
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
@@ -44,8 +49,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        if: runner.os != 'Windows'
         with:
-          node-version: "14"
+          node-version-file: ".nvmrc"
+      - uses: actions/setup-node@v3
+        if: runner.os == 'Windows'
+        with:
+          node-version: 14
       - run: yarn install
       - name: Cache node modules
         uses: actions/cache@v3
@@ -75,8 +85,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        if: runner.os != 'Windows'
         with:
-          node-version: "14"
+          node-version-file: ".nvmrc"
+      - uses: actions/setup-node@v3
+        if: runner.os == 'Windows'
+        with:
+          node-version: 14
       - run: yarn install
       - run: npm install -g vsce
       - run: vsce package
