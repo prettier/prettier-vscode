@@ -81,7 +81,7 @@ export async function format(
       if (text !== actual) {
         break;
       }
-      await wait(150);
+      await wait(250);
       await vscode.commands.executeCommand("editor.action.formatDocument");
       actual = doc.getText();
     }
