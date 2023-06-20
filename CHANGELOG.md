@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [Unreleased]
+
+- Run Prettier in worker_threads for v3.
+
 ## [9.14.0]
 
 - Fixes a bug in Remote SSH that had been occurring since VSCode 1.79.
