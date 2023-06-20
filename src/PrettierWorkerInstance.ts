@@ -43,9 +43,7 @@ export class PrettierWorkerInstance {
           this.callMethodResolvers.delete(payload.id);
           if (resolver) {
             if (payload.isError) {
-              resolver.reject(
-                Object.assign(payload.result.error, payload.result.errorObj)
-              );
+              resolver.reject(payload.result);
             } else {
               resolver.resolve(payload.result);
             }

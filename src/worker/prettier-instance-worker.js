@@ -14,13 +14,6 @@ function requireInstance(modulePath) {
   return prettierInstance;
 }
 
-function serializeError(errorObj) {
-  return {
-    error: errorObj,
-    errorData: { ...errorObj },
-  };
-}
-
 parentPort.on("message", ({ type, payload }) => {
   switch (type) {
     case "import": {
@@ -44,7 +37,7 @@ parentPort.on("message", ({ type, payload }) => {
       const postError = (error) => {
         parentPort.postMessage({
           type,
-          payload: { result: serializeError(error), id, isError: true },
+          payload: { result: error, id, isError: true },
         });
       };
       let prettierInstance = path2ModuleCache.get(modulePath);
