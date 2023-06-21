@@ -24,6 +24,7 @@ import {
   PrettierVSCodeConfig,
 } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
+import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 
 const minPrettierVersion = "1.13.0";
 declare const __webpack_require__: typeof require;
@@ -93,7 +94,8 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 export class ModuleResolver implements ModuleResolverInterface {
   private findPkgCache: Map<string, string>;
   private ignorePathCache = new Map<string, string>();
-  private path2Module = new Map<string, PrettierNodeModule>();
+
+  private path2Module = new Map<string, PrettierWorkerInstance>();
 
   constructor(private loggingService: LoggingService) {
     this.findPkgCache = new Map();
@@ -109,7 +111,7 @@ export class ModuleResolver implements ModuleResolverInterface {
    */
   public async getPrettierInstance(
     fileName: string
-  ): Promise<PrettierNodeModule | undefined> {
+  ): Promise<PrettierNodeModule | PrettierWorkerInstance | undefined> {
     if (!workspace.isTrusted) {
       this.loggingService.logDebug(UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER);
       return prettier;
@@ -172,7 +174,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     }
 
-    let moduleInstance: PrettierNodeModule | undefined = undefined;
+    let moduleInstance: PrettierWorkerInstance | undefined = undefined;
+
     if (modulePath !== undefined) {
       this.loggingService.logDebug(
         `Local prettier module path: '${modulePath}'`
@@ -183,7 +186,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         return moduleInstance;
       } else {
         try {
-          moduleInstance = this.loadNodeModule<PrettierNodeModule>(modulePath);
+          moduleInstance = new PrettierWorkerInstance(modulePath);
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
           }
@@ -202,20 +205,14 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     if (moduleInstance) {
-      // If the instance is missing `format`, it's probably
-      // not an instance of Prettier
-      const isPrettierInstance = !!moduleInstance.format;
-      const isValidVersion =
-        moduleInstance.version &&
-        !!moduleInstance.getSupportInfo &&
-        !!moduleInstance.getFileInfo &&
-        !!moduleInstance.resolveConfig &&
-        semver.gte(moduleInstance.version, minPrettierVersion);
+      const version = await moduleInstance.import();
 
-      if (!isPrettierInstance && prettierPath) {
+      if (!version && prettierPath) {
         this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
         return undefined;
       }
+
+      const isValidVersion = version && semver.gte(version, minPrettierVersion);
 
       if (!isValidVersion) {
         this.loggingService.logInfo(
@@ -224,9 +221,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         this.loggingService.logError(OUTDATED_PRETTIER_VERSION_MESSAGE);
         return undefined;
       } else {
-        this.loggingService.logDebug(
-          `Using prettier version ${moduleInstance.version}`
-        );
+        this.loggingService.logDebug(`Using prettier version ${version}`);
       }
       return moduleInstance;
     } else {
@@ -351,6 +346,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     await prettier.clearConfigCache();
     this.path2Module.forEach((module) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         module.clearConfigCache();
       } catch (error) {
         this.loggingService.logError("Error clearing module cache.", error);
@@ -363,19 +359,6 @@ export class ModuleResolver implements ModuleResolverInterface {
     return typeof __webpack_require__ === "function"
       ? __non_webpack_require__
       : require;
-  }
-
-  // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
-  private loadNodeModule<T>(moduleName: string): T | undefined {
-    try {
-      return this.nodeModuleLoader(moduleName);
-    } catch (error) {
-      this.loggingService.logError(
-        `Error loading node module '${moduleName}'`,
-        error
-      );
-    }
-    return undefined;
   }
 
   private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {

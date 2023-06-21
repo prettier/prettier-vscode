@@ -7,6 +7,7 @@ const webpack = require("webpack");
 const path = require("path");
 // eslint-disable-next-line no-undef
 const extensionPackage = require("./package.json");
+const CopyPlugin = require("copy-webpack-plugin");
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -24,6 +25,9 @@ const config = {
     new webpack.EnvironmentPlugin({
       EXTENSION_NAME: `${extensionPackage.publisher}.${extensionPackage.name}`,
       EXTENSION_VERSION: extensionPackage.version,
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "src/worker", to: "worker" }],
     }),
   ],
   /* cspell: disable-next-line */
