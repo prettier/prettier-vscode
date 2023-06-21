@@ -11,14 +11,8 @@ jobs:
     name: Test on ${{ matrix.os }}
     steps:
       - uses: pnpm/action-setup@v2
-        if: runner.os == 'Windows'
         with:
           version: 7
-          run_install: false
-      - uses: pnpm/action-setup@v2
-        if: runner.os != 'Windows'
-        with:
-          version: 8
           run_install: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

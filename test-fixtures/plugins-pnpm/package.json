@@ -8,6 +8,7 @@
     "@prettier/plugin-php": "^0.19.6",
     "prettier-plugin-organize-imports": "2.3.4"
   },
+  "packageManager": "pnpm@7.33.1",
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": ["typescript"]
