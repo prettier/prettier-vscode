@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [Unreleased]
+
+- Run only Prettier v3 in worker_threads. Run v2 in main thread.
+
 ## [9.15.0]
 
 - Run Prettier in worker_threads for v3.
