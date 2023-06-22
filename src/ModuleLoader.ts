@@ -15,3 +15,14 @@ export function loadNodeModule<T>(moduleName: string): T | undefined {
     throw new Error(`Error loading node module '${moduleName}'`);
   }
 }
+
+export function resolveNodeModule(
+  moduleName: string,
+  options?: { paths: string[] }
+) {
+  try {
+    return nodeModuleLoader().resolve(moduleName, options);
+  } catch (error) {
+    throw new Error(`Error resolve node module '${moduleName}'`);
+  }
+}

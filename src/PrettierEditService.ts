@@ -26,6 +26,7 @@ import {
 } from "./types";
 import { getConfig } from "./util";
 import { PrettierInstance } from "./PrettierInstance";
+import { resolveNodeModule } from "./ModuleLoader";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -256,8 +257,9 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule | PrettierInstance,
     uri?: Uri
   ): Promise<ISelectors> => {
+    const plugins: string[] = [];
     const { languages } = await prettierInstance.getSupportInfo({
-      plugins: [],
+      plugins,
     });
 
     languages.forEach((lang) => {

@@ -27,7 +27,7 @@ import { getConfig, getWorkspaceRelativePath } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, nodeModuleLoader } from "./ModuleLoader";
+import { loadNodeModule, resolveNodeModule } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
@@ -410,18 +410,6 @@ export class ModuleResolver implements ModuleResolverInterface {
     this.path2Module.clear();
   }
 
-  private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
-    try {
-      return nodeModuleLoader().resolve(moduleName, options);
-    } catch (error) {
-      this.loggingService.logError(
-        `Error resolve node module '${moduleName}'`,
-        error
-      );
-    }
-    return undefined;
-  }
-
   /**
    * Resolve plugin package path for symlink structure dirs
    * See https://github.com/prettier/prettier/issues/8056
@@ -437,9 +425,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           !plugin.startsWith(".") &&
           !path.isAbsolute(plugin)
         ) {
-          return (
-            this.resolveNodeModule(plugin, { paths: [fileName] }) || plugin
-          );
+          return resolveNodeModule(plugin, { paths: [fileName] }) || plugin;
         }
         return plugin;
       });
