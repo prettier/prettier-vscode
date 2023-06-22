@@ -27,10 +27,9 @@ import { getConfig, getWorkspaceRelativePath } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { loadNodeModule, nodeModuleLoader } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
-declare const __webpack_require__: typeof require;
-declare const __non_webpack_require__: typeof require;
 
 export type PrettierNodeModule = typeof prettier;
 
@@ -115,25 +114,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     return prettier;
   }
 
-  // Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
-  private loadNodeModule<T>(moduleName: string): T | undefined {
-    try {
-      return this.nodeModuleLoader(moduleName);
-    } catch (error) {
-      this.loggingService.logError(
-        `Error loading node module '${moduleName}'`,
-        error
-      );
-    }
-    return undefined;
-  }
-
   private loadPrettierVersionFromPackageJson(modulePath: string): string {
     const packageJsonPath = path.join(path.dirname(modulePath), "package.json");
 
-    const prettierPkgJson = this.loadNodeModule(packageJsonPath);
+    const prettierPkgJson = loadNodeModule(packageJsonPath);
 
     let version: string | null = null;
+
     if (
       typeof prettierPkgJson === "object" &&
       prettierPkgJson !== null &&
@@ -411,15 +398,9 @@ export class ModuleResolver implements ModuleResolverInterface {
     this.path2Module.clear();
   }
 
-  private get nodeModuleLoader() {
-    return typeof __webpack_require__ === "function"
-      ? __non_webpack_require__
-      : require;
-  }
-
   private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
     try {
-      return this.nodeModuleLoader.resolve(moduleName, options);
+      return nodeModuleLoader().resolve(moduleName, options);
     } catch (error) {
       this.loggingService.logError(
         `Error resolve node module '${moduleName}'`,
