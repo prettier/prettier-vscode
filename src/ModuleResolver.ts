@@ -23,23 +23,15 @@ import {
   PrettierResolveConfigOptions,
   PrettierVSCodeConfig,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveNodeModule } from "./ModuleLoader";
+import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
 export type PrettierNodeModule = typeof prettier;
-
-function isAboveV3(version: string | null): boolean {
-  const parsedVersion = semver.parse(version);
-  if (!parsedVersion) {
-    throw new Error("Invalid version");
-  }
-  return parsedVersion.major >= 3;
-}
 
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
@@ -382,7 +374,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     if (resolvedConfig) {
-      resolvedConfig = this.resolveConfigPlugins(resolvedConfig, fileName);
+      resolvedConfig = resolveConfigPlugins(resolvedConfig, fileName);
     }
 
     if (!isVirtual && !resolvedConfig && vscodeConfig.requireConfig) {
@@ -408,29 +400,6 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     });
     this.path2Module.clear();
-  }
-
-  /**
-   * Resolve plugin package path for symlink structure dirs
-   * See https://github.com/prettier/prettier/issues/8056
-   */
-  private resolveConfigPlugins(
-    config: PrettierOptions,
-    fileName: string
-  ): PrettierOptions {
-    if (config?.plugins?.length) {
-      config.plugins = config.plugins.map((plugin) => {
-        if (
-          typeof plugin === "string" &&
-          !plugin.startsWith(".") &&
-          !path.isAbsolute(plugin)
-        ) {
-          return resolveNodeModule(plugin, { paths: [fileName] }) || plugin;
-        }
-        return plugin;
-      });
-    }
-    return config;
   }
 
   private isInternalTestRoot(dir: string): boolean {

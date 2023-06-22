@@ -22,11 +22,13 @@ import {
   PrettierFileInfoResult,
   PrettierModule,
   PrettierOptions,
+  PrettierResolveConfigOptions,
+  PrettierPlugin,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig } from "./util";
+import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
 import { PrettierInstance } from "./PrettierInstance";
-import { resolveNodeModule } from "./ModuleLoader";
+import { resolveConfigPlugins } from "./ModuleLoader";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -257,7 +259,51 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule | PrettierInstance,
     uri?: Uri
   ): Promise<ISelectors> => {
-    const plugins: string[] = [];
+    let plugins: (string | PrettierPlugin)[] = [];
+
+    // Prettier v3 does not load plugins automatically
+    // So need to resolve config to get plugins info.
+    if (
+      uri &&
+      "resolveConfig" in prettierInstance &&
+      isAboveV3(prettierInstance.version)
+    ) {
+      const vscodeConfig = getConfig(uri);
+
+      const isVirtual =
+        uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
+
+      let configPath: string | undefined;
+      if (!isVirtual) {
+        configPath =
+          (await prettierInstance.resolveConfigFile(uri.fsPath)) ?? undefined;
+      }
+
+      const resolveConfigOptions: PrettierResolveConfigOptions = {
+        config: isVirtual
+          ? undefined
+          : vscodeConfig.configPath
+          ? getWorkspaceRelativePath(uri.fsPath, vscodeConfig.configPath)
+          : configPath,
+        editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
+      };
+
+      let resolvedConfig = isVirtual
+        ? null
+        : await prettierInstance.resolveConfig(
+            uri.fsPath,
+            resolveConfigOptions
+          );
+
+      if (resolvedConfig) {
+        resolvedConfig = resolveConfigPlugins(resolvedConfig, uri.fsPath);
+        if (resolvedConfig.plugins) {
+          plugins = resolvedConfig.plugins;
+        }
+        await prettierInstance.clearConfigCache();
+      }
+    }
+
     const { languages } = await prettierInstance.getSupportInfo({
       plugins,
     });
@@ -425,6 +471,9 @@ export default class PrettierEditService implements Disposable {
     if (fileName) {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
+        plugins: resolvedConfig?.plugins?.filter(
+          (item): item is string => typeof item === "string"
+        ),
         resolveConfig: true,
         withNodeModules: vscodeConfig.withNodeModules,
       });

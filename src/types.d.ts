@@ -15,6 +15,7 @@ type PrettierBuiltInParserName = string;
 type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
 type PrettierOptions = prettier.Options;
 type PrettierFileInfoOptions = prettier.FileInfoOptions;
+type PrettierPlugin = prettier.Plugin<any>;
 
 type PrettierModule = {
   format(source: string, options?: prettier.Options): string;

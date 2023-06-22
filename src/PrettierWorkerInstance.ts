@@ -5,12 +5,14 @@ import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
   PrettierOptions,
+  PrettierPlugin,
   PrettierSupportLanguage,
 } from "./types";
 import {
   PrettierInstance,
   PrettierInstanceConstructor,
 } from "./PrettierInstance";
+import { ResolveConfigOptions, Options } from "prettier";
 
 const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
@@ -79,7 +81,11 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     return result;
   }
 
-  public async getSupportInfo({ plugins }: { plugins: string[] }): Promise<{
+  public async getSupportInfo({
+    plugins,
+  }: {
+    plugins: (string | PrettierPlugin)[];
+  }): Promise<{
     languages: PrettierSupportLanguage[];
   }> {
     const result = await this.callMethod("getSupportInfo", [{ plugins }]);
@@ -98,6 +104,21 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
       filePath,
       fileInfoOptions,
     ]);
+    return result;
+  }
+
+  public async resolveConfigFile(
+    filePath?: string | undefined
+  ): Promise<string | null> {
+    const result = await this.callMethod("resolveConfigFile", [filePath]);
+    return result;
+  }
+
+  public async resolveConfig(
+    fileName: string,
+    options?: ResolveConfigOptions | undefined
+  ): Promise<Options> {
+    const result = await this.callMethod("resolveConfig", [fileName, options]);
     return result;
   }
 
