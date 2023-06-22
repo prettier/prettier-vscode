@@ -70,7 +70,7 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
-    "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install && cd ../../v3 && yarn install && cd ../plugin-tailwindcss && npm i",
+    "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install && cd ../../v3 && yarn install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i",
     "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
