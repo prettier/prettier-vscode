@@ -44,13 +44,14 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
     return this.prettierModule!.getFileInfo(filePath, fileInfoOptions);
   }
 
-  public async getSupportInfo(): Promise<{
+  public async getSupportInfo({ plugins }: { plugins: string[] }): Promise<{
     languages: PrettierSupportLanguage[];
   }> {
     if (!this.prettierModule) {
       await this.import();
     }
-    return this.prettierModule!.getSupportInfo();
+    // @ts-expect-error actually getSupportInfo can recieve option
+    return this.prettierModule!.getSupportInfo({ plugins });
   }
 
   public async clearConfigCache(): Promise<void> {

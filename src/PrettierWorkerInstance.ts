@@ -79,10 +79,10 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     return result;
   }
 
-  public async getSupportInfo(): Promise<{
+  public async getSupportInfo({ plugins }: { plugins: string[] }): Promise<{
     languages: PrettierSupportLanguage[];
   }> {
-    const result = await this.callMethod("getSupportInfo", []);
+    const result = await this.callMethod("getSupportInfo", [{ plugins }]);
     return result;
   }
 

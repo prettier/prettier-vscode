@@ -13,7 +13,7 @@ export interface PrettierInstance {
     filePath: string,
     fileInfoOptions?: PrettierFileInfoOptions
   ): Promise<PrettierFileInfoResult>;
-  getSupportInfo(): Promise<{
+  getSupportInfo({ plugins }: { plugins: string[] }): Promise<{
     languages: PrettierSupportLanguage[];
   }>;
   clearConfigCache(): Promise<void>;
