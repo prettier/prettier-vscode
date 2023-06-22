@@ -7,12 +7,18 @@ import {
   PrettierOptions,
   PrettierSupportLanguage,
 } from "./types";
+import {
+  PrettierInstance,
+  PrettierInstanceConstructor,
+} from "./PrettierInstance";
 
 const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
 
-export class PrettierWorkerInstance {
+export const PrettierWorkerInstance: PrettierInstanceConstructor = class PrettierWorkerInstance
+  implements PrettierInstance
+{
   private importResolver: {
     resolve: (version: string) => void;
     reject: (version: string) => void;
@@ -111,4 +117,4 @@ export class PrettierWorkerInstance {
     });
     return promise;
   }
-}
+};

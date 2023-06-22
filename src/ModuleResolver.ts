@@ -25,12 +25,21 @@ import {
 } from "./types";
 import { getConfig, getWorkspaceRelativePath } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
+import { PrettierInstance } from "./PrettierInstance";
+import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { loadNodeModule, nodeModuleLoader } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
-declare const __webpack_require__: typeof require;
-declare const __non_webpack_require__: typeof require;
 
 export type PrettierNodeModule = typeof prettier;
+
+function isAboveV3(version: string | null): boolean {
+  const parsedVersion = semver.parse(version);
+  if (!parsedVersion) {
+    throw new Error("Invalid version");
+  }
+  return parsedVersion.major >= 3;
+}
 
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
@@ -95,7 +104,7 @@ export class ModuleResolver implements ModuleResolverInterface {
   private findPkgCache: Map<string, string>;
   private ignorePathCache = new Map<string, string>();
 
-  private path2Module = new Map<string, PrettierWorkerInstance>();
+  private path2Module = new Map<string, PrettierInstance>();
 
   constructor(private loggingService: LoggingService) {
     this.findPkgCache = new Map();
@@ -105,13 +114,50 @@ export class ModuleResolver implements ModuleResolverInterface {
     return prettier;
   }
 
+  private loadPrettierVersionFromPackageJson(modulePath: string): string {
+    const packageJsonPath = findUp.sync(
+      (dir) => {
+        const pkgFilePath = path.join(dir, "package.json");
+        if (fs.existsSync(pkgFilePath)) {
+          return pkgFilePath;
+        }
+      },
+      { cwd: path.dirname(modulePath) }
+    );
+
+    if (!packageJsonPath) {
+      throw new Error("Cannot find Prettier package.json");
+    }
+
+    const prettierPkgJson = loadNodeModule(packageJsonPath);
+
+    let version: string | null = null;
+
+    if (
+      typeof prettierPkgJson === "object" &&
+      prettierPkgJson !== null &&
+      "version" in prettierPkgJson &&
+      // @ts-expect-error checked
+      typeof prettierPkgJson.version === "string"
+    ) {
+      // @ts-expect-error checked
+      version = prettierPkgJson.version;
+    }
+
+    if (!version) {
+      throw new Error("Cannot load Prettier version from package.json");
+    }
+
+    return version;
+  }
+
   /**
    * Returns an instance of the prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
    */
   public async getPrettierInstance(
     fileName: string
-  ): Promise<PrettierNodeModule | PrettierWorkerInstance | undefined> {
+  ): Promise<PrettierNodeModule | PrettierInstance | undefined> {
     if (!workspace.isTrusted) {
       this.loggingService.logDebug(UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER);
       return prettier;
@@ -174,7 +220,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     }
 
-    let moduleInstance: PrettierWorkerInstance | undefined = undefined;
+    let moduleInstance: PrettierInstance | undefined = undefined;
 
     if (modulePath !== undefined) {
       this.loggingService.logDebug(
@@ -186,7 +232,16 @@ export class ModuleResolver implements ModuleResolverInterface {
         return moduleInstance;
       } else {
         try {
-          moduleInstance = new PrettierWorkerInstance(modulePath);
+          const prettierVersion =
+            this.loadPrettierVersionFromPackageJson(modulePath);
+
+          const isAboveVersion3 = isAboveV3(prettierVersion);
+
+          if (isAboveVersion3) {
+            moduleInstance = new PrettierWorkerInstance(modulePath);
+          } else {
+            moduleInstance = new PrettierMainThreadInstance(modulePath);
+          }
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
           }
@@ -355,15 +410,9 @@ export class ModuleResolver implements ModuleResolverInterface {
     this.path2Module.clear();
   }
 
-  private get nodeModuleLoader() {
-    return typeof __webpack_require__ === "function"
-      ? __non_webpack_require__
-      : require;
-  }
-
   private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
     try {
-      return this.nodeModuleLoader.resolve(moduleName, options);
+      return nodeModuleLoader().resolve(moduleName, options);
     } catch (error) {
       this.loggingService.logError(
         `Error resolve node module '${moduleName}'`,

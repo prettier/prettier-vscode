@@ -1,0 +1,17 @@
+{
+  "name": "test-plugin-tailwindcss",
+  "version": "1.0.0",
+  "description": "Test folder for prettier-plugin-tailwindcss",
+  "private": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.3.2"
+  }
+}

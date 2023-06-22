@@ -25,7 +25,7 @@ import {
   RangeFormattingOptions,
 } from "./types";
 import { getConfig } from "./util";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
+import { PrettierInstance } from "./PrettierInstance";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -253,7 +253,7 @@ export default class PrettierEditService implements Disposable {
    * Build formatter selectors
    */
   private getSelectors = async (
-    prettierInstance: PrettierModule | PrettierWorkerInstance,
+    prettierInstance: PrettierModule | PrettierInstance,
     uri?: Uri
   ): Promise<ISelectors> => {
     const { languages } = await prettierInstance.getSupportInfo();

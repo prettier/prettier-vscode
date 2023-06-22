@@ -9,7 +9,7 @@
   "author": "Prettier",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "3.0.0-alpha.6"
+    "prettier": "3.0.0-alpha.12"
   },
   "dependencies": {}
 }
