@@ -115,7 +115,19 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   private loadPrettierVersionFromPackageJson(modulePath: string): string {
-    const packageJsonPath = path.join(path.dirname(modulePath), "package.json");
+    const packageJsonPath = findUp.sync(
+      (dir) => {
+        const pkgFilePath = path.join(dir, "package.json");
+        if (fs.existsSync(pkgFilePath)) {
+          return pkgFilePath;
+        }
+      },
+      { cwd: path.dirname(modulePath) }
+    );
+
+    if (!packageJsonPath) {
+      throw new Error("Cannot find Prettier package.json");
+    }
 
     const prettierPkgJson = loadNodeModule(packageJsonPath);
 
@@ -132,7 +144,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       version = prettierPkgJson.version;
     }
 
-    if (version === null) {
+    if (!version) {
       throw new Error("Cannot load Prettier version from package.json");
     }
 
