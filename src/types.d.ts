@@ -1,6 +1,6 @@
 import * as prettier from "prettier";
 import { TextDocument } from "vscode";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
+import { PrettierInstance } from "./PrettierInstance";
 
 type PrettierSupportLanguage = {
   vscodeLanguageIds?: string[];
@@ -28,7 +28,7 @@ type PrettierModule = {
 type ModuleResolverInterface = {
   getPrettierInstance(
     fileName: string
-  ): Promise<PrettierModule | PrettierWorkerInstance | undefined>;
+  ): Promise<PrettierModule | PrettierInstance | undefined>;
   getResolvedIgnorePath(
     fileName: string,
     ignorePath: string

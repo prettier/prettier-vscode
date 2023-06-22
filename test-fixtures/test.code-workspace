@@ -38,6 +38,9 @@
     },
     {
       "path": "v3"
+    },
+    {
+      "path": "plugin-tailwindcss"
     }
   ],
   "settings": {
