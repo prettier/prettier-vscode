@@ -122,7 +122,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd: path.dirname(modulePath) }
+      { cwd: modulePath }
     );
 
     if (!packageJsonPath) {
