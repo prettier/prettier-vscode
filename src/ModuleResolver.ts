@@ -324,18 +324,23 @@ export class ModuleResolver implements ModuleResolverInterface {
     return resolvedIgnorePath;
   }
 
-  public async getResolvedConfig(
-    { fileName, uri }: TextDocument,
+  public async resolveConfig(
+    prettierInstance: {
+      resolveConfigFile(filePath?: string): Promise<string | null>;
+      resolveConfig(
+        fileName: string,
+        options?: prettier.ResolveConfigOptions
+      ): Promise<PrettierOptions | null>;
+    },
+    uri: Uri,
+    fileName: string,
     vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
 
     let configPath: string | undefined;
-    let prettierInstance: typeof prettier | PrettierInstance = prettier;
     try {
       if (!isVirtual) {
-        prettierInstance =
-          (await this.getPrettierInstance(fileName)) || prettierInstance;
         configPath =
           (await prettierInstance.resolveConfigFile(fileName)) ?? undefined;
       }
@@ -344,7 +349,6 @@ export class ModuleResolver implements ModuleResolverInterface {
         `Error resolving prettier configuration for ${fileName}`,
         error
       );
-
       return "error";
     }
 
@@ -387,6 +391,23 @@ export class ModuleResolver implements ModuleResolverInterface {
       );
       return "disabled";
     }
+
+    return resolvedConfig;
+  }
+
+  public async getResolvedConfig(
+    { fileName, uri }: TextDocument,
+    vscodeConfig: PrettierVSCodeConfig
+  ): Promise<"error" | "disabled" | PrettierOptions | null> {
+    const prettierInstance: typeof prettier | PrettierInstance = prettier;
+
+    const resolvedConfig = await this.resolveConfig(
+      prettierInstance,
+      uri,
+      fileName,
+      vscodeConfig
+    );
+
     return resolvedConfig;
   }
 

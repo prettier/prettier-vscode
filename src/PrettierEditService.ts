@@ -22,13 +22,11 @@ import {
   PrettierFileInfoResult,
   PrettierModule,
   PrettierOptions,
-  PrettierResolveConfigOptions,
   PrettierPlugin,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
+import { getConfig, isAboveV3 } from "./util";
 import { PrettierInstance } from "./PrettierInstance";
-import { resolveConfigPlugins } from "./ModuleLoader";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -259,7 +257,7 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule | PrettierInstance,
     uri?: Uri
   ): Promise<ISelectors> => {
-    let plugins: (string | PrettierPlugin)[] = [];
+    const plugins: (string | PrettierPlugin)[] = [];
 
     // Prettier v3 does not load plugins automatically
     // So need to resolve config to get plugins info.
@@ -268,39 +266,18 @@ export default class PrettierEditService implements Disposable {
       "resolveConfig" in prettierInstance &&
       isAboveV3(prettierInstance.version)
     ) {
-      const vscodeConfig = getConfig(uri);
-
-      const isVirtual =
-        uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
-
-      let configPath: string | undefined;
-      if (!isVirtual) {
-        configPath =
-          (await prettierInstance.resolveConfigFile(uri.fsPath)) ?? undefined;
-      }
-
-      const resolveConfigOptions: PrettierResolveConfigOptions = {
-        config: isVirtual
-          ? undefined
-          : vscodeConfig.configPath
-          ? getWorkspaceRelativePath(uri.fsPath, vscodeConfig.configPath)
-          : configPath,
-        editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
-      };
-
-      let resolvedConfig = isVirtual
-        ? null
-        : await prettierInstance.resolveConfig(
-            uri.fsPath,
-            resolveConfigOptions
-          );
-
-      if (resolvedConfig) {
-        resolvedConfig = resolveConfigPlugins(resolvedConfig, uri.fsPath);
-        if (resolvedConfig.plugins) {
-          plugins = resolvedConfig.plugins;
-        }
-        await prettierInstance.clearConfigCache();
+      const resolvedConfig = await this.moduleResolver.resolveConfig(
+        prettierInstance,
+        uri,
+        uri.fsPath,
+        getConfig(uri)
+      );
+      if (resolvedConfig === "error") {
+        this.statusBar.update(FormatterStatus.Error);
+      } else if (resolvedConfig === "disabled") {
+        this.statusBar.update(FormatterStatus.Disabled);
+      } else if (resolvedConfig?.plugins) {
+        plugins.push(...resolvedConfig.plugins);
       }
     }
 

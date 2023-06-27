@@ -26,9 +26,10 @@ import * as yamlPlugin from "prettier/parser-yaml";
 //import * as flowPlugin from "prettier/parser-flow";
 //import * as postcssPlugin from "prettier/parser-postcss";
 
-import { TextDocument } from "vscode";
+import { TextDocument, Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
 import { getWorkspaceRelativePath } from "./util";
+import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
   angularPlugin,
@@ -172,6 +173,25 @@ export class ModuleResolver implements ModuleResolverInterface {
         return { ignored: false, inferredParser: null };
       },
     };
+  }
+
+  async resolveConfig(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    prettierInstance: {
+      resolveConfigFile(filePath?: string | undefined): Promise<string | null>;
+      resolveConfig(
+        fileName: string,
+        options?: ResolveConfigOptions | undefined
+      ): Promise<Options | null>;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    uri: Uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    fileName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    vscodeConfig: PrettierVSCodeConfig
+  ): Promise<Options | "error" | "disabled" | null> {
+    return null;
   }
 
   async getResolvedConfig(
