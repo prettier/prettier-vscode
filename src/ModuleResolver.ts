@@ -331,9 +331,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
 
     let configPath: string | undefined;
+    let prettierInstance: typeof prettier | PrettierInstance = prettier;
     try {
       if (!isVirtual) {
-        configPath = (await prettier.resolveConfigFile(fileName)) ?? undefined;
+        prettierInstance =
+          (await this.getPrettierInstance(fileName)) || prettierInstance;
+        configPath =
+          (await prettierInstance.resolveConfigFile(fileName)) ?? undefined;
       }
     } catch (error) {
       this.loggingService.logError(
@@ -357,7 +361,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       resolvedConfig = isVirtual
         ? null
-        : await prettier.resolveConfig(fileName, resolveConfigOptions);
+        : await prettierInstance.resolveConfig(fileName, resolveConfigOptions);
     } catch (error) {
       this.loggingService.logError(
         "Invalid prettier configuration file detected.",
