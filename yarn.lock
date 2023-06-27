@@ -3447,10 +3447,10 @@ semver@^5.1.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
 
-semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.0:
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.0.tgz#ed8c5dc8efb6c629c88b23d41dc9bf40c1d96cd0"
-  integrity sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==
+semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.2:
+  version "7.5.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.2.tgz#5b851e66d1be07c1cdaf37dfc856f543325a2beb"
+  integrity sha512-SoftuTROv/cRjCze/scjGyiDtcUyxw1rgYQSZY7XTmtR5hX+dm76iDbTH8TkLPHCQmlbQVSSbNZCPM2hb0knnQ==
   dependencies:
     lru-cache "^6.0.0"
 
