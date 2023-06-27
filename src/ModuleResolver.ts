@@ -399,7 +399,8 @@ export class ModuleResolver implements ModuleResolverInterface {
     { fileName, uri }: TextDocument,
     vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
-    const prettierInstance: typeof prettier | PrettierInstance = prettier;
+    const prettierInstance: typeof prettier | PrettierInstance =
+      (await this.getPrettierInstance(fileName)) || prettier;
 
     const resolvedConfig = await this.resolveConfig(
       prettierInstance,
