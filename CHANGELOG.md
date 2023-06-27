@@ -4,7 +4,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [9.17.0]
 
 - Fix plugins `parser` not inferred - Thanks to [@u3u](https://github.com/u3u)
 - Fix module resolution with `prettierPath` setting
