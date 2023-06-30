@@ -1,7 +1,9 @@
+import { ResolveConfigOptions } from "prettier";
 import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
   PrettierOptions,
+  PrettierPlugin,
   PrettierSupportLanguage,
 } from "./types";
 
@@ -13,10 +15,19 @@ export interface PrettierInstance {
     filePath: string,
     fileInfoOptions?: PrettierFileInfoOptions
   ): Promise<PrettierFileInfoResult>;
-  getSupportInfo(): Promise<{
+  getSupportInfo({
+    plugins,
+  }: {
+    plugins: (string | PrettierPlugin)[];
+  }): Promise<{
     languages: PrettierSupportLanguage[];
   }>;
   clearConfigCache(): Promise<void>;
+  resolveConfigFile(filePath?: string): Promise<string | null>;
+  resolveConfig(
+    fileName: string,
+    options?: ResolveConfigOptions
+  ): Promise<PrettierOptions | null>;
 }
 
 export interface PrettierInstanceConstructor {

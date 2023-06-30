@@ -22,9 +22,10 @@ import {
   PrettierFileInfoResult,
   PrettierModule,
   PrettierOptions,
+  PrettierPlugin,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig } from "./util";
+import { getConfig, isAboveV3 } from "./util";
 import { PrettierInstance } from "./PrettierInstance";
 
 interface ISelectors {
@@ -256,7 +257,33 @@ export default class PrettierEditService implements Disposable {
     prettierInstance: PrettierModule | PrettierInstance,
     uri?: Uri
   ): Promise<ISelectors> => {
-    const { languages } = await prettierInstance.getSupportInfo();
+    const plugins: (string | PrettierPlugin)[] = [];
+
+    // Prettier v3 does not load plugins automatically
+    // So need to resolve config to get plugins info.
+    if (
+      uri &&
+      "resolveConfig" in prettierInstance &&
+      isAboveV3(prettierInstance.version)
+    ) {
+      const resolvedConfig = await this.moduleResolver.resolveConfig(
+        prettierInstance,
+        uri,
+        uri.fsPath,
+        getConfig(uri)
+      );
+      if (resolvedConfig === "error") {
+        this.statusBar.update(FormatterStatus.Error);
+      } else if (resolvedConfig === "disabled") {
+        this.statusBar.update(FormatterStatus.Disabled);
+      } else if (resolvedConfig?.plugins) {
+        plugins.push(...resolvedConfig.plugins);
+      }
+    }
+
+    const { languages } = await prettierInstance.getSupportInfo({
+      plugins,
+    });
 
     languages.forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
@@ -447,7 +474,9 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`
       );
-      const { languages } = await prettierInstance.getSupportInfo();
+      const { languages } = await prettierInstance.getSupportInfo({
+        plugins: [],
+      });
       parser = getParserFromLanguageId(languages, uri, languageId);
     }
 

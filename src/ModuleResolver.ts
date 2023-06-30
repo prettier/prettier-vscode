@@ -23,23 +23,15 @@ import {
   PrettierResolveConfigOptions,
   PrettierVSCodeConfig,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath } from "./util";
+import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, nodeModuleLoader } from "./ModuleLoader";
+import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
 export type PrettierNodeModule = typeof prettier;
-
-function isAboveV3(version: string | null): boolean {
-  const parsedVersion = semver.parse(version);
-  if (!parsedVersion) {
-    throw new Error("Invalid version");
-  }
-  return parsedVersion.major >= 3;
-}
 
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
@@ -332,8 +324,16 @@ export class ModuleResolver implements ModuleResolverInterface {
     return resolvedIgnorePath;
   }
 
-  public async getResolvedConfig(
-    { fileName, uri }: TextDocument,
+  public async resolveConfig(
+    prettierInstance: {
+      resolveConfigFile(filePath?: string): Promise<string | null>;
+      resolveConfig(
+        fileName: string,
+        options?: prettier.ResolveConfigOptions
+      ): Promise<PrettierOptions | null>;
+    },
+    uri: Uri,
+    fileName: string,
     vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
@@ -341,14 +341,14 @@ export class ModuleResolver implements ModuleResolverInterface {
     let configPath: string | undefined;
     try {
       if (!isVirtual) {
-        configPath = (await prettier.resolveConfigFile(fileName)) ?? undefined;
+        configPath =
+          (await prettierInstance.resolveConfigFile(fileName)) ?? undefined;
       }
     } catch (error) {
       this.loggingService.logError(
         `Error resolving prettier configuration for ${fileName}`,
         error
       );
-
       return "error";
     }
 
@@ -365,7 +365,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       resolvedConfig = isVirtual
         ? null
-        : await prettier.resolveConfig(fileName, resolveConfigOptions);
+        : await prettierInstance.resolveConfig(fileName, resolveConfigOptions);
     } catch (error) {
       this.loggingService.logError(
         "Invalid prettier configuration file detected.",
@@ -382,7 +382,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     if (resolvedConfig) {
-      resolvedConfig = this.resolveConfigPlugins(resolvedConfig, fileName);
+      resolvedConfig = resolveConfigPlugins(resolvedConfig, fileName);
     }
 
     if (!isVirtual && !resolvedConfig && vscodeConfig.requireConfig) {
@@ -391,6 +391,24 @@ export class ModuleResolver implements ModuleResolverInterface {
       );
       return "disabled";
     }
+
+    return resolvedConfig;
+  }
+
+  public async getResolvedConfig(
+    { fileName, uri }: TextDocument,
+    vscodeConfig: PrettierVSCodeConfig
+  ): Promise<"error" | "disabled" | PrettierOptions | null> {
+    const prettierInstance: typeof prettier | PrettierInstance =
+      (await this.getPrettierInstance(fileName)) || prettier;
+
+    const resolvedConfig = await this.resolveConfig(
+      prettierInstance,
+      uri,
+      fileName,
+      vscodeConfig
+    );
+
     return resolvedConfig;
   }
 
@@ -408,43 +426,6 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     });
     this.path2Module.clear();
-  }
-
-  private resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
-    try {
-      return nodeModuleLoader().resolve(moduleName, options);
-    } catch (error) {
-      this.loggingService.logError(
-        `Error resolve node module '${moduleName}'`,
-        error
-      );
-    }
-    return undefined;
-  }
-
-  /**
-   * Resolve plugin package path for symlink structure dirs
-   * See https://github.com/prettier/prettier/issues/8056
-   */
-  private resolveConfigPlugins(
-    config: PrettierOptions,
-    fileName: string
-  ): PrettierOptions {
-    if (config?.plugins?.length) {
-      config.plugins = config.plugins.map((plugin) => {
-        if (
-          typeof plugin === "string" &&
-          !plugin.startsWith(".") &&
-          !path.isAbsolute(plugin)
-        ) {
-          return (
-            this.resolveNodeModule(plugin, { paths: [fileName] }) || plugin
-          );
-        }
-        return plugin;
-      });
-    }
-    return config;
   }
 
   private isInternalTestRoot(dir: string): boolean {

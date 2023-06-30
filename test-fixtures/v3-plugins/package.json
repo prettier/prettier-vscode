@@ -1,0 +1,14 @@
+{
+  "name": "v3-plugins",
+  "version": "1.0.0",
+  "description": "Test folder for v3 + plugins",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@prettier/plugin-xml": "3.0.0-alpha.0",
+    "prettier": "^3.0.0-alpha.12"
+  }
+}

@@ -1,9 +1,13 @@
-import { FileInfoOptions, Options } from "prettier";
+import { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
 import {
   PrettierInstance,
   PrettierInstanceConstructor,
 } from "./PrettierInstance";
-import { PrettierFileInfoResult, PrettierSupportLanguage } from "./types";
+import {
+  PrettierFileInfoResult,
+  PrettierPlugin,
+  PrettierSupportLanguage,
+} from "./types";
 import { PrettierNodeModule } from "./ModuleResolver";
 import { loadNodeModule } from "./ModuleLoader";
 
@@ -44,13 +48,18 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
     return this.prettierModule!.getFileInfo(filePath, fileInfoOptions);
   }
 
-  public async getSupportInfo(): Promise<{
+  public async getSupportInfo({
+    plugins,
+  }: {
+    plugins: (string | PrettierPlugin)[];
+  }): Promise<{
     languages: PrettierSupportLanguage[];
   }> {
     if (!this.prettierModule) {
       await this.import();
     }
-    return this.prettierModule!.getSupportInfo();
+    // @ts-expect-error actually getSupportInfo can recieve option
+    return this.prettierModule!.getSupportInfo({ plugins });
   }
 
   public async clearConfigCache(): Promise<void> {
@@ -58,5 +67,24 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
       await this.import();
     }
     return this.prettierModule!.clearConfigCache();
+  }
+
+  public async resolveConfigFile(
+    filePath?: string | undefined
+  ): Promise<string | null> {
+    if (!this.prettierModule) {
+      await this.import();
+    }
+    return this.prettierModule!.resolveConfigFile(filePath);
+  }
+
+  public async resolveConfig(
+    fileName: string,
+    options?: ResolveConfigOptions | undefined
+  ): Promise<Options | null> {
+    if (!this.prettierModule) {
+      await this.import();
+    }
+    return this.prettierModule!.resolveConfig(fileName, options);
   }
 };
