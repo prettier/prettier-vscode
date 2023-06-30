@@ -114,7 +114,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd: modulePath }
+      { cwd: path.dirname(modulePath) }
     );
 
     if (!packageJsonPath) {

@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.19.0]
+
+- Reverts change to `prettierPath` resolution. (#3045)
+
 ## [9.18.0]
 
 - Support new config file types when using Prettier 3.0
