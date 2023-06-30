@@ -4,6 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [9.18.0]
+
+- Support new config file types when using Prettier 3.0
+- Support for Prettier 3.0 plugin resolution
+
 ## [9.17.0]
 
 - Fix plugins `parser` not inferred - Thanks to [@u3u](https://github.com/u3u)
