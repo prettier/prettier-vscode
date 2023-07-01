@@ -44,6 +44,9 @@
     },
     {
       "path": "v3-plugins"
+    },
+    {
+      "path": "v3-plugin-override"
     }
   ],
   "settings": {
