@@ -3,13 +3,13 @@ export default {
     {
       name: "babel",
       parsers: ["babel"],
-      extensions: [`.js`],
+      extensions: [".js"],
     },
   ],
   parsers: {
     babel: {
+      astFormat: 'fake-babel',
       parse: (text) => ({ value: text }),
-      astFromat: 'estree',
     },
   },
   printers: {
