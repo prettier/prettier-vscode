@@ -8,7 +8,7 @@ export default {
   ],
   parsers: {
     babel: {
-      astFormat: 'fake-babel',
+      astFormat: 'babel',
       parse: (text) => ({ value: text }),
     },
   },
