@@ -189,6 +189,11 @@
           "markdownDescription": "%ext.config.resolveGlobalModules%",
           "scope": "resource"
         },
+        "prettier.runtime": {
+          "type": "string",
+          "markdownDescription": "%ext.config.runtime%",
+          "scope": "resource"
+        },
         "prettier.withNodeModules": {
           "type": "boolean",
           "default": false,

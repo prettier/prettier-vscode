@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Adds `prettier.runtime` config value to allow choosing the command to run prettier
+
 ## [9.19.0]
 
 - Reverts change to `prettierPath` resolution. (#3045)

@@ -24,6 +24,7 @@
   "ext.config.requireConfig": "排版需要 prettier 組態檔。參閱[可用的組態檔文件](https://prettier.io/docs/en/configuration.html).\n\n> _注意，無標題檔案仍會使用 VS Code 的 prettier 設定進行排版，不受這個設定值影響。_",
   "ext.config.requirePragma": "Prettier 可以限制它自己只對包含特殊註解的檔案進行排版，這個特殊的註解成為 pragma ，位於檔案的最頂部。這對於想要對那些大型、未經過排版的程式碼緩步採納 prettier 非常有幫助。",
   "ext.config.resolveGlobalModules": "這個套件會在區域的模組找不到 prettier 模組時嘗試使用去全域的 npm 或 yarn 模組中尋找。\n> _這個設定會導致效能的負面影響，特別在 Windows 中有掛載網路磁碟機。只有在你必須使用全域模組的情況下再啟用。_",
+  "ext.config.runtime": "TODO TRANSLATE ME",
   "ext.config.withNodeModules": "這個套件會對 node_modules 的檔案進行排版。",
   "ext.config.semi": "是否要在每一列的結尾加上分號。",
   "ext.config.singleQuote": "會使用單引號而非雙引號。",

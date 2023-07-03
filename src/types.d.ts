@@ -102,6 +102,10 @@ interface IExtensionConfig {
    * If true, enabled debug logs
    */
   enableDebugLogs: boolean;
+  /**
+   * If defined, a path to the node runtime.
+   */
+  runtime: string | undefined;
 }
 /**
  * Configuration for prettier-vscode

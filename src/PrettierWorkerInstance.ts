@@ -8,14 +8,19 @@ import {
   PrettierPlugin,
   PrettierSupportLanguage,
 } from "./types";
+import { ChildProcessWorker } from "./ChildProcessWorker";
 import {
   PrettierInstance,
   PrettierInstanceConstructor,
+  PrettierInstanceContext,
 } from "./PrettierInstance";
 import { ResolveConfigOptions, Options } from "prettier";
 
-const worker = new Worker(
-  url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
+const processWorker = url.pathToFileURL(
+  path.join(__dirname, "/worker/prettier-instance-worker-process.js")
+);
+const threadWorker = url.pathToFileURL(
+  path.join(__dirname, "/worker/prettier-instance-worker-process-thread.js")
 );
 
 export const PrettierWorkerInstance: PrettierInstanceConstructor = class PrettierWorkerInstance
@@ -34,12 +39,19 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     }
   > = new Map();
 
+  private worker;
   private currentCallMethodId = 0;
 
   public version: string | null = null;
 
-  constructor(private modulePath: string) {
-    worker.on("message", ({ type, payload }) => {
+  constructor(private modulePath: string, context: PrettierInstanceContext) {
+    this.worker = context.config.runtime
+      ? new ChildProcessWorker(processWorker, {
+          execPath: context.config.runtime,
+        })
+      : new Worker(threadWorker);
+
+    this.worker.on("message", ({ type, payload }) => {
       switch (type) {
         case "import": {
           this.importResolver?.resolve(payload.version);
@@ -60,13 +72,16 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
         }
       }
     });
+    this.worker.on("error", (err) => {
+      context.loggingService.logInfo(`Worker error ${err.message}`, err.stack);
+    });
   }
 
   public async import(): Promise</* version of imported prettier */ string> {
     const promise = new Promise<string>((resolve, reject) => {
       this.importResolver = { resolve, reject };
     });
-    worker.postMessage({
+    this.worker.postMessage({
       type: "import",
       payload: { modulePath: this.modulePath },
     });
@@ -127,7 +142,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.set(callMethodId, { resolve, reject });
     });
-    worker.postMessage({
+    this.worker.postMessage({
       type: "callMethod",
       payload: {
         id: callMethodId,

@@ -5,7 +5,9 @@ import {
   PrettierOptions,
   PrettierPlugin,
   PrettierSupportLanguage,
+  PrettierVSCodeConfig,
 } from "./types";
+import { LoggingService } from "./LoggingService";
 
 export interface PrettierInstance {
   version: string | null;
@@ -30,6 +32,11 @@ export interface PrettierInstance {
   ): Promise<PrettierOptions | null>;
 }
 
+export interface PrettierInstanceContext {
+  config: PrettierVSCodeConfig;
+  loggingService: LoggingService;
+}
+
 export interface PrettierInstanceConstructor {
-  new (modulePath: string): PrettierInstance;
+  new (modulePath: string, context: PrettierInstanceContext): PrettierInstance;
 }

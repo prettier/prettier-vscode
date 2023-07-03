@@ -19,6 +19,7 @@
   "ext.config.requireConfig": "Prettier 配置文件（如 `.prettierrc`）必须存在。详见 [配置文件的文档说明](https://prettier.io/docs/en/configuration.html)。\n\n_注意：未命名文件仍会使用 `VS Code` 的 `setting.json` 中的配置进行格式化，不受该选项影响。_",
   "ext.config.requirePragma": "Prettier 可以限制只对包含特定注释的文件进行格式化，这个特定的注释称为 pragma。这对于那些大型的、尚未采用 Prettier 的代码仓库逐步引入 Prettier 非常有用。",
   "ext.config.resolveGlobalModules": "如果在当前项目中找不到 `prettier` 包时尝试使用 npm 或 yarn 全局安装的包。\n>_该设置可能影响性能，特别是在 Windows 中挂载了网络磁盘的时候。只有在你需要使用全局安装的包时再启用。_",
+  "ext.config.runtime": "TODO TRANSLATE ME",
   "ext.config.withNodeModules": "允许 Prettier 格式化 `node_modules` 中的文件。",
   "ext.config.semi": "在所有代码语句的末尾添加分号。",
   "ext.config.singleQuote": "使用单引号而不是双引号。",

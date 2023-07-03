@@ -46,6 +46,7 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
       useEditorConfig: false,
       withNodeModules: false,
       resolveGlobalModules: false,
+      runtime: undefined,
     };
     return newConfig;
   }

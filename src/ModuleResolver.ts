@@ -25,7 +25,7 @@ import {
 } from "./types";
 import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
-import { PrettierInstance } from "./PrettierInstance";
+import { PrettierInstance, PrettierInstanceContext } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
 import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
 
@@ -155,9 +155,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       return prettier;
     }
 
-    const { prettierPath, resolveGlobalModules } = getConfig(
-      Uri.file(fileName)
-    );
+    const config = getConfig(Uri.file(fileName));
+    const { prettierPath, resolveGlobalModules } = config;
 
     // Look for local module
     let modulePath: string | undefined = undefined;
@@ -213,6 +212,10 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     let moduleInstance: PrettierInstance | undefined = undefined;
+    const context: PrettierInstanceContext = {
+      config,
+      loggingService: this.loggingService,
+    };
 
     if (modulePath !== undefined) {
       this.loggingService.logDebug(
@@ -227,12 +230,27 @@ export class ModuleResolver implements ModuleResolverInterface {
           const prettierVersion =
             this.loadPrettierVersionFromPackageJson(modulePath);
 
+          this.loggingService.logInfo(
+            `Detected prettier version: '${prettierVersion}'`
+          );
+
           const isAboveVersion3 = isAboveV3(prettierVersion);
 
-          if (isAboveVersion3) {
-            moduleInstance = new PrettierWorkerInstance(modulePath);
+          if (isAboveVersion3 || config.runtime) {
+            if (config.runtime) {
+              this.loggingService.logInfo(
+                `Using node version: ${execSync(
+                  `${config.runtime} --version`
+                )}.`
+              );
+            }
+
+            moduleInstance = new PrettierWorkerInstance(modulePath, context);
           } else {
-            moduleInstance = new PrettierMainThreadInstance(modulePath);
+            moduleInstance = new PrettierMainThreadInstance(
+              modulePath,
+              context
+            );
           }
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
