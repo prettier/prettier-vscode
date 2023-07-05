@@ -2,12 +2,44 @@ import { fileURLToPath, URL } from "url";
 import { ChildProcess, fork, ForkOptions } from "child_process";
 import { EventEmitter } from "events";
 
+const alive = (child: ChildProcess): boolean => {
+  try {
+    return !!process.kill(child.pid!, 0);
+  } catch (e: any) {
+    if (e.code === "EPERM" || e.code === "ESRCH") {
+      return false;
+    }
+    throw e;
+  }
+};
+
+const kill = async (child: ChildProcess) => {
+  if (!alive(child)) {
+    return;
+  }
+  return new Promise((resolve) => {
+    let timeout: NodeJS.Timeout | null = null;
+    child.once("exit", () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      resolve(undefined);
+    });
+    child.kill("SIGINT");
+    timeout = setTimeout(() => {
+      child.kill("SIGTERM");
+      timeout = null;
+    }, 3000);
+  });
+};
+
 export class ChildProcessWorker {
   #process: ChildProcess | null = null;
   #url: URL;
   #processOptions: ForkOptions;
   #events: EventEmitter;
   #queue: any[];
+  #exitCode: number | null = null;
 
   constructor(url: URL, processOptions: ForkOptions) {
     this.#url = url;
@@ -34,10 +66,12 @@ export class ChildProcessWorker {
       this.#process
         .on("error", (err) => {
           this.#process = null;
+          this.#exitCode = -1;
           this.#events.emit("error", err);
         })
         .on("exit", (code) => {
           this.#process = null;
+          this.#exitCode = code;
           const stdoutResult = Buffer.concat(stdout).toString("utf8");
           const stderrResult = Buffer.concat(stderr).toString("utf8");
           if (code !== 0) {
@@ -72,6 +106,14 @@ export class ChildProcessWorker {
       return;
     }
     throw new Error(`Unsupported event ${evt}.`);
+  }
+
+  async terminate(): Promise<number> {
+    if (!this.#process) {
+      return this.#exitCode ?? -1;
+    }
+    await kill(this.#process);
+    return this.#exitCode ?? -1;
   }
 
   flushQueue() {

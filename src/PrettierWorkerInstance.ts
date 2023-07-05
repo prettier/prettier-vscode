@@ -39,19 +39,26 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     }
   > = new Map();
 
-  private worker;
+  private worker: ChildProcessWorker | Worker | null = null;
   private currentCallMethodId = 0;
 
   public version: string | null = null;
 
-  constructor(private modulePath: string, context: PrettierInstanceContext) {
-    this.worker = context.config.runtime
+  constructor(
+    private modulePath: string,
+    private context: PrettierInstanceContext
+  ) {
+    this.createWorker();
+  }
+
+  private createWorker() {
+    const worker = this.context.config.runtime
       ? new ChildProcessWorker(processWorker, {
-          execPath: context.config.runtime,
+          execPath: this.context.config.runtime,
         })
       : new Worker(threadWorker);
 
-    this.worker.on("message", ({ type, payload }) => {
+    worker.on("message", ({ type, payload }) => {
       switch (type) {
         case "import": {
           this.importResolver?.resolve(payload.version);
@@ -72,12 +79,23 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
         }
       }
     });
-    this.worker.on("error", (err) => {
-      context.loggingService.logInfo(`Worker error ${err.message}`, err.stack);
+    worker.on("error", async (err) => {
+      this.worker = null;
+      this.context.loggingService.logInfo(
+        `Worker error ${err.message}`,
+        err.stack
+      );
+      await worker.terminate();
+      this.createWorker();
     });
+
+    this.worker = worker;
   }
 
   public async import(): Promise</* version of imported prettier */ string> {
+    if (!this.worker) {
+      throw new Error("Worker not available.");
+    }
     const promise = new Promise<string>((resolve, reject) => {
       this.importResolver = { resolve, reject };
     });
@@ -138,6 +156,9 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
   }
 
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
+    if (!this.worker) {
+      throw new Error("Worker not available.");
+    }
     const callMethodId = this.currentCallMethodId++;
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.set(callMethodId, { resolve, reject });
