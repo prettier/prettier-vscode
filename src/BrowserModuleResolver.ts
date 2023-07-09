@@ -19,6 +19,8 @@ import * as markdownPlugin from "prettier/plugins/markdown";
 import * as meriyahPlugin from "prettier/plugins/meriyah";
 import * as typescriptPlugin from "prettier/plugins/typescript";
 import * as yamlPlugin from "prettier/plugins/yaml";
+// @ts-expect-error -- d.ts file missing estree plugin
+import * as estreePlugin from "prettier/plugins/estree";
 
 // commented out as the cod uses `new Function("return this") which
 // is not allowed in the VS Code extension host as it enforces
@@ -32,6 +34,7 @@ import { getWorkspaceRelativePath } from "./util";
 import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
+  estreePlugin,
   angularPlugin,
   babelPlugin,
   glimmerPlugin,
