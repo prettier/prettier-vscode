@@ -260,7 +260,7 @@
             "es5",
             "all"
           ],
-          "default": "es5",
+          "default": "all",
           "markdownDescription": "%ext.config.trailingComma%",
           "scope": "resource"
         },
