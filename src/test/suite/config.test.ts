@@ -8,7 +8,7 @@ import {
 
 const testConfig = (testPath: string, resultPath: string) => {
   return async () => {
-    const { actual } = await format("config", testPath);
+    const { actual } = await format("config", testPath, /* shouldRetry */ true);
     const expected = await getText("config", resultPath);
     assert.equal(actual, expected);
   };
