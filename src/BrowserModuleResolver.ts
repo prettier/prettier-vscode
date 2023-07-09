@@ -10,15 +10,15 @@ import {
 
 import * as prettierStandalone from "prettier/standalone";
 
-import * as angularPlugin from "prettier/parser-angular";
-import * as babelPlugin from "prettier/parser-babel";
-import * as glimmerPlugin from "prettier/parser-glimmer";
-import * as graphqlPlugin from "prettier/parser-graphql";
-import * as htmlPlugin from "prettier/parser-html";
-import * as markdownPlugin from "prettier/parser-markdown";
-import * as meriyahPlugin from "prettier/parser-meriyah";
-import * as typescriptPlugin from "prettier/parser-typescript";
-import * as yamlPlugin from "prettier/parser-yaml";
+import * as angularPlugin from "prettier/plugins/angular";
+import * as babelPlugin from "prettier/plugins/babel";
+import * as glimmerPlugin from "prettier/plugins/glimmer";
+import * as graphqlPlugin from "prettier/plugins/graphql";
+import * as htmlPlugin from "prettier/plugins/html";
+import * as markdownPlugin from "prettier/plugins/markdown";
+import * as meriyahPlugin from "prettier/plugins/meriyah";
+import * as typescriptPlugin from "prettier/plugins/typescript";
+import * as yamlPlugin from "prettier/plugins/yaml";
 
 // commented out as the cod uses `new Function("return this") which
 // is not allowed in the VS Code extension host as it enforces

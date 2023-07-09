@@ -18,8 +18,10 @@ type PrettierFileInfoOptions = prettier.FileInfoOptions;
 type PrettierPlugin = prettier.Plugin<any>;
 
 type PrettierModule = {
-  format(source: string, options?: prettier.Options): string;
-  getSupportInfo(): { languages: PrettierSupportLanguage[] };
+  format(source: string, options?: prettier.Options): string | Promise<string>;
+  getSupportInfo():
+    | { languages: PrettierSupportLanguage[] }
+    | Promise<{ languages: PrettierSupportLanguage[] }>;
   getFileInfo(
     filePath: string,
     options?: PrettierFileInfoOptions,
