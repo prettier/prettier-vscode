@@ -30,7 +30,7 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
 
   public async format(
     source: string,
-    options?: Options | undefined
+    options?: Options | undefined,
   ): Promise<string> {
     if (!this.prettierModule) {
       await this.import();
@@ -40,7 +40,7 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
 
   public async getFileInfo(
     filePath: string,
-    fileInfoOptions?: FileInfoOptions | undefined
+    fileInfoOptions?: FileInfoOptions | undefined,
   ): Promise<PrettierFileInfoResult> {
     if (!this.prettierModule) {
       await this.import();
@@ -70,7 +70,7 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
   }
 
   public async resolveConfigFile(
-    filePath?: string | undefined
+    filePath?: string | undefined,
   ): Promise<string | null> {
     if (!this.prettierModule) {
       await this.import();
@@ -80,7 +80,7 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
 
   public async resolveConfig(
     fileName: string,
-    options?: ResolveConfigOptions | undefined
+    options?: ResolveConfigOptions | undefined,
   ): Promise<Options | null> {
     if (!this.prettierModule) {
       await this.import();

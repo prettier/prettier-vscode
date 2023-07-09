@@ -20,7 +20,7 @@ suite("Test module resolution", function () {
     const { actual } = await format(
       "module-plugin",
       "index.js",
-      /* shouldRetry */ true
+      /* shouldRetry */ true,
     );
     const expected = await getText("module-plugin", "index.result.js");
     assert.equal(actual, expected);
