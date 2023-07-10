@@ -4042,10 +4042,10 @@ vsce@^2.15.0:
     yauzl "^2.3.1"
     yazl "^2.2.2"
 
-vscode-nls-dev@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/vscode-nls-dev/-/vscode-nls-dev-4.0.3.tgz#e55e8a7bd35c719454af17c0c5c3516ff2971d15"
-  integrity sha512-Y+wUSLwmBwLD8uN+6hBbR4MICuURQ1DoW5k3Z34kPyDlr9ZRQxCPIWaK64IFzPpjloMbb0ORIHkpI8qjMd4L8w==
+vscode-nls-dev@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/vscode-nls-dev/-/vscode-nls-dev-4.0.4.tgz#1d842a809525990aca5346f8031a0a0bf63e01ef"
+  integrity sha512-0KQUVkeRTmKVH4a96ZeD+1RgQV6k21YiBYykrvbMX62m6srPC6aU9CWuWT6zrMAB6qmy9sUD0/Bk6P/atLVMrw==
   dependencies:
     ansi-colors "^4.1.1"
     clone "^2.1.2"
@@ -4057,7 +4057,7 @@ vscode-nls-dev@^4.0.3:
     source-map "^0.6.1"
     typescript "^4.5.4"
     vinyl "^2.2.1"
-    xml2js "^0.4.23"
+    xml2js "^0.5.0"
     yargs "^17.3.0"
 
 vscode-nls@^5.2.0:
@@ -4212,6 +4212,14 @@ xml2js@^0.4.23:
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
   integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~11.0.0"
+
+xml2js@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.5.0.tgz#d9440631fbb2ed800203fad106f2724f62c493b7"
+  integrity sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~11.0.0"
