@@ -1,0 +1,15 @@
+{
+  "name": "v3",
+  "version": "1.0.0",
+  "description": "Test folder for Prettier v3",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prettier",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.0.0-alpha.12"
+  },
+  "dependencies": {}
+}

@@ -35,6 +35,18 @@
     },
     {
       "path": "explicit-dep"
+    },
+    {
+      "path": "v3"
+    },
+    {
+      "path": "plugin-tailwindcss"
+    },
+    {
+      "path": "v3-plugins"
+    },
+    {
+      "path": "v3-plugin-override"
     }
   ],
   "settings": {

@@ -125,6 +125,14 @@ npm install prettier -D --save-exact
 
 > NOTE: You will be prompted to confirm that you want the extension to load a Prettier module. This is done to ensure that you are not loading a module or script that is not trusted.
 
+### Prettier Version 3
+
+Prettier's preview version 3 is supported as of version 9.12.0. It is not included in the extension by default, but can be used by installing locally in your project. Version 10.0.0 of this extension will include prettier 3.0.0 after it is out of preview. To try version 3 now run the following in your project:
+
+```base
+npm i prettier@3.0.0-alpha.6 -D
+```
+
 ### Plugins
 
 This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally or globally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
@@ -287,7 +295,7 @@ When enabled, this extension will attempt to use global npm or yarn modules if l
 
 A list of [glob patterns](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) to register Prettier formatter. Typically these will be in the format of `**/*.abc` to tell this extension to register itself as the formatter for all files with the `abc` extension. This feature can be useful when you have [overrides](https://prettier.io/docs/en/configuration.html#configuration-overrides) set in your config file to map custom extensions to a parser.
 
-It is likely will need to also update your prettier config. For example, if I register the following document selector by itself, Prettier still won't know what to do with that file. I either need a Prettier extension that formats `.abc` file format or I need to configure Prettier.
+It is likely you will need to also update your prettier config. For example, if I register the following document selector by itself, Prettier still won't know what to do with that file. I either need a Prettier extension that formats `.abc` file format or I need to configure Prettier.
 
 ```json
 {

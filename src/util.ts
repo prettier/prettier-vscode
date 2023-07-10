@@ -1,5 +1,6 @@
 import * as os from "os";
 import * as path from "path";
+import * as semver from "semver";
 import { Uri, workspace } from "vscode";
 import { PrettierVSCodeConfig } from "./types";
 
@@ -50,4 +51,12 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   }
 
   return config;
+}
+
+export function isAboveV3(version: string | null): boolean {
+  const parsedVersion = semver.parse(version);
+  if (!parsedVersion) {
+    throw new Error("Invalid version");
+  }
+  return parsedVersion.major >= 3;
 }

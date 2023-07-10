@@ -50,29 +50,34 @@ export function activate(context: ExtensionContext) {
     loggingService,
     statusBar
   );
-  editService.registerGlobal();
+  editService
+    .registerGlobal()
+    .then(() => {
+      const createConfigFileFunc = createConfigFile(templateService);
+      const createConfigFileCommand = commands.registerCommand(
+        "prettier.createConfigFile",
+        createConfigFileFunc
+      );
+      const openOutputCommand = commands.registerCommand(
+        "prettier.openOutput",
+        () => {
+          loggingService.show();
+        }
+      );
+      const forceFormatDocumentCommand = commands.registerCommand(
+        "prettier.forceFormatDocument",
+        editService.forceFormatDocument
+      );
 
-  const createConfigFileFunc = createConfigFile(templateService);
-  const createConfigFileCommand = commands.registerCommand(
-    "prettier.createConfigFile",
-    createConfigFileFunc
-  );
-  const openOutputCommand = commands.registerCommand(
-    "prettier.openOutput",
-    () => {
-      loggingService.show();
-    }
-  );
-  const forceFormatDocumentCommand = commands.registerCommand(
-    "prettier.forceFormatDocument",
-    editService.forceFormatDocument
-  );
-
-  context.subscriptions.push(
-    editService,
-    createConfigFileCommand,
-    openOutputCommand,
-    forceFormatDocumentCommand,
-    ...editService.registerDisposables()
-  );
+      context.subscriptions.push(
+        editService,
+        createConfigFileCommand,
+        openOutputCommand,
+        forceFormatDocumentCommand,
+        ...editService.registerDisposables()
+      );
+    })
+    .catch((err) => {
+      loggingService.logError("Error registering extension", err);
+    });
 }

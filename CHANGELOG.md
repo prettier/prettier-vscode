@@ -2,9 +2,68 @@
 
 All notable changes to the "prettier-vscode" extension will be documented in this file.
 
-<!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
+<!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
+
+## [9.19.0]
+
+- Reverts change to `prettierPath` resolution. (#3045)
+
+## [9.18.0]
+
+- Support new config file types when using Prettier 3.0
+- Support for Prettier 3.0 plugin resolution
+
+## [9.17.0]
+
+- Fix plugins `parser` not inferred - Thanks to [@u3u](https://github.com/u3u)
+- Fix module resolution with `prettierPath` setting
+
+## [9.16.0]
+
+- Run only Prettier v3 in worker_threads. Run v2 in main thread.
+
+## [9.15.0]
+
+- Run Prettier in worker_threads for v3.
+
+## [9.14.0]
+
+- Fixes a bug in Remote SSH that had been occurring since VSCode 1.79.
+
+## [9.13.0]
+
+- Prettier 2.8.8
+
+## [9.12.1]
+
+- Fix typo in translations for zh-cn - Thanks to [@fisker](https://github.com/fisker)
+
+## [9.12.0]
+
+- Support Prettier v3. Not shipped by default, requires project install - Thanks to [@sosukesuzuki](https://github.com/sosukesuzuki)
+- Improved translations for zh-tw and zh-cn - Thanks to [@fisker](https://github.com/fisker) and [@Mrbunker](https://github.com/Mrbunker)
+
+## [9.11.0]
+
+- Prettier 2.8.7
+
+## [9.10.4]
+
+- Update description of vueIndentScriptAndStyle option
+
+## [9.10.3]
+
+- Prettier 2.8.0
+- Updated dependancies
+
+## [9.9.0]
+
+- Use theme colors on status bar background for errors and warnings ([@zardoy](https://github.com/zardoy))
+- Reduce extension size ([@kidonng](https://github.com/kidonng))
+
+## [9.8.0]
 
 - Added VS Code sponsorship link
 - Use config from `.prettierrc` when formatting VS Code user `settings.json`. Fixes [[#2226](https://github.com/prettier/prettier-vscode/issues/2226)].

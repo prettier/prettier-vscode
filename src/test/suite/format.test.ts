@@ -54,7 +54,11 @@ export function putBackPrettierRC(done: Done) {
  * @param base base URI
  * @returns source code and resulting code
  */
-export async function format(workspaceFolderName: string, testFile: string) {
+export async function format(
+  workspaceFolderName: string,
+  testFile: string,
+  shouldRetry = false
+) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
   const absPath = path.join(base.fsPath, testFile);
   const doc = await vscode.workspace.openTextDocument(absPath);
@@ -70,10 +74,23 @@ export async function format(workspaceFolderName: string, testFile: string) {
   console.time(testFile);
   await vscode.commands.executeCommand("editor.action.formatDocument");
 
+  let actual = doc.getText();
+
+  if (shouldRetry) {
+    for (let i = 0; i < 10; i++) {
+      if (text !== actual) {
+        break;
+      }
+      await wait(250);
+      await vscode.commands.executeCommand("editor.action.formatDocument");
+      actual = doc.getText();
+    }
+  }
+
   // eslint-disable-next-line no-console
   console.timeEnd(testFile);
 
-  return { actual: doc.getText(), source: text };
+  return { actual, source: text };
 }
 /**
  * Compare prettier's output (default settings)
@@ -92,7 +109,7 @@ async function formatSameAsPrettier(
     },
   };
   const { actual, source } = await format("project", file);
-  const prettierFormatted = prettier.format(source, prettierOptions);
+  const prettierFormatted = await prettier.format(source, prettierOptions);
   assert.equal(actual, prettierFormatted);
 }
 
