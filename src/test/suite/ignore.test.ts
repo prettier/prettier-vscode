@@ -17,7 +17,7 @@ suite("Test ignore", function () {
     const { actual, source } = await format(
       "project",
       /* cspell: disable-next-line */
-      "ignoreMe/subdir/index.js"
+      "ignoreMe/subdir/index.js",
     );
     assert.equal(actual, source);
   });

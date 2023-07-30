@@ -18,7 +18,7 @@ function isWindows(): boolean {
  * @param tracer the tracer to use
  */
 export function resolveGlobalNodePath(
-  tracer?: (message: string) => void
+  tracer?: (message: string) => void,
 ): string | undefined {
   let npmCommand = "npm";
   const options: SpawnSyncOptionsWithStringEncoding = {
@@ -36,7 +36,7 @@ export function resolveGlobalNodePath(
     const stdout = spawnSync(
       npmCommand,
       ["config", "get", "prefix"],
-      options
+      options,
     ).stdout;
 
     if (!stdout) {
@@ -77,7 +77,7 @@ interface YarnJsonFormat {
  * @param tracer the tracer to use
  */
 export function resolveGlobalYarnPath(
-  tracer?: (message: string) => void
+  tracer?: (message: string) => void,
 ): string | undefined {
   let yarnCommand = "yarn";
   const options: SpawnSyncOptionsWithStringEncoding = {
@@ -96,7 +96,7 @@ export function resolveGlobalYarnPath(
     const results = spawnSync(
       yarnCommand,
       ["global", "dir", "--json"],
-      options
+      options,
     );
 
     const stdout = results.stdout;

@@ -21,7 +21,7 @@ export function loadNodeModule<T>(moduleName: string): T | undefined {
 
 export function resolveNodeModule(
   moduleName: string,
-  options?: { paths: string[] }
+  options?: { paths: string[] },
 ) {
   try {
     return nodeModuleLoader().resolve(moduleName, options);
@@ -36,7 +36,7 @@ export function resolveNodeModule(
  */
 export function resolveConfigPlugins(
   config: PrettierOptions,
-  fileName: string
+  fileName: string,
 ): PrettierOptions {
   if (config?.plugins?.length) {
     config.plugins = config.plugins.map((plugin) => {

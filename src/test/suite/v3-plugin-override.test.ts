@@ -7,7 +7,7 @@ suite("Test v3 + plugin override", function () {
     const { actual } = await format(
       "v3-plugin-override",
       "index.js",
-      /* shouldRetry */ true
+      /* shouldRetry */ true,
     );
     const expected = await getText("v3-plugin-override", "index.result.js");
     assert.equal(actual, expected);
