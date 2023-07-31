@@ -6,8 +6,6 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-## [10.0.0]
-
 - Use Prettier 3.0 by default.
 - Change default configuration for `trailingComma` to `all` to match Prettier 3.0.
 
