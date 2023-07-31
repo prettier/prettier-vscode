@@ -7,7 +7,7 @@ suite("Test plugin-tailwindcss", function () {
     const { actual } = await format(
       "plugin-tailwindcss",
       "index.js",
-      /* shouldRetry */ true
+      /* shouldRetry */ true,
     );
     const expected = await getText("plugin-tailwindcss", "index.result.js");
     assert.equal(actual, expected);
