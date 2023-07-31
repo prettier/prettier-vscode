@@ -16,7 +16,7 @@ export class StatusBar {
     this.statusBarItem = window.createStatusBarItem(
       "prettier.status",
       StatusBarAlignment.Right,
-      -1,
+      -1
     );
     this.statusBarItem.name = "Prettier";
     this.statusBarItem.text = "Prettier";
@@ -36,17 +36,17 @@ export class StatusBar {
       case FormatterStatus.Ignore:
       case FormatterStatus.Warn:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.warningBackground",
+          "statusBarItem.warningBackground"
         );
         break;
       case FormatterStatus.Error:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.errorBackground",
+          "statusBarItem.errorBackground"
         );
         break;
       default:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.fourgroundBackground",
+          "statusBarItem.fourgroundBackground"
         );
         break;
     }

@@ -6,7 +6,7 @@ import { PrettierVSCodeConfig } from "./types";
 
 export function getWorkspaceRelativePath(
   filePath: string,
-  pathToResolve: string,
+  pathToResolve: string
 ) {
   // In case the user wants to use ~/.prettierrc on Mac
   if (
@@ -31,7 +31,7 @@ export function getConfig(uri?: Uri): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const config = workspace.getConfiguration(
     "prettier",
-    uri,
+    uri
   ) as unknown as PrettierVSCodeConfig;
 
   // Some settings are disabled for untrusted workspaces

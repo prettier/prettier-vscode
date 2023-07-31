@@ -10,17 +10,15 @@ import {
 
 import * as prettierStandalone from "prettier/standalone";
 
-import * as angularPlugin from "prettier/plugins/angular";
-import * as babelPlugin from "prettier/plugins/babel";
-import * as glimmerPlugin from "prettier/plugins/glimmer";
-import * as graphqlPlugin from "prettier/plugins/graphql";
-import * as htmlPlugin from "prettier/plugins/html";
-import * as markdownPlugin from "prettier/plugins/markdown";
-import * as meriyahPlugin from "prettier/plugins/meriyah";
-import * as typescriptPlugin from "prettier/plugins/typescript";
-import * as yamlPlugin from "prettier/plugins/yaml";
-// @ts-expect-error -- d.ts file missing estree plugin
-import * as estreePlugin from "prettier/plugins/estree";
+import * as angularPlugin from "prettier/parser-angular";
+import * as babelPlugin from "prettier/parser-babel";
+import * as glimmerPlugin from "prettier/parser-glimmer";
+import * as graphqlPlugin from "prettier/parser-graphql";
+import * as htmlPlugin from "prettier/parser-html";
+import * as markdownPlugin from "prettier/parser-markdown";
+import * as meriyahPlugin from "prettier/parser-meriyah";
+import * as typescriptPlugin from "prettier/parser-typescript";
+import * as yamlPlugin from "prettier/parser-yaml";
 
 // commented out as the cod uses `new Function("return this") which
 // is not allowed in the VS Code extension host as it enforces
@@ -34,7 +32,6 @@ import { getWorkspaceRelativePath } from "./util";
 import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
-  estreePlugin,
   angularPlugin,
   babelPlugin,
   glimmerPlugin,
@@ -51,14 +48,14 @@ export class ModuleResolver implements ModuleResolverInterface {
 
   public async getPrettierInstance(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _fileName: string,
+    _fileName: string
   ): Promise<PrettierModule | undefined> {
     return this.getGlobalPrettierInstance();
   }
 
   public async getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string,
+    ignorePath: string
   ): Promise<string | undefined> {
     return getWorkspaceRelativePath(fileName, ignorePath);
   }
@@ -170,7 +167,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         filePath: string,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        options?: PrettierFileInfoOptions,
+        options?: PrettierFileInfoOptions
       ): Promise<PrettierFileInfoResult> => {
         // TODO: implement ignore file reading
         return { ignored: false, inferredParser: null };
@@ -184,7 +181,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       resolveConfigFile(filePath?: string | undefined): Promise<string | null>;
       resolveConfig(
         fileName: string,
-        options?: ResolveConfigOptions | undefined,
+        options?: ResolveConfigOptions | undefined
       ): Promise<Options | null>;
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -192,7 +189,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fileName: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    vscodeConfig: PrettierVSCodeConfig,
+    vscodeConfig: PrettierVSCodeConfig
   ): Promise<Options | "error" | "disabled" | null> {
     return null;
   }
@@ -201,7 +198,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _doc: TextDocument,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _vscodeConfig: PrettierVSCodeConfig,
+    _vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     return null;
   }

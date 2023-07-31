@@ -71,7 +71,7 @@ export default class PrettierEditService implements Disposable {
   constructor(
     private moduleResolver: ModuleResolverInterface,
     private loggingService: LoggingService,
-    private statusBar: StatusBar,
+    private statusBar: StatusBar
   ) {}
 
   public registerDisposables(): Disposable[] {
@@ -89,14 +89,14 @@ export default class PrettierEditService implements Disposable {
     });
 
     const prettierConfigWatcher = workspace.createFileSystemWatcher(
-      `**/{${PRETTIER_CONFIG_FILES.join(",")}}`,
+      `**/{${PRETTIER_CONFIG_FILES.join(",")}}`
     );
     prettierConfigWatcher.onDidChange(this.prettierConfigChanged);
     prettierConfigWatcher.onDidCreate(this.prettierConfigChanged);
     prettierConfigWatcher.onDidDelete(this.prettierConfigChanged);
 
     const textEditorChange = window.onDidChangeActiveTextEditor(
-      this.handleActiveTextEditorChangedSync,
+      this.handleActiveTextEditorChangedSync
     );
 
     this.handleActiveTextEditorChangedSync(window.activeTextEditor);
@@ -114,13 +114,13 @@ export default class PrettierEditService implements Disposable {
       const editor = window.activeTextEditor;
       if (!editor) {
         this.loggingService.logInfo(
-          "No active document. Nothing was formatted.",
+          "No active document. Nothing was formatted."
         );
         return;
       }
 
       this.loggingService.logInfo(
-        "Forced formatting will not use ignore files.",
+        "Forced formatting will not use ignore files."
       );
 
       const edits = await this.provideEdits(editor.document, { force: true });
@@ -150,7 +150,7 @@ export default class PrettierEditService implements Disposable {
   };
 
   private handleActiveTextEditorChangedSync = (
-    textEditor: TextEditor | undefined,
+    textEditor: TextEditor | undefined
   ) => {
     this.handleActiveTextEditorChanged(textEditor).catch((err) => {
       this.loggingService.logError("Error handling text editor change", err);
@@ -158,7 +158,7 @@ export default class PrettierEditService implements Disposable {
   };
 
   private handleActiveTextEditorChanged = async (
-    textEditor: TextEditor | undefined,
+    textEditor: TextEditor | undefined
   ) => {
     if (!textEditor) {
       this.statusBar.hide();
@@ -181,11 +181,11 @@ export default class PrettierEditService implements Disposable {
     }
 
     const prettierInstance = await this.moduleResolver.getPrettierInstance(
-      workspaceFolder.uri.fsPath,
+      workspaceFolder.uri.fsPath
     );
 
     const isRegistered = this.registeredWorkspaces.has(
-      workspaceFolder.uri.fsPath,
+      workspaceFolder.uri.fsPath
     );
 
     // If there isn't an instance here, it is because the module
@@ -197,7 +197,7 @@ export default class PrettierEditService implements Disposable {
 
     const selectors = await this.getSelectors(
       prettierInstance,
-      workspaceFolder.uri,
+      workspaceFolder.uri
     );
 
     if (!isRegistered) {
@@ -205,7 +205,7 @@ export default class PrettierEditService implements Disposable {
       this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);
       this.loggingService.logDebug(
         `Enabling Prettier for Workspace ${workspaceFolder.uri.fsPath}`,
-        selectors,
+        selectors
       );
     }
 
@@ -219,7 +219,7 @@ export default class PrettierEditService implements Disposable {
 
   public async registerGlobal() {
     const selectors = await this.getSelectors(
-      this.moduleResolver.getGlobalPrettierInstance(),
+      this.moduleResolver.getGlobalPrettierInstance()
     );
     this.registerDocumentFormatEditorProviders(selectors);
     this.loggingService.logDebug("Enabling Prettier globally", selectors);
@@ -242,11 +242,11 @@ export default class PrettierEditService implements Disposable {
     this.rangeFormatterHandler =
       languages.registerDocumentRangeFormattingEditProvider(
         rangeLanguageSelector,
-        editProvider,
+        editProvider
       );
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
-      editProvider,
+      editProvider
     );
   }
 
@@ -255,7 +255,7 @@ export default class PrettierEditService implements Disposable {
    */
   private getSelectors = async (
     prettierInstance: PrettierModule | PrettierInstance,
-    uri?: Uri,
+    uri?: Uri
   ): Promise<ISelectors> => {
     const plugins: (string | PrettierPlugin)[] = [];
 
@@ -270,7 +270,7 @@ export default class PrettierEditService implements Disposable {
         prettierInstance,
         uri,
         uri.fsPath,
-        getConfig(uri),
+        getConfig(uri)
       );
       if (resolvedConfig === "error") {
         this.statusBar.update(FormatterStatus.Error);
@@ -347,7 +347,7 @@ export default class PrettierEditService implements Disposable {
 
   private provideEdits = async (
     document: TextDocument,
-    options: ExtensionFormattingOptions,
+    options: ExtensionFormattingOptions
   ): Promise<TextEdit[]> => {
     const startTime = new Date().getTime();
     const result = await this.format(document.getText(), document, options);
@@ -397,7 +397,7 @@ export default class PrettierEditService implements Disposable {
   private async format(
     text: string,
     doc: TextDocument,
-    options: ExtensionFormattingOptions,
+    options: ExtensionFormattingOptions
   ): Promise<string | undefined> {
     const { fileName, uri, languageId } = doc;
 
@@ -407,7 +407,7 @@ export default class PrettierEditService implements Disposable {
 
     const resolvedConfig = await this.moduleResolver.getResolvedConfig(
       doc,
-      vscodeConfig,
+      vscodeConfig
     );
     if (resolvedConfig === "error") {
       this.statusBar.update(FormatterStatus.Error);
@@ -419,13 +419,13 @@ export default class PrettierEditService implements Disposable {
     }
 
     const prettierInstance = await this.moduleResolver.getPrettierInstance(
-      fileName,
+      fileName
     );
     this.loggingService.logInfo("PrettierInstance:", prettierInstance);
 
     if (!prettierInstance) {
       this.loggingService.logError(
-        "Prettier could not be loaded. See previous logs for more information.",
+        "Prettier could not be loaded. See previous logs for more information."
       );
       this.statusBar.update(FormatterStatus.Error);
       return;
@@ -435,11 +435,11 @@ export default class PrettierEditService implements Disposable {
     if (vscodeConfig.ignorePath) {
       resolvedIgnorePath = await this.moduleResolver.getResolvedIgnorePath(
         fileName,
-        vscodeConfig.ignorePath,
+        vscodeConfig.ignorePath
       );
       if (resolvedIgnorePath) {
         this.loggingService.logInfo(
-          `Using ignore file (if present) at ${resolvedIgnorePath}`,
+          `Using ignore file (if present) at ${resolvedIgnorePath}`
         );
       }
     }
@@ -449,7 +449,7 @@ export default class PrettierEditService implements Disposable {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
         plugins: resolvedConfig?.plugins?.filter(
-          (item): item is string => typeof item === "string",
+          (item): item is string => typeof item === "string"
         ),
         resolveConfig: true,
         withNodeModules: vscodeConfig.withNodeModules,
@@ -472,7 +472,7 @@ export default class PrettierEditService implements Disposable {
       // somebody has registered a custom file extension without properly
       // configuring the parser in their prettier config.
       this.loggingService.logWarning(
-        `Parser not inferred, trying VS Code language.`,
+        `Parser not inferred, trying VS Code language.`
       );
       const { languages } = await prettierInstance.getSupportInfo({
         plugins: [],
@@ -482,7 +482,7 @@ export default class PrettierEditService implements Disposable {
 
     if (!parser) {
       this.loggingService.logError(
-        `Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.`,
+        `Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.`
       );
       this.statusBar.update(FormatterStatus.Error);
       return;
@@ -493,7 +493,7 @@ export default class PrettierEditService implements Disposable {
       parser as PrettierBuiltInParserName,
       vscodeConfig,
       resolvedConfig,
-      options,
+      options
     );
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
@@ -502,7 +502,7 @@ export default class PrettierEditService implements Disposable {
       // Since Prettier v3, `format` returns Promise.
       const formattedText = await prettierInstance.format(
         text,
-        prettierOptions,
+        prettierOptions
       );
       this.statusBar.update(FormatterStatus.Success);
 
@@ -520,7 +520,7 @@ export default class PrettierEditService implements Disposable {
     parser: PrettierBuiltInParserName,
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
-    extensionFormattingOptions: ExtensionFormattingOptions,
+    extensionFormattingOptions: ExtensionFormattingOptions
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -552,7 +552,7 @@ export default class PrettierEditService implements Disposable {
     this.loggingService.logInfo(
       fallbackToVSCodeConfig
         ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
-        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used",
+        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
     );
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;
