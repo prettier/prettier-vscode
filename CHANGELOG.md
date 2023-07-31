@@ -6,6 +6,13 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+Reverts back to prettier 2.x by default due to issues with extension
+
+## [10.0.0]
+
+Use Prettier 3.0 by default.
+Change default configuration for trailingComma to all to match Prettier 3.0.
+
 ## [9.19.0]
 
 - Reverts change to `prettierPath` resolution. (#3045)
