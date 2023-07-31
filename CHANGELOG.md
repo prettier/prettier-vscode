@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [10.1.0]
+
 Reverts back to prettier 2.x by default due to issues with extension
 
 ## [10.0.0]
