@@ -239,7 +239,7 @@
           "type": "integer",
           "default": 80,
           "markdownDescription": "%ext.config.printWidth%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.tabWidth": {
           "type": "integer",
