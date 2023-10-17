@@ -270,7 +270,7 @@ export default class PrettierEditService implements Disposable {
         prettierInstance,
         uri,
         uri.fsPath,
-        getConfig(uri)
+        getConfig(window.activeTextEditor?.document || uri)
       );
       if (resolvedConfig === "error") {
         this.statusBar.update(FormatterStatus.Error);
@@ -403,7 +403,7 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(`Formatting ${uri}`);
 
-    const vscodeConfig = getConfig(uri);
+    const vscodeConfig = getConfig(doc);
 
     const resolvedConfig = await this.moduleResolver.getResolvedConfig(
       doc,
