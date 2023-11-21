@@ -15,11 +15,11 @@ jobs:
           version: 7
           run_install: false
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os != 'Windows'
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os == 'Windows'
         with:
           node-version: 14
@@ -48,11 +48,11 @@ jobs:
     name: Package
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os != 'Windows'
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os == 'Windows'
         with:
           node-version: 14
@@ -84,11 +84,11 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os != 'Windows'
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: runner.os == 'Windows'
         with:
           node-version: 14
