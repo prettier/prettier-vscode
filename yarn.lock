@@ -264,10 +264,10 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.7.2.tgz#6c2324641cc4ba050a8c710b2b251b377581fbf0"
   integrity sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==
 
-"@types/resolve@^1.20.3":
-  version "1.20.3"
-  resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.3.tgz#066742d69a0bbba8c5d7d517f82e1140ddeb3c3c"
-  integrity sha512-NH5oErHOtHZYcjCtg69t26aXEk4BN2zLWqf7wnDZ+dpe0iR7Rds1SPGEItl3fca21oOe0n3OCnZ4W7jBxu7FOw==
+"@types/resolve@^1.20.6":
+  version "1.20.6"
+  resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.6.tgz#e6e60dad29c2c8c206c026e6dd8d6d1bdda850b8"
+  integrity sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==
 
 "@types/semver@^7.3.12", "@types/semver@^7.3.13":
   version "7.3.13"
