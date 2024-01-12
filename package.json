@@ -105,7 +105,7 @@
     "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.3.8",
     "@vscode/test-web": "^0.0.50",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^12.0.1",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^9.1.0",
     "fs-extra": "^11.1.1",
