@@ -6,7 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
+- Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
+- Fixed config resolution that caused plugins to be ignored when using Prettier 3.1.1 or later. (#3252)
 
 ## [10.1.0]
 
