@@ -7,6 +7,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 ## [Unreleased]
 
 - Prevent `.editorconfig` from satisfying the `requireConfig` setting
+Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
 
 ## [10.1.0]
 

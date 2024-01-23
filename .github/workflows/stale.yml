@@ -13,14 +13,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/stale@v8
+      - uses: actions/stale@v9
         with:
           stale-issue-label: needs-more-info
           any-of-labels: need-more-info
           exempt-issue-labels: enhancement, help-wanted
           days-before-stale: -1
           days-before-close: 7
-      - uses: actions/stale@v8
+      - uses: actions/stale@v9
         with:
           exempt-issue-labels: need-more-info, enhancement, help-wanted
           stale-issue-message: "This issue has been labeled as stale due to inactivity. Reply to keep this issue open."

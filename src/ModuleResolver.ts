@@ -216,7 +216,7 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     if (modulePath !== undefined) {
       this.loggingService.logDebug(
-        `Local prettier module path: '${modulePath}'`
+        `Local prettier module path: ${modulePath}`
       );
       // First check module cache
       moduleInstance = this.path2Module.get(modulePath);
@@ -377,7 +377,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
     if (resolveConfigOptions.config) {
       this.loggingService.logInfo(
-        `Using config file at '${resolveConfigOptions.config}'`
+        `Using config file at ${resolveConfigOptions.config}`
       );
     }
 
