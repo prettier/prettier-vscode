@@ -114,7 +114,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd: path.dirname(modulePath) }
+      { cwd: modulePath }
     );
 
     if (!packageJsonPath) {
@@ -356,8 +356,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       config: isVirtual
         ? undefined
         : vscodeConfig.configPath
-        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-        : configPath,
+          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+          : configPath,
       editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
     };
 
