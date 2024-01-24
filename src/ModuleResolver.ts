@@ -179,8 +179,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
 
       this.loggingService.logInfo(
-        `Attempted to determine module path from ${
-          modulePath || moduleDirectory || "package.json"
+        `Attempted to determine module path from ${modulePath || moduleDirectory || "package.json"
         }`
       );
       this.loggingService.logError(FAILED_TO_LOAD_MODULE_MESSAGE, error);
@@ -239,8 +238,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           }
         } catch (error) {
           this.loggingService.logInfo(
-            `Attempted to load Prettier module from ${
-              modulePath || "package.json"
+            `Attempted to load Prettier module from ${modulePath || "package.json"
             }`
           );
           this.loggingService.logError(FAILED_TO_LOAD_MODULE_MESSAGE, error);
@@ -356,8 +354,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       config: isVirtual
         ? undefined
         : vscodeConfig.configPath
-          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-          : configPath,
+        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+        : configPath,
       editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
     };
 
