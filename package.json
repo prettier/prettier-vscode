@@ -1,21 +1,15 @@
 {
-  "name": "prettier-vscode",
-  "displayName": "Prettier - Code formatter",
-  "description": "Code formatter using prettier",
-  "version": "10.1.0",
-  "publisher": "esbenp",
-  "author": "Prettier <@prettiercode>",
+  "name": "prettier-er",
+  "displayName": "Prettier-er - In Production",
+  "description": "Code formatter using prettier-er",
+  "version": "0.1.0",
   "galleryBanner": {
     "color": "#ffe04b",
     "theme": "light"
   },
-  "sponsor": {
-    "url": "https://opencollective.com/prettier"
-  },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/prettier/prettier-vscode.git"
+    "url": "https://github.com/cantfindname/prettier-vscode.git"
   },
   "license": "MIT",
   "bugs": {
@@ -450,11 +444,5 @@
         "when": "editorFocus"
       }
     ]
-  },
-  "__metadata": {
-    "id": "96fa4707-6983-4489-b7c5-d5ffdfdcce90",
-    "publisherDisplayName": "Prettier",
-    "publisherId": "d16f4e39-2ffb-44e3-9c0d-79d873570e3a",
-    "isPreReleaseVersion": false
   }
 }
