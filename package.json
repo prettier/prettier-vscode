@@ -171,6 +171,12 @@
           "markdownDescription": "%ext.config.documentSelectors%",
           "scope": "window"
         },
+        "prettier.allmanStyle": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.allmanStyle%",
+          "scope": "resource"
+        },
         "prettier.enable": {
           "type": "boolean",
           "default": true,
