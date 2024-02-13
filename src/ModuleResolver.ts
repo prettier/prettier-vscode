@@ -129,10 +129,10 @@ export class ModuleResolver implements ModuleResolverInterface {
       typeof prettierPkgJson === "object" &&
       prettierPkgJson !== null &&
       "version" in prettierPkgJson &&
-      // @ts-expect-error checked
+      // .@ts-expect-error checked
       typeof prettierPkgJson.version === "string"
     ) {
-      // @ts-expect-error checked
+      // .@ts-expect-error checked
       version = prettierPkgJson.version;
     }
 
@@ -215,9 +215,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     let moduleInstance: PrettierInstance | undefined = undefined;
 
     if (modulePath !== undefined) {
-      this.loggingService.logDebug(
-        `Local prettier module path: ${modulePath}`
-      );
+      this.loggingService.logDebug(`Local prettier module path: ${modulePath}`);
       // First check module cache
       moduleInstance = this.path2Module.get(modulePath);
       if (moduleInstance) {
