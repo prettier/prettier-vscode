@@ -1,3 +1,5 @@
+package-lock.json
+yarn.lock
 out
 dist
 node_modules
