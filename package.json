@@ -183,6 +183,12 @@
           "markdownDescription": "%ext.config.elseStatementNewLine%",
           "scope": "resource"
         },
+        "prettier.multiEmptyLine": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.multiEmptyLine%",
+          "scope": "resource"
+        },
         "prettier.enable": {
           "type": "boolean",
           "default": true,
