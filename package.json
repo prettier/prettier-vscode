@@ -177,6 +177,12 @@
           "markdownDescription": "%ext.config.allmanStyle%",
           "scope": "resource"
         },
+        "prettier.elseStatementNewLine": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%ext.config.elseStatementNewLine%",
+          "scope": "resource"
+        },
         "prettier.enable": {
           "type": "boolean",
           "default": true,
