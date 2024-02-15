@@ -529,6 +529,8 @@ export default class PrettierEditService implements Disposable {
       vsOpts.allmanStyle = vsCodeConfig.allmanStyle;
       vsOpts.arrowParens = vsCodeConfig.arrowParens;
       vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
+      vsOpts.elseStatementNewLine = vsCodeConfig.elseStatementNewLine;
+      vsOpts.multiEmptyLine = vsCodeConfig.multiEmptyLine;
       vsOpts.endOfLine = vsCodeConfig.endOfLine;
       vsOpts.htmlWhitespaceSensitivity = vsCodeConfig.htmlWhitespaceSensitivity;
       vsOpts.insertPragma = vsCodeConfig.insertPragma;
