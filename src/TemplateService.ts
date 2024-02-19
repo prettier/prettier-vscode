@@ -25,7 +25,7 @@ export class TemplateService {
       formatterOptions
     );
 
-    this.loggingService.logInfo(`Writing .prettierrc to '${outputPath}'`);
+    this.loggingService.logInfo(`Writing .prettierrc to ${outputPath}`);
     await workspace.fs.writeFile(
       outputPath,
       new TextEncoder().encode(templateSource)
