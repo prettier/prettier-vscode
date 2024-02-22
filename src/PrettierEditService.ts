@@ -526,6 +526,7 @@ export default class PrettierEditService implements Disposable {
 
     const vsOpts: PrettierOptions = {};
     if (fallbackToVSCodeConfig) {
+      vsOpts.forceObjectBreak = vsCodeConfig.forceObjectBreak;
       vsOpts.allmanStyle = vsCodeConfig.allmanStyle;
       vsOpts.arrowParens = vsCodeConfig.arrowParens;
       vsOpts.bracketSpacing = vsCodeConfig.bracketSpacing;
