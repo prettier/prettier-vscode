@@ -154,6 +154,17 @@
       "type": "object",
       "title": "%ext.config.title%",
       "properties": {
+        "prettier.forceObjectBreak": {
+          "scope": "resource",
+          "type": "string",
+          "enum": [
+            "preserve",
+            "forceSingleLine",
+            "forceMultiLine"
+          ],
+          "default": "preserve",
+          "markdownDescription": "%ext.config.forceObjectBreak%"
+        },
         "prettier.disableLanguages": {
           "type": "array",
           "items": {
