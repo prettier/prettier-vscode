@@ -6,7 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
+- Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
+- Fix module resolution with `prettierPath` setting
 
 ## [10.1.0]
 
