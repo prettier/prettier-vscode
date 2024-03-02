@@ -6,6 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Add language-override support for VSCode configuration.
 - Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
 - Fix module resolution with `prettierPath` setting
 
