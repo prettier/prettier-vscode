@@ -200,6 +200,12 @@
           "markdownDescription": "%ext.config.multiEmptyLine%",
           "scope": "resource"
         },
+        "prettier.selectorsSameLine": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.selectorsSameLine%",
+          "scope": "resource"
+        },
         "prettier.enable": {
           "type": "boolean",
           "default": true,

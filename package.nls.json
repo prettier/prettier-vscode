@@ -10,6 +10,7 @@
   "ext.config.disableLanguagesDeprecation": "This feature is no longer supported. Instead, configure VS Code [default formatters](https://github.com/prettier/prettier-vscode#default-formatter) or use .prettierignore.",
   "ext.config.elseStatementNewLine": "puts else statement on a new line instead of on the same line as if statement right bracket.",
   "ext.config.multiEmptyLine": "allow empty multi-line at the start and the end of blocks",
+  "ext.config.selectorsSameLine": "allow multiple css selectors to be on the same line",
   "ext.config.documentSelectors": "A list of [glob patterns](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) to register Prettier formatter.",
   "ext.config.endOfLine": "Specify the end of line used by prettier.",
   "ext.config.htmlWhitespaceSensitivity": "Specify the global [whitespace sensitivity](https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting) for HTML files.\nValid options:\n- `css` - Respect the default value of CSS `display` property.\n- `strict` - Whitespaces are considered sensitive.\n- `ignore` - Whitespaces are considered insensitive.",
