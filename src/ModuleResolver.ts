@@ -322,8 +322,24 @@ export class ModuleResolver implements ModuleResolverInterface {
     return resolvedIgnorePath;
   }
 
+  private adjustFileNameForPrettierVersion3_1_1(
+    prettierInstance: { version: string | null },
+    fileName: string
+  ) {
+    if (!prettierInstance.version) {
+      return fileName;
+    }
+    // Avoid https://github.com/prettier/prettier/pull/15363
+    const isGte3_1_1 = semver.gte(prettierInstance.version, "3.1.1");
+    if (isGte3_1_1) {
+      return path.join(fileName, "tmp");
+    }
+    return fileName;
+  }
+
   public async resolveConfig(
     prettierInstance: {
+      version: string | null;
       resolveConfigFile(filePath?: string): Promise<string | null>;
       resolveConfig(
         fileName: string,
@@ -340,7 +356,12 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       if (!isVirtual) {
         configPath =
-          (await prettierInstance.resolveConfigFile(fileName)) ?? undefined;
+          (await prettierInstance.resolveConfigFile(
+            this.adjustFileNameForPrettierVersion3_1_1(
+              prettierInstance,
+              fileName
+            )
+          )) ?? undefined;
       }
     } catch (error) {
       this.loggingService.logError(
