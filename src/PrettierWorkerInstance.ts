@@ -11,11 +11,13 @@ import {
   PrettierFileInfoResult,
   PrettierOptions,
   PrettierPlugin,
-  PrettierSupportLanguage,
+  PrettierSupportInfo,
 } from "./types";
 
 const worker = new Worker(
-  url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
+  url.pathToFileURL(
+    path.join(__dirname, "/worker/prettier-instance-worker.js"),
+  ),
 );
 
 export const PrettierWorkerInstance: PrettierInstanceConstructor = class PrettierWorkerInstance
@@ -75,7 +77,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
 
   public async format(
     source: string,
-    options?: PrettierOptions
+    options?: PrettierOptions,
   ): Promise<string> {
     const result = await this.callMethod("format", [source, options]);
     return result;
@@ -85,9 +87,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     plugins,
   }: {
     plugins: (string | PrettierPlugin)[];
-  }): Promise<{
-    languages: PrettierSupportLanguage[];
-  }> {
+  }): Promise<PrettierSupportInfo> {
     const result = await this.callMethod("getSupportInfo", [{ plugins }]);
     return result;
   }
@@ -98,7 +98,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
 
   public async getFileInfo(
     filePath: string,
-    fileInfoOptions?: PrettierFileInfoOptions
+    fileInfoOptions?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult> {
     const result = await this.callMethod("getFileInfo", [
       filePath,
@@ -108,7 +108,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
   }
 
   public async resolveConfigFile(
-    filePath?: string | undefined
+    filePath?: string | undefined,
   ): Promise<string | null> {
     const result = await this.callMethod("resolveConfigFile", [filePath]);
     return result;
@@ -116,7 +116,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
 
   public async resolveConfig(
     fileName: string,
-    options?: ResolveConfigOptions | undefined
+    options?: ResolveConfigOptions | undefined,
   ): Promise<Options> {
     const result = await this.callMethod("resolveConfig", [fileName, options]);
     return result;
