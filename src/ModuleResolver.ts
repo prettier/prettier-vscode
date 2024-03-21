@@ -107,6 +107,13 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   private loadPrettierVersionFromPackageJson(modulePath: string): string {
+    let cwd = "";
+    try {
+      fs.readdirSync(modulePath); // checking if dir with readdir will handle directories and symlinks
+      cwd = modulePath;
+    } catch {
+      cwd = path.dirname(modulePath);
+    }
     const packageJsonPath = findUp.sync(
       (dir) => {
         const pkgFilePath = path.join(dir, "package.json");
@@ -114,7 +121,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd: modulePath },
+      { cwd }
     );
 
     if (!packageJsonPath) {
