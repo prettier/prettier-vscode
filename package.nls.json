@@ -37,7 +37,7 @@
   "ext.config.useTabs": "Indent lines with tabs.",
   "ext.config.vueIndentScriptAndStyle": "Whether or not to indent the code inside `<script>` and `<style>` tags in Vue SFC files.",
   "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file.",
-  "ext.config.enable": "Controls whether Prettier is enabled or not.",
+  "ext.config.enable": "Controls whether Prettier is enabled or not. Reload required.",
   "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting.",
   "ext.capabilities.untrustedWorkspaces.description": "Only the built-in version of Prettier will be used when running in untrusted mode."
 }
