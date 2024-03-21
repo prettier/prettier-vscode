@@ -10,25 +10,17 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     name: Test on ${{ matrix.os }}
     steps:
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v3
         with:
           version: 7
           run_install: false
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        if: runner.os != 'Windows'
-        with:
-          node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
-        if: runner.os == 'Windows'
-        with:
-          node-version: 14
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
       - run: yarn install
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -48,17 +40,9 @@ jobs:
     name: Package
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        if: runner.os != 'Windows'
-        with:
-          node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
-        if: runner.os == 'Windows'
-        with:
-          node-version: 14
       - run: yarn install
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -73,7 +57,7 @@ jobs:
       - run: vsce package
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ${{ env.VSIX_PATH }}
           name: ${{ env.VSIX_NAME }}
@@ -84,14 +68,6 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        if: runner.os != 'Windows'
-        with:
-          node-version-file: ".nvmrc"
-      - uses: actions/setup-node@v3
-        if: runner.os == 'Windows'
-        with:
-          node-version: 14
       - run: yarn install
       - run: npm install -g vsce
       - run: vsce package

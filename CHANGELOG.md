@@ -6,9 +6,13 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-## [10.1.1]
+- Module path can be a dir when loading prettier version
+- Add language-override support for VSCode configuration.
 
-Module path can be a dir when loading prettier version
+## [10.2.0]
+
+- Fixed the issue where VSCode was misrecognizing the path in output panel due to added quotes.
+- Fix module resolution with `prettierPath` setting
 
 ## [10.1.0]
 
