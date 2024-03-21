@@ -74,7 +74,7 @@
     "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
-    "version": "node ./scripts/version.js && git add CHANGELOG.md",
+    "preversion": "node ./scripts/version.js && git add CHANGELOG.md",
     "vscode:prepublish": "webpack --mode production",
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
