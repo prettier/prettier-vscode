@@ -1,6 +1,11 @@
-import { Worker } from "worker_threads";
-import * as url from "url";
 import * as path from "path";
+import { Options, ResolveConfigOptions } from "prettier";
+import * as url from "url";
+import { Worker } from "worker_threads";
+import {
+  PrettierInstance,
+  PrettierInstanceConstructor,
+} from "./PrettierInstance";
 import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
@@ -8,11 +13,6 @@ import {
   PrettierPlugin,
   PrettierSupportLanguage,
 } from "./types";
-import {
-  PrettierInstance,
-  PrettierInstanceConstructor,
-} from "./PrettierInstance";
-import { ResolveConfigOptions, Options } from "prettier";
 
 const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
@@ -122,6 +122,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     return result;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callMethodId = this.currentCallMethodId++;
     const promise = new Promise((resolve, reject) => {
