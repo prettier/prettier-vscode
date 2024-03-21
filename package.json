@@ -239,19 +239,19 @@
           "type": "integer",
           "default": 80,
           "markdownDescription": "%ext.config.printWidth%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.tabWidth": {
           "type": "integer",
           "default": 2,
           "markdownDescription": "%ext.config.tabWidth%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.singleQuote": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.singleQuote%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.trailingComma": {
           "type": "string",
@@ -262,56 +262,56 @@
           ],
           "default": "es5",
           "markdownDescription": "%ext.config.trailingComma%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.bracketSpacing": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%ext.config.bracketSpacing%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.singleAttributePerLine": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.singleAttributePerLine%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.bracketSameLine": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.bracketSameLine%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.jsxBracketSameLine": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.jsxBracketSameLine%",
           "deprecationMessage": "%ext.config.jsxBracketSameLineDeprecation%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.semi": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%ext.config.semi%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.requirePragma": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.requirePragma%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.insertPragma": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.insertPragma%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.useTabs": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.useTabs%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.proseWrap": {
           "type": "string",
@@ -322,7 +322,7 @@
           ],
           "default": "preserve",
           "markdownDescription": "%ext.config.proseWrap%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.arrowParens": {
           "type": "string",
@@ -332,13 +332,13 @@
           ],
           "default": "always",
           "markdownDescription": "%ext.config.arrowParens%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.jsxSingleQuote": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.jsxSingleQuote%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.htmlWhitespaceSensitivity": {
           "type": "string",
@@ -349,13 +349,13 @@
           ],
           "default": "css",
           "markdownDescription": "%ext.config.htmlWhitespaceSensitivity%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.vueIndentScriptAndStyle": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.vueIndentScriptAndStyle%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.endOfLine": {
           "type": "string",
@@ -367,7 +367,7 @@
           ],
           "default": "lf",
           "markdownDescription": "%ext.config.endOfLine%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.quoteProps": {
           "type": "string",
@@ -378,7 +378,7 @@
           ],
           "default": "as-needed",
           "markdownDescription": "%ext.config.quoteProps%",
-          "scope": "resource"
+          "scope": "language-overridable"
         },
         "prettier.embeddedLanguageFormatting": {
           "type": "string",
@@ -388,7 +388,7 @@
           ],
           "default": "auto",
           "markdownDescription": "%ext.config.embeddedLanguageFormatting%",
-          "scope": "resource"
+          "scope": "language-overridable"
         }
       }
     },
