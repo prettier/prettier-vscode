@@ -14,7 +14,7 @@ jobs:
         with:
           version: 7
           run_install: false
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
@@ -39,7 +39,7 @@ jobs:
     needs: test
     name: Package
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: yarn install
       - name: Cache node modules
         uses: actions/cache@v4
@@ -67,7 +67,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     name: Release
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: yarn install
       - run: npm install -g vsce
       - run: vsce package
