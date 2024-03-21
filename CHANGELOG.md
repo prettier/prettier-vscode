@@ -6,6 +6,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [10.4.0]
+
+- Fixed config resolution that caused plugins to be ignored when using Prettier 3.1.1 or later. (#3252)
+
 ## [10.3.0]
 
 - Module path can be a dir when loading prettier version
