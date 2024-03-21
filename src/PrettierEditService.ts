@@ -197,6 +197,7 @@ export default class PrettierEditService implements Disposable {
 
     const selectors = await this.getSelectors(
       prettierInstance,
+      document.uri,
       workspaceFolder.uri
     );
 
@@ -255,22 +256,23 @@ export default class PrettierEditService implements Disposable {
    */
   private getSelectors = async (
     prettierInstance: PrettierModule | PrettierInstance,
-    uri?: Uri
+    documentUri?: Uri,
+    workspaceFolderUri?: Uri
   ): Promise<ISelectors> => {
     const plugins: (string | PrettierPlugin)[] = [];
 
     // Prettier v3 does not load plugins automatically
     // So need to resolve config to get plugins info.
     if (
-      uri &&
+      documentUri &&
       "resolveConfig" in prettierInstance &&
       isAboveV3(prettierInstance.version)
     ) {
       const resolvedConfig = await this.moduleResolver.resolveConfig(
         prettierInstance,
-        uri,
-        uri.fsPath,
-        getConfig(uri)
+        documentUri,
+        documentUri.fsPath,
+        getConfig(documentUri)
       );
       if (resolvedConfig === "error") {
         this.statusBar.update(FormatterStatus.Error);
@@ -306,12 +308,12 @@ export default class PrettierEditService implements Disposable {
     const { documentSelectors } = getConfig();
 
     // Language selector for file extensions
-    const extensionLanguageSelector: DocumentFilter[] = uri
+    const extensionLanguageSelector: DocumentFilter[] = workspaceFolderUri
       ? this.allExtensions.length === 0
         ? []
         : [
             {
-              pattern: `${uri.fsPath}/**/*.{${this.allExtensions
+              pattern: `${workspaceFolderUri.fsPath}/**/*.{${this.allExtensions
                 .map((e) => e.substring(1))
                 .join(",")}}`,
               scheme: "file",
@@ -319,9 +321,9 @@ export default class PrettierEditService implements Disposable {
           ]
       : [];
 
-    const customLanguageSelectors: DocumentFilter[] = uri
+    const customLanguageSelectors: DocumentFilter[] = workspaceFolderUri
       ? documentSelectors.map((pattern) => ({
-          pattern: `${uri.fsPath}/${pattern}`,
+          pattern: `${workspaceFolderUri.fsPath}/${pattern}`,
           scheme: "file",
         }))
       : [];
