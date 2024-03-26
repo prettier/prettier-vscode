@@ -117,7 +117,7 @@
     "tmp": "^0.2.3",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.3",
-    "typescript-eslint": "^7.3.1",
+    "typescript-eslint": "^7.4.0",
     "util": "^0.12.4",
     "vsce": "^2.15.0",
     "vscode-nls-dev": "^4.0.4",
