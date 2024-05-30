@@ -101,7 +101,7 @@
     "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
     "@types/vscode": "^1.60.0",
-    "@vscode/test-electron": "^2.3.9",
+    "@vscode/test-electron": "^2.4.0",
     "@vscode/test-web": "^0.0.52",
     "copy-webpack-plugin": "^12.0.2",
     "eslint": "^8.57.0",
