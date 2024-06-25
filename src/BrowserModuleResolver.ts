@@ -28,7 +28,7 @@ import * as yamlPlugin from "prettier/plugins/yaml";
 
 import { Options, ResolveConfigOptions } from "prettier";
 import { TextDocument, Uri } from "vscode";
-import { supportInfo } from "./BrowserModuleResolver.SupprotInfo";
+import { supportInfo } from "./BrowserModuleResolver.SupportInfo";
 import { LoggingService } from "./LoggingService";
 import { getWorkspaceRelativePath } from "./util";
 
