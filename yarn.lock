@@ -160,12 +160,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@playwright/browser-chromium@^1.41.2":
-  version "1.42.0"
-  resolved "https://registry.yarnpkg.com/@playwright/browser-chromium/-/browser-chromium-1.42.0.tgz#f15684709a0b7c99cccec8123723debb142a453e"
-  integrity sha512-hsgn6Ox92Fb3Nfd/fUAk8QvIGdv/6akIM+kycfmL9VjDEQ7+UEluteJe+D9rA8yPvy6siee++8t56KhBWi93eA==
+"@playwright/browser-chromium@^1.45.0":
+  version "1.45.0"
+  resolved "https://registry.yarnpkg.com/@playwright/browser-chromium/-/browser-chromium-1.45.0.tgz#a3fc02e1d8e9ec3518b8c0fc6453ea74785bf3d1"
+  integrity sha512-yZxAsaxvn60VEPaPghYuL7xC78f994QdkJ3PtPZKozKctsIkT60GiDjjemwJKvWVgo/Z4v/hjim4okLKMIRkEw==
   dependencies:
-    playwright-core "1.42.0"
+    playwright-core "1.45.0"
 
 "@sindresorhus/merge-streams@^1.0.0":
   version "1.0.0"
@@ -428,24 +428,24 @@
     jszip "^3.10.1"
     semver "^7.5.2"
 
-"@vscode/test-web@^0.0.52":
-  version "0.0.52"
-  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.52.tgz#5c32abc28214190957cfc362bfdf4bac0cf33ce2"
-  integrity sha512-PEYyru1GTUgNFpICWnvz33MnZ+nIIdG6feYHebvJMyFRZFL4s35Mp/6/aa8xUvfzAz/XBHCsbLRtJ1l067f/eQ==
+"@vscode/test-web@^0.0.55":
+  version "0.0.55"
+  resolved "https://registry.yarnpkg.com/@vscode/test-web/-/test-web-0.0.55.tgz#41562488487dc65b4f21728a76a5b766d7631fef"
+  integrity sha512-3e+RPXk7x4eoL4q/1PkLiVJ95MyXCKbbbWCtCDOJuFkcB3BN3Fjnk04J4l8J86R/uQUFGi71Ns66wWwanT1n+Q==
   dependencies:
     "@koa/cors" "^5.0.0"
     "@koa/router" "^12.0.1"
-    "@playwright/browser-chromium" "^1.41.2"
+    "@playwright/browser-chromium" "^1.45.0"
     gunzip-maybe "^1.4.2"
     http-proxy-agent "^7.0.2"
     https-proxy-agent "^7.0.4"
-    koa "^2.15.0"
+    koa "^2.15.3"
     koa-morgan "^1.0.1"
     koa-mount "^4.0.0"
     koa-static "^5.0.0"
     minimist "^1.2.8"
-    playwright "^1.41.2"
-    tar-fs "^3.0.5"
+    playwright "^1.45.0"
+    tar-fs "^3.0.6"
     vscode-uri "^3.0.8"
 
 "@webassemblyjs/ast@1.12.1", "@webassemblyjs/ast@^1.12.1":
@@ -2490,10 +2490,10 @@ koa-static@^5.0.0:
     debug "^3.1.0"
     koa-send "^5.0.0"
 
-koa@^2.15.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/koa/-/koa-2.15.0.tgz#d24ae1b0ff378bf12eb3df584ab4204e4c12ac2b"
-  integrity sha512-KEL/vU1knsoUvfP4MC4/GthpQrY/p6dzwaaGI6Rt4NQuFqkw3qrvsdYF5pz3wOfi7IGTvMPHC9aZIcUKYFNxsw==
+koa@^2.15.3:
+  version "2.15.3"
+  resolved "https://registry.yarnpkg.com/koa/-/koa-2.15.3.tgz#062809266ee75ce0c75f6510a005b0e38f8c519a"
+  integrity sha512-j/8tY9j5t+GVMLeioLaxweJiKUayFhlGqNTzf2ZGwL0ZCQijd2RLHK0SLW5Tsko8YyyqCZC2cojIb0/s62qTAg==
   dependencies:
     accepts "^1.3.5"
     cache-content-type "^1.0.0"
@@ -3131,17 +3131,17 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright-core@1.42.0:
-  version "1.42.0"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.42.0.tgz#bc6525268b13b8bed5fbead761a1a886984555c4"
-  integrity sha512-0HD9y8qEVlcbsAjdpBaFjmaTHf+1FeIddy8VJLeiqwhcNqGCBe4Wp2e8knpqiYbzxtxarxiXyNDw2cG8sCaNMQ==
+playwright-core@1.45.0:
+  version "1.45.0"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.45.0.tgz#5741a670b7c9060ce06852c0051d84736fb94edc"
+  integrity sha512-lZmHlFQ0VYSpAs43dRq1/nJ9G/6SiTI7VPqidld9TDefL9tX87bTKExWZZUF5PeRyqtXqd8fQi2qmfIedkwsNQ==
 
-playwright@^1.41.2:
-  version "1.42.0"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.42.0.tgz#6d4265b124d2b87432083aa7af30c46aaec5e703"
-  integrity sha512-Ko7YRUgj5xBHbntrgt4EIw/nE//XBHOKVKnBjO1KuZkmkhlbgyggTe5s9hjqQ1LpN+Xg+kHsQyt5Pa0Bw5XpvQ==
+playwright@^1.45.0:
+  version "1.45.0"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.45.0.tgz#400c709c64438690f13705cb9c88ef93089c5c27"
+  integrity sha512-4z3ac3plDfYzGB6r0Q3LF8POPR20Z8D0aXcxbJvmfMgSSq1hkcgvFRXJk9rUq5H/MJ0Ktal869hhOdI/zUTeLA==
   dependencies:
-    playwright-core "1.42.0"
+    playwright-core "1.45.0"
   optionalDependencies:
     fsevents "2.3.2"
 
@@ -3759,10 +3759,10 @@ tar-fs@^2.0.0:
     pump "^3.0.0"
     tar-stream "^2.1.4"
 
-tar-fs@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.0.5.tgz#f954d77767e4e6edf973384e1eb95f8f81d64ed9"
-  integrity sha512-JOgGAmZyMgbqpLwct7ZV8VzkEB6pxXFBVErLtb+XCOqzc6w1xiWKI9GVd6bwk68EX7eJ4DWmfXVmq8K2ziZTGg==
+tar-fs@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.0.6.tgz#eaccd3a67d5672f09ca8e8f9c3d2b89fa173f217"
+  integrity sha512-iokBDQQkUyeXhgPYaZxmczGPhnhXZ0CmrqI+MOb/WFGS9DW5wnfrLgtjUJBvz50vQ3qfRwJ62QVoCFu8mPVu5w==
   dependencies:
     pump "^3.0.0"
     tar-stream "^3.1.5"
