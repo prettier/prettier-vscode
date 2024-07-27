@@ -14,7 +14,7 @@ function requireInstance(modulePath) {
   return prettierInstance;
 }
 
-parentPort.on("message", ({ type, payload }) => {
+parentPort.on("message", ({ type, id, payload }) => {
   switch (type) {
     case "import": {
       const { modulePath } = payload;
@@ -22,22 +22,32 @@ parentPort.on("message", ({ type, payload }) => {
         const prettierInstance = requireInstance(modulePath);
         parentPort.postMessage({
           type,
+          id,
           payload: { version: prettierInstance.version },
         });
       } catch {
         parentPort.postMessage({
           type,
+          id,
           payload: { version: null },
         });
       }
       break;
     }
     case "callMethod": {
-      const { modulePath, methodName, methodArgs, id } = payload;
+      const { modulePath, methodName, methodArgs } = payload;
       const postError = (error) => {
         parentPort.postMessage({
           type,
-          payload: { result: error, id, isError: true },
+          id,
+          payload: { result: error, isError: true },
+        });
+      };
+      const postResult = (result) => {
+        parentPort.postMessage({
+          type,
+          id,
+          payload: { result, isError: false },
         });
       };
       let prettierInstance = path2ModuleCache.get(modulePath);
@@ -62,10 +72,7 @@ parentPort.on("message", ({ type, payload }) => {
               if (methodName === "getSupportInfo") {
                 value = { languages: value.languages };
               }
-              parentPort.postMessage({
-                type,
-                payload: { result: value, id, isError: false },
-              });
+              postResult(value);
             } catch (error) {
               postError(error);
             }
@@ -81,10 +88,7 @@ parentPort.on("message", ({ type, payload }) => {
         if (methodName === "getSupportInfo") {
           result = { languages: result.languages };
         }
-        parentPort.postMessage({
-          type,
-          payload: { result, id, isError: false },
-        });
+        postResult(result);
       } catch (error) {
         postError(error);
       }
