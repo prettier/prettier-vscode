@@ -14,6 +14,8 @@ import {
   PrettierSupportLanguage,
 } from "./types";
 
+let currentCallMethodId = 0;
+
 const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
@@ -33,8 +35,6 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
       reject: (value: unknown) => void;
     }
   > = new Map();
-
-  private currentCallMethodId = 0;
 
   public version: string | null = null;
 
@@ -124,7 +124,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
-    const callMethodId = this.currentCallMethodId++;
+    const callMethodId = currentCallMethodId++;
     const promise = new Promise((resolve, reject) => {
       this.callMethodResolvers.set(callMethodId, { resolve, reject });
     });

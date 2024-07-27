@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Fix issue where formatting multiple files in a workspace with multiple instances of Prettier could result in files being overwritten with the contents of other files (#3423, #3040)
+
 ## [10.5.0]
 
 - Extend list of Prettier config files by ECMAScript module extentions
