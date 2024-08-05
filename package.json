@@ -109,7 +109,7 @@
     "fs-extra": "^11.2.0",
     "glob": "^7.2.0",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
+    "lint-staged": "^15.2.8",
     "mocha": "^10.3.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
