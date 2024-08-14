@@ -79,7 +79,6 @@
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
-    "postinstall": "husky install",
     "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
     "prepare": "husky"
   },
