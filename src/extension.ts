@@ -70,6 +70,7 @@ export function activate(context: ExtensionContext) {
       );
 
       context.subscriptions.push(
+        statusBar,
         editService,
         createConfigFileCommand,
         openOutputCommand,

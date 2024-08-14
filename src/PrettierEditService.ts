@@ -203,6 +203,10 @@ export default class PrettierEditService implements Disposable {
       workspaceFolder.uri
     );
 
+    this.statusBar.updateConfig({
+      selector: selectors.languageSelector,
+    });
+
     if (!isRegistered) {
       this.registerDocumentFormatEditorProviders(selectors);
       this.registeredWorkspaces.add(workspaceFolder.uri.fsPath);

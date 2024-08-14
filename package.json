@@ -22,7 +22,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.80.0"
   },
   "keywords": [
     "multi-root ready",
@@ -100,7 +100,7 @@
     "@types/semver": "^7.5.8",
     "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
-    "@types/vscode": "^1.60.0",
+    "@types/vscode": "^1.80.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.4.1",
