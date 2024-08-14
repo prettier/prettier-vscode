@@ -6,8 +6,9 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
-- Prevent `.editorconfig` from satisfying the `requireConfig` setting
+- [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting
 - Fix issue where formatting multiple files in a workspace with multiple instances of Prettier could result in files being overwritten with the contents of other files (#3423, #3040)
+- Add support for `experimentalTernaries` option
 
 ## [10.5.0]
 

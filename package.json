@@ -389,6 +389,12 @@
           "default": "auto",
           "markdownDescription": "%ext.config.embeddedLanguageFormatting%",
           "scope": "language-overridable"
+        },
+        "prettier.experimentalTernaries": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.experimentalTernaries%",
+          "scope": "language-overridable"
         }
       }
     },

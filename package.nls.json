@@ -39,5 +39,6 @@
   "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file.",
   "ext.config.enable": "Controls whether Prettier is enabled or not. Reload required.",
   "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting.",
+  "ext.config.experimentalTernaries": "Try prettier's [new ternary formatting](https://github.com/prettier/prettier/pull/13183) before it becomes the default behavior.",
   "ext.capabilities.untrustedWorkspaces.description": "Only the built-in version of Prettier will be used when running in untrusted mode."
 }

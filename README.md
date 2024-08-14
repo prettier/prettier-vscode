@@ -244,6 +244,7 @@ prettier.trailingComma
 prettier.useTabs
 prettier.vueIndentScriptAndStyle
 prettier.embeddedLanguageFormatting
+prettier.experimentalTernaries
 ```
 
 ### Extension Settings
