@@ -14,6 +14,7 @@ import { getParserFromLanguageId } from "./languageFilters";
 import { LoggingService } from "./LoggingService";
 import { RESTART_TO_ENABLE } from "./message";
 import { PrettierEditProvider } from "./PrettierEditProvider";
+import { PrettierInstance } from "./PrettierInstance";
 import { FormatterStatus, StatusBar } from "./StatusBar";
 import {
   ExtensionFormattingOptions,
@@ -26,7 +27,6 @@ import {
   RangeFormattingOptions,
 } from "./types";
 import { getConfig, isAboveV3 } from "./util";
-import { PrettierInstance } from "./PrettierInstance";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -551,6 +551,7 @@ export default class PrettierEditService implements Disposable {
       vsOpts.embeddedLanguageFormatting =
         vsCodeConfig.embeddedLanguageFormatting;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
+      vsOpts.experimentalTernaries = vsCodeConfig.experimentalTernaries;
     }
 
     this.loggingService.logInfo(
