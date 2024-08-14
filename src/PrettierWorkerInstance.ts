@@ -1,11 +1,6 @@
-import * as path from "path";
-import { Options, ResolveConfigOptions } from "prettier";
-import * as url from "url";
 import { Worker } from "worker_threads";
-import {
-  PrettierInstance,
-  PrettierInstanceConstructor,
-} from "./PrettierInstance";
+import * as url from "url";
+import * as path from "path";
 import {
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
@@ -13,6 +8,11 @@ import {
   PrettierPlugin,
   PrettierSupportLanguage,
 } from "./types";
+import {
+  PrettierInstance,
+  PrettierInstanceConstructor,
+} from "./PrettierInstance";
+import { ResolveConfigOptions, Options } from "prettier";
 
 let currentCallId = 0;
 
@@ -119,7 +119,6 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     return result;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
     const callId = currentCallId++;
     const promise = new Promise((resolve, reject) => {
