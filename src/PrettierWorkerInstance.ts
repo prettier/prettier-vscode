@@ -14,6 +14,8 @@ import {
   PrettierSupportLanguage,
 } from "./types";
 
+let currentCallId = 0;
+
 const worker = new Worker(
   url.pathToFileURL(path.join(__dirname, "/worker/prettier-instance-worker.js"))
 );
@@ -21,12 +23,7 @@ const worker = new Worker(
 export const PrettierWorkerInstance: PrettierInstanceConstructor = class PrettierWorkerInstance
   implements PrettierInstance
 {
-  private importResolver: {
-    resolve: (version: string) => void;
-    reject: (version: string) => void;
-  } | null = null;
-
-  private callMethodResolvers: Map<
+  private messageResolvers: Map<
     number,
     {
       resolve: (value: unknown) => void;
@@ -34,43 +31,43 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     }
   > = new Map();
 
-  private currentCallMethodId = 0;
-
   public version: string | null = null;
 
   constructor(private modulePath: string) {
-    worker.on("message", ({ type, payload }) => {
-      switch (type) {
-        case "import": {
-          this.importResolver?.resolve(payload.version);
-          this.version = payload.version;
-          break;
-        }
-        case "callMethod": {
-          const resolver = this.callMethodResolvers.get(payload.id);
-          this.callMethodResolvers.delete(payload.id);
-          if (resolver) {
+    worker.on("message", ({ type, id, payload }) => {
+      const resolver = this.messageResolvers.get(id);
+      if (resolver) {
+        this.messageResolvers.delete(id);
+        switch (type) {
+          case "import": {
+            resolver.resolve(payload.version);
+            this.version = payload.version;
+            break;
+          }
+          case "callMethod": {
             if (payload.isError) {
               resolver.reject(payload.result);
             } else {
               resolver.resolve(payload.result);
             }
+            break;
           }
-          break;
         }
       }
     });
   }
 
   public async import(): Promise</* version of imported prettier */ string> {
-    const promise = new Promise<string>((resolve, reject) => {
-      this.importResolver = { resolve, reject };
+    const callId = currentCallId++;
+    const promise = new Promise((resolve, reject) => {
+      this.messageResolvers.set(callId, { resolve, reject });
     });
     worker.postMessage({
       type: "import",
+      id: callId,
       payload: { modulePath: this.modulePath },
     });
-    return promise;
+    return promise as Promise<string>;
   }
 
   public async format(
@@ -124,14 +121,14 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private callMethod(methodName: string, methodArgs: unknown[]): Promise<any> {
-    const callMethodId = this.currentCallMethodId++;
+    const callId = currentCallId++;
     const promise = new Promise((resolve, reject) => {
-      this.callMethodResolvers.set(callMethodId, { resolve, reject });
+      this.messageResolvers.set(callId, { resolve, reject });
     });
     worker.postMessage({
       type: "callMethod",
+      id: callId,
       payload: {
-        id: callMethodId,
         modulePath: this.modulePath,
         methodName,
         methodArgs,
