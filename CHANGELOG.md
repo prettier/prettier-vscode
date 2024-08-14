@@ -4,11 +4,11 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [11.0.0]
 
-- [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting
+- [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting (#2708) - Thanks to [@redoPop](https://github.com/redoPop)
+- Fix issue where formatting multiple files in a workspace with multiple instances of Prettier could result in files being overwritten with the contents of other files (#3423, #3040) - Thanks to [@bob-difronzo](https://github.com/bob-difronzo)
 - Added Language Status Item for Prettier
-- Fix issue where formatting multiple files in a workspace with multiple instances of Prettier could result in files being overwritten with the contents of other files (#3423, #3040)
 - Add support for `experimentalTernaries` option
 
 ## [10.5.0]
