@@ -48,6 +48,14 @@ suite("Test configurations", function () {
     testConfig("vscodeconfig/test.js", "vscodeconfig/test.result.js")
   );
   test(
+    "it uses config from vscode settings with language overridables ",
+    /* cspell: disable-next-line */
+    testConfig(
+      "vscodeconfig-language-overridable/test.ts",
+      "vscodeconfig-language-overridable/test.result.ts"
+    )
+  );
+  test(
     "it formats custom file extension ",
     /* cspell: disable-next-line */
     testConfig("customextension/test.abc", "customextension/test.result.abc")
