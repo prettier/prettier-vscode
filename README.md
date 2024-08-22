@@ -62,7 +62,7 @@ Install through VS Code extensions. Search for `Prettier - Code formatter`
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
-```
+```shell
 ext install esbenp.prettier-vscode
 ```
 
@@ -70,7 +70,7 @@ ext install esbenp.prettier-vscode
 
 To ensure that this extension is used over other extensions you may have installed, be sure to set it as the default formatter in your VS Code settings. This setting can be set for all languages or by a specific language.
 
-```json
+```jsonc
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
@@ -83,7 +83,7 @@ If you want to disable Prettier on a particular language you can either create a
 
 The following will use Prettier for all languages except Javascript.
 
-```json
+```jsonc
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
@@ -94,7 +94,7 @@ The following will use Prettier for all languages except Javascript.
 
 The following will use Prettier for only Javascript.
 
-```json
+```jsonc
 {
   "editor.defaultFormatter": "<another formatter>",
   "[javascript]": {
@@ -105,7 +105,7 @@ The following will use Prettier for only Javascript.
 
 Additionally, you can disable format on save for specific languages if you don't want them to be automatically formatted.
 
-```json
+```jsonc
 {
   "[javascript]": {
     "editor.formatOnSave": false
@@ -119,7 +119,7 @@ This extension will use prettier from your project's local dependencies (recomme
 
 To install prettier in your project and pin its version [as recommended](https://prettier.io/docs/en/install.html), run:
 
-```
+```shell
 npm install prettier -D --save-exact
 ```
 
@@ -127,10 +127,12 @@ npm install prettier -D --save-exact
 
 ### Prettier Version 3
 
-Prettier's preview version 3 is supported as of version 9.12.0. It is not included in the extension by default, but can be used by installing locally in your project. Version 10.0.0 of this extension will include prettier 3.0.0 after it is out of preview. To try version 3 now run the following in your project:
+Prettier's version 3 is supported as of version 9.12.0. However, this extension ships with prettier 2.8.8 and uses its default configuration. Version 3 and its defaults will be included with this extension when some issues are resolved. To use version 3 now, you can install it locally in your project as described above. To match the default configuration of prettier 3, set
 
-```base
-npm i prettier@3.0.0-alpha.6 -D
+```jsonc
+{
+  "prettier.trailingComma": "all"
+}
 ```
 
 ### Plugins
@@ -180,7 +182,7 @@ Respects `editor.formatOnSave` setting.
 
 You can turn on format-on-save on a per-language basis by scoping the setting:
 
-```json
+```jsonc
 // Set the default
 "editor.formatOnSave": false,
 // Enable per-language
@@ -298,7 +300,7 @@ A list of [glob patterns](https://code.visualstudio.com/api/references/vscode-ap
 
 It is likely you will need to also update your prettier config. For example, if I register the following document selector by itself, Prettier still won't know what to do with that file. I either need a Prettier extension that formats `.abc` file format or I need to configure Prettier.
 
-```json
+```jsonc
 {
   "prettier.documentSelectors": ["**/*.abc"]
 }
@@ -306,7 +308,7 @@ It is likely you will need to also update your prettier config. For example, if 
 
 To tell Prettier how to format a file of type `.abc` I can set an override in the prettier config that makes this file type use the `babel` parser.
 
-```json
+```jsonc
 {
   "overrides": [
     {
