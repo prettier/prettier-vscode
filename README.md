@@ -127,10 +127,12 @@ npm install prettier -D --save-exact
 
 ### Prettier Version 3
 
-Prettier's preview version 3 is supported as of version 9.12.0. It is not included in the extension by default, but can be used by installing locally in your project. Version 10.0.0 of this extension will include prettier 3.0.0 after it is out of preview. To try version 3 now run the following in your project:
+Prettier's version 3 is supported as of version 9.12.0. However, this extension ships with prettier 2.8.8 and uses its default configuration. Version 3 and its defaults will be included with this extension when some issues are resolved. To use version 3 now, you can install it locally in your project as described above. To match the default configuration of prettier 3, set
 
-```shell
-npm i prettier@3.0.0-alpha.6 -D
+```jsonc
+{
+  "prettier.trailingComma": "all"
+}
 ```
 
 ### Plugins
