@@ -450,8 +450,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     prettier.clearConfigCache();
     this.path2Module.forEach((module) => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        module.clearConfigCache();
+        void module.clearConfigCache();
       } catch (error) {
         this.loggingService.logError("Error clearing module cache.", error);
       }
