@@ -24,10 +24,8 @@ export class PrettierEditProvider
   public async provideDocumentRangeFormattingEdits(
     document: TextDocument,
     range: Range,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    options: FormattingOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    token: CancellationToken
+    _options: FormattingOptions,
+    _token: CancellationToken
   ): Promise<TextEdit[]> {
     return this.provideEdits(document, {
       rangeEnd: document.offsetAt(range.end),
@@ -38,10 +36,8 @@ export class PrettierEditProvider
 
   public async provideDocumentFormattingEdits(
     document: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    options: FormattingOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    token: CancellationToken
+    _options: FormattingOptions,
+    _token: CancellationToken
   ): Promise<TextEdit[]> {
     return this.provideEdits(document, {
       force: false,

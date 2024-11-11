@@ -47,7 +47,6 @@ export class ModuleResolver implements ModuleResolverInterface {
   constructor(private loggingService: LoggingService) {}
 
   public async getPrettierInstance(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _fileName: string
   ): Promise<PrettierModule | undefined> {
     return this.getGlobalPrettierInstance();
@@ -164,10 +163,8 @@ export class ModuleResolver implements ModuleResolverInterface {
         };
       },
       getFileInfo: async (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        filePath: string,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        options?: PrettierFileInfoOptions
+        _filePath: string,
+        _options?: PrettierFileInfoOptions
       ): Promise<PrettierFileInfoResult> => {
         // TODO: implement ignore file reading
         return { ignored: false, inferredParser: null };
@@ -176,28 +173,22 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   async resolveConfig(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    prettierInstance: {
+    _prettierInstance: {
       resolveConfigFile(filePath?: string | undefined): Promise<string | null>;
       resolveConfig(
         fileName: string,
         options?: ResolveConfigOptions | undefined
       ): Promise<Options | null>;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    uri: Uri,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fileName: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    vscodeConfig: PrettierVSCodeConfig
+    _uri: Uri,
+    _fileName: string,
+    _vscodeConfig: PrettierVSCodeConfig
   ): Promise<Options | "error" | "disabled" | null> {
     return null;
   }
 
   async getResolvedConfig(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _doc: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _vscodeConfig: PrettierVSCodeConfig
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     return null;
