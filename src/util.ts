@@ -28,7 +28,6 @@ export function getWorkspaceRelativePath(
 }
 
 export function getConfig(scope?: TextDocument | Uri): PrettierVSCodeConfig {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const config = workspace.getConfiguration(
     "prettier",
     scope
