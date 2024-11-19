@@ -110,7 +110,7 @@
     "eslint-config-prettier": "^9.1.0",
     "fs-extra": "^11.2.0",
     "glob": "^7.2.0",
-    "husky": "^9.1.4",
+    "husky": "^9.1.7",
     "lint-staged": "^15.2.9",
     "mocha": "^10.7.3",
     "path-browserify": "^1.0.1",
