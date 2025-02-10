@@ -290,51 +290,51 @@ export class ModuleResolver implements ModuleResolverInterface {
     // cache resolvedIgnorePath because resolving it checks the file system
     let resolvedIgnorePath = this.ignorePathCache.get(cacheKey);
 
-    // If no cache, check if a sibling .prettierignore file exists firstly
     if (!resolvedIgnorePath) {
+      // If no cache, check if a sibling .prettierignore file exists firstly
       resolvedIgnorePath = await this.resolveSiblingIgnorePath(
         fileName,
         ignorePath,
       );
-    }
 
-    //  If no .prettierignore file is found with the config file, try resolving from the workspace
-    if (!resolvedIgnorePath) {
-      resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
-      // if multiple different workspace folders contain this same file, we
-      // may have chosen one that doesn't actually contain .prettierignore
-      if (workspace.workspaceFolders) {
-        // all workspace folders that contain the file
-        const folders = workspace.workspaceFolders
-          .map((folder) => folder.uri.fsPath)
-          .filter((folder) => {
-            // https://stackoverflow.com/a/45242825
-            const relative = path.relative(folder, fileName);
-            return (
-              relative &&
-              !relative.startsWith("..") &&
-              !path.isAbsolute(relative)
-            );
-          })
-          // sort folders innermost to outermost
-          .sort((a, b) => b.length - a.length);
-        for (const folder of folders) {
-          const p = path.join(folder, ignorePath);
-          if (
-            // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
-            await fs.promises.stat(p).then(
-              () => true,
-              () => false,
-            )
-          ) {
-            resolvedIgnorePath = p;
-            break;
+      //  If no .prettierignore file is found with the config file, try resolving from the workspace
+      if (!resolvedIgnorePath) {
+        resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
+        // if multiple different workspace folders contain this same file, we
+        // may have chosen one that doesn't actually contain .prettierignore
+        if (workspace.workspaceFolders) {
+          // all workspace folders that contain the file
+          const folders = workspace.workspaceFolders
+            .map((folder) => folder.uri.fsPath)
+            .filter((folder) => {
+              // https://stackoverflow.com/a/45242825
+              const relative = path.relative(folder, fileName);
+              return (
+                relative &&
+                !relative.startsWith("..") &&
+                !path.isAbsolute(relative)
+              );
+            })
+            // sort folders innermost to outermost
+            .sort((a, b) => b.length - a.length);
+          for (const folder of folders) {
+            const p = path.join(folder, ignorePath);
+            if (
+              // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
+              await fs.promises.stat(p).then(
+                () => true,
+                () => false,
+              )
+            ) {
+              resolvedIgnorePath = p;
+              break;
+            }
           }
         }
       }
-    }
-    if (resolvedIgnorePath) {
-      this.ignorePathCache.set(cacheKey, resolvedIgnorePath);
+      if (resolvedIgnorePath) {
+        this.ignorePathCache.set(cacheKey, resolvedIgnorePath);
+      }
     }
     return resolvedIgnorePath;
   }
