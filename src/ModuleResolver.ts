@@ -121,7 +121,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd }
+      { cwd },
     );
 
     if (!packageJsonPath) {
@@ -289,6 +289,16 @@ export class ModuleResolver implements ModuleResolverInterface {
     const cacheKey = `${fileName}:${ignorePath}`;
     // cache resolvedIgnorePath because resolving it checks the file system
     let resolvedIgnorePath = this.ignorePathCache.get(cacheKey);
+
+    // If no cache, check if a sibling .prettierignore file exists firstly
+    if (!resolvedIgnorePath) {
+      resolvedIgnorePath = await this.resolveSiblingIgnorePath(
+        fileName,
+        ignorePath,
+      );
+    }
+
+    //  If no .prettierignore file is found with the config file, try resolving from the workspace
     if (!resolvedIgnorePath) {
       resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
       // if multiple different workspace folders contain this same file, we
@@ -359,24 +369,9 @@ export class ModuleResolver implements ModuleResolverInterface {
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
 
-    let configPath: string | undefined;
-    try {
-      if (!isVirtual) {
-        configPath =
-          (await prettierInstance.resolveConfigFile(
-            this.adjustFileNameForPrettierVersion3_1_1(
-              prettierInstance,
-              fileName,
-            ),
-          )) ?? undefined;
-      }
-    } catch (error) {
-      this.loggingService.logError(
-        `Error resolving prettier configuration for ${fileName}`,
-        error,
-      );
-      return "error";
-    }
+    const configPath = isVirtual
+      ? undefined
+      : await this.resolvedConfigPath(prettierInstance, fileName);
 
     const resolveConfigOptions: PrettierResolveConfigOptions = {
       config: isVirtual
@@ -457,6 +452,61 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     });
     this.path2Module.clear();
+  }
+
+  private async resolveSiblingIgnorePath(fileName: string, ignorePath: string) {
+    let resolvedPath: string | undefined;
+
+    const prettierInstance: typeof prettier | PrettierInstance =
+      (await this.getPrettierInstance(fileName)) || prettier;
+
+    const configPath = await this.resolvedConfigPath(
+      prettierInstance,
+      fileName,
+    );
+    if (configPath) {
+      const siblingIgnorePath = path.join(path.dirname(configPath), ignorePath);
+      if (
+        await fs.promises.stat(siblingIgnorePath).then(
+          () => true,
+          () => false,
+        )
+      ) {
+        resolvedPath = siblingIgnorePath;
+      }
+    }
+    return resolvedPath;
+  }
+
+  private async resolvedConfigPath(
+    prettierInstance: {
+      version: string | null;
+      resolveConfigFile(filePath?: string): Promise<string | null>;
+      resolveConfig(
+        fileName: string,
+        options?: prettier.ResolveConfigOptions,
+      ): Promise<PrettierOptions | null>;
+    },
+    fileName: string,
+  ) {
+    let configPath: string | undefined;
+    try {
+      configPath =
+        (await prettierInstance.resolveConfigFile(
+          this.adjustFileNameForPrettierVersion3_1_1(
+            prettierInstance,
+            fileName,
+          ),
+        )) ?? undefined;
+    } catch (error) {
+      this.loggingService.logError(
+        `Error resolving prettier configuration for ${fileName}`,
+        error,
+      );
+      return "error";
+    }
+
+    return configPath;
   }
 
   private isInternalTestRoot(dir: string): boolean {
