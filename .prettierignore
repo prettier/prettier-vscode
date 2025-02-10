@@ -1,5 +1,6 @@
 .vscode-test/
 out/
 dist/
-test-fixtures/
+test-fixtures/*
+!test-fixtures/plugin-tailwindcss
 node_modules/
