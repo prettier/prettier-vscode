@@ -7,3 +7,6 @@ node_modules
 .DS_STORE
 *.log
 test-results.xml
+.yarn/install-state.gz
+.yarnrc.yml
+yarn.lock
