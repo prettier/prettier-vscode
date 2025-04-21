@@ -9,10 +9,7 @@ export function getWorkspaceRelativePath(
   pathToResolve: string
 ) {
   // In case the user wants to use path like `~/.prettierrc` on unix or `~\.prettierrc` on windows
-  if (
-    pathToResolve.indexOf("~") === 0 &&
-    os.homedir()
-  ) {
+  if (pathToResolve.indexOf("~") === 0 && os.homedir()) {
     return pathToResolve.replace(/^~(?=$|\/|\\)/, os.homedir());
   }
 
