@@ -121,7 +121,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd }
+      { cwd },
     );
 
     if (!packageJsonPath) {
@@ -289,42 +289,52 @@ export class ModuleResolver implements ModuleResolverInterface {
     const cacheKey = `${fileName}:${ignorePath}`;
     // cache resolvedIgnorePath because resolving it checks the file system
     let resolvedIgnorePath = this.ignorePathCache.get(cacheKey);
+
     if (!resolvedIgnorePath) {
-      resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
-      // if multiple different workspace folders contain this same file, we
-      // may have chosen one that doesn't actually contain .prettierignore
-      if (workspace.workspaceFolders) {
-        // all workspace folders that contain the file
-        const folders = workspace.workspaceFolders
-          .map((folder) => folder.uri.fsPath)
-          .filter((folder) => {
-            // https://stackoverflow.com/a/45242825
-            const relative = path.relative(folder, fileName);
-            return (
-              relative &&
-              !relative.startsWith("..") &&
-              !path.isAbsolute(relative)
-            );
-          })
-          // sort folders innermost to outermost
-          .sort((a, b) => b.length - a.length);
-        for (const folder of folders) {
-          const p = path.join(folder, ignorePath);
-          if (
-            // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
-            await fs.promises.stat(p).then(
-              () => true,
-              () => false,
-            )
-          ) {
-            resolvedIgnorePath = p;
-            break;
+      // If no cache, check if a sibling .prettierignore file exists firstly
+      resolvedIgnorePath = await this.resolveSiblingIgnorePath(
+        fileName,
+        ignorePath,
+      );
+
+      //  If no .prettierignore file is found with the config file, try resolving from the workspace
+      if (!resolvedIgnorePath) {
+        resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
+        // if multiple different workspace folders contain this same file, we
+        // may have chosen one that doesn't actually contain .prettierignore
+        if (workspace.workspaceFolders) {
+          // all workspace folders that contain the file
+          const folders = workspace.workspaceFolders
+            .map((folder) => folder.uri.fsPath)
+            .filter((folder) => {
+              // https://stackoverflow.com/a/45242825
+              const relative = path.relative(folder, fileName);
+              return (
+                relative &&
+                !relative.startsWith("..") &&
+                !path.isAbsolute(relative)
+              );
+            })
+            // sort folders innermost to outermost
+            .sort((a, b) => b.length - a.length);
+          for (const folder of folders) {
+            const p = path.join(folder, ignorePath);
+            if (
+              // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
+              await fs.promises.stat(p).then(
+                () => true,
+                () => false,
+              )
+            ) {
+              resolvedIgnorePath = p;
+              break;
+            }
           }
         }
       }
-    }
-    if (resolvedIgnorePath) {
-      this.ignorePathCache.set(cacheKey, resolvedIgnorePath);
+      if (resolvedIgnorePath) {
+        this.ignorePathCache.set(cacheKey, resolvedIgnorePath);
+      }
     }
     return resolvedIgnorePath;
   }
@@ -359,24 +369,9 @@ export class ModuleResolver implements ModuleResolverInterface {
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     const isVirtual = uri.scheme !== "file" && uri.scheme !== "vscode-userdata";
 
-    let configPath: string | undefined;
-    try {
-      if (!isVirtual) {
-        configPath =
-          (await prettierInstance.resolveConfigFile(
-            this.adjustFileNameForPrettierVersion3_1_1(
-              prettierInstance,
-              fileName,
-            ),
-          )) ?? undefined;
-      }
-    } catch (error) {
-      this.loggingService.logError(
-        `Error resolving prettier configuration for ${fileName}`,
-        error,
-      );
-      return "error";
-    }
+    const configPath = isVirtual
+      ? undefined
+      : await this.resolvedConfigPath(prettierInstance, fileName);
 
     const resolveConfigOptions: PrettierResolveConfigOptions = {
       config: isVirtual
@@ -457,6 +452,61 @@ export class ModuleResolver implements ModuleResolverInterface {
       }
     });
     this.path2Module.clear();
+  }
+
+  private async resolveSiblingIgnorePath(fileName: string, ignorePath: string) {
+    let resolvedPath: string | undefined;
+
+    const prettierInstance: typeof prettier | PrettierInstance =
+      (await this.getPrettierInstance(fileName)) || prettier;
+
+    const configPath = await this.resolvedConfigPath(
+      prettierInstance,
+      fileName,
+    );
+    if (configPath) {
+      const siblingIgnorePath = path.join(path.dirname(configPath), ignorePath);
+      if (
+        await fs.promises.stat(siblingIgnorePath).then(
+          () => true,
+          () => false,
+        )
+      ) {
+        resolvedPath = siblingIgnorePath;
+      }
+    }
+    return resolvedPath;
+  }
+
+  private async resolvedConfigPath(
+    prettierInstance: {
+      version: string | null;
+      resolveConfigFile(filePath?: string): Promise<string | null>;
+      resolveConfig(
+        fileName: string,
+        options?: prettier.ResolveConfigOptions,
+      ): Promise<PrettierOptions | null>;
+    },
+    fileName: string,
+  ) {
+    let configPath: string | undefined;
+    try {
+      configPath =
+        (await prettierInstance.resolveConfigFile(
+          this.adjustFileNameForPrettierVersion3_1_1(
+            prettierInstance,
+            fileName,
+          ),
+        )) ?? undefined;
+    } catch (error) {
+      this.loggingService.logError(
+        `Error resolving prettier configuration for ${fileName}`,
+        error,
+      );
+      return "error";
+    }
+
+    return configPath;
   }
 
   private isInternalTestRoot(dir: string): boolean {

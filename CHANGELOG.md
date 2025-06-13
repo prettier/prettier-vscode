@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [Unreleased]
+
+- Fix issue that .prettierignore in monorepo sub folders is not read. (#3003, #3424)
+
 ## [11.0.0]
 
 - [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting (#2708) - Thanks to [@redoPop](https://github.com/redoPop)
