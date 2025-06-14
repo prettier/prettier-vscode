@@ -10,7 +10,7 @@ export function getWorkspaceRelativePath(
 ) {
   // In case the user wants to use ~/.prettierrc on Mac
   if (
-    process.platform === "darwin" &&
+    (process.platform === "darwin" || process.platform === "linux") &&
     pathToResolve.indexOf("~") === 0 &&
     os.homedir()
   ) {
