@@ -15,7 +15,7 @@ jobs:
           version: 7
           run_install: false
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
@@ -34,7 +34,7 @@ jobs:
     name: Package
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
@@ -54,7 +54,7 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
