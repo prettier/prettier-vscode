@@ -46,10 +46,16 @@ const PRETTIER_CONFIG_FILES = [
   ".prettierrc.js",
   ".prettierrc.cjs",
   ".prettierrc.mjs",
+  ".prettierrc.ts",
+  ".prettierrc.cts",
+  ".prettierrc.mts",
   "package.json",
   "prettier.config.js",
   "prettier.config.cjs",
   "prettier.config.mjs",
+  "prettier.config.ts",
+  "prettier.config.cts",
+  "prettier.config.mts",
   ".editorconfig",
 ];
 
