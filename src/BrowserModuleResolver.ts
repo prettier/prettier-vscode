@@ -1,10 +1,10 @@
 import {
+  ModuleResolverInterface,
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
-  PrettierSupportLanguage,
   PrettierModule,
   PrettierOptions,
-  ModuleResolverInterface,
+  PrettierSupportLanguage,
   PrettierVSCodeConfig,
 } from "./types";
 
@@ -26,10 +26,10 @@ import * as yamlPlugin from "prettier/parser-yaml";
 //import * as flowPlugin from "prettier/parser-flow";
 //import * as postcssPlugin from "prettier/parser-postcss";
 
+import { Options, Plugin, ResolveConfigOptions } from "prettier";
 import { TextDocument, Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
 import { getWorkspaceRelativePath } from "./util";
-import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
   angularPlugin,
@@ -41,21 +41,21 @@ const plugins = [
   meriyahPlugin,
   typescriptPlugin,
   yamlPlugin,
-];
+] as unknown as Plugin[];
 
 export class ModuleResolver implements ModuleResolverInterface {
   constructor(private loggingService: LoggingService) {}
 
   public async getPrettierInstance(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _fileName: string
+    _fileName: string,
   ): Promise<PrettierModule | undefined> {
     return this.getGlobalPrettierInstance();
   }
 
   public async getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string
+    ignorePath: string,
   ): Promise<string | undefined> {
     return getWorkspaceRelativePath(fileName, ignorePath);
   }
@@ -66,7 +66,9 @@ export class ModuleResolver implements ModuleResolverInterface {
       format: (source: string, options: PrettierOptions) => {
         return prettierStandalone.format(source, { ...options, plugins });
       },
-      getSupportInfo: (): { languages: PrettierSupportLanguage[] } => {
+      getSupportInfo: async (): Promise<{
+        languages: PrettierSupportLanguage[];
+      }> => {
         return {
           languages: [
             {
@@ -167,7 +169,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         filePath: string,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        options?: PrettierFileInfoOptions
+        options?: PrettierFileInfoOptions,
       ): Promise<PrettierFileInfoResult> => {
         // TODO: implement ignore file reading
         return { ignored: false, inferredParser: null };
@@ -181,7 +183,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       resolveConfigFile(filePath?: string | undefined): Promise<string | null>;
       resolveConfig(
         fileName: string,
-        options?: ResolveConfigOptions | undefined
+        options?: ResolveConfigOptions | undefined,
       ): Promise<Options | null>;
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -189,7 +191,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fileName: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    vscodeConfig: PrettierVSCodeConfig
+    vscodeConfig: PrettierVSCodeConfig,
   ): Promise<Options | "error" | "disabled" | null> {
     return null;
   }
@@ -198,7 +200,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _doc: TextDocument,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _vscodeConfig: PrettierVSCodeConfig
+    _vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     return null;
   }

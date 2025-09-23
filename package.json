@@ -127,7 +127,7 @@
   },
   "dependencies": {
     "find-up": "5.0.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.6.2",
     "resolve": "^1.22.8",
     "semver": "^7.6.3",
     "vscode-nls": "^5.2.0"

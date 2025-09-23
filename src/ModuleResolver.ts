@@ -16,6 +16,10 @@ import {
   UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
+import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
+import { PrettierInstance } from "./PrettierInstance";
+import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import {
   ModuleResolverInterface,
   PackageManagers,
@@ -24,10 +28,6 @@ import {
   PrettierVSCodeConfig,
 } from "./types";
 import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
-import { PrettierInstance } from "./PrettierInstance";
-import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
@@ -121,7 +121,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd }
+      { cwd },
     );
 
     if (!packageJsonPath) {
@@ -382,8 +382,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       config: isVirtual
         ? undefined
         : vscodeConfig.configPath
-        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-        : configPath,
+          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+          : configPath,
       editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
     };
 
