@@ -53,6 +53,7 @@ type ModuleResolverInterface = {
     fileName: string,
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
+  resolvePluginsGlobally(plugins: string[]): string[];
 };
 
 type TrailingCommaOption = "none" | "es5" | "all";
@@ -103,6 +104,10 @@ interface IExtensionConfig {
    * If true, enabled debug logs
    */
   enableDebugLogs: boolean;
+  /**
+   * A list of plugins to automatically install and load globally.
+   */
+  plugins: string[];
 }
 /**
  * Configuration for prettier-vscode

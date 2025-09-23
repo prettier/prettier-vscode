@@ -265,7 +265,10 @@ export default class PrettierEditService implements Disposable {
     documentUri?: Uri,
     workspaceFolderUri?: Uri,
   ): Promise<ISelectors> => {
-    const plugins: (string | URL | PrettierPlugin)[] = [];
+    const vscodeConfig = getConfig(documentUri);
+
+    const plugins: (string | URL | PrettierPlugin)[] =
+      this.moduleResolver.resolvePluginsGlobally(vscodeConfig.plugins);
 
     // Prettier v3 does not load plugins automatically
     // So need to resolve config to get plugins info.
@@ -413,6 +416,9 @@ export default class PrettierEditService implements Disposable {
 
     const vscodeConfig = getConfig(doc);
 
+    const resolvedVscodeConfigPlugins =
+      this.moduleResolver.resolvePluginsGlobally(vscodeConfig.plugins);
+
     const resolvedConfig = await this.moduleResolver.getResolvedConfig(
       doc,
       vscodeConfig,
@@ -455,9 +461,12 @@ export default class PrettierEditService implements Disposable {
     if (fileName) {
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
-        plugins: resolvedConfig?.plugins?.filter(
-          (item): item is string => typeof item === "string",
-        ),
+        plugins:
+          resolvedConfig != null
+            ? resolvedConfig.plugins?.filter(
+                (item): item is string => typeof item === "string",
+              )
+            : resolvedVscodeConfigPlugins,
         resolveConfig: true,
         withNodeModules: vscodeConfig.withNodeModules,
       });
@@ -499,6 +508,7 @@ export default class PrettierEditService implements Disposable {
       fileName,
       parser as PrettierBuiltInParserName,
       vscodeConfig,
+      resolvedVscodeConfigPlugins,
       resolvedConfig,
       options,
     );
@@ -526,6 +536,7 @@ export default class PrettierEditService implements Disposable {
     fileName: string,
     parser: PrettierBuiltInParserName,
     vsCodeConfig: PrettierOptions,
+    resolvedVscodeConfigPlugins: string[],
     configOptions: PrettierOptions | null,
     extensionFormattingOptions: ExtensionFormattingOptions,
   ): Partial<PrettierOptions> {
@@ -555,6 +566,7 @@ export default class PrettierEditService implements Disposable {
         vsCodeConfig.embeddedLanguageFormatting;
       vsOpts.vueIndentScriptAndStyle = vsCodeConfig.vueIndentScriptAndStyle;
       vsOpts.experimentalTernaries = vsCodeConfig.experimentalTernaries;
+      vsOpts.plugins = resolvedVscodeConfigPlugins;
     }
 
     this.loggingService.logInfo(

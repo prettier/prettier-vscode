@@ -1,6 +1,7 @@
 {
   "ext.command.createConfigFile.title": "Prettier：选择配置文件",
   "ext.command.forceFormatDocument.title": "格式化文件（强制）",
+  "ext.config.plugins": "一组插件，用于自动全局安装和加载。",
   "ext.config.arrowParens": "箭头函数仅有一个参数时，参数是否添加括号。",
   "ext.config.bracketSpacing": "在对象字面量的花括号内侧使用空格作为间隔。",
   "ext.config.configPath": "指定 Prettier 配置文件的路径。",

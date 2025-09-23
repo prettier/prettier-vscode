@@ -154,6 +154,11 @@
       "type": "object",
       "title": "%ext.config.title%",
       "properties": {
+        "prettier.plugins": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "%ext.config.plugins%"
+        },
         "prettier.disableLanguages": {
           "type": "array",
           "items": {

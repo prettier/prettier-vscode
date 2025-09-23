@@ -6,7 +6,7 @@ import { PrettierVSCodeConfig } from "./types";
 
 export function getWorkspaceRelativePath(
   filePath: string,
-  pathToResolve: string
+  pathToResolve: string,
 ) {
   // In case the user wants to use ~/.prettierrc on Mac
   if (
@@ -31,7 +31,7 @@ export function getConfig(scope?: TextDocument | Uri): PrettierVSCodeConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const config = workspace.getConfiguration(
     "prettier",
-    scope
+    scope,
   ) as unknown as PrettierVSCodeConfig;
 
   // Some settings are disabled for untrusted workspaces
@@ -59,4 +59,20 @@ export function isAboveV3(version: string | null): boolean {
     throw new Error("Invalid version");
   }
   return parsedVersion.major >= 3;
+}
+
+export function getPackageInfo(packageSpecification: string): {
+  name: string;
+  version: string | undefined;
+} {
+  const atIndex = packageSpecification.lastIndexOf("@");
+
+  if (atIndex > 0) {
+    const name = packageSpecification.slice(0, atIndex);
+    const version = packageSpecification.slice(atIndex + 1) || undefined;
+
+    return { name, version };
+  }
+
+  return { name: packageSpecification, version: undefined };
 }

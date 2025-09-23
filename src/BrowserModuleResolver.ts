@@ -205,6 +205,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     return null;
   }
 
+  resolvePluginsGlobally(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    plugins: string[],
+  ): string[] {
+    return [];
+  }
+
   dispose() {
     // nothing to do
   }
