@@ -472,20 +472,27 @@ export default class PrettierEditService implements Disposable {
     }
 
     let parser: PrettierBuiltInParserName | string | undefined;
-    if (fileInfo && fileInfo.inferredParser) {
-      parser = fileInfo.inferredParser;
-    } else if (languageId !== "plaintext") {
+    if (languageId !== "plaintext") {
       // Don't attempt VS Code language for plaintext because we never have
       // a formatter for plaintext and most likely the reason for this is
       // somebody has registered a custom file extension without properly
       // configuring the parser in their prettier config.
-      this.loggingService.logWarning(
-        `Parser not inferred, trying VS Code language.`
-      );
       const { languages } = await prettierInstance.getSupportInfo({
         plugins: [],
       });
       parser = getParserFromLanguageId(languages, uri, languageId);
+
+      if (!parser && fileInfo?.inferredParser) {
+        this.loggingService.logWarning(
+          `No parser found for languageId=${languageId}, using inferredParser=${fileInfo.inferredParser}.`
+        );
+        parser = fileInfo.inferredParser;
+      }
+    } else if (fileInfo && fileInfo.inferredParser) {
+      this.loggingService.logWarning(
+        `VS Code language not selected, trying inferredParser.`
+      );
+      parser = fileInfo.inferredParser;
     }
 
     if (!parser) {
