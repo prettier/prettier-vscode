@@ -214,7 +214,17 @@
           "scope": "resource"
         },
         "prettier.ignorePath": {
-          "type": "string",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
           "default": ".prettierignore",
           "markdownDescription": "%ext.config.ignorePath%",
           "scope": "resource"

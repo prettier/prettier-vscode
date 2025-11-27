@@ -14,7 +14,9 @@ type PrettierFileInfoResult = {
 type PrettierBuiltInParserName = string;
 type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
 type PrettierOptions = prettier.Options & { experimentalTernaries?: boolean };
-type PrettierFileInfoOptions = prettier.FileInfoOptions;
+type PrettierFileInfoOptions = Omit<prettier.FileInfoOptions, "ignorePath"> & {
+  ignorePath?: string | string[];
+};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PrettierPlugin = prettier.Plugin<any>;
 
@@ -33,8 +35,8 @@ type ModuleResolverInterface = {
   ): Promise<PrettierModule | PrettierInstance | undefined>;
   getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string
-  ): Promise<string | undefined>;
+    ignorePath: string | string[]
+  ): Promise<string | string[] | undefined>;
   getGlobalPrettierInstance(): PrettierModule;
   getResolvedConfig(
     doc: TextDocument,
@@ -64,9 +66,9 @@ export type PackageManagers = "npm" | "yarn" | "pnpm";
  */
 interface IExtensionConfig {
   /**
-   * Path to '.prettierignore' or similar.
+   * Path to '.prettierignore' or similar. Can be a string or an array of strings.
    */
-  ignorePath: string;
+  ignorePath: string | string[];
   /**
    * Path to prettier module.
    */

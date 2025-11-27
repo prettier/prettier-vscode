@@ -439,15 +439,18 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
-    let resolvedIgnorePath: string | undefined;
+    let resolvedIgnorePath: string | string[] | undefined;
     if (vscodeConfig.ignorePath) {
       resolvedIgnorePath = await this.moduleResolver.getResolvedIgnorePath(
         fileName,
         vscodeConfig.ignorePath
       );
       if (resolvedIgnorePath) {
+        const pathsToLog = Array.isArray(resolvedIgnorePath)
+          ? resolvedIgnorePath.join(", ")
+          : resolvedIgnorePath;
         this.loggingService.logInfo(
-          `Using ignore file (if present) at ${resolvedIgnorePath}`
+          `Using ignore file(s) (if present) at ${pathsToLog}`
         );
       }
     }
