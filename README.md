@@ -44,10 +44,10 @@
 <p align="center">
   <a href="https://github.com/prettier/prettier-vscode/actions?query=workflow%3AMain">
     <img alt="Build Status" src="https://github.com/prettier/prettier-vscode/workflows/Main/badge.svg?branch=main"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
-    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
-    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/esbenp.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/prettier.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
+    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/prettier.prettier-vscode"></a>
   <a href="#badge">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
   <a href="https://twitter.com/PrettierCode">
@@ -58,12 +58,12 @@
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode)
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install esbenp.prettier-vscode
+ext install prettier.prettier-vscode
 ```
 
 ### Default Formatter
@@ -72,9 +72,9 @@ To ensure that this extension is used over other extensions you may have install
 
 ```json
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "prettier.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "prettier.prettier-vscode"
   }
 }
 ```
@@ -85,7 +85,7 @@ The following will use Prettier for all languages except Javascript.
 
 ```json
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "prettier.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "<another formatter>"
   }
@@ -98,7 +98,7 @@ The following will use Prettier for only Javascript.
 {
   "editor.defaultFormatter": "<another formatter>",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "prettier.prettier-vscode"
   }
 }
 ```

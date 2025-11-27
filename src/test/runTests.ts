@@ -19,7 +19,7 @@ async function createSettings(): Promise<string> {
   process.env.VSC_JUPYTER_VSCODE_SETTINGS_DIR = userDataDirectory;
   const settingsFile = path.join(userDataDirectory, "User", "settings.json");
   const defaultSettings: Record<string, string | boolean | string[]> = {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "prettier.prettier-vscode",
     "prettier.enableDebugLogs": true,
     "security.workspace.trust.enabled": false, // Disable trusted workspaces.
   };

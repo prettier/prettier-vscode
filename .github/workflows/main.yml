@@ -3,9 +3,23 @@ name: "Main"
 on: [push, pull_request]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn prettier --check
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     name: Test on ${{ matrix.os }}
@@ -30,7 +44,7 @@ jobs:
           DISPLAY: ":99.0"
   package:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [lint, test]
     name: Package
     steps:
       - uses: actions/checkout@v5
@@ -39,8 +53,7 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "yarn"
       - run: yarn install
-      - run: npm install -g vsce
-      - run: vsce package
+      - run: npx @vscode/vsce package
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v4
@@ -59,8 +72,7 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "yarn"
       - run: yarn install
-      - run: npm install -g vsce
-      - run: vsce package
+      - run: npx @vscode/vsce package
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - uses: actions/create-release@v1
@@ -81,4 +93,4 @@ jobs:
           asset_path: ${{ env.VSIX_PATH }}
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
-      - run: vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
+      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
