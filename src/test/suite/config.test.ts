@@ -6,9 +6,13 @@ import {
   putBackPrettierRC,
 } from "./format.test";
 
-const testConfig = (testPath: string, resultPath: string) => {
+const testConfig = (
+  testPath: string,
+  resultPath: string,
+  shouldRetry = false,
+) => {
   return async () => {
-    const { actual } = await format("config", testPath);
+    const { actual } = await format("config", testPath, shouldRetry);
     const expected = await getText("config", resultPath);
     assert.equal(actual, expected);
   };
@@ -21,7 +25,8 @@ suite("Test configurations", function () {
   test(
     "it uses config from .prettierrc file and does not inherit VS Code settings ",
     /* cspell: disable-next-line */
-    testConfig("rcfile/test.js", "rcfile/test.result.js"),
+    // Use retry for first test as extension may need time after root .prettierrc is moved
+    testConfig("rcfile/test.js", "rcfile/test.result.js", true),
   );
   test(
     "it uses config from prettier.config.js file ",
