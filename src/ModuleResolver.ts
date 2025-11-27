@@ -338,9 +338,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         ignorePath.map((path) => this.resolveSingleIgnorePath(fileName, path))
       );
       // Filter out undefined values
-      const filtered = resolved.filter(
-        (path): path is string => path !== undefined
-      );
+      const filtered = resolved.filter(Boolean) as string[];
       return filtered.length > 0 ? filtered : undefined;
     }
     return this.resolveSingleIgnorePath(fileName, ignorePath);

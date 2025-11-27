@@ -60,7 +60,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     if (Array.isArray(ignorePath)) {
       const resolved = ignorePath
         .map((path) => getWorkspaceRelativePath(fileName, path))
-        .filter((path): path is string => path !== undefined);
+        .filter(Boolean) as string[];
       return resolved.length > 0 ? resolved : undefined;
     }
     return getWorkspaceRelativePath(fileName, ignorePath);
