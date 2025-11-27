@@ -19,26 +19,26 @@ type PrettierFileInfoOptions = prettier.FileInfoOptions;
 type PrettierPlugin = prettier.Plugin<any>;
 
 type PrettierModule = {
-  format(source: string, options?: prettier.Options): string;
-  getSupportInfo(): { languages: PrettierSupportLanguage[] };
+  format(source: string, options?: prettier.Options): Promise<string>;
+  getSupportInfo(): Promise<{ languages: PrettierSupportLanguage[] }>;
   getFileInfo(
     filePath: string,
-    options?: PrettierFileInfoOptions
+    options?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult>;
 };
 
 type ModuleResolverInterface = {
   getPrettierInstance(
-    fileName: string
+    fileName: string,
   ): Promise<PrettierModule | PrettierInstance | undefined>;
   getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string
+    ignorePath: string,
   ): Promise<string | undefined>;
   getGlobalPrettierInstance(): PrettierModule;
   getResolvedConfig(
     doc: TextDocument,
-    vscodeConfig: PrettierVSCodeConfig
+    vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
   dispose(): void;
   resolveConfig(
@@ -46,13 +46,14 @@ type ModuleResolverInterface = {
       resolveConfigFile(filePath?: string): Promise<string | null>;
       resolveConfig(
         fileName: string,
-        options?: prettier.ResolveConfigOptions
+        options?: prettier.ResolveConfigOptions,
       ): Promise<PrettierOptions | null>;
     },
     uri: Uri,
     fileName: string,
-    vscodeConfig: PrettierVSCodeConfig
+    vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
+  resolvePluginsGlobally(plugins: string[]): string[];
 };
 
 type TrailingCommaOption = "none" | "es5" | "all";
@@ -103,6 +104,10 @@ interface IExtensionConfig {
    * If true, enabled debug logs
    */
   enableDebugLogs: boolean;
+  /**
+   * A list of plugins to automatically install and load globally.
+   */
+  plugins: string[];
 }
 /**
  * Configuration for prettier-vscode

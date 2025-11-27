@@ -1,6 +1,7 @@
 {
   "ext.command.createConfigFile.title": "Prettier: 建立組態檔",
   "ext.command.forceFormatDocument.title": "排版文件（強制）",
+  "ext.config.plugins": "一組插件，用於自動全域安裝和加載。",
   "ext.config.arrowParens": "箭頭函式中只有一個參數也加上括號。",
   "ext.config.bracketSpacing": "控制物件字面值中兩側的留白。",
   "ext.config.configPath": "Prettier 組態檔的路徑。",

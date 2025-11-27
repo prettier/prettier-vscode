@@ -16,6 +16,10 @@ import {
   UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message";
+import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
+import { PrettierInstance } from "./PrettierInstance";
+import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import {
   ModuleResolverInterface,
   PackageManagers,
@@ -23,11 +27,12 @@ import {
   PrettierResolveConfigOptions,
   PrettierVSCodeConfig,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
-import { PrettierInstance } from "./PrettierInstance";
-import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
+import {
+  getConfig,
+  getPackageInfo,
+  getWorkspaceRelativePath,
+  isAboveV3,
+} from "./util";
 
 const minPrettierVersion = "1.13.0";
 
@@ -56,6 +61,8 @@ const fsStatSyncWorkaround = (
 };
 // @ts-expect-error Workaround for https://github.com/prettier/prettier-vscode/issues/3020
 fs.statSync = fsStatSyncWorkaround;
+
+declare const __non_webpack_require__: NodeRequire;
 
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
@@ -95,6 +102,7 @@ function globalPathGet(packageManager: PackageManagers): string | undefined {
 export class ModuleResolver implements ModuleResolverInterface {
   private findPkgCache: Map<string, string>;
   private ignorePathCache = new Map<string, string>();
+  private pluginsCache = new Map<string, string[]>();
 
   private path2Module = new Map<string, PrettierInstance>();
 
@@ -121,7 +129,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return pkgFilePath;
         }
       },
-      { cwd }
+      { cwd },
     );
 
     if (!packageJsonPath) {
@@ -344,6 +352,52 @@ export class ModuleResolver implements ModuleResolverInterface {
     return fileName;
   }
 
+  public resolvePluginsGlobally(plugins: string[]): string[] {
+    if (plugins.length === 0) {
+      return [];
+    }
+
+    const cacheKey = plugins.sort().join(",");
+
+    if (this.pluginsCache.has(cacheKey)) {
+      return this.pluginsCache.get(cacheKey)!;
+    }
+
+    const pluginsDirectory = path.join(__dirname, "..", "plugins");
+
+    if (!fs.existsSync(pluginsDirectory)) {
+      fs.mkdirSync(pluginsDirectory, { recursive: true });
+    }
+
+    try {
+      this.loggingService.logInfo(
+        `Installing ${plugins.length} plugins at ${pluginsDirectory}`,
+      );
+
+      if (!fs.existsSync(path.join(pluginsDirectory, "package.json"))) {
+        execSync("npm init -y", { cwd: pluginsDirectory });
+      }
+
+      execSync(`npm install ${plugins.join(" ")}`, { cwd: pluginsDirectory });
+
+      const resolvedPlugins = plugins.map((plugin) =>
+        __non_webpack_require__.resolve(getPackageInfo(plugin).name, {
+          paths: [path.join(pluginsDirectory, "node_modules")],
+        }),
+      );
+
+      this.loggingService.logInfo(`Plugins installed successfully.`);
+
+      this.pluginsCache.clear();
+      this.pluginsCache.set(cacheKey, resolvedPlugins);
+
+      return resolvedPlugins;
+    } catch (error) {
+      this.loggingService.logError(`Failed to install plugins.`, error);
+      return [];
+    }
+  }
+
   public async resolveConfig(
     prettierInstance: {
       version: string | null;
@@ -382,8 +436,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       config: isVirtual
         ? undefined
         : vscodeConfig.configPath
-        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-        : configPath,
+          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+          : configPath,
       editorconfig: isVirtual ? undefined : vscodeConfig.useEditorConfig,
     };
 

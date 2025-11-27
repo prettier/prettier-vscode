@@ -13,12 +13,12 @@ export interface PrettierInstance {
   format(source: string, options?: PrettierOptions): Promise<string>;
   getFileInfo(
     filePath: string,
-    fileInfoOptions?: PrettierFileInfoOptions
+    fileInfoOptions?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult>;
   getSupportInfo({
     plugins,
   }: {
-    plugins: (string | PrettierPlugin)[];
+    plugins: (string | URL | PrettierPlugin)[];
   }): Promise<{
     languages: PrettierSupportLanguage[];
   }>;
@@ -26,7 +26,7 @@ export interface PrettierInstance {
   resolveConfigFile(filePath?: string): Promise<string | null>;
   resolveConfig(
     fileName: string,
-    options?: ResolveConfigOptions
+    options?: ResolveConfigOptions,
   ): Promise<PrettierOptions | null>;
 }
 
