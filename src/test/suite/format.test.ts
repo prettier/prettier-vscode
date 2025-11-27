@@ -21,7 +21,7 @@ export const getWorkspaceFolderUri = (workspaceFolderName: string) => {
   });
   if (!workspaceFolder) {
     throw new Error(
-      "Folder not found in workspace. Did you forget to add the test folder to test.code-workspace?"
+      "Folder not found in workspace. Did you forget to add the test folder to test.code-workspace?",
     );
   }
   return workspaceFolder!.uri;
@@ -29,7 +29,7 @@ export const getWorkspaceFolderUri = (workspaceFolderName: string) => {
 
 export async function getText(
   workspaceFolderName: string,
-  expectedFile: string
+  expectedFile: string,
 ) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
   const expectedPath = path.join(base.fsPath, expectedFile);
@@ -57,7 +57,7 @@ export function putBackPrettierRC(done: Done) {
 export async function format(
   workspaceFolderName: string,
   testFile: string,
-  shouldRetry = false
+  shouldRetry = false,
 ) {
   const base = getWorkspaceFolderUri(workspaceFolderName);
   const absPath = path.join(base.fsPath, testFile);
@@ -99,7 +99,7 @@ export async function format(
  */
 async function formatSameAsPrettier(
   file: string,
-  options?: Partial<prettier.Options>
+  options?: Partial<prettier.Options>,
 ) {
   const prettierOptions: prettier.Options = {
     ...options,
@@ -116,15 +116,23 @@ async function formatSameAsPrettier(
 suite("Test format Document", function () {
   this.timeout(10000);
   test("it formats JavaScript", async () => {
-    await wait(500);
-    await formatSameAsPrettier("formatTest/ugly.js");
+    // Wait for extension to initialize and retry if needed
+    await wait(1000);
+    const { actual, source } = await format(
+      "project",
+      "formatTest/ugly.js",
+      true,
+    );
+    const prettierFormatted = await prettier.format(source, {
+      filepath: "formatTest/ugly.js",
+    });
+    assert.equal(actual, prettierFormatted);
   });
   test("it formats TypeScript", () =>
     formatSameAsPrettier("formatTest/ugly.ts"));
   test("it formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));
   test("it formats JSON", () => formatSameAsPrettier("formatTest/ugly.json"));
-  test("it formats JSONC", () =>
-    formatSameAsPrettier("formatTest/ugly.jsonc", { parser: "json" }));
+  test("it formats JSONC", () => formatSameAsPrettier("formatTest/ugly.jsonc"));
   test("it formats JSON", () =>
     formatSameAsPrettier("formatTest/package.json"));
   test("it formats HTML", () => formatSameAsPrettier("formatTest/ugly.html"));

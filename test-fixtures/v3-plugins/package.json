@@ -8,7 +8,7 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "@prettier/plugin-xml": "3.0.0-alpha.0",
-    "prettier": "^3.0.0-alpha.12"
+    "@prettier/plugin-xml": "^3.4.1",
+    "prettier": "^3.4.2"
   }
 }

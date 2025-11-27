@@ -47,6 +47,12 @@
     },
     {
       "path": "v3-plugin-override"
+    },
+    {
+      "path": "v2-explicit"
+    },
+    {
+      "path": "esm-config"
     }
   ],
   "settings": {
@@ -107,6 +113,9 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[php]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[xml]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "prettier.trailingComma": "all",

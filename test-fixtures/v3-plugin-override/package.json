@@ -8,7 +8,7 @@
     "keywords": [],
     "license": "MIT",
     "devDependencies": {
-      "prettier": "3.0.0-alpha.12",
+      "prettier": "^3.4.2",
       "prettier-plugin-override": "file:./prettier-plugin-override"
     }
   }

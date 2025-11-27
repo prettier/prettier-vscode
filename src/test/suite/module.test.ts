@@ -5,7 +5,11 @@ suite("Test module resolution", function () {
   this.timeout(10000);
 
   test("it formats without prettier dep using internal version", async () => {
-    const { actual } = await format("no-dep", "index.js");
+    const { actual } = await format(
+      "no-dep",
+      "index.js",
+      /* shouldRetry */ true,
+    );
     const expected = await getText("no-dep", "index.result.js");
     assert.equal(actual, expected);
   });
@@ -20,7 +24,7 @@ suite("Test module resolution", function () {
     const { actual } = await format(
       "module-plugin",
       "index.js",
-      /* shouldRetry */ true
+      /* shouldRetry */ true,
     );
     const expected = await getText("module-plugin", "index.result.js");
     assert.equal(actual, expected);
