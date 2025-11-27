@@ -8,9 +8,9 @@ export function getWorkspaceRelativePath(
   filePath: string,
   pathToResolve: string
 ) {
-  // In case the user wants to use ~/.prettierrc on Mac
+  // In case the user wants to use ~/.prettierrc on Mac or Linux
   if (
-    process.platform === "darwin" &&
+    (process.platform === "darwin" || process.platform === "linux") &&
     pathToResolve.indexOf("~") === 0 &&
     os.homedir()
   ) {
