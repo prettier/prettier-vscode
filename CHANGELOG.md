@@ -4,6 +4,16 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [unreleased]
+
+- [BREAKING CHANGE] Bundled Prettier upgraded from v2.8.8 to v3.x
+- [BREAKING CHANGE] Updated `trailingComma` default from `"es5"` to `"all"` to match Prettier 3
+- Maintained backward compatibility with projects using Prettier v2.x (projects with explicit Prettier v2 dependencies will continue to use their local version)
+- Fixed Prettier v3 plugin loading
+- Fixed parser detection for custom file extensions with config overrides
+- Fixed parser detection fallback when using plugins with Prettier v3
+- Added new Prettier v3 options: `objectWrap`, `experimentalOperatorPosition`
+
 ## [11.0.0]
 
 - [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting (#2708) - Thanks to [@redoPop](https://github.com/redoPop)
@@ -13,7 +23,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [10.5.0]
 
-- Extend list of Prettier config files by ECMAScript module extentions
+- Extend list of Prettier config files by ECMAScript module extensions
 
 ## [10.4.0]
 
@@ -88,7 +98,7 @@ Change default configuration for trailingComma to all to match Prettier 3.0.
 ## [9.10.3]
 
 - Prettier 2.8.0
-- Updated dependancies
+- Updated dependencies
 
 ## [9.9.0]
 

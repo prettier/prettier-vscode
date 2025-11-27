@@ -1,0 +1,12 @@
+{
+  "name": "esm-config",
+  "version": "1.0.0",
+  "description": "Test folder for ESM config without local prettier (tests bundled v3)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prettier",
+  "license": "MIT"
+}

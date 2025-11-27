@@ -1,0 +1,14 @@
+{
+  "name": "v2-explicit",
+  "version": "1.0.0",
+  "description": "Test folder for explicit Prettier v2 dependency (backward compatibility)",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prettier",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
+}

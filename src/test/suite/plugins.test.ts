@@ -7,7 +7,7 @@ suite("Test plugins", function () {
     const { actual } = await format(
       "plugins",
       "index.php",
-      /* shouldRetry */ true
+      /* shouldRetry */ true,
     );
     const expected = await getText("plugins", "index.result.php");
     assert.equal(actual, expected);

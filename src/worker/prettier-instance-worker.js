@@ -79,7 +79,7 @@ parentPort.on("message", ({ type, id, payload }) => {
           },
           (reason) => {
             postError(reason);
-          }
+          },
         );
         break;
       }

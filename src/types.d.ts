@@ -13,32 +13,36 @@ type PrettierFileInfoResult = {
 };
 type PrettierBuiltInParserName = string;
 type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
-type PrettierOptions = prettier.Options & { experimentalTernaries?: boolean };
+type PrettierOptions = prettier.Options & {
+  experimentalTernaries?: boolean;
+  objectWrap?: "preserve" | "collapse";
+  experimentalOperatorPosition?: "start" | "end";
+};
 type PrettierFileInfoOptions = prettier.FileInfoOptions;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PrettierPlugin = prettier.Plugin<any>;
+type PrettierPlugin = prettier.Plugin<any> | string | URL;
 
 type PrettierModule = {
-  format(source: string, options?: prettier.Options): string;
-  getSupportInfo(): { languages: PrettierSupportLanguage[] };
+  format(source: string, options?: prettier.Options): Promise<string>;
+  getSupportInfo(): Promise<{ languages: PrettierSupportLanguage[] }>;
   getFileInfo(
     filePath: string,
-    options?: PrettierFileInfoOptions
+    options?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult>;
 };
 
 type ModuleResolverInterface = {
   getPrettierInstance(
-    fileName: string
+    fileName: string,
   ): Promise<PrettierModule | PrettierInstance | undefined>;
   getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string
+    ignorePath: string,
   ): Promise<string | undefined>;
   getGlobalPrettierInstance(): PrettierModule;
   getResolvedConfig(
     doc: TextDocument,
-    vscodeConfig: PrettierVSCodeConfig
+    vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
   dispose(): void;
   resolveConfig(
@@ -46,12 +50,12 @@ type ModuleResolverInterface = {
       resolveConfigFile(filePath?: string): Promise<string | null>;
       resolveConfig(
         fileName: string,
-        options?: prettier.ResolveConfigOptions
+        options?: prettier.ResolveConfigOptions,
       ): Promise<PrettierOptions | null>;
     },
     uri: Uri,
     fileName: string,
-    vscodeConfig: PrettierVSCodeConfig
+    vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
 };
 

@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Prettier Formatting Issue
+    url: https://github.com/prettier/prettier/issues/new/choose
+    about: For issues with how Prettier formats your code (not VS Code specific)
+  - name: Stack Overflow
+    url: https://stackoverflow.com/questions/tagged/prettier-vscode
+    about: For support and configuration questions
+  - name: Prettier Documentation
+    url: https://prettier.io/docs/en/index.html
+    about: Read the Prettier documentation
+  - name: Extension Documentation
+    url: https://github.com/prettier/prettier-vscode#readme
+    about: Read the extension documentation and settings guide

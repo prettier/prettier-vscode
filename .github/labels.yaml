@@ -1,0 +1,89 @@
+# Issue and PR Labels
+# Run the "Sync Labels" workflow to apply changes
+
+labels:
+  # Issue Types
+  - name: bug
+    color: "#d73a4a"
+    description: Something isn't working
+
+  - name: enhancement
+    color: "#a2eeef"
+    description: New feature or request
+
+  - name: documentation
+    color: "#0075ca"
+    description: Improvements or additions to documentation
+
+  - name: performance
+    color: "#f9d0c4"
+    description: Performance related issues
+
+  # Issue Status
+  - name: triage-pending
+    color: "#fbca04"
+    description: Awaiting initial triage
+
+  - name: need-more-info
+    color: "#d876e3"
+    description: Further information is requested
+
+  - name: stale
+    color: "#ffffff"
+    description: No recent activity
+
+  - name: locked
+    color: "#ededed"
+    description: Locked due to inactivity
+
+  # Issue Resolution
+  - name: duplicate
+    color: "#cfd3d7"
+    description: This issue or PR already exists
+
+  - name: invalid
+    color: "#e4e669"
+    description: This doesn't seem right
+
+  - name: wontfix
+    color: "#ffffff"
+    description: This will not be worked on
+
+  # Priority / Importance
+  - name: help-wanted
+    color: "#008672"
+    description: Extra attention is needed
+
+  - name: good-first-issue
+    color: "#7057ff"
+    description: Good for newcomers
+
+  - name: pinned
+    color: "#006b75"
+    description: Pinned issue - will not be marked stale
+
+  # Categories
+  - name: prettier-core
+    color: "#bfdadc"
+    description: Issue is with Prettier core, not the extension
+
+  - name: config
+    color: "#c2e0c6"
+    description: Related to configuration
+
+  - name: plugin
+    color: "#d4c5f9"
+    description: Related to Prettier plugins
+
+  # PR Labels
+  - name: breaking-change
+    color: "#b60205"
+    description: Breaking change
+
+  - name: dependencies
+    color: "#0366d6"
+    description: Pull requests that update a dependency
+
+  - name: github_actions
+    color: "#000000"
+    description: Pull requests that update GitHub Actions

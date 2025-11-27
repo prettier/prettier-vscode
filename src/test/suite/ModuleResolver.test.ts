@@ -27,11 +27,10 @@ suite("Test ModuleResolver", function () {
     test("it returns the bundled version of Prettier if local isn't found", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("no-dep").fsPath,
-        "index.js"
+        "index.js",
       );
-      const prettierInstance = await moduleResolver.getPrettierInstance(
-        fileName
-      );
+      const prettierInstance =
+        await moduleResolver.getPrettierInstance(fileName);
 
       assert.strictEqual(prettierInstance, prettier);
       assert(logDebugSpy.calledWith(USING_BUNDLED_PRETTIER));
@@ -40,11 +39,10 @@ suite("Test ModuleResolver", function () {
     test("it returns the bundled version of Prettier if local is outdated", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("outdated").fsPath,
-        "ugly.js"
+        "ugly.js",
       );
-      const prettierInstance = await moduleResolver.getPrettierInstance(
-        fileName
-      );
+      const prettierInstance =
+        await moduleResolver.getPrettierInstance(fileName);
 
       assert.strictEqual(prettierInstance, undefined);
       assert(logErrorSpy.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
@@ -53,10 +51,10 @@ suite("Test ModuleResolver", function () {
     test("it returns prettier version from package.json", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("specific-version").fsPath,
-        "ugly.js"
+        "ugly.js",
       );
       const prettierInstance = (await moduleResolver.getPrettierInstance(
-        fileName
+        fileName,
       )) as PrettierNodeModule;
 
       if (!prettierInstance) {
@@ -69,11 +67,10 @@ suite("Test ModuleResolver", function () {
     test("it returns prettier version from module dep", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("module").fsPath,
-        "index.js"
+        "index.js",
       );
-      const prettierInstance = await moduleResolver.getPrettierInstance(
-        fileName
-      );
+      const prettierInstance =
+        await moduleResolver.getPrettierInstance(fileName);
 
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");
@@ -86,11 +83,10 @@ suite("Test ModuleResolver", function () {
       const fileName = path.join(
         getWorkspaceFolderUri("explicit-dep").fsPath,
         "implicit-dep",
-        "index.js"
+        "index.js",
       );
-      const prettierInstance = await moduleResolver.getPrettierInstance(
-        fileName
-      );
+      const prettierInstance =
+        await moduleResolver.getPrettierInstance(fileName);
       if (!prettierInstance) {
         assert.fail("Prettier is undefined.");
       }

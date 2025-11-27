@@ -44,26 +44,40 @@
 <p align="center">
   <a href="https://github.com/prettier/prettier-vscode/actions?query=workflow%3AMain">
     <img alt="Build Status" src="https://github.com/prettier/prettier-vscode/workflows/Main/badge.svg?branch=main"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
-    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
-    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/esbenp.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/prettier.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
+    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/prettier.prettier-vscode"></a>
   <a href="#badge">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
   <a href="https://twitter.com/PrettierCode">
     <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
 </p>
 
+## Important: Extension Migration
+
+**This extension is moving to the official Prettier organization.**
+
+| Old Extension                                                                                          | New Extension                                                                                              |
+| ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| [`esbenp.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) | [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode) |
+
+**What this means for you:**
+
+- Version 12+ will only be published to `prettier.prettier-vscode`
+- The old `esbenp.prettier-vscode` extension will receive a final update marking it as deprecated
+- **Action required:** Install the new extension from the Prettier organization to receive future updates
+
 ## Installation
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode)
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install esbenp.prettier-vscode
+ext install prettier.prettier-vscode
 ```
 
 ### Default Formatter
@@ -72,9 +86,9 @@ To ensure that this extension is used over other extensions you may have install
 
 ```json
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "prettier.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "prettier.prettier-vscode"
   }
 }
 ```
@@ -85,7 +99,7 @@ The following will use Prettier for all languages except Javascript.
 
 ```json
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "prettier.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "<another formatter>"
   }
@@ -98,7 +112,7 @@ The following will use Prettier for only Javascript.
 {
   "editor.defaultFormatter": "<another formatter>",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "prettier.prettier-vscode"
   }
 }
 ```
@@ -125,13 +139,11 @@ npm install prettier -D --save-exact
 
 > NOTE: You will be prompted to confirm that you want the extension to load a Prettier module. This is done to ensure that you are not loading a module or script that is not trusted.
 
-### Prettier Version 3
+### Prettier Versions
 
-Prettier's preview version 3 is supported as of version 9.12.0. It is not included in the extension by default, but can be used by installing locally in your project. Version 10.0.0 of this extension will include prettier 3.0.0 after it is out of preview. To try version 3 now run the following in your project:
+This extension bundles Prettier 3.x by default. If your project has a local installation of Prettier (in `node_modules`), that version will be used instead of the bundled version. This allows you to use a specific version of Prettier in your project.
 
-```base
-npm i prettier@3.0.0-alpha.6 -D
-```
+**Prettier 2.x Compatibility:** Projects using Prettier 2.x are still fully supported. If you have Prettier 2.x installed locally in your project, the extension will automatically use that version.
 
 ### Plugins
 
@@ -221,7 +233,7 @@ This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/
 
 All prettier options can be configured directly in this extension. These settings are used as a fallback when no configuration file is present in your project, see the [configuration](#configuration) section of this document for more details. For reference on the options see the [prettier documentation](https://prettier.io/docs/en/options.html).
 
-> The default values of these configurations are always to their Prettier 2.0 defaults. In order to use defaults from earlier versions of prettier you must set them manually using your VS Code settings or local project configurations.
+> The default values of these configurations match Prettier 3.0 defaults. Notable changes from Prettier 2.x: `trailingComma` now defaults to `"all"` instead of `"es5"`.
 
 ```
 prettier.arrowParens
@@ -245,6 +257,8 @@ prettier.useTabs
 prettier.vueIndentScriptAndStyle
 prettier.embeddedLanguageFormatting
 prettier.experimentalTernaries
+prettier.objectWrap
+prettier.experimentalOperatorPosition
 ```
 
 ### Extension Settings
@@ -333,7 +347,17 @@ Whether or not to process files in the `node_modules` folder.
 
 **Disabled on untrusted workspaces**
 
-## Error Messages
+## Troubleshooting
+
+See the [Troubleshooting Guide](docs/troubleshooting.md) for help with common issues including:
+
+- Prettier not formatting files
+- Unexpected formatting results
+- Performance issues
+- Plugin problems
+- Configuration issues
+
+### Common Error Messages
 
 **Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`**
 

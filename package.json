@@ -3,7 +3,7 @@
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "11.0.0",
-  "publisher": "esbenp",
+  "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
@@ -12,7 +12,7 @@
   "sponsor": {
     "url": "https://opencollective.com/prettier"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"
@@ -22,7 +22,7 @@
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.101.0"
   },
   "keywords": [
     "multi-root ready",
@@ -70,7 +70,7 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
-    "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install && cd ../../v3 && yarn install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && yarn install",
+    "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install && cd ../../v3 && yarn install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && yarn install && cd ../v2-explicit && yarn install",
     "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
     "test-compile": "yarn clean && tsc -p ./ && yarn webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
@@ -94,17 +94,17 @@
     "@types/fs-extra": "^11.0.4",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^10.0.7",
-    "@types/node": "20.11.30",
-    "@types/prettier": "^2.7.2",
+    "@types/node": "^22",
     "@types/resolve": "^1.20.3",
     "@types/semver": "^7.5.8",
     "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
-    "@types/vscode": "^1.80.0",
+    "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
-    "@vscode/test-electron": "^2.4.1",
-    "@vscode/test-web": "^0.0.56",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-web": "^0.0.76",
+    "@vscode/vsce": "^3.7.1",
     "copy-webpack-plugin": "^12.0.2",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^9.1.0",
@@ -120,14 +120,13 @@
     "ts-loader": "^9.5.1",
     "typescript": "^4.6.3",
     "util": "^0.12.4",
-    "vsce": "^2.15.0",
     "vscode-nls-dev": "^4.0.4",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "find-up": "5.0.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.4.2",
     "resolve": "^1.22.8",
     "semver": "^7.6.3",
     "vscode-nls": "^5.2.0"
@@ -260,7 +259,7 @@
             "es5",
             "all"
           ],
-          "default": "es5",
+          "default": "all",
           "markdownDescription": "%ext.config.trailingComma%",
           "scope": "language-overridable"
         },
@@ -394,6 +393,26 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%ext.config.experimentalTernaries%",
+          "scope": "language-overridable"
+        },
+        "prettier.objectWrap": {
+          "type": "string",
+          "enum": [
+            "preserve",
+            "collapse"
+          ],
+          "default": "preserve",
+          "markdownDescription": "%ext.config.objectWrap%",
+          "scope": "language-overridable"
+        },
+        "prettier.experimentalOperatorPosition": {
+          "type": "string",
+          "enum": [
+            "start",
+            "end"
+          ],
+          "default": "end",
+          "markdownDescription": "%ext.config.experimentalOperatorPosition%",
           "scope": "language-overridable"
         }
       }
