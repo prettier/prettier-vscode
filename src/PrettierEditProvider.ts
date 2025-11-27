@@ -10,15 +10,13 @@ import {
 import { ExtensionFormattingOptions } from "./types";
 
 export class PrettierEditProvider
-  implements
-    DocumentRangeFormattingEditProvider,
-    DocumentFormattingEditProvider
+  implements DocumentRangeFormattingEditProvider, DocumentFormattingEditProvider
 {
   constructor(
     private provideEdits: (
       document: TextDocument,
-      options: ExtensionFormattingOptions
-    ) => Promise<TextEdit[]>
+      options: ExtensionFormattingOptions,
+    ) => Promise<TextEdit[]>,
   ) {}
 
   public async provideDocumentRangeFormattingEdits(
@@ -27,7 +25,7 @@ export class PrettierEditProvider
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattingOptions,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    token: CancellationToken
+    token: CancellationToken,
   ): Promise<TextEdit[]> {
     return this.provideEdits(document, {
       rangeEnd: document.offsetAt(range.end),
@@ -41,7 +39,7 @@ export class PrettierEditProvider
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattingOptions,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    token: CancellationToken
+    token: CancellationToken,
   ): Promise<TextEdit[]> {
     return this.provideEdits(document, {
       force: false,

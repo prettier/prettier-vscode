@@ -11,7 +11,7 @@ fs.readFile(CHANGELOG, (error, data) => {
   const stringData = data.toString("utf8");
   const updated = stringData.replace(
     /## \[Unreleased\](?!\s*## )/, // None empty Unreleased block
-    `## [Unreleased]\n\n## [${v}]`
+    `## [Unreleased]\n\n## [${v}]`,
   );
 
   if (updated !== stringData) {
