@@ -71,8 +71,16 @@ jobs:
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
+      - name: Check if prerelease
+        id: check_prerelease
+        run: |
+          if [[ "${{ github.ref_name }}" =~ -preview|-beta|-alpha|-rc ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
       - run: yarn install
-      - run: npx @vscode/vsce package
+      - run: npx @vscode/vsce package ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - uses: actions/create-release@v1
@@ -84,7 +92,7 @@ jobs:
           release_name: ${{ github.ref }}
           body: See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details.
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.check_prerelease.outputs.is_prerelease == 'true' }}
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,4 +101,4 @@ jobs:
           asset_path: ${{ env.VSIX_PATH }}
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
-      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
+      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
