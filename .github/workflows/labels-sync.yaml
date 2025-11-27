@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/labels.json'
+      - ".github/labels.json"
 
 jobs:
   sync:

@@ -5,7 +5,7 @@ changelog:
   exclude:
     labels:
       - invalid
-      - Stale
+      - stale
       - need-more-info
       - discussion
     authors:
