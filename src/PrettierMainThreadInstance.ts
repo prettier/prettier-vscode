@@ -58,7 +58,7 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
     if (!this.prettierModule) {
       await this.import();
     }
-    // @ts-expect-error actually getSupportInfo can recieve option
+    // @ts-expect-error actually getSupportInfo can receive option
     return this.prettierModule!.getSupportInfo({ plugins });
   }
 

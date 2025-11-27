@@ -13,7 +13,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [10.5.0]
 
-- Extend list of Prettier config files by ECMAScript module extentions
+- Extend list of Prettier config files by ECMAScript module extensions
 
 ## [10.4.0]
 
@@ -88,7 +88,7 @@ Change default configuration for trailingComma to all to match Prettier 3.0.
 ## [9.10.3]
 
 - Prettier 2.8.0
-- Updated dependancies
+- Updated dependencies
 
 ## [9.9.0]
 
