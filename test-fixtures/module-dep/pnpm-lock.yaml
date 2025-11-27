@@ -9,16 +9,16 @@ importers:
   .:
     dependencies:
       prettier:
-        specifier: ^2.0.2
-        version: 2.8.8
+        specifier: 2.0.2
+        version: 2.0.2
 
 packages:
 
-  prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+  prettier@2.0.2:
+    resolution: {integrity: sha512-5xJQIPT8BraI7ZnaDwSbu5zLrB6vvi8hVV58yHQ+QK64qrY40dULy0HSRlQ2/2IdzeBpjhDkqdcFBnFeDEMVdg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
 
 snapshots:
 
-  prettier@2.8.8: {}
+  prettier@2.0.2: {}

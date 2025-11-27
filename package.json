@@ -82,7 +82,7 @@
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
     "chrome": "pnpm webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "test:web": "pnpm webpack && node ./out/test/web/runTests.js",
+    "test:web": "pnpm test-compile && node ./out/test/web/runTests.js",
     "prepare": "husky"
   },
   "lint-staged": {
