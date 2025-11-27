@@ -51,6 +51,7 @@ jobs:
           node-version-file: ".nvmrc"
       - uses: pnpm/action-setup@v4
       - run: pnpm install
+      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:web
   package:
     runs-on: ubuntu-latest
@@ -63,7 +64,7 @@ jobs:
           node-version-file: ".nvmrc"
       - uses: pnpm/action-setup@v4
       - run: pnpm install
-      - run: npx @vscode/vsce package
+      - run: npx @vscode/vsce package --no-dependencies
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v4
@@ -90,7 +91,7 @@ jobs:
             echo "is_prerelease=false" >> $GITHUB_OUTPUT
           fi
       - run: pnpm install
-      - run: npx @vscode/vsce package ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx @vscode/vsce package --no-dependencies ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - name: Create GitHub Release
@@ -109,4 +110,4 @@ jobs:
 
           ---
           See the full [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
-      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx @vscode/vsce publish --no-dependencies -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}

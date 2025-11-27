@@ -24,6 +24,9 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.57.0
+        version: 1.57.0
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -270,6 +273,11 @@ packages:
   '@playwright/browser-chromium@1.57.0':
     resolution: {integrity: sha512-pUg+2p6HwewLp8KCD9G6VYaS2iewdkNkyqMcSIxXBXOlp1ojTxLF6/bwyR4ixLMy6tyv75jhE8PzzMZiX5KzwQ==}
     engines: {node: '>=18'}
+
+  '@playwright/test@1.57.0':
+    resolution: {integrity: sha512-6TyEnHgd6SArQO8UO2OMTxshln3QMWBtPGrOCgs3wVEmQmwyuNtB10IZMfmYDE0riwNR1cu4q+pPcxMVtaG3TA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@secretlint/config-creator@10.2.2':
     resolution: {integrity: sha512-BynOBe7Hn3LJjb3CqCHZjeNB09s/vgf0baBaHVw67w7gHF0d25c3ZsZ5+vv8TgwSchRdUCRrbbcq5i2B1fJ2QQ==}
@@ -3129,6 +3137,10 @@ snapshots:
   '@playwright/browser-chromium@1.57.0':
     dependencies:
       playwright-core: 1.57.0
+
+  '@playwright/test@1.57.0':
+    dependencies:
+      playwright: 1.57.0
 
   '@secretlint/config-creator@10.2.2':
     dependencies:
