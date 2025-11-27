@@ -4,7 +4,7 @@ import { PrettierBuiltInParserName, PrettierSupportLanguage } from "./types";
 export function getParserFromLanguageId(
   languages: PrettierSupportLanguage[],
   uri: Uri,
-  languageId: string
+  languageId: string,
 ): PrettierBuiltInParserName | string | undefined {
   // This is a workaround for when the vscodeLanguageId is duplicated in multiple
   // prettier languages. In these cases the first match is not the preferred match
@@ -21,7 +21,7 @@ export function getParserFromLanguageId(
       lang &&
       lang.extensions &&
       Array.isArray(lang.vscodeLanguageIds) &&
-      lang.vscodeLanguageIds.includes(languageId)
+      lang.vscodeLanguageIds.includes(languageId),
   );
   if (language && language.parsers?.length > 0) {
     return language.parsers[0];

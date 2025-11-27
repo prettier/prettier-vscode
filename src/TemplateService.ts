@@ -6,7 +6,7 @@ import { PrettierModule, PrettierOptions } from "./types";
 export class TemplateService {
   constructor(
     private loggingService: LoggingService,
-    private prettierModule: PrettierModule
+    private prettierModule: PrettierModule,
   ) {}
   public async writeConfigFile(folderPath: Uri) {
     const settings = { tabWidth: 2, useTabs: false };
@@ -22,13 +22,13 @@ export class TemplateService {
 
     const templateSource = await this.prettierModule.format(
       JSON.stringify(settings, null, 2),
-      formatterOptions
+      formatterOptions,
     );
 
     this.loggingService.logInfo(`Writing .prettierrc to ${outputPath}`);
     await workspace.fs.writeFile(
       outputPath,
-      new TextEncoder().encode(templateSource)
+      new TextEncoder().encode(templateSource),
     );
   }
 }

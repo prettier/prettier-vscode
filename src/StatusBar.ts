@@ -26,11 +26,11 @@ export class StatusBar implements Disposable {
     this.statusBarItem = window.createStatusBarItem(
       "prettier.status",
       StatusBarAlignment.Right,
-      -1
+      -1,
     );
     this.languageStatusItem = languages.createLanguageStatusItem(
       "prettier.status",
-      []
+      [],
     );
 
     this.statusBarItem.name = "Prettier";
@@ -62,19 +62,19 @@ export class StatusBar implements Disposable {
       case FormatterStatus.Ignore:
       case FormatterStatus.Warn:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.warningBackground"
+          "statusBarItem.warningBackground",
         );
         this.languageStatusItem.severity = LanguageStatusSeverity.Warning;
         break;
       case FormatterStatus.Error:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.errorBackground"
+          "statusBarItem.errorBackground",
         );
         this.languageStatusItem.severity = LanguageStatusSeverity.Error;
         break;
       default:
         this.statusBarItem.backgroundColor = new ThemeColor(
-          "statusBarItem.fourgroundBackground"
+          "statusBarItem.fourgroundBackground",
         );
         this.languageStatusItem.severity = LanguageStatusSeverity.Information;
         break;

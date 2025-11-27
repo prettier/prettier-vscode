@@ -31,7 +31,7 @@ export function activate(context: ExtensionContext) {
         if (event.affectsConfiguration("prettier.enable")) {
           loggingService.logWarning(RESTART_TO_ENABLE);
         }
-      })
+      }),
     );
     return;
   }
@@ -40,7 +40,7 @@ export function activate(context: ExtensionContext) {
 
   const templateService = new TemplateService(
     loggingService,
-    moduleResolver.getGlobalPrettierInstance()
+    moduleResolver.getGlobalPrettierInstance(),
   );
 
   const statusBar = new StatusBar();
@@ -48,7 +48,7 @@ export function activate(context: ExtensionContext) {
   const editService = new PrettierEditService(
     moduleResolver,
     loggingService,
-    statusBar
+    statusBar,
   );
   editService
     .registerGlobal()
@@ -56,17 +56,17 @@ export function activate(context: ExtensionContext) {
       const createConfigFileFunc = createConfigFile(templateService);
       const createConfigFileCommand = commands.registerCommand(
         "prettier.createConfigFile",
-        createConfigFileFunc
+        createConfigFileFunc,
       );
       const openOutputCommand = commands.registerCommand(
         "prettier.openOutput",
         () => {
           loggingService.show();
-        }
+        },
       );
       const forceFormatDocumentCommand = commands.registerCommand(
         "prettier.forceFormatDocument",
-        editService.forceFormatDocument
+        editService.forceFormatDocument,
       );
 
       context.subscriptions.push(
@@ -75,7 +75,7 @@ export function activate(context: ExtensionContext) {
         createConfigFileCommand,
         openOutputCommand,
         forceFormatDocumentCommand,
-        ...editService.registerDisposables()
+        ...editService.registerDisposables(),
       );
     })
     .catch((err) => {
