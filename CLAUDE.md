@@ -33,11 +33,16 @@ pnpm prettier
 # Run tests (requires no VS Code instance running)
 pnpm test
 
+# Run web extension tests (headless browser)
+pnpm test:web
+
 # Compile tests only
 pnpm test-compile
 ```
 
 ## Running Tests
+
+### Desktop Tests
 
 Tests require the `test-fixtures/` workspace and run inside a VS Code instance:
 
@@ -45,6 +50,16 @@ Tests require the `test-fixtures/` workspace and run inside a VS Code instance:
 2. **Via CLI**: `pnpm test` (no VS Code instance can be running)
 
 Before running tests, `pnpm pretest` installs dependencies in various test fixture directories.
+
+### Web Extension Tests
+
+Web tests run in a headless Chromium browser to verify the web extension works correctly:
+
+```bash
+pnpm test:web
+```
+
+Web tests are located in `src/test/web/suite/` and test the extension's browser functionality.
 
 ## Architecture
 

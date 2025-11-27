@@ -122,5 +122,53 @@ const browserConfig = /** @type WebpackConfig */ {
   ],
 };
 
+// Web test bundle configuration
+const webTestConfig = /** @type WebpackConfig */ {
+  mode: "none",
+  target: "webworker",
+  entry: {
+    "web/test/suite/index": "./src/test/web/suite/index.ts",
+  },
+  output: {
+    filename: "[name].js",
+    // eslint-disable-next-line no-undef
+    path: path.join(__dirname, "./dist"),
+    libraryTarget: "commonjs",
+  },
+  resolve: {
+    mainFields: ["module", "main"],
+    extensions: [".ts", ".js"],
+    fallback: {
+      // eslint-disable-next-line no-undef
+      path: require.resolve("path-browserify"),
+      assert: false,
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              // Use a separate tsconfig for web tests to avoid strict checks
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  externals: {
+    vscode: "commonjs vscode",
+  },
+  performance: {
+    hints: false,
+  },
+  devtool: "source-map",
+};
+
 // eslint-disable-next-line no-undef
-module.exports = [config, browserConfig];
+module.exports = [config, browserConfig, webTestConfig];

@@ -11,5 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "prettier": "^2.0.2"
-  }
+  },
+  "packageManager": "pnpm@10.24.0"
 }

@@ -11,5 +11,6 @@
   "devDependencies": {
     "module-plugin-dep": "../module-plugin-dep",
     "prettier": "^2.0.2"
-  }
+  },
+  "packageManager": "pnpm@10.24.0"
 }

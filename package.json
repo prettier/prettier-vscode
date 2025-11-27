@@ -71,7 +71,7 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
-    "pretest": "pnpm test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && pnpm install && cd ../module && pnpm install && cd ../specific-version && pnpm install && cd ../explicit-dep && pnpm install && cd implicit-dep && pnpm install && cd ../../v3 && pnpm install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && pnpm install && cd ../v2-explicit && pnpm install",
+    "pretest": "pnpm test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && pnpm install && cd ../module-dep && pnpm install && cd ../module && pnpm install && cd ../module-plugin-dep && pnpm install && cd ../module-plugin && pnpm install && cd ../specific-version && pnpm install && cd ../explicit-dep && pnpm install && cd implicit-dep && pnpm install && cd ../../v3 && pnpm install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && pnpm install && cd ../v2-explicit && pnpm install",
     "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
     "test-compile": "pnpm clean && tsc -p ./ && pnpm webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
@@ -82,6 +82,7 @@
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
     "chrome": "pnpm webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "test:web": "pnpm webpack && node ./out/test/web/runTests.js",
     "prepare": "husky"
   },
   "lint-staged": {
