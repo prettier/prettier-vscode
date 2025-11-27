@@ -1,5 +1,6 @@
 {
   "name": "testplugins",
+  "packageManager": "yarn@1.22.22",
   "version": "1.0.0",
   "description": "Test folder for prettier plugins",
   "private": true,

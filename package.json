@@ -1,5 +1,6 @@
 {
   "name": "prettier-vscode",
+  "packageManager": "pnpm@10.24.0",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "11.0.0",
@@ -70,16 +71,17 @@
   "scripts": {
     "clean": "node ./scripts/clean.js",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
-    "pretest": "yarn test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && yarn install && cd ../module && yarn install && cd ../specific-version && yarn install && cd ../explicit-dep && yarn install && cd implicit-dep && yarn install && cd ../../v3 && yarn install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && yarn install && cd ../v2-explicit && yarn install",
+    "pretest": "pnpm test-compile && cd test-fixtures/plugins && yarn install && cd ../plugins-pnpm && pnpm i && cd ../outdated && pnpm install && cd ../module && pnpm install && cd ../specific-version && pnpm install && cd ../explicit-dep && pnpm install && cd implicit-dep && pnpm install && cd ../../v3 && pnpm install && cd ../plugin-tailwindcss && npm i && cd ../v3-plugins && npm i && cd ../v3-plugin-override && pnpm install && cd ../v2-explicit && pnpm install",
     "prettier": "prettier --write '**/*.{ts,json,md,hbs,yml,js}'",
-    "test-compile": "yarn clean && tsc -p ./ && yarn webpack && cp -r ./src/worker ./out",
+    "test-compile": "pnpm clean && tsc -p ./ && pnpm webpack && cp -r ./src/worker ./out",
     "test": "node ./out/test/runTests.js",
     "version": "node ./scripts/version.js && git add CHANGELOG.md",
+    "postversion": "git push origin main --tags",
     "vscode:prepublish": "webpack --mode production",
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
-    "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "chrome": "pnpm webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
     "prepare": "husky"
   },
   "lint-staged": {

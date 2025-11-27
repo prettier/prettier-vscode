@@ -54,19 +54,8 @@
     <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
 </p>
 
-## Important: Extension Migration
-
-**This extension is moving to the official Prettier organization.**
-
-| Old Extension                                                                                          | New Extension                                                                                              |
-| ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| [`esbenp.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) | [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode) |
-
-**What this means for you:**
-
-- Version 12+ will only be published to `prettier.prettier-vscode`
-- The old `esbenp.prettier-vscode` extension will receive a final update marking it as deprecated
-- **Action required:** Install the new extension from the Prettier organization to receive future updates
+> [!IMPORTANT]
+> **Extension Migration:** This extension has moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new extension. Install from the Prettier organization to receive future updates.
 
 ## Installation
 

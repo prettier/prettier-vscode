@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/labels.yaml'
+      - '.github/labels.json'
 
 jobs:
   sync:
@@ -20,11 +20,10 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const yaml = require('js-yaml');
 
             // Read labels config
-            const labelsFile = fs.readFileSync('.github/labels.yaml', 'utf8');
-            const config = yaml.load(labelsFile);
+            const labelsFile = fs.readFileSync('.github/labels.json', 'utf8');
+            const config = JSON.parse(labelsFile);
 
             // Get existing labels
             const { data: existingLabels } = await github.rest.issues.listLabelsForRepo({

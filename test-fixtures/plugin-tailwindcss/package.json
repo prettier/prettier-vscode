@@ -1,5 +1,6 @@
 {
   "name": "test-plugin-tailwindcss",
+  "packageManager": "npm@10.9.2",
   "version": "1.0.0",
   "description": "Test folder for prettier-plugin-tailwindcss",
   "private": "true",

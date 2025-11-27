@@ -1,0 +1,32 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      prettier:
+        specifier: ^3.4.2
+        version: 3.7.1
+      prettier-plugin-override:
+        specifier: file:./prettier-plugin-override
+        version: file:prettier-plugin-override
+
+packages:
+
+  prettier-plugin-override@file:prettier-plugin-override:
+    resolution: {directory: prettier-plugin-override, type: directory}
+
+  prettier@3.7.1:
+    resolution: {integrity: sha512-RWKXE4qB3u5Z6yz7omJkjWwmTfLdcbv44jUVHC5NpfXwFGzvpQM798FGv/6WNK879tc+Cn0AAyherCl1KjbyZQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+snapshots:
+
+  prettier-plugin-override@file:prettier-plugin-override: {}
+
+  prettier@3.7.1: {}
