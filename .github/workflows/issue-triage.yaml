@@ -77,7 +77,7 @@ Thanks for your understanding!`
               /^no$/i,
               /^-+$/,
               /^\.+$/,
-              /^https?:\/\/github\.com\/username\//i,
+              /^https?:\/\/github\.com\/(?:username|user[-_]name|your[-_]?username|yourusername)\//i,
               /^https?:\/\/github\.com\/[^/]+\/repo-name/i,
               /^_no response_$/i,
               /^\s*$/
