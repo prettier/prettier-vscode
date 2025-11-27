@@ -1,6 +1,10 @@
 {
   "permissions": {
-    "allow": ["WebFetch(domain:prettier.io)", "Bash(npm run prettier:*)"],
+    "allow": [
+      "WebFetch(domain:prettier.io)",
+      "Bash(npm run prettier:*)",
+      "mcp__ide__getDiagnostics"
+    ],
     "deny": [],
     "ask": []
   }

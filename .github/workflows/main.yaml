@@ -7,11 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Lint
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
-          cache: "yarn"
       - run: yarn install
       - run: yarn lint
       - run: yarn prettier --check
@@ -24,15 +23,12 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     name: Test on ${{ matrix.os }}
     steps:
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 7
-          run_install: false
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
-          cache: "yarn"
+      - run: corepack enable && corepack prepare pnpm@7 --activate
+        shell: bash
 
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
@@ -47,11 +43,10 @@ jobs:
     needs: [lint, test]
     name: Package
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
-          cache: "yarn"
       - run: yarn install
       - run: npx @vscode/vsce package
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
@@ -66,11 +61,10 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     name: Release
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
-          cache: "yarn"
       - name: Check if prerelease
         id: check_prerelease
         run: |
@@ -83,22 +77,20 @@ jobs:
       - run: npx @vscode/vsce package ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
-      - uses: actions/create-release@v1
-        id: create_release
+      - name: Create GitHub Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: See [CHANGE LOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details.
-          draft: false
-          prerelease: ${{ steps.check_prerelease.outputs.is_prerelease == 'true' }}
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.VSIX_PATH }}
-          asset_name: ${{ env.VSIX_NAME }}
-          asset_content_type: application/zip
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes \
+            --notes-start-tag "$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')" \
+            ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--prerelease' || '' }} \
+            "${{ env.VSIX_PATH }}"
+
+          # Append changelog link to release notes
+          gh release edit "${{ github.ref_name }}" --notes "$(gh release view "${{ github.ref_name }}" --json body -q .body)
+
+          ---
+          See the full [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
       - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}

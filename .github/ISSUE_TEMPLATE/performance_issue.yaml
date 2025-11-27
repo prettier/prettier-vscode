@@ -1,0 +1,137 @@
+name: Performance Issue
+description: Report slow formatting or high resource usage
+labels: ["bug", "performance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Performance Issues
+
+        Slow formatting can be caused by many factors. Please provide detailed information to help us diagnose the issue.
+
+        **First, try these steps:**
+        1. Test with the Prettier CLI: `npx prettier --write <file>`
+        2. If the CLI is also slow, the issue is with Prettier core, not this extension
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight Checklist
+      options:
+        - label: I have tested with the Prettier CLI and the CLI is fast (extension-specific issue)
+          required: true
+        - label: I have searched [existing issues](https://github.com/prettier/prettier-vscode/issues) for similar performance problems
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Issue Summary
+      description: Describe the performance problem.
+      placeholder: "Formatting takes X seconds for a Y-line file..."
+    validations:
+      required: true
+
+  - type: input
+    id: file-size
+    attributes:
+      label: File Size
+      description: Size of the files that are slow to format
+      placeholder: "e.g., 500 lines, 20KB"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How Often Does This Occur?
+      options:
+        - Every time I format
+        - Intermittently
+        - Only on specific files
+        - Only after VS Code has been open for a while
+    validations:
+      required: true
+
+  - type: dropdown
+    id: file-types
+    attributes:
+      label: Affected File Types
+      description: Which file types are affected?
+      multiple: true
+      options:
+        - JavaScript (.js)
+        - TypeScript (.ts/.tsx)
+        - JSON
+        - HTML
+        - CSS/SCSS/Less
+        - Vue
+        - Markdown
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: plugins
+    attributes:
+      label: Prettier Plugins
+      description: List any Prettier plugins you're using
+      placeholder: |
+        e.g., prettier-plugin-tailwindcss
+        @trivago/prettier-plugin-sort-imports
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      placeholder: "e.g., 1.85.0"
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Prettier Extension Version
+      placeholder: "e.g., 10.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: prettier-version
+    attributes:
+      label: Prettier Version
+      placeholder: "e.g., 3.2.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Prettier Extension Logs (with Debug Enabled)
+      description: |
+        Enable debug logs by adding `"prettier.enableDebugLogs": true` to your VS Code settings.
+        Then reproduce the issue and copy the log output.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: profile
+    attributes:
+      label: VS Code Performance Profile (Optional)
+      description: |
+        If possible, capture a performance profile:
+        1. Open Command Palette > "Developer: Start Performance Profile"
+        2. Format a document
+        3. Stop the profile and attach it here

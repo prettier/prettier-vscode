@@ -1,0 +1,48 @@
+# Configuration for automatically generated release notes
+# https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  exclude:
+    labels:
+      - invalid
+      - Stale
+      - need-more-info
+      - discussion
+    authors:
+      - dependabot
+      - dependabot[bot]
+
+  categories:
+    - title: "Breaking Changes"
+      labels:
+        - breaking-change
+        - Semver-Major
+
+    - title: "New Features"
+      labels:
+        - enhancement
+
+    - title: "Bug Fixes"
+      labels:
+        - bug
+        - bug:vscode
+
+    - title: "Security"
+      labels:
+        - security
+
+    - title: "Documentation"
+      labels:
+        - doc
+
+    - title: "Dependencies"
+      labels:
+        - dependencies
+
+    - title: "CI/CD"
+      labels:
+        - github_actions
+
+    - title: "Other Changes"
+      labels:
+        - "*"

@@ -1,0 +1,69 @@
+name: Sync Labels
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/labels.yaml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Sync labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+
+            // Read labels config
+            const labelsFile = fs.readFileSync('.github/labels.yaml', 'utf8');
+            const config = yaml.load(labelsFile);
+
+            // Get existing labels
+            const { data: existingLabels } = await github.rest.issues.listLabelsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+
+            const existingMap = new Map(existingLabels.map(l => [l.name, l]));
+
+            for (const label of config.labels) {
+              const existing = existingMap.get(label.name);
+
+              if (!existing) {
+                // Create new label
+                console.log(`Creating label: ${label.name}`);
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color.replace('#', ''),
+                  description: label.description || ''
+                });
+              } else if (
+                existing.color !== label.color.replace('#', '') ||
+                existing.description !== (label.description || '')
+              ) {
+                // Update existing label
+                console.log(`Updating label: ${label.name}`);
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color.replace('#', ''),
+                  description: label.description || ''
+                });
+              } else {
+                console.log(`Label up to date: ${label.name}`);
+              }
+            }
+
+            console.log('Label sync complete!');

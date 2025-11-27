@@ -3,11 +3,68 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: daily
-    open-pull-requests-limit: 10
+      interval: weekly
+    # Wait 7 days after release before creating PRs (stability buffer)
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      # Group all development dependencies together
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      # Group TypeScript-related packages
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
+        update-types:
+          - minor
+          - patch
+      # Group webpack and build tools
+      build-tools:
+        patterns:
+          - "webpack*"
+          - "*-loader"
+          - "ts-loader"
+        update-types:
+          - minor
+          - patch
+      # Group testing packages
+      testing:
+        patterns:
+          - "@vscode/test-*"
+          - "mocha"
+          - "glob"
+        update-types:
+          - minor
+          - patch
+      # Group ESLint and linting packages
+      linting:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+        update-types:
+          - minor
+          - patch
 
   # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: weekly
+    # Wait 7 days for action updates too
+    cooldown:
+      default-days: 7
+    groups:
+      # Group all GitHub Actions together
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
