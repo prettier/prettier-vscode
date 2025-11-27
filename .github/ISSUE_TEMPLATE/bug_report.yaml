@@ -1,0 +1,142 @@
+name: Bug Report
+description: Report a bug with the Prettier VS Code extension
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Start
+
+        - **Formatting issues** (how Prettier formats your code) should be reported to [prettier/prettier](https://github.com/prettier/prettier/issues), not here.
+        - **Support questions** should be asked on [Stack Overflow](https://stackoverflow.com/questions/tagged/prettier).
+        - Please search [existing issues](https://github.com/prettier/prettier-vscode/issues) first.
+
+        See our [guide on writing a good issue](https://github.com/prettier/prettier-vscode/blob/main/docs/writing-an-issue.md).
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight Checklist
+      options:
+        - label: I have read the [troubleshooting guide](https://github.com/prettier/prettier-vscode/blob/main/docs/troubleshooting.md)
+          required: true
+        - label: I have searched [existing issues](https://github.com/prettier/prettier-vscode/issues) and this is not a duplicate
+          required: true
+        - label: This is a bug with the **VS Code extension**, not with how Prettier formats code
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Issue Summary
+      description: A clear and concise description of the bug.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: input
+    id: repo
+    attributes:
+      label: Reproduction Repository
+      description: |
+        Link to a **public GitHub repository** that reproduces the issue.
+        This is the most important part - without it, we likely cannot help you.
+      placeholder: https://github.com/username/repo-name
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the issue.
+      placeholder: |
+        1. Clone the repository above
+        2. Open in VS Code
+        3. Open file X
+        4. Run "Format Document"
+        5. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe what should have happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually happened...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      description: "Help > About > Copy"
+      placeholder: "e.g., 1.85.0"
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Prettier Extension Version
+      description: Check in Extensions panel
+      placeholder: "e.g., 10.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: prettier-version
+    attributes:
+      label: Prettier Version
+      description: "Run: npx prettier --version"
+      placeholder: "e.g., 3.2.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Prettier Extension Logs
+      description: |
+        Click "Prettier" in the VS Code status bar, then copy the **full log output**.
+        DO NOT use screenshots - copy and paste the text.
+      render: text
+      placeholder: |
+        Paste your Prettier log output here...
+
+        To get logs:
+        1. Click "Prettier" in the bottom status bar
+        2. Copy all the output from the panel
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Prettier Configuration
+      description: Contents of your Prettier config file (if any)
+      render: json
+      placeholder: |
+        Paste contents of .prettierrc, .prettierrc.json, etc.

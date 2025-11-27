@@ -1,0 +1,53 @@
+name: Feature Request
+description: Suggest an idea for the Prettier VS Code extension
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Start
+
+        - **Formatting behavior changes** should be requested at [prettier/prettier](https://github.com/prettier/prettier/issues).
+        - This is for VS Code **extension** features only.
+        - Please search [existing issues](https://github.com/prettier/prettier-vscode/issues) first.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight Checklist
+      options:
+        - label: I have searched [existing issues](https://github.com/prettier/prettier-vscode/issues) and this is not a duplicate
+          required: true
+        - label: This is a feature for the **VS Code extension**, not for Prettier's formatting behavior
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: Is your feature request related to a problem? Describe it.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like.
+      placeholder: I would like the extension to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered.
+      placeholder: I've also considered...
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or screenshots about the feature request.

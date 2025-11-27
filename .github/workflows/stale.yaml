@@ -1,0 +1,82 @@
+name: Close Stale Issues
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 1 * * *"
+
+jobs:
+  # Close issues labeled need-more-info after 7 days of inactivity
+  close-need-more-info:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-label: stale
+          any-of-labels: need-more-info
+          exempt-issue-labels: enhancement, help-wanted
+          days-before-stale: -1
+          days-before-issue-close: 7
+          days-before-pr-close: -1
+          close-issue-message: |
+            ## Issue Closed — Information Not Provided
+
+            This issue has been automatically closed because the requested information was not provided within 7 days.
+
+            ### Want to reopen this?
+            If you can now provide the missing information, please open a new issue with:
+            - A [reproduction repository](https://github.com/prettier/prettier-vscode/blob/main/docs/troubleshooting.md)
+            - Prettier extension logs
+            - Steps to reproduce
+
+            We're happy to help once we have enough information to investigate!
+
+  # Mark inactive issues as stale after 60 days, close after 7 more days
+  stale-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-label: stale
+          stale-pr-label: stale
+          exempt-issue-labels: need-more-info, enhancement, help-wanted, pinned
+          exempt-pr-labels: pinned
+          days-before-stale: 60
+          days-before-close: 7
+          stale-issue-message: |
+            ## Stale Issue
+
+            This issue has been automatically marked as **stale** because it hasn't had any activity in 60 days.
+
+            **What happens next:**
+            - If no further activity occurs, this issue will be closed in **7 days**
+            - To keep this issue open, add a comment or remove the `stale` label
+
+            If this issue is still relevant and you have new information to add, please comment below.
+          stale-pr-message: |
+            ## Stale Pull Request
+
+            This PR has been automatically marked as **stale** because it hasn't had any activity in 60 days.
+
+            **What happens next:**
+            - If no further activity occurs, this PR will be closed in **7 days**
+            - To keep this PR open, add a comment or remove the `stale` label
+
+            If you're still working on this, please let us know!
+          close-issue-message: |
+            ## Issue Closed — Inactive
+
+            This issue has been automatically closed due to inactivity.
+
+            If this issue is still relevant, feel free to reopen it or open a new issue with updated information.
+          close-pr-message: |
+            ## PR Closed — Inactive
+
+            This pull request has been automatically closed due to inactivity.
+
+            If you'd like to continue working on this, feel free to reopen the PR or open a new one.

@@ -1,0 +1,80 @@
+name: "Lock threads"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Lock inactive closed issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 90);
+            const cutoffISO = cutoffDate.toISOString().split('T')[0];
+
+            const query = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:closed updated:<${cutoffISO} -is:locked`;
+
+            let page = 1;
+            let locked = 0;
+
+            while (locked < 50) {
+              const result = await github.rest.search.issuesAndPullRequests({
+                q: query,
+                sort: 'updated',
+                order: 'asc',
+                per_page: 30,
+                page: page++
+              });
+
+              if (result.data.items.length === 0) break;
+
+              for (const issue of result.data.items) {
+                if (locked >= 50) break;
+
+                try {
+                  await github.rest.issues.lock({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    lock_reason: 'resolved'
+                  });
+
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    labels: ['locked']
+                  });
+
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    body: `## Issue Locked
+
+This issue has been automatically locked because it has been closed for more than 90 days with no activity.
+
+### Have a related problem?
+Please [open a new issue](https://github.com/prettier/prettier-vscode/issues/new/choose) with:
+- A link to this issue for context
+- Your specific problem or question
+- A reproduction repository if applicable
+
+This helps us track issues properly and ensures your problem gets the attention it needs.`
+                  });
+
+                  locked++;
+                  console.log(`Locked issue #${issue.number}`);
+                } catch (e) {
+                  console.log(`Failed to lock #${issue.number}: ${e.message}`);
+                }
+              }
+            }
+
+            console.log(`Total locked: ${locked}`);
