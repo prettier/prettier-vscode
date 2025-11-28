@@ -1,10 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Test module resolution", function () {
-  this.timeout(10000);
-
-  test("it formats without prettier dep using internal version", async () => {
+describe("Test module resolution", () => {
+  it("it formats without prettier dep using internal version", async () => {
     const { actual } = await format(
       "no-dep",
       "index.js",
@@ -14,7 +12,7 @@ suite("Test module resolution", function () {
     assert.equal(actual, expected);
   });
 
-  test("it formats without prettier in package.json", async () => {
+  it("it formats without prettier in package.json", async () => {
     const { actual } = await format(
       "module",
       "index.js",
@@ -24,7 +22,7 @@ suite("Test module resolution", function () {
     assert.equal(actual, expected);
   });
 
-  test("it loads plugin referenced in dependency module", async () => {
+  it("it loads plugin referenced in dependency module", async () => {
     const { actual } = await format(
       "module-plugin",
       "index.js",

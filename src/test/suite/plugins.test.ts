@@ -1,9 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Test plugins", function () {
-  this.timeout(10000);
-  test("it formats with plugins", async () => {
+describe("Test plugins", () => {
+  it("it formats with plugins", async () => {
     const { actual } = await format(
       "plugins",
       "index.php",
@@ -13,7 +12,7 @@ suite("Test plugins", function () {
     assert.equal(actual, expected);
   });
 
-  test("it correctly resolved plugin in pnpm node_modules dirs structure", async () => {
+  it("it correctly resolved plugin in pnpm node_modules dirs structure", async () => {
     const { actual } = await format(
       "plugins-pnpm",
       "index.js",
@@ -23,7 +22,7 @@ suite("Test plugins", function () {
     assert.equal(actual, expected);
   });
 
-  test("it should be able to obtain the `inferredParser` of the plugin", async () => {
+  it("it should be able to obtain the `inferredParser` of the plugin", async () => {
     const { actual } = await format("plugins-pnpm", "index.php");
     const expected = await getText("plugins-pnpm", "index.result.php");
     assert.equal(actual, expected);

@@ -1,9 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Test v3 + plugins", function () {
-  this.timeout(10000);
-  test("it formats with v3 + plugins", async () => {
+describe("Test v3 + plugins", () => {
+  it("it formats with v3 + plugins", async () => {
     const { actual } = await format(
       "v3-plugins",
       "index.xml",

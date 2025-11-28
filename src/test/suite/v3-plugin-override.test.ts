@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Test v3 + plugin override", function () {
+describe("Test v3 + plugin override", function () {
   this.timeout(20000);
-  test("it formats with v3 + plugin override", async () => {
+  it("it formats with v3 + plugin override", async () => {
     const { actual } = await format(
       "v3-plugin-override",
       "index.js",

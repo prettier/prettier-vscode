@@ -1,9 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import * as vscode from "vscode";
 
-suite("Test format Document Ranges", function () {
-  this.timeout(10000);
-  test("it formats JavaScript ranges", async () => {
+describe("Test format Document Ranges", () => {
+  it("it formats JavaScript ranges", async () => {
     const input = `\
   let i    ="format me!"
   let  j  = "leave me alone"
