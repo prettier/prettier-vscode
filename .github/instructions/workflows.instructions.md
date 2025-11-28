@@ -6,8 +6,7 @@ applyTo: ".github/workflows/*.yaml"
 
 ## Package Manager
 
-- Use `pnpm` as the package manager
-- Include `pnpm/action-setup@v4` before running pnpm commands
+- Use `npm` as the package manager
 - Use `actions/setup-node@v6` with `node-version-file: ".nvmrc"`
 
 ## Checkout and Setup Pattern
@@ -17,15 +16,14 @@ applyTo: ".github/workflows/*.yaml"
 - uses: actions/setup-node@v6
   with:
     node-version-file: ".nvmrc"
-- uses: pnpm/action-setup@v4
-- run: pnpm install
+- run: npm ci
 ```
 
 ## Testing
 
 - Linux tests require Xvfb for display: `/usr/bin/Xvfb :99 -screen 0 1024x768x24`
 - Set `DISPLAY: ":99.0"` environment variable for tests on Linux
-- Tests run via `pnpm test`
+- Tests run via `npm test`
 
 ## Permissions
 

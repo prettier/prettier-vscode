@@ -10,31 +10,31 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Build for development
-pnpm compile
+npm run compile
 
 # Build for production
-pnpm package
+npm run package
 
 # Watch mode (esbuild + TypeScript type checking)
-pnpm watch
+npm run watch
 
 # Run linting
-pnpm lint
+npm run lint
 
 # Format code with Prettier
-pnpm prettier
+npm run prettier
 
 # Run tests (requires no VS Code instance running)
-pnpm test
+npm test
 
 # Run web extension tests (headless browser)
-pnpm test:web
+npm run test:web
 
 # Compile tests only
-pnpm compile:test
+npm run compile:test
 ```
 
 ## Running Tests
@@ -44,16 +44,16 @@ pnpm compile:test
 Tests require the `test-fixtures/` workspace and run inside a VS Code instance:
 
 1. **Via VS Code Debug**: Open Debug sidebar → "Launch Tests"
-2. **Via CLI**: `pnpm test` (no VS Code instance can be running)
+2. **Via CLI**: `npm test` (no VS Code instance can be running)
 
-Before running tests, `pnpm pretest` installs dependencies in various test fixture directories.
+Before running tests, `npm run pretest` installs dependencies in various test fixture directories.
 
 ### Web Extension Tests
 
 Web tests run in a headless Chromium browser to verify the web extension works correctly:
 
 ```bash
-pnpm test:web
+npm run test:web
 ```
 
 Web tests are located in `src/test/web/suite/` and test the extension's browser functionality.
@@ -102,7 +102,7 @@ esbuild produces two bundles:
 
 The browser build uses path aliasing to swap `ModuleResolver` → `BrowserModuleResolver`.
 
-Build configuration is in `esbuild.js`.
+Build configuration is in `esbuild.mjs`.
 
 ## Test Fixtures
 

@@ -3,12 +3,12 @@
  * Automated release script for prettier-vscode
  *
  * Usage:
- *   pnpm release major              - Bump major version (11.0.0 -> 12.0.0)
- *   pnpm release minor              - Bump minor version (11.0.0 -> 11.1.0)
- *   pnpm release patch              - Bump patch version (11.0.0 -> 11.0.1)
- *   pnpm release patch --pre        - Patch as prerelease (tag: v11.0.1-pre)
- *   pnpm release minor 12.1.0       - Use specific version
- *   pnpm release patch 12.0.1 --pre - Specific version as prerelease
+ *   npm run release major              - Bump major version (11.0.0 -> 12.0.0)
+ *   npm run release minor              - Bump minor version (11.0.0 -> 11.1.0)
+ *   npm run release patch              - Bump patch version (11.0.0 -> 11.0.1)
+ *   npm run release patch -- --pre     - Patch as prerelease (tag: v11.0.1-pre)
+ *   npm run release minor 12.1.0       - Use specific version
+ *   npm run release patch 12.0.1 --pre - Specific version as prerelease
  */
 import fs from "fs/promises";
 import { execSync } from "child_process";
@@ -108,18 +108,22 @@ async function main() {
   const { releaseType, manualVersion, isPrerelease } = parseArgs(process.argv);
 
   if (!releaseType || !RELEASE_TYPES.includes(releaseType)) {
-    console.error("Usage: pnpm release <major|minor|patch> [version] [--pre]");
+    console.error(
+      "Usage: npm run release <major|minor|patch> [version] [-- --pre]",
+    );
     console.error("");
     console.error("Examples:");
-    console.error("  pnpm release major              - 11.0.0 -> 12.0.0");
-    console.error("  pnpm release minor              - 11.0.0 -> 11.1.0");
-    console.error("  pnpm release patch              - 11.0.0 -> 11.0.1");
+    console.error("  npm run release major              - 11.0.0 -> 12.0.0");
+    console.error("  npm run release minor              - 11.0.0 -> 11.1.0");
+    console.error("  npm run release patch              - 11.0.0 -> 11.0.1");
     console.error(
-      "  pnpm release patch --pre        - 11.0.0 -> 11.0.1 (tag: v11.0.1-pre)",
+      "  npm run release patch -- --pre     - 11.0.0 -> 11.0.1 (tag: v11.0.1-pre)",
     );
-    console.error("  pnpm release minor 12.1.0       - Use specific version");
     console.error(
-      "  pnpm release patch 12.0.1 --pre - Specific version as prerelease",
+      "  npm run release minor 12.1.0       - Use specific version",
+    );
+    console.error(
+      "  npm run release patch 12.0.1 --pre - Specific version as prerelease",
     );
     process.exit(1);
   }
@@ -149,7 +153,7 @@ async function main() {
     console.error(`Error: Stable releases must be run from the main branch.`);
     console.error(`Current branch: ${currentBranch}`);
     console.error("\nTo release a prerelease from this branch, use:");
-    console.error("  pnpm release <major|minor|patch> --pre");
+    console.error("  npm run release <major|minor|patch> -- --pre");
     process.exit(1);
   }
 

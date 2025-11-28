@@ -11,8 +11,7 @@ const testFixturesDir = path.join(__dirname, "..", "test-fixtures");
  */
 function getInstallCommand(packageManager) {
   if (!packageManager) {
-    // --ignore-workspace treats fixture as standalone, not part of root workspace
-    return "pnpm install --ignore-workspace";
+    return "npm install";
   }
   if (packageManager.startsWith("yarn")) {
     return "yarn install";
@@ -21,10 +20,9 @@ function getInstallCommand(packageManager) {
     return "npm install";
   }
   if (packageManager.startsWith("pnpm")) {
-    // --ignore-workspace treats fixture as standalone, not part of root workspace
-    return "pnpm install --ignore-workspace";
+    return "pnpm install";
   }
-  return "pnpm install --ignore-workspace";
+  return "npm install";
 }
 
 /**

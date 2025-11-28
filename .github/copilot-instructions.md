@@ -4,12 +4,12 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 
 ## Development
 
-- Use `pnpm` as the package manager
-- Run `pnpm install` to install dependencies
-- Run `pnpm compile` to build for development
-- Run `pnpm test` to run tests (no VS Code instance can be running)
-- Run `pnpm lint` to check linting
-- Run `pnpm prettier` to format code
+- Use `npm` as the package manager
+- Run `npm install` to install dependencies
+- Run `npm run compile` to build for development
+- Run `npm run test` to run tests (no VS Code instance can be running)
+- Run `npm run lint` to check linting
+- Run `npm run prettier` to format code
 
 ## Architecture
 
