@@ -42,7 +42,7 @@ function installFixture(fixtureDir, pkgJson) {
       cwd: fixtureDir,
       stdio: "inherit",
     });
-  } catch (error) {
+  } catch {
     console.error(`Failed to install ${relativePath}`);
     process.exit(1);
   }
@@ -70,7 +70,7 @@ function findFixtures(dir, results = []) {
 
           // Check for nested fixtures (like explicit-dep/implicit-dep)
           findFixtures(fullPath, results);
-        } catch (e) {
+        } catch {
           console.error(`Failed to parse ${pkgPath}`);
         }
       }

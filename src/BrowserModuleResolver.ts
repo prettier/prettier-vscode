@@ -46,7 +46,6 @@ export class ModuleResolver implements ModuleResolverInterface {
   constructor(private loggingService: LoggingService) {}
 
   public async getPrettierInstance(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _fileName: string,
   ): Promise<PrettierModule | undefined> {
     return this.getGlobalPrettierInstance();
@@ -212,9 +211,8 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   async getResolvedConfig(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _doc: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     _vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     return null;

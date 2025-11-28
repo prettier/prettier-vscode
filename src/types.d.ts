@@ -9,7 +9,7 @@ type PrettierBuiltInParserName = prettier.BuiltInParserName;
 type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
 type PrettierOptions = prettier.Options;
 type PrettierFileInfoOptions = prettier.FileInfoOptions;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 type PrettierPlugin = prettier.Plugin<any> | string | URL;
 
 type PrettierModule = {

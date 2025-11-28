@@ -16,7 +16,6 @@
   "include": [
     "src/**/*.ts",
     "./node_modules/vscode/vscode.d.ts",
-    "./node_modules/vscode/lib/*",
-    ".eslintrc.js"
+    "./node_modules/vscode/lib/*"
   ]
 }

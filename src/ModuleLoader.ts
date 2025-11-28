@@ -14,7 +14,7 @@ export function nodeModuleLoader() {
 export function loadNodeModule<T>(moduleName: string): T | undefined {
   try {
     return nodeModuleLoader()(moduleName);
-  } catch (error) {
+  } catch {
     throw new Error(`Error loading node module '${moduleName}'`);
   }
 }
@@ -25,7 +25,7 @@ export function resolveNodeModule(
 ) {
   try {
     return nodeModuleLoader().resolve(moduleName, options);
-  } catch (error) {
+  } catch {
     throw new Error(`Error resolve node module '${moduleName}'`);
   }
 }

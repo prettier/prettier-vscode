@@ -47,7 +47,7 @@ type Mutable<T> = {
 
 // Workaround for https://github.com/prettier/prettier-vscode/issues/3020
 // Use require() to get a mutable fs module reference and override statSync
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const mutableFs: Mutable<typeof import("fs")> = require("fs");
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
@@ -637,7 +637,7 @@ export class ModuleResolver implements ModuleResolverInterface {
             packageJson = JSON.parse(
               fs.readFileSync(path.join(dir, "package.json"), "utf8"),
             );
-          } catch (e) {
+          } catch {
             // Swallow, if we can't read it we don't want to resolve based on it
           }
 

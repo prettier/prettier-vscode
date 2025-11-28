@@ -4,7 +4,7 @@ import { PrettierOptions } from "../types";
 function resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
   try {
     return require.resolve(moduleName, options);
-  } catch (error) {
+  } catch {
     throw new Error(`Error resolve node module '${moduleName}'`);
   }
 }
