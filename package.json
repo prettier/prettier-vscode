@@ -83,16 +83,7 @@
     "version": "node ./scripts/version.mjs && git add CHANGELOG.md",
     "postversion": "git push origin main --tags",
     "chrome": "pnpm compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "test:web": "pnpm test-compile && node ./out/test/web/runTests.js",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "**/*.{ts,json,md,yml,hbs,js}": [
-      "prettier --write"
-    ],
-    "src/**/*.ts": [
-      "eslint -c .eslintrc.js --ext .ts ."
-    ]
+    "test:web": "pnpm test-compile && node ./out/test/web/runTests.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
@@ -113,8 +104,7 @@
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^9.1.0",
     "fs-extra": "^11.2.0",
-    "husky": "^9.1.4",
-    "lint-staged": "^15.2.9",
+    "lefthook": "^1.11.6",
     "mocha": "^10.7.3",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",

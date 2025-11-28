@@ -13,8 +13,6 @@ function isWindows(): boolean {
 
 /**
  * Resolve the global npm package path.
- * @deprecated Since this depends on the used package manager and their version the best is that servers
- * implement this themselves since they know best what kind of package managers to support.
  * @param tracer the tracer to use
  */
 export function resolveGlobalNodePath(
