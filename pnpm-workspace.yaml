@@ -1,0 +1,9 @@
+# Require packages to be at least 7 days old before installation
+# This matches our dependabot cooldown config (default-days: 7)
+# and provides a stability buffer against compromised packages
+minimumReleaseAge: 10080
+
+# Exclude prettier from the minimum age requirement since we need
+# to test against new releases quickly
+minimumReleaseAgeExclude:
+  - prettier
