@@ -125,10 +125,13 @@ const browserConfig = {
     ),
     "process.env.EXTENSION_VERSION": JSON.stringify(extensionPackage.version),
     "process.env.BROWSER_ENV": JSON.stringify("true"),
-    "process.platform": JSON.stringify("browser"),
+    global: "globalThis",
   },
   alias: {
     path: "path-browserify",
+  },
+  banner: {
+    js: `var process = {env: {EXTENSION_NAME: "${extensionPackage.publisher}.${extensionPackage.name}", EXTENSION_VERSION: "${extensionPackage.version}", BROWSER_ENV: "true"}, platform: "browser", cwd: function() { return "/"; }, nextTick: function(cb) { setTimeout(cb, 0); }};`,
   },
   logLevel: "silent",
   plugins: [
@@ -138,15 +141,50 @@ const browserConfig = {
   ],
 };
 
+// Web test bundle configuration
+const webTestConfig = {
+  entryPoints: ["src/test/web/suite/index.ts"],
+  bundle: true,
+  format: "cjs",
+  minify: false,
+  sourcemap: true,
+  sourcesContent: false,
+  platform: "browser",
+  outfile: "dist/web/test/suite/index.js",
+  external: ["vscode"],
+  define: {
+    "process.env.BROWSER_ENV": JSON.stringify("true"),
+    "process.platform": JSON.stringify("browser"),
+  },
+  alias: {
+    path: "path-browserify",
+  },
+  logLevel: "silent",
+  plugins: [esbuildProblemMatcherPlugin],
+};
+
 async function main() {
   const nodeCtx = await esbuild.context(nodeConfig);
   const browserCtx = await esbuild.context(browserConfig);
+  const webTestCtx = await esbuild.context(webTestConfig);
 
   if (watch) {
-    await Promise.all([nodeCtx.watch(), browserCtx.watch()]);
+    await Promise.all([
+      nodeCtx.watch(),
+      browserCtx.watch(),
+      webTestCtx.watch(),
+    ]);
   } else {
-    await Promise.all([nodeCtx.rebuild(), browserCtx.rebuild()]);
-    await Promise.all([nodeCtx.dispose(), browserCtx.dispose()]);
+    await Promise.all([
+      nodeCtx.rebuild(),
+      browserCtx.rebuild(),
+      webTestCtx.rebuild(),
+    ]);
+    await Promise.all([
+      nodeCtx.dispose(),
+      browserCtx.dispose(),
+      webTestCtx.dispose(),
+    ]);
   }
 }
 
