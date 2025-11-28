@@ -92,8 +92,7 @@ Key components:
 
 - `PrettierEditService.ts` - Handles document formatting
 - `ModuleResolver.ts` - Resolves Prettier installations (local, global, or bundled)
-- `PrettierWorkerInstance.ts` - Runs Prettier v3+ in a worker thread
-- `PrettierMainThreadInstance.ts` - Runs Prettier v2 on the main thread
+- `PrettierInstance.ts` - Loads and wraps Prettier using dynamic `import()` (works with v2 and v3+)
 
 ## Submitting Changes
 

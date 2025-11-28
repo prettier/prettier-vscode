@@ -17,6 +17,18 @@ module.exports = {
   },
   ignorePatterns: ["test-fixtures/**"],
   parserOptions: {
-    project: "./tsconfig.json",
+    project: ["./tsconfig.json", "./tsconfig.scripts.json"],
   },
+  overrides: [
+    {
+      files: ["*.mjs", "scripts/*.mjs"],
+      env: {
+        node: true,
+      },
+      rules: {
+        "no-console": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+      },
+    },
+  ],
 };

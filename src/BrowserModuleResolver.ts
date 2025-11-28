@@ -20,25 +20,26 @@ import * as markdownPlugin from "prettier/plugins/markdown";
 import * as estreePlugin from "prettier/plugins/estree";
 import * as typescriptPlugin from "prettier/plugins/typescript";
 import * as yamlPlugin from "prettier/plugins/yaml";
+import * as meriyahPlugin from "prettier/plugins/meriyah";
 
-// Note: meriyah parser was removed in Prettier 3, use babel instead
-// postcss and flow are commented out due to CSP restrictions
+// Note: postcss and flow are not imported due to CSP restrictions
 
 import { TextDocument, Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
-import { getWorkspaceRelativePath } from "./util";
+import { getWorkspaceRelativePath } from "./utils/workspace";
 import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
   angularPlugin,
   babelPlugin,
-  estreePlugin, // Required for JS/TS formatting in Prettier 3
+  estreePlugin,
   glimmerPlugin,
   graphqlPlugin,
   htmlPlugin,
   markdownPlugin,
   typescriptPlugin,
   yamlPlugin,
+  meriyahPlugin,
 ];
 
 export class ModuleResolver implements ModuleResolverInterface {
@@ -70,6 +71,7 @@ export class ModuleResolver implements ModuleResolverInterface {
         return {
           languages: [
             {
+              name: "JavaScript",
               vscodeLanguageIds: [
                 "javascript",
                 "javascriptreact",
@@ -88,74 +90,89 @@ export class ModuleResolver implements ModuleResolverInterface {
               ],
             },
             {
+              name: "TypeScript",
               vscodeLanguageIds: ["typescript"],
               extensions: [],
               parsers: ["typescript", "babel-ts"],
             },
             {
+              name: "TSX",
               vscodeLanguageIds: ["typescriptreact"],
               extensions: [],
               parsers: ["typescript", "babel-ts"],
             },
             {
+              name: "JSON.stringify",
               vscodeLanguageIds: ["json"],
               extensions: [],
               parsers: ["json-stringify"],
             },
             {
+              name: "JSON",
               vscodeLanguageIds: ["json"],
               extensions: [],
               parsers: ["json"],
             },
             {
+              name: "JSON with Comments",
               vscodeLanguageIds: ["jsonc"],
               parsers: ["json"],
             },
             {
+              name: "JSON5",
               vscodeLanguageIds: ["json5"],
               extensions: [],
               parsers: ["json5"],
             },
             {
+              name: "Handlebars",
               vscodeLanguageIds: ["handlebars"],
               extensions: [],
               parsers: ["glimmer"],
             },
             {
+              name: "GraphQL",
               vscodeLanguageIds: ["graphql"],
               extensions: [],
               parsers: ["graphql"],
             },
             {
+              name: "Markdown",
               vscodeLanguageIds: ["markdown"],
               parsers: ["markdown"],
             },
             {
+              name: "MDX",
               vscodeLanguageIds: ["mdx"],
               extensions: [],
               parsers: ["mdx"],
             },
             {
+              name: "Angular",
               vscodeLanguageIds: ["html"],
               extensions: [],
               parsers: ["angular"],
             },
             {
+              name: "HTML",
               vscodeLanguageIds: ["html"],
               extensions: [],
               parsers: ["html"],
             },
             {
+              name: "Lightning Web Components",
               vscodeLanguageIds: ["html"],
               extensions: [],
               parsers: ["lwc"],
             },
             {
+              name: "Vue",
               vscodeLanguageIds: ["vue"],
               extensions: [],
               parsers: ["vue"],
             },
             {
+              name: "YAML",
               vscodeLanguageIds: ["yaml", "ansible", "home-assistant"],
               extensions: [],
               parsers: ["yaml"],

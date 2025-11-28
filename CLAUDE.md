@@ -86,11 +86,10 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 - Caches resolved modules and configurations
 - Handles Workspace Trust restrictions
 
-**Prettier Instance Wrappers**:
+**Prettier Instance** (`PrettierInstance.ts`):
 
-- `PrettierWorkerInstance.ts`: Runs Prettier v3+ in a worker thread for async formatting
-- `PrettierMainThreadInstance.ts`: Runs Prettier v2 synchronously on main thread
-- Worker script lives in `src/worker/prettier-instance-worker.js`
+- `PrettierModuleInstance` loads Prettier using dynamic `import()` for ESM support
+- Works with both Prettier v2 (CJS) and v3+ (ESM)
 
 ### Bundling
 

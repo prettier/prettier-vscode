@@ -2,36 +2,28 @@ import * as prettier from "prettier";
 import { TextDocument, Uri } from "vscode";
 import { PrettierInstance } from "./PrettierInstance";
 
-type PrettierSupportLanguage = {
-  vscodeLanguageIds?: string[];
-  extensions?: string[];
-  parsers: string[];
-};
-type PrettierFileInfoResult = {
-  ignored: boolean;
-  inferredParser?: PrettierBuiltInParserName | null;
-};
-type PrettierBuiltInParserName = string;
+// Re-export Prettier types for convenience
+type PrettierSupportLanguage = prettier.SupportLanguage;
+type PrettierFileInfoResult = prettier.FileInfoResult;
+type PrettierBuiltInParserName = prettier.BuiltInParserName;
 type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
-type PrettierOptions = prettier.Options & {
-  experimentalTernaries?: boolean;
-  objectWrap?: "preserve" | "collapse";
-  experimentalOperatorPosition?: "start" | "end";
-};
+type PrettierOptions = prettier.Options;
 type PrettierFileInfoOptions = prettier.FileInfoOptions;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PrettierPlugin = prettier.Plugin<any> | string | URL;
 
 type PrettierModule = {
-  format(source: string, options?: prettier.Options): Promise<string>;
-  getSupportInfo(): Promise<{ languages: PrettierSupportLanguage[] }>;
+  format(source: string, options?: PrettierOptions): Promise<string>;
+  getSupportInfo(options?: {
+    plugins?: Array<string | PrettierPlugin>;
+  }): Promise<{ languages: PrettierSupportLanguage[] }>;
   getFileInfo(
     filePath: string,
     options?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult>;
 };
 
-type ModuleResolverInterface = {
+export type ModuleResolverInterface = {
   getPrettierInstance(
     fileName: string,
   ): Promise<PrettierModule | PrettierInstance | undefined>;
@@ -50,7 +42,7 @@ type ModuleResolverInterface = {
       resolveConfigFile(filePath?: string): Promise<string | null>;
       resolveConfig(
         fileName: string,
-        options?: prettier.ResolveConfigOptions,
+        options?: PrettierResolveConfigOptions,
       ): Promise<PrettierOptions | null>;
     },
     uri: Uri,
@@ -58,8 +50,6 @@ type ModuleResolverInterface = {
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
 };
-
-type TrailingCommaOption = "none" | "es5" | "all";
 
 export type PackageManagers = "npm" | "yarn" | "pnpm";
 
@@ -111,7 +101,7 @@ interface IExtensionConfig {
 /**
  * Configuration for prettier-vscode
  */
-export type PrettierVSCodeConfig = IExtensionConfig & prettier.Options;
+export type PrettierVSCodeConfig = IExtensionConfig & PrettierOptions;
 
 export interface RangeFormattingOptions {
   rangeStart: number;

@@ -14,7 +14,11 @@ suite("Test plugins", function () {
   });
 
   test("it correctly resolved plugin in pnpm node_modules dirs structure", async () => {
-    const { actual } = await format("plugins-pnpm", "index.js");
+    const { actual } = await format(
+      "plugins-pnpm",
+      "index.js",
+      /* shouldRetry */ true,
+    );
     const expected = await getText("plugins-pnpm", "index.result.js");
     assert.equal(actual, expected);
   });

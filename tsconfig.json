@@ -5,6 +5,7 @@
     "outDir": "out",
     "strict": true,
     "noUnusedLocals": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "lib": ["ES2020"],

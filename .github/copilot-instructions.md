@@ -23,8 +23,7 @@ Core components:
 - `src/extension.ts` - Extension activation, creates ModuleResolver, PrettierEditService, and StatusBar
 - `src/PrettierEditService.ts` - Registers VS Code document formatting providers, handles format requests
 - `src/ModuleResolver.ts` - Resolves local/global Prettier installations, falls back to bundled Prettier
-- `src/PrettierWorkerInstance.ts` - Runs Prettier v3+ in a worker thread for async formatting
-- `src/PrettierMainThreadInstance.ts` - Runs Prettier v2 synchronously on main thread
+- `src/PrettierInstance.ts` - Loads Prettier using dynamic `import()` (works with v2 and v3+)
 
 Webpack produces two bundles:
 
@@ -70,7 +69,7 @@ When reviewing pull requests, focus on:
 ### Performance
 
 - Avoid blocking the extension host main thread
-- Prettier v3+ should use worker threads via `PrettierWorkerInstance`
+- Prettier is loaded asynchronously using dynamic `import()`
 - Module and config resolution results are cached appropriately
 
 ### Browser Compatibility

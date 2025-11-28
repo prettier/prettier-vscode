@@ -6,7 +6,10 @@ import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
 import { commands, TextDocument, Uri, workspace } from "vscode";
-import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
+import {
+  resolveGlobalNodePath,
+  resolveGlobalYarnPath,
+} from "./utils/global-node-paths";
 import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
@@ -23,11 +26,16 @@ import {
   PrettierResolveConfigOptions,
   PrettierVSCodeConfig,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
+import {
+  getWorkspaceConfig,
+  getWorkspaceRelativePath,
+} from "./utils/workspace";
 import { PrettierInstance } from "./PrettierInstance";
+import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
+import { resolveConfigPlugins } from "./utils/resolve-config-plugins";
+import { isAboveV3 } from "./utils/versions";
+import { loadNodeModule } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
@@ -36,7 +44,7 @@ export type PrettierNodeModule = typeof prettier;
 // Workaround for https://github.com/prettier/prettier-vscode/issues/3020
 // Use require() to get a mutable fs module reference and override statSync
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const mutableFs: Record<string, unknown> = require("fs");
+const mutableFs = require("fs") as Record<string, unknown>;
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
   filePath: fs.PathLike,
@@ -51,8 +59,13 @@ const fsStatSyncWorkaround = (
   options.throwIfNoEntry = true;
   try {
     return origFsStatSync(filePath, options);
-  } catch (error: any) {
-    if (error.code === "ENOENT") {
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
       return undefined;
     }
     throw error;
@@ -160,7 +173,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       return prettier;
     }
 
-    const { prettierPath, resolveGlobalModules } = getConfig(
+    const { prettierPath, resolveGlobalModules } = getWorkspaceConfig(
       Uri.file(fileName),
     );
 

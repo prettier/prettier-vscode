@@ -15,7 +15,11 @@ suite("Test module resolution", function () {
   });
 
   test("it formats without prettier in package.json", async () => {
-    const { actual } = await format("module", "index.js");
+    const { actual } = await format(
+      "module",
+      "index.js",
+      /* shouldRetry */ true,
+    );
     const expected = await getText("module", "index.result.js");
     assert.equal(actual, expected);
   });
