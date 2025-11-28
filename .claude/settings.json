@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:prettier.io)",
-      "Bash(npm run prettier:*)",
+      "WebFetch(domain:code.visualstudio.com)",
+      "Bash(pnpm prettier:*)",
+      "Bash(pnpm lint:*)",
       "mcp__ide__getDiagnostics"
     ],
     "deny": [],

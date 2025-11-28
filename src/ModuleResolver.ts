@@ -466,6 +466,123 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   /**
+   * Find a package through transitive dependencies. This is necessary for
+   * package managers like pnpm that don't hoist dependencies to the root
+   * node_modules. For example, if project A depends on package B, and B
+   * depends on prettier, pnpm won't make prettier accessible from A's directory.
+   * This method checks each dependency to see if it provides access to the target package.
+   *
+   * @param {string} startDir Directory to start searching from
+   * @param {string} pkgName Package name to search for
+   * @returns {string | undefined} Resolved path to the package, or undefined if not found
+   */
+  private findPkgThroughTransitiveDeps(
+    startDir: string,
+    pkgName: string,
+  ): string | undefined {
+    const searchResult = findUp.sync(
+      (dir) => {
+        const nodeModulesPath = path.join(dir, "node_modules");
+        if (!fs.existsSync(nodeModulesPath)) {
+          if (this.isInternalTestRoot(dir)) {
+            return findUp.stop;
+          }
+          return;
+        }
+
+        // Get list of installed dependencies from node_modules
+        let installedDeps: string[];
+        try {
+          installedDeps = fs.readdirSync(nodeModulesPath).filter((name) => {
+            // Skip hidden files and pnpm internal directories
+            if (name.startsWith(".")) return false;
+            // Check if it's a directory or symlink
+            const depPath = path.join(nodeModulesPath, name);
+            try {
+              const stat = fs.lstatSync(depPath);
+              return stat.isDirectory() || stat.isSymbolicLink();
+            } catch {
+              return false;
+            }
+          });
+        } catch {
+          if (this.isInternalTestRoot(dir)) {
+            return findUp.stop;
+          }
+          return;
+        }
+
+        // Check each dependency to see if it provides access to the target package
+        for (const depName of installedDeps) {
+          // Skip scoped packages for now (would need special handling)
+          if (depName.startsWith("@")) continue;
+
+          const depPath = path.join(nodeModulesPath, depName);
+          try {
+            // Get the real path (resolves symlinks)
+            const realDepPath = fs.realpathSync(depPath);
+
+            // Try to resolve the target package from within the dependency's directory
+            try {
+              resolve.sync(pkgName, {
+                basedir: realDepPath,
+                preserveSymlinks: false,
+              });
+              // Found! Return this directory
+              return dir;
+            } catch {
+              // This dependency doesn't provide access to the target package
+            }
+          } catch {
+            // Couldn't get real path for this dependency, skip it
+          }
+        }
+
+        if (this.isInternalTestRoot(dir)) {
+          return findUp.stop;
+        }
+      },
+      { cwd: startDir, type: "directory" },
+    );
+
+    if (searchResult) {
+      // Now we need to find the actual path through the dependency
+      const nodeModulesPath = path.join(searchResult, "node_modules");
+      const installedDeps = fs.readdirSync(nodeModulesPath).filter((name) => {
+        if (name.startsWith(".")) return false;
+        const depPath = path.join(nodeModulesPath, name);
+        try {
+          const stat = fs.lstatSync(depPath);
+          return stat.isDirectory() || stat.isSymbolicLink();
+        } catch {
+          return false;
+        }
+      });
+
+      for (const depName of installedDeps) {
+        if (depName.startsWith("@")) continue;
+
+        const depPath = path.join(nodeModulesPath, depName);
+        try {
+          const realDepPath = fs.realpathSync(depPath);
+          try {
+            return resolve.sync(pkgName, {
+              basedir: realDepPath,
+              preserveSymlinks: false,
+            });
+          } catch {
+            // Continue to next dependency
+          }
+        } catch {
+          // Continue to next dependency
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
    * Recursively search upwards for a given module definition based on
    * package.json or node_modules existence
    * @param {string} fsPath file system path to start searching from
@@ -524,7 +641,21 @@ export class ModuleResolver implements ModuleResolverInterface {
       return packagePath;
     }
 
-    // If no explicit package.json dep found, instead look for implicit dep
+    // If no explicit package.json dep found, try to resolve through transitive
+    // dependencies. This handles cases where prettier is a dependency of one of the
+    // project's dependencies. This is important for pnpm which doesn't hoist
+    // dependencies to the root node_modules.
+    const transitiveResult = this.findPkgThroughTransitiveDeps(
+      finalPath,
+      pkgName,
+    );
+
+    if (transitiveResult) {
+      this.findPkgCache.set(cacheKey, transitiveResult);
+      return transitiveResult;
+    }
+
+    // If no transitive dep found, instead look for implicit dep in node_modules
     const nodeModulesResDir = findUp.sync(
       (dir) => {
         if (fs.existsSync(path.join(dir, "node_modules", pkgName))) {

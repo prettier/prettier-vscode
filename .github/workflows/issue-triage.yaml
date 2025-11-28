@@ -44,17 +44,17 @@ jobs:
                 issue_number: context.issue.number,
                 body: `## Issue Incomplete
 
-It looks like you used the **VS Code Issue Reporter** but didn't paste the generated content.
+            It looks like you used the **VS Code Issue Reporter** but didn't paste the generated content.
 
-### What happened
-VS Code copied diagnostic information to your clipboard, but it wasn't pasted into this issue.
+            ### What happened
+            VS Code copied diagnostic information to your clipboard, but it wasn't pasted into this issue.
 
-### What to do
-1. Close this issue
-2. Open a new issue using our [bug report template](https://github.com/prettier/prettier-vscode/issues/new?template=bug_report.yaml)
-3. Paste the clipboard content when prompted
+            ### What to do
+            1. Close this issue
+            2. Open a new issue using our [bug report template](https://github.com/prettier/prettier-vscode/issues/new?template=bug_report.yaml)
+            3. Paste the clipboard content when prompted
 
-Thanks for your understanding!`
+            Thanks for your understanding!`
               });
 
               await github.rest.issues.update({
@@ -106,26 +106,26 @@ Thanks for your understanding!`
                 issue_number: context.issue.number,
                 body: `## Reproduction Repository Required
 
-Thanks for opening this issue! To help us investigate, we need a **reproduction repository**.
+            Thanks for opening this issue! To help us investigate, we need a **reproduction repository**.
 
-### Why we need this
-Most issues are configuration-specific. Without a repo we can clone and test, we usually cannot diagnose the problem.
+            ### Why we need this
+            Most issues are configuration-specific. Without a repo we can clone and test, we usually cannot diagnose the problem.
 
-### How to create a reproduction
-1. Create a new **public GitHub repository**
-2. Add the minimum files needed to reproduce the issue
-3. Include a \`.prettierrc\` or other config files you're using
-4. Edit this issue and add the repository link
+            ### How to create a reproduction
+            1. Create a new **public GitHub repository**
+            2. Add the minimum files needed to reproduce the issue
+            3. Include a \`.prettierrc\` or other config files you're using
+            4. Edit this issue and add the repository link
 
-> **Tip:** The simpler the reproduction, the faster we can help!
+            > **Tip:** The simpler the reproduction, the faster we can help!
 
-### What happens next
-- **With a repo:** We'll investigate and respond
-- **Without a repo:** This issue will be automatically closed in 7 days
+            ### What happens next
+            - **With a repo:** We'll investigate and respond
+            - **Without a repo:** This issue will be automatically closed in 7 days
 
-### Resources
-- [How to create a minimal reproduction](https://github.com/prettier/prettier-vscode/blob/main/docs/troubleshooting.md)
-- [Writing a good issue](https://github.com/prettier/prettier-vscode/blob/main/docs/writing-an-issue.md)`
+            ### Resources
+            - [How to create a minimal reproduction](https://github.com/prettier/prettier-vscode/blob/main/docs/troubleshooting.md)
+            - [Writing a good issue](https://github.com/prettier/prettier-vscode/blob/main/docs/writing-an-issue.md)`
               });
             }
 

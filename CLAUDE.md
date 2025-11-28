@@ -10,41 +10,56 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 
 # Build for development
-yarn webpack
+pnpm webpack
 
 # Build for production
-yarn vscode:prepublish
+pnpm vscode:prepublish
 
 # Watch mode (TypeScript only, without webpack)
-yarn watch
+pnpm watch
 
 # Watch mode (webpack)
-yarn webpack-dev
+pnpm webpack-dev
 
 # Run linting
-yarn lint
+pnpm lint
 
 # Format code with Prettier
-yarn prettier
+pnpm prettier
 
 # Run tests (requires no VS Code instance running)
-yarn test
+pnpm test
+
+# Run web extension tests (headless browser)
+pnpm test:web
 
 # Compile tests only
-yarn test-compile
+pnpm test-compile
 ```
 
 ## Running Tests
 
+### Desktop Tests
+
 Tests require the `test-fixtures/` workspace and run inside a VS Code instance:
 
 1. **Via VS Code Debug**: Open Debug sidebar → "Launch Tests"
-2. **Via CLI**: `yarn test` (no VS Code instance can be running)
+2. **Via CLI**: `pnpm test` (no VS Code instance can be running)
 
-Before running tests, `yarn pretest` installs dependencies in various test fixture directories.
+Before running tests, `pnpm pretest` installs dependencies in various test fixture directories.
+
+### Web Extension Tests
+
+Web tests run in a headless Chromium browser to verify the web extension works correctly:
+
+```bash
+pnpm test:web
+```
+
+Web tests are located in `src/test/web/suite/` and test the extension's browser functionality.
 
 ## Architecture
 

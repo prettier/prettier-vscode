@@ -1,0 +1,10 @@
+autoInstallPeers: true
+minimumReleaseAge: 10080
+
+minimumReleaseAgeExclude:
+  - prettier
+
+onlyBuiltDependencies:
+  - "@playwright/browser-chromium"
+  - "@vscode/vsce-sign"
+  - keytar
