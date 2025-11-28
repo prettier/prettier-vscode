@@ -22,5 +22,5 @@ package-lock.json
 dist/*.map
 
 node_modules/
-!node_modules/prettier/*
-node_modules/prettier/esm
+!node_modules/prettier/
+!node_modules/prettier/**

@@ -65,7 +65,7 @@ jobs:
           node-version-file: ".nvmrc"
       - run: npm ci
       - run: npm run compile
-      - run: npx @vscode/vsce package --no-dependencies
+      - run: npx @vscode/vsce package
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v5
@@ -93,7 +93,7 @@ jobs:
           fi
       - run: npm ci
       - run: npm run compile
-      - run: npx @vscode/vsce package --no-dependencies ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx @vscode/vsce package ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
       - name: Create GitHub Release
@@ -112,4 +112,4 @@ jobs:
 
           ---
           See the full [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
-      - run: npx @vscode/vsce publish --no-dependencies -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
