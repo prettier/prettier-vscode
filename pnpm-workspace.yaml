@@ -6,7 +6,8 @@ minimumReleaseAgeExclude:
   - prettier
 
 onlyBuiltDependencies:
-  - "@playwright/browser-chromium"
-  - "@vscode/vsce-sign"
+  - '@playwright/browser-chromium'
+  - '@vscode/vsce-sign'
   - esbuild
   - keytar
+  - lefthook
