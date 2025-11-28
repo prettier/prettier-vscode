@@ -1,9 +1,12 @@
+packages:
+  - "!test-fixtures/**"
+
 minimumReleaseAge: 10080
 
 minimumReleaseAgeExclude:
   - prettier
 
 onlyBuiltDependencies:
-  - '@playwright/browser-chromium'
-  - '@vscode/vsce-sign'
+  - "@playwright/browser-chromium"
+  - "@vscode/vsce-sign"
   - keytar
