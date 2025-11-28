@@ -6,12 +6,8 @@
   "devDependencies": {
     "prettier": "^2.8.8",
     "@prettier/plugin-php": "^0.19.6",
-    "prettier-plugin-organize-imports": "2.3.4"
+    "prettier-plugin-organize-imports": "^3.2.0",
+    "typescript": "^5.0.0"
   },
-  "packageManager": "pnpm@7.33.1",
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": ["typescript"]
-    }
-  }
+  "packageManager": "pnpm@10.24.0"
 }

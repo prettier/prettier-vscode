@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "checkJs": true
+  },
+  "include": ["*.js"]
+}

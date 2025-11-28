@@ -11,5 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "@prettier/plugin-php": "^0.17.6"
-  }
+  },
+  "packageManager": "pnpm@10.24.0"
 }

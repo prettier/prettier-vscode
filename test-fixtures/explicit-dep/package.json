@@ -9,7 +9,7 @@
   "author": "jhilker",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "^2.0.2"
+    "prettier": "2.0.2"
   },
   "dependencies": {}
 }

@@ -54,19 +54,8 @@
     <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
 </p>
 
-## Important: Extension Migration
-
-**This extension is moving to the official Prettier organization.**
-
-| Old Extension                                                                                          | New Extension                                                                                              |
-| ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| [`esbenp.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) | [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode) |
-
-**What this means for you:**
-
-- Version 12+ will only be published to `prettier.prettier-vscode`
-- The old `esbenp.prettier-vscode` extension will receive a final update marking it as deprecated
-- **Action required:** Install the new extension from the Prettier organization to receive future updates
+> [!IMPORTANT]
+> **Extension Migration:** This extension has moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new extension. Install from the Prettier organization to receive future updates.
 
 ## Installation
 
@@ -361,7 +350,7 @@ See the [Troubleshooting Guide](docs/troubleshooting.md) for help with common is
 
 **Failed to load module. If you have prettier or plugins referenced in package.json, ensure you have run `npm install`**
 
-When a `package.json` is present in your project and it contains prettier, plugins, or linter libraries this extension will attempt to load these modules from your `node_module` folder. If you see this error, it most likely means you need to run `npm install` or `yarn install` to install the packages in your `package.json`.
+When a `package.json` is present in your project and it contains prettier, plugins, or linter libraries this extension will attempt to load these modules from your `node_module` folder. If you see this error, it most likely means you need to run `npm install`, `yarn install`, `pnpm install`, etc. to install the packages in your `package.json`.
 
 **Your project is configured to use an outdated version of prettier that cannot be used by this extension. Upgrade to the latest version of prettier.**
 

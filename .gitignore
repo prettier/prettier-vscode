@@ -7,3 +7,6 @@ node_modules
 .DS_STORE
 *.log
 test-results.xml
+
+# Generated pnpm lockfiles in test fixtures (npm lockfiles are tracked)
+test-fixtures/**/pnpm-lock.yaml
