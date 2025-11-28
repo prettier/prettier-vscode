@@ -25,7 +25,7 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 
 3. Build the extension:
    ```bash
-   pnpm webpack
+   pnpm compile
    ```
 
 ## Development
@@ -34,9 +34,8 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 
 ```bash
 pnpm install          # Install dependencies
-pnpm webpack          # Build for development
-pnpm webpack-dev      # Build and watch for changes
-pnpm watch            # TypeScript watch mode (without webpack)
+pnpm compile          # Build for development (esbuild + type checking)
+pnpm watch            # Build and watch for changes
 pnpm lint             # Run ESLint
 pnpm prettier         # Format code with Prettier
 pnpm test             # Run tests
@@ -46,7 +45,7 @@ pnpm test-compile     # Compile tests only
 ### Running the Extension
 
 1. Open this repository in VS Code
-2. Run `pnpm webpack` to build
+2. Run `pnpm compile` to build
 3. Press `F5` or go to Debug sidebar → "Run Extension"
 4. A new VS Code window will open with the extension loaded
 
@@ -92,7 +91,7 @@ Key components:
 
 - `PrettierEditService.ts` - Handles document formatting
 - `ModuleResolver.ts` - Resolves Prettier installations (local, global, or bundled)
-- `PrettierInstance.ts` - Loads and wraps Prettier using dynamic `import()` (works with v2 and v3+)
+- `PrettierInstance.ts` - Interface for Prettier, with `PrettierMainThreadInstance` and `PrettierWorkerInstance` implementations
 
 ## Submitting Changes
 

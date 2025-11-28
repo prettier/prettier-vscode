@@ -27,8 +27,8 @@ This is a VS Code extension. Follow these patterns:
 
 ## Prettier Integration
 
-- Support both Prettier v2 (CJS) and v3+ (ESM) via `PrettierModuleInstance`
-- Uses dynamic `import()` for ESM compatibility
+- Support both Prettier v2 and v3+ via `PrettierInstance` interface
+- `PrettierMainThreadInstance` loads directly, `PrettierWorkerInstance` uses worker thread
 - Module resolution: local install → global install → bundled Prettier
 - Handle `.prettierrc`, `.prettierignore`, and `package.json` prettier config
 

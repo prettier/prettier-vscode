@@ -6,7 +6,7 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 
 - Use `pnpm` as the package manager
 - Run `pnpm install` to install dependencies
-- Run `pnpm webpack` to build for development
+- Run `pnpm compile` to build for development
 - Run `pnpm test` to run tests (no VS Code instance can be running)
 - Run `pnpm lint` to check linting
 - Run `pnpm prettier` to format code
@@ -23,9 +23,9 @@ Core components:
 - `src/extension.ts` - Extension activation, creates ModuleResolver, PrettierEditService, and StatusBar
 - `src/PrettierEditService.ts` - Registers VS Code document formatting providers, handles format requests
 - `src/ModuleResolver.ts` - Resolves local/global Prettier installations, falls back to bundled Prettier
-- `src/PrettierInstance.ts` - Loads Prettier using dynamic `import()` (works with v2 and v3+)
+- `src/PrettierInstance.ts` - Interface for Prettier loading, with `PrettierMainThreadInstance` and `PrettierWorkerInstance` implementations
 
-Webpack produces two bundles:
+esbuild produces two bundles:
 
 - Node bundle (`dist/extension.js`) for desktop VS Code
 - Web bundle (`dist/web-extension.js`) for vscode.dev/browser
@@ -69,7 +69,7 @@ When reviewing pull requests, focus on:
 ### Performance
 
 - Avoid blocking the extension host main thread
-- Prettier is loaded asynchronously using dynamic `import()`
+- `PrettierWorkerInstance` runs Prettier in a worker thread to avoid blocking
 - Module and config resolution results are cached appropriately
 
 ### Browser Compatibility
