@@ -1,0 +1,16 @@
+{
+  "name": "ts-config",
+  "version": "1.0.0",
+  "description": "Test folder for TypeScript config files (Prettier 3.5.0+)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prettier",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.5.0"
+  },
+  "dependencies": {}
+}

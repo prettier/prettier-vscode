@@ -53,6 +53,9 @@
     },
     {
       "path": "esm-config"
+    },
+    {
+      "path": "ts-config"
     }
   ],
   "settings": {
