@@ -1,7 +1,6 @@
-import * as assert from "assert";
-import * as path from "path";
+import * as assert from "node:assert";
+import * as path from "node:path";
 import * as prettier from "prettier";
-import * as sinon from "sinon";
 
 import { getWorkspaceFolderUri } from "./format.test";
 import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolver";
@@ -11,20 +10,36 @@ import {
   USING_BUNDLED_PRETTIER,
 } from "../../message";
 
-suite("Test ModuleResolver", function () {
-  let moduleResolver: ModuleResolver;
-  let logErrorSpy: sinon.SinonSpy;
-  let logDebugSpy: sinon.SinonSpy;
+interface MockFn {
+  (...args: unknown[]): void;
+  calls: unknown[][];
+}
 
-  this.beforeEach(() => {
+function createMockFn(): MockFn {
+  const calls: unknown[][] = [];
+  const fn = (...args: unknown[]) => {
+    calls.push(args);
+  };
+  fn.calls = calls;
+  return fn;
+}
+
+describe("Test ModuleResolver", () => {
+  let moduleResolver: ModuleResolver;
+  let logErrorMock: MockFn;
+  let logDebugMock: MockFn;
+
+  beforeEach(() => {
     const loggingService = new LoggingService();
-    logErrorSpy = sinon.spy(loggingService, "logError");
-    logDebugSpy = sinon.spy(loggingService, "logDebug");
+    logErrorMock = createMockFn();
+    logDebugMock = createMockFn();
+    loggingService.logError = logErrorMock;
+    loggingService.logDebug = logDebugMock;
     moduleResolver = new ModuleResolver(loggingService);
   });
 
-  suite("getPrettierInstance", () => {
-    test("it returns the bundled version of Prettier if local isn't found", async () => {
+  describe("getPrettierInstance", () => {
+    it("it returns the bundled version of Prettier if local isn't found", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("no-dep").fsPath,
         "index.js",
@@ -33,10 +48,12 @@ suite("Test ModuleResolver", function () {
         await moduleResolver.getPrettierInstance(fileName);
 
       assert.strictEqual(prettierInstance, prettier);
-      assert(logDebugSpy.calledWith(USING_BUNDLED_PRETTIER));
+      assert.ok(
+        logDebugMock.calls.some((args) => args[0] === USING_BUNDLED_PRETTIER),
+      );
     });
 
-    test("it returns the bundled version of Prettier if local is outdated", async () => {
+    it("it returns the bundled version of Prettier if local is outdated", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("outdated").fsPath,
         "ugly.js",
@@ -45,10 +62,14 @@ suite("Test ModuleResolver", function () {
         await moduleResolver.getPrettierInstance(fileName);
 
       assert.strictEqual(prettierInstance, undefined);
-      assert(logErrorSpy.calledWith(OUTDATED_PRETTIER_VERSION_MESSAGE));
+      assert.ok(
+        logErrorMock.calls.some(
+          (args) => args[0] === OUTDATED_PRETTIER_VERSION_MESSAGE,
+        ),
+      );
     });
 
-    test("it returns prettier version from package.json", async () => {
+    it("it returns prettier version from package.json", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("specific-version").fsPath,
         "ugly.js",
@@ -64,7 +85,7 @@ suite("Test ModuleResolver", function () {
       assert.strictEqual(prettierInstance.version, "2.0.2");
     });
 
-    test("it returns prettier version from module dep", async () => {
+    it("it returns prettier version from module dep", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("module").fsPath,
         "index.js",
@@ -79,7 +100,7 @@ suite("Test ModuleResolver", function () {
       assert.strictEqual(prettierInstance.version, "2.0.2");
     });
 
-    test("it uses explicit dep if found instead fo a closer implicit module dep", async () => {
+    it("it uses explicit dep if found instead fo a closer implicit module dep", async () => {
       const fileName = path.join(
         getWorkspaceFolderUri("explicit-dep").fsPath,
         "implicit-dep",

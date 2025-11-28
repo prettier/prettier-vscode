@@ -57,6 +57,15 @@ export default tseslint.config(
     },
   },
 
+  // Test files - relax rules for test code
+  {
+    files: ["src/test/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-floating-promises": "off",
+      "no-console": "off",
+    },
+  },
+
   // Script files (mjs)
   {
     files: ["*.mjs", "scripts/*.mjs"],

@@ -78,7 +78,7 @@
     "prettier": "prettier --write .",
     "release": "node ./scripts/release.mjs",
     "test:web": "pnpm compile:test && node ./out/test/web/runTests.js",
-    "test": "node ./out/test/runTests.js",
+    "test": "vscode-test",
     "watch:esbuild": "node esbuild.mjs --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "watch": "pnpm run --parallel watch:esbuild watch:tsc"
@@ -91,9 +91,9 @@
     "@types/node": "^22",
     "@types/resolve": "^1.20.3",
     "@types/semver": "^7.5.8",
-    "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
     "@types/vscode": "^1.101.0",
+    "@vscode/test-cli": "0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/test-web": "^0.0.76",
     "@vscode/vsce": "^3.7.1",
@@ -106,7 +106,6 @@
     "mocha": "^10.7.3",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
-    "sinon": "^17.0.1",
     "tmp": "^0.2.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.33.0",
@@ -114,10 +113,10 @@
   },
   "dependencies": {
     "find-up": "5.0.0",
-    "prettier": "^3.4.2",
-    "resolve": "^1.22.8",
-    "semver": "^7.6.3",
-    "vscode-nls": "^5.2.0"
+    "prettier": "3.7.1",
+    "resolve": "1.22.11",
+    "semver": "7.7.3",
+    "vscode-nls": "5.2.0"
   },
   "capabilities": {
     "virtualWorkspaces": true,

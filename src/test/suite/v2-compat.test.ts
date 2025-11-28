@@ -1,10 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Prettier v2 Backward Compatibility", function () {
-  this.timeout(10000);
-
-  test("it formats with explicit Prettier v2 dependency", async () => {
+describe("Prettier v2 Backward Compatibility", () => {
+  it("it formats with explicit Prettier v2 dependency", async () => {
     const { actual } = await format(
       "v2-explicit",
       "index.ts",

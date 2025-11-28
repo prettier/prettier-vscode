@@ -1,9 +1,8 @@
-import * as assert from "assert";
-import { readFile, rename } from "fs";
-import { Done } from "mocha";
-import * as path from "path";
+import * as assert from "node:assert";
+import { readFile, rename } from "node:fs";
+import * as path from "node:path";
 import * as prettier from "prettier";
-import { promisify } from "util";
+import { promisify } from "node:util";
 import * as vscode from "vscode";
 
 const readFileAsync: (filePath: string, encoding: "utf8") => Promise<string> =
@@ -40,12 +39,22 @@ export async function getText(
 const prettierConfigOrig = path.resolve(__dirname, "../../../.prettierrc");
 const prettierConfigTemp = path.resolve(__dirname, "../../../old.prettierrc");
 
-export function moveRootPrettierRC(done: Done) {
-  rename(prettierConfigOrig, prettierConfigTemp, done);
+export function moveRootPrettierRC(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    rename(prettierConfigOrig, prettierConfigTemp, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
 }
 
-export function putBackPrettierRC(done: Done) {
-  rename(prettierConfigTemp, prettierConfigOrig, done);
+export function putBackPrettierRC(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    rename(prettierConfigTemp, prettierConfigOrig, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
 }
 
 /**
@@ -66,11 +75,9 @@ export async function format(
   try {
     await vscode.window.showTextDocument(doc);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(error);
     throw error;
   }
-  // eslint-disable-next-line no-console
   console.time(testFile);
   await vscode.commands.executeCommand("editor.action.formatDocument");
 
@@ -87,7 +94,6 @@ export async function format(
     }
   }
 
-  // eslint-disable-next-line no-console
   console.timeEnd(testFile);
 
   return { actual, source: text };
@@ -113,9 +119,8 @@ async function formatSameAsPrettier(
   assert.equal(actual, prettierFormatted);
 }
 
-suite("Test format Document", function () {
-  this.timeout(10000);
-  test("it formats JavaScript", async () => {
+describe("Test format Document", () => {
+  it("formats JavaScript", async () => {
     // Wait for extension to initialize and retry if needed
     await wait(1000);
     const { actual, source } = await format(
@@ -128,22 +133,19 @@ suite("Test format Document", function () {
     });
     assert.equal(actual, prettierFormatted);
   });
-  test("it formats TypeScript", () =>
-    formatSameAsPrettier("formatTest/ugly.ts"));
-  test("it formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));
-  test("it formats JSON", () => formatSameAsPrettier("formatTest/ugly.json"));
-  test("it formats JSONC", () => formatSameAsPrettier("formatTest/ugly.jsonc"));
-  test("it formats JSON", () =>
-    formatSameAsPrettier("formatTest/package.json"));
-  test("it formats HTML", () => formatSameAsPrettier("formatTest/ugly.html"));
-  test("it formats LWC", () =>
+  it("formats TypeScript", () => formatSameAsPrettier("formatTest/ugly.ts"));
+  it("formats CSS", () => formatSameAsPrettier("formatTest/ugly.css"));
+  it("formats JSON", () => formatSameAsPrettier("formatTest/ugly.json"));
+  it("formats JSONC", () => formatSameAsPrettier("formatTest/ugly.jsonc"));
+  it("formats JSON", () => formatSameAsPrettier("formatTest/package.json"));
+  it("formats HTML", () => formatSameAsPrettier("formatTest/ugly.html"));
+  it("formats LWC", () =>
     formatSameAsPrettier("formatTest/lwc.html", { parser: "lwc" }));
-  test("it formats TSX", () => formatSameAsPrettier("formatTest/ugly.tsx"));
-  test("it formats SCSS", () => formatSameAsPrettier("formatTest/ugly.scss"));
-  test("it formats GraphQL", () =>
-    formatSameAsPrettier("formatTest/ugly.graphql"));
-  test("it formats HTML with literals", () =>
+  it("formats TSX", () => formatSameAsPrettier("formatTest/ugly.tsx"));
+  it("formats SCSS", () => formatSameAsPrettier("formatTest/ugly.scss"));
+  it("formats GraphQL", () => formatSameAsPrettier("formatTest/ugly.graphql"));
+  it("formats HTML with literals", () =>
     formatSameAsPrettier("formatTest/htmlWithLiterals.html"));
-  test("it formats Vue", () => formatSameAsPrettier("formatTest/ugly.vue"));
-  test("it formats HBS", () => formatSameAsPrettier("formatTest/ugly.hbs"));
+  it("formats Vue", () => formatSameAsPrettier("formatTest/ugly.vue"));
+  it("formats HBS", () => formatSameAsPrettier("formatTest/ugly.hbs"));
 });

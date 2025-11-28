@@ -54,7 +54,6 @@ const browserAliasPlugin = {
   },
 };
 
-
 /**
  * Node extension configuration
  * @type {import('esbuild').BuildOptions}
@@ -99,7 +98,6 @@ const browserShimsPlugin = {
     });
   },
 };
-
 
 /**
  * Browser/web extension configurationn

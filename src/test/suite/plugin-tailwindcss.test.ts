@@ -1,9 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { format, getText } from "./format.test";
 
-suite("Test plugin-tailwindcss", function () {
-  this.timeout(10000);
-  test("it formats with prettier-plugin-tailwindcss", async () => {
+describe("Test plugin-tailwindcss", () => {
+  it("it formats with prettier-plugin-tailwindcss", async () => {
     const { actual } = await format(
       "plugin-tailwindcss",
       "index.js",
