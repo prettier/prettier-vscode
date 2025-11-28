@@ -15,39 +15,13 @@ updates:
         update-types:
           - minor
           - patch
-      # Group TypeScript-related packages
-      typescript:
-        patterns:
-          - "typescript"
-          - "@types/*"
-        update-types:
-          - minor
-          - patch
-      # Group webpack and build tools
-      build-tools:
-        patterns:
-          - "webpack*"
-          - "*-loader"
-          - "ts-loader"
-        update-types:
-          - minor
-          - patch
-      # Group testing packages
-      testing:
-        patterns:
-          - "@vscode/test-*"
-          - "mocha"
-          - "glob"
-        update-types:
-          - minor
-          - patch
       # Group ESLint and linting packages
       linting:
         patterns:
           - "eslint"
           - "eslint-*"
           - "@eslint/*"
-          - "@typescript-eslint/*"
+          - "typescript-eslint"
         update-types:
           - minor
           - patch
