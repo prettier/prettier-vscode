@@ -6,7 +6,10 @@ import * as prettier from "prettier";
 import * as resolve from "resolve";
 import * as semver from "semver";
 import { commands, TextDocument, Uri, workspace } from "vscode";
-import { resolveGlobalNodePath, resolveGlobalYarnPath } from "./Files";
+import {
+  resolveGlobalNodePath,
+  resolveGlobalYarnPath,
+} from "./utils/global-node-paths";
 import { LoggingService } from "./LoggingService";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
@@ -23,20 +26,28 @@ import {
   PrettierResolveConfigOptions,
   PrettierVSCodeConfig,
 } from "./types";
-import { getConfig, getWorkspaceRelativePath, isAboveV3 } from "./util";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
+import {
+  getWorkspaceConfig,
+  getWorkspaceRelativePath,
+} from "./utils/workspace";
 import { PrettierInstance } from "./PrettierInstance";
+import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./ModuleLoader";
+import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
+import { isAboveV3 } from "./utils/versions";
 
 const minPrettierVersion = "1.13.0";
 
 export type PrettierNodeModule = typeof prettier;
 
+type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
 // Workaround for https://github.com/prettier/prettier-vscode/issues/3020
 // Use require() to get a mutable fs module reference and override statSync
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const mutableFs: Record<string, unknown> = require("fs");
+
+const mutableFs: Mutable<typeof import("fs")> = require("fs");
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
   filePath: fs.PathLike,
@@ -51,14 +62,22 @@ const fsStatSyncWorkaround = (
   options.throwIfNoEntry = true;
   try {
     return origFsStatSync(filePath, options);
-  } catch (error: any) {
-    if (error.code === "ENOENT") {
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
       return undefined;
     }
     throw error;
   }
 };
-mutableFs.statSync = fsStatSyncWorkaround;
+// Force cast because we return undefined in some cases
+// which is not part of the original fs.StatSyncFn return type
+// but is necessary for the workaround to function correctly
+mutableFs.statSync = fsStatSyncWorkaround as fs.StatSyncFn;
 
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };
@@ -160,7 +179,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       return prettier;
     }
 
-    const { prettierPath, resolveGlobalModules } = getConfig(
+    const { prettierPath, resolveGlobalModules } = getWorkspaceConfig(
       Uri.file(fileName),
     );
 
@@ -617,7 +636,7 @@ export class ModuleResolver implements ModuleResolverInterface {
             packageJson = JSON.parse(
               fs.readFileSync(path.join(dir, "package.json"), "utf8"),
             );
-          } catch (e) {
+          } catch {
             // Swallow, if we can't read it we don't want to resolve based on it
           }
 

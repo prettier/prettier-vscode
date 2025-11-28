@@ -1,8 +1,7 @@
 import * as os from "os";
 import * as path from "path";
-import * as semver from "semver";
 import { Uri, workspace, type TextDocument } from "vscode";
-import { PrettierVSCodeConfig } from "./types";
+import { PrettierVSCodeConfig } from "../types";
 
 export function getWorkspaceRelativePath(
   filePath: string,
@@ -27,8 +26,9 @@ export function getWorkspaceRelativePath(
   }
 }
 
-export function getConfig(scope?: TextDocument | Uri): PrettierVSCodeConfig {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getWorkspaceConfig(
+  scope?: TextDocument | Uri,
+): PrettierVSCodeConfig {
   const config = workspace.getConfiguration(
     "prettier",
     scope,
@@ -51,12 +51,4 @@ export function getConfig(scope?: TextDocument | Uri): PrettierVSCodeConfig {
   }
 
   return config;
-}
-
-export function isAboveV3(version: string | null): boolean {
-  const parsedVersion = semver.parse(version);
-  if (!parsedVersion) {
-    throw new Error("Invalid version");
-  }
-  return parsedVersion.major >= 3;
 }

@@ -1,5 +1,4 @@
 .github/
-.husky/
 .vscode/
 .vscode-test/
 .vscode-test-web/
@@ -14,10 +13,12 @@ test-fixtures/
 .prettierrc
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
-CONTRIBUTORS.md
 tsconfig.json
-webpack.config.js
-yarn.lock
+tsconfig.scripts.json
+eslint.config.mjs
+lefthook.yml
+esbuild.mjs
+pnpm-lock.yaml
 dist/*.map
 
 node_modules/

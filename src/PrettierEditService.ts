@@ -10,7 +10,7 @@ import {
   window,
   workspace,
 } from "vscode";
-import { getParserFromLanguageId } from "./languageFilters";
+import { getParserFromLanguageId } from "./utils/get-parser-from-language";
 import { LoggingService } from "./LoggingService";
 import { RESTART_TO_ENABLE } from "./message";
 import { PrettierEditProvider } from "./PrettierEditProvider";
@@ -26,7 +26,8 @@ import {
   PrettierPlugin,
   RangeFormattingOptions,
 } from "./types";
-import { getConfig, isAboveV3 } from "./util";
+import { getWorkspaceConfig } from "./utils/workspace";
+import { isAboveV3 } from "./utils/versions";
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -278,7 +279,7 @@ export default class PrettierEditService implements Disposable {
         prettierInstance,
         documentUri,
         documentUri.fsPath,
-        getConfig(documentUri),
+        getWorkspaceConfig(documentUri),
       );
       if (resolvedConfig === "error") {
         this.statusBar.update(FormatterStatus.Error);
@@ -311,7 +312,7 @@ export default class PrettierEditService implements Disposable {
       return self.indexOf(value) === index;
     });
 
-    const { documentSelectors } = getConfig();
+    const { documentSelectors } = getWorkspaceConfig();
 
     // Language selector for file extensions
     const extensionLanguageSelector: DocumentFilter[] = workspaceFolderUri
@@ -411,7 +412,7 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(`Formatting ${uri}`);
 
-    const vscodeConfig = getConfig(doc);
+    const vscodeConfig = getWorkspaceConfig(doc);
 
     const resolvedConfig = await this.moduleResolver.getResolvedConfig(
       doc,

@@ -1,11 +1,13 @@
-const esbuild = require("esbuild");
-const fs = require("fs");
-const path = require("path");
+import esbuild from "esbuild";
+import fs from "fs";
+import path from "path";
 
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
 
-const extensionPackage = require("./package.json");
+const extensionPackage = JSON.parse(
+  fs.readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
+);
 
 /**
  * @type {import('esbuild').Plugin}
@@ -26,27 +28,6 @@ const esbuildProblemMatcherPlugin = {
         }
       });
       console.log("[watch] build finished");
-    });
-  },
-};
-
-/**
- * @type {import('esbuild').Plugin}
- */
-const copyWorkerPlugin = {
-  name: "copy-worker",
-  setup(build) {
-    build.onEnd(() => {
-      const srcDir = path.join(__dirname, "src/worker");
-      const destDir = path.join(__dirname, "dist/worker");
-
-      if (fs.existsSync(srcDir)) {
-        fs.mkdirSync(destDir, { recursive: true });
-        fs.readdirSync(srcDir).forEach((file) => {
-          fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
-        });
-        console.log("[copy] worker files copied");
-      }
     });
   },
 };
@@ -84,7 +65,7 @@ const nodeConfig = {
     "process.env.EXTENSION_VERSION": JSON.stringify(extensionPackage.version),
   },
   logLevel: "silent",
-  plugins: [copyWorkerPlugin, esbuildProblemMatcherPlugin],
+  plugins: [esbuildProblemMatcherPlugin],
 };
 
 /**
@@ -163,12 +144,43 @@ const webTestConfig = {
   plugins: [esbuildProblemMatcherPlugin],
 };
 
+function copyWorkerFile() {
+  // Copy to dist (for production/esbuild bundle)
+  const distWorkerDir = "dist/worker";
+  if (!fs.existsSync(distWorkerDir)) {
+    fs.mkdirSync(distWorkerDir, { recursive: true });
+  }
+  fs.copyFileSync(
+    "src/worker/prettier-instance-worker.js",
+    "dist/worker/prettier-instance-worker.js",
+  );
+
+  // Copy to out (for tests/tsc output)
+  const outWorkerDir = "out/worker";
+  if (!fs.existsSync(outWorkerDir)) {
+    fs.mkdirSync(outWorkerDir, { recursive: true });
+  }
+  fs.copyFileSync(
+    "src/worker/prettier-instance-worker.js",
+    "out/worker/prettier-instance-worker.js",
+  );
+}
+
 async function main() {
   const nodeCtx = await esbuild.context(nodeConfig);
   const browserCtx = await esbuild.context(browserConfig);
   const webTestCtx = await esbuild.context(webTestConfig);
 
+  // Copy worker file
+  copyWorkerFile();
+
   if (watch) {
+    // Watch the worker file for changes
+    fs.watchFile("src/worker/prettier-instance-worker.js", () => {
+      console.log("[watch] copying worker file");
+      copyWorkerFile();
+    });
+
     await Promise.all([
       nodeCtx.watch(),
       browserCtx.watch(),

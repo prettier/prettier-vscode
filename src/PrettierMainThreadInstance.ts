@@ -9,7 +9,7 @@ import {
   PrettierSupportLanguage,
 } from "./types";
 import { PrettierNodeModule } from "./ModuleResolver";
-import { loadNodeModule } from "./ModuleLoader";
+import { loadNodeModule } from "./utils/resolvers";
 
 export const PrettierMainThreadInstance: PrettierInstanceConstructor = class PrettierMainThreadInstance implements PrettierInstance {
   public version: string | null = null;

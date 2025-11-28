@@ -5,7 +5,7 @@
  * For prereleases (versions containing -), skip changelog update
  * since the final release should include all unreleased changes.
  */
-const fs = require("fs");
+import fs from "fs/promises";
 
 const v = process.env.npm_package_version;
 const CHANGELOG = "CHANGELOG.md";
@@ -18,20 +18,14 @@ if (isPrerelease) {
   process.exit(0);
 }
 
-fs.readFile(CHANGELOG, (error, data) => {
-  const stringData = data.toString("utf8");
-  const updated = stringData.replace(
-    /## \[Unreleased\](?!\s*## )/, // None empty Unreleased block
-    `## [Unreleased]\n\n## [${v}]`,
-  );
+const data = await fs.readFile(CHANGELOG, "utf8");
+const updated = data.replace(
+  /## \[Unreleased\](?!\s*## )/, // None empty Unreleased block
+  `## [Unreleased]\n\n## [${v}]`,
+);
 
-  if (updated !== stringData) {
-    console.log(`CHANGELOG: [Unreleased] updated with [${v}]`);
-  }
-  fs.writeFile(CHANGELOG, updated, (err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
-});
+if (updated !== data) {
+  console.log(`CHANGELOG: [Unreleased] updated with [${v}]`);
+}
+
+await fs.writeFile(CHANGELOG, updated);

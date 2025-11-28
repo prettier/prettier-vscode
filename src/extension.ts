@@ -5,7 +5,7 @@ import { ModuleResolver } from "./ModuleResolver";
 import PrettierEditService from "./PrettierEditService";
 import { StatusBar } from "./StatusBar";
 import { TemplateService } from "./TemplateService";
-import { getConfig } from "./util";
+import { getWorkspaceConfig } from "./utils/workspace";
 import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
 
 // the application insights key (also known as instrumentation key)
@@ -18,7 +18,7 @@ export function activate(context: ExtensionContext) {
   loggingService.logInfo(`Extension Name: ${extensionName}.`);
   loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
-  const { enable, enableDebugLogs } = getConfig();
+  const { enable, enableDebugLogs } = getWorkspaceConfig();
 
   if (enableDebugLogs) {
     loggingService.setOutputLevel("DEBUG");

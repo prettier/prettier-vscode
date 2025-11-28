@@ -5,6 +5,7 @@
     "outDir": "out",
     "strict": true,
     "noUnusedLocals": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "lib": ["ES2020"],
@@ -15,7 +16,6 @@
   "include": [
     "src/**/*.ts",
     "./node_modules/vscode/vscode.d.ts",
-    "./node_modules/vscode/lib/*",
-    ".eslintrc.js"
+    "./node_modules/vscode/lib/*"
   ]
 }

@@ -69,32 +69,24 @@
   "main": "./dist/extension",
   "browser": "./dist/web-extension",
   "scripts": {
-    "clean": "node ./scripts/clean.js",
-    "lint": "eslint -c .eslintrc.js --ext .ts .",
-    "pretest": "pnpm test-compile && node scripts/install-fixtures.js",
+    "clean": "node ./scripts/clean.mjs",
+    "lint": "eslint src *.mjs scripts",
+    "pretest": "pnpm test-compile && node scripts/install-fixtures.mjs",
     "prettier": "prettier --write .",
-    "compile": "pnpm check-types && node esbuild.js",
+    "compile": "pnpm check-types && node esbuild.mjs",
     "check-types": "tsc --noEmit",
     "watch": "pnpm run --parallel watch:esbuild watch:tsc",
-    "watch:esbuild": "node esbuild.js --watch",
+    "watch:esbuild": "node esbuild.mjs --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "test-compile": "pnpm clean && tsc -p ./ && pnpm compile && cp -r ./src/worker ./out",
+    "test-compile": "pnpm clean && tsc -p ./ && pnpm compile",
     "test": "node ./out/test/runTests.js",
-    "version": "node ./scripts/version.js && git add CHANGELOG.md",
+    "version": "node ./scripts/version.mjs && git add CHANGELOG.md",
     "postversion": "git push origin main --tags",
-    "chrome": "pnpm webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "test:web": "pnpm test-compile && node ./out/test/web/runTests.js",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "**/*.{ts,json,md,yml,hbs,js}": [
-      "prettier --write"
-    ],
-    "src/**/*.ts": [
-      "eslint -c .eslintrc.js --ext .ts ."
-    ]
+    "chrome": "pnpm compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "test:web": "pnpm test-compile && node ./out/test/web/runTests.js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.28.0",
     "@playwright/test": "^1.57.0",
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.7",
@@ -104,23 +96,22 @@
     "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
     "@types/vscode": "^1.101.0",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/test-web": "^0.0.76",
     "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.27.0",
-    "eslint": "^8.31.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
     "fs-extra": "^11.2.0",
-    "husky": "^9.1.4",
-    "lint-staged": "^15.2.9",
+    "globals": "^16.2.0",
+    "lefthook": "^2.0.4",
     "mocha": "^10.7.3",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "sinon": "^17.0.1",
     "tmp": "^0.2.3",
     "typescript": "^4.6.3",
+    "typescript-eslint": "^8.33.0",
     "util": "^0.12.4"
   },
   "dependencies": {

@@ -13,8 +13,6 @@ function isWindows(): boolean {
 
 /**
  * Resolve the global npm package path.
- * @deprecated Since this depends on the used package manager and their version the best is that servers
- * implement this themselves since they know best what kind of package managers to support.
  * @param tracer the tracer to use
  */
 export function resolveGlobalNodePath(
@@ -29,7 +27,6 @@ export function resolveGlobalNodePath(
     options.shell = true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handler = () => {};
   try {
     process.on("SIGPIPE", handler);
@@ -58,7 +55,7 @@ export function resolveGlobalNodePath(
       }
     }
     return undefined;
-  } catch (err) {
+  } catch {
     return undefined;
   } finally {
     process.removeListener("SIGPIPE", handler);
@@ -89,7 +86,6 @@ export function resolveGlobalYarnPath(
     options.shell = true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handler = () => {};
   try {
     process.on("SIGPIPE", handler);
@@ -116,12 +112,12 @@ export function resolveGlobalYarnPath(
         if (yarn.type === "log") {
           return path.join(yarn.data, "node_modules");
         }
-      } catch (e) {
+      } catch {
         // Do nothing. Ignore the line
       }
     }
     return undefined;
-  } catch (err) {
+  } catch {
     return undefined;
   } finally {
     process.removeListener("SIGPIPE", handler);
