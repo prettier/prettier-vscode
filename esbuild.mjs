@@ -54,7 +54,11 @@ const browserAliasPlugin = {
   },
 };
 
-// Node extension configuration
+
+/**
+ * Node extension configuration
+ * @type {import('esbuild').BuildOptions}
+ */
 const nodeConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
@@ -96,7 +100,11 @@ const browserShimsPlugin = {
   },
 };
 
-// Browser/web extension configuration
+
+/**
+ * Browser/web extension configurationn
+ * @type {import('esbuild').BuildOptions}
+ */
 const browserConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
@@ -129,7 +137,10 @@ const browserConfig = {
   ],
 };
 
-// Web test bundle configuration
+/**
+ * Web test bundle configuration
+ * @type {import('esbuild').BuildOptions}
+ */
 const webTestConfig = {
   entryPoints: ["src/test/web/suite/index.ts"],
   bundle: true,
