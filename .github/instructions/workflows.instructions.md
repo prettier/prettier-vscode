@@ -24,6 +24,7 @@ applyTo: ".github/workflows/*.yaml"
 - Linux tests require Xvfb for display: `/usr/bin/Xvfb :99 -screen 0 1024x768x24`
 - Set `DISPLAY: ":99.0"` environment variable for tests on Linux
 - Tests run via `npm test`
+- Include `pnpm/action-setup@v4` in test jobs - some test fixtures use `packageManager: pnpm` to verify pnpm compatibility
 
 ## Permissions
 

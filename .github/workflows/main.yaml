@@ -28,6 +28,10 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
+      # pnpm is needed for test fixtures that use packageManager: pnpm
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
         shell: bash
