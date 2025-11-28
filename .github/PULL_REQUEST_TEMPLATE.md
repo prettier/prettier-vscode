@@ -20,8 +20,8 @@
 ## Checklist
 
 - [ ] I have read the [CONTRIBUTING](https://github.com/prettier/prettier-vscode/blob/main/CONTRIBUTING.md) guidelines
-- [ ] My code follows the code style of this project (`pnpm lint` passes)
-- [ ] I have run `pnpm prettier` to format my code
+- [ ] My code follows the code style of this project (`npm run lint` passes)
+- [ ] I have run `npm run prettier` to format my code
 - [ ] I have added/updated tests that prove my fix or feature works
-- [ ] All new and existing tests pass (`pnpm test`)
+- [ ] All new and existing tests pass (`npm test`)
 - [ ] I have updated the [CHANGELOG.md](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) with a summary of my changes

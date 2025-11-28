@@ -1,9 +1,8 @@
 {
   "name": "prettier-vscode",
-  "packageManager": "pnpm@10.24.0",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "12.0.0-preview.1",
+  "version": "12.0.0",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -71,17 +70,17 @@
   "scripts": {
     "compile:test": "tsc -p ./ && node esbuild.mjs",
     "check-types": "tsc --noEmit",
-    "chrome": "pnpm compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "compile": "pnpm check-types && node esbuild.mjs",
+    "chrome": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "compile": "npm run check-types && node esbuild.mjs",
     "lint": "eslint src *.mjs scripts",
-    "pretest": "pnpm compile:test && node scripts/install-fixtures.mjs",
+    "pretest": "npm run compile:test && node scripts/install-fixtures.mjs",
     "prettier": "prettier --write .",
     "release": "node ./scripts/release.mjs",
-    "test:web": "pnpm compile:test && node ./out/test/web/runTests.js",
+    "test:web": "npm run compile:test && node ./out/test/web/runTests.js",
     "test": "vscode-test",
     "watch:esbuild": "node esbuild.mjs --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "watch": "pnpm run --parallel watch:esbuild watch:tsc"
+    "watch": "npm-run-all --parallel watch:esbuild watch:tsc"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
@@ -104,6 +103,7 @@
     "globals": "^16.2.0",
     "lefthook": "^2.0.4",
     "mocha": "^10.7.3",
+    "npm-run-all": "4.1.5",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "tmp": "^0.2.3",

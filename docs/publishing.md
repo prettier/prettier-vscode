@@ -18,30 +18,30 @@ Publishing is automated via GitHub Actions. When you push a tag starting with `v
 
 ## Release Commands
 
-All releases are handled through the `pnpm release` command:
+All releases are handled through the `npm run release` command:
 
 ```bash
 # Patch release (bug fixes): 11.0.0 → 11.0.1
-pnpm release patch
+npm run release patch
 
 # Minor release (new features): 11.0.0 → 11.1.0
-pnpm release minor
+npm run release minor
 
 # Major release (breaking changes): 11.0.0 → 12.0.0
-pnpm release major
+npm run release major
 
 # Preview release: 11.0.0 → 11.1.0-preview.1
-pnpm release preview
+npm run release preview
 ```
 
 ## Version Types
 
-| Type    | Command                | Example                       |
-| ------- | ---------------------- | ----------------------------- |
-| Major   | `pnpm release major`   | `11.0.0` → `12.0.0`           |
-| Minor   | `pnpm release minor`   | `11.0.0` → `11.1.0`           |
-| Patch   | `pnpm release patch`   | `11.0.0` → `11.0.1`           |
-| Preview | `pnpm release preview` | `11.0.0` → `11.1.0-preview.1` |
+| Type    | Command                   | Example                       |
+| ------- | ------------------------- | ----------------------------- |
+| Major   | `npm run release major`   | `11.0.0` → `12.0.0`           |
+| Minor   | `npm run release minor`   | `11.0.0` → `11.1.0`           |
+| Patch   | `npm run release patch`   | `11.0.0` → `11.0.1`           |
+| Preview | `npm run release preview` | `11.0.0` → `11.1.0-preview.1` |
 
 ## Publishing a Stable Release
 
@@ -59,7 +59,7 @@ Add your changes under the `[Unreleased]` section in `CHANGELOG.md` as you make 
 ### 2. Run the Release Command
 
 ```bash
-pnpm release patch   # or minor, major
+npm run release patch   # or minor, major
 ```
 
 This automatically:
@@ -85,10 +85,10 @@ Preview releases allow testing new features before a stable release. VS Code use
 
 ```bash
 # First preview (from stable): 11.0.0 → 11.1.0-preview.1
-pnpm release preview
+npm run release preview
 
 # Subsequent previews: 11.1.0-preview.1 → 11.1.0-preview.2
-pnpm release preview
+npm run release preview
 ```
 
 The workflow detects preview tags and:
@@ -103,7 +103,7 @@ When ready to release the stable version:
 
 ```bash
 # From preview to stable: 11.1.0-preview.3 → 11.1.0
-pnpm release minor
+npm run release minor
 ```
 
 This will update the changelog (moving all `[Unreleased]` entries to the new stable version) and push automatically.
@@ -117,7 +117,7 @@ If automated publishing fails, you can publish manually:
 npm install -g @vscode/vsce
 
 # Package the extension
-pnpm install
+npm install
 npx @vscode/vsce package
 
 # Publish (requires personal access token)
@@ -149,5 +149,5 @@ git tag -d v12.0.0
 git push origin :refs/tags/v12.0.0
 
 # Re-run the release
-pnpm release minor  # or appropriate type
+npm run release minor  # or appropriate type
 ```

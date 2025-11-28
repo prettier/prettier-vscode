@@ -5,7 +5,6 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (see `.nvmrc` for version)
-- [pnpm](https://pnpm.io/) (v10.24.0 or later)
 - [Visual Studio Code](https://code.visualstudio.com/)
 
 ## Getting Started
@@ -20,12 +19,12 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 2. Install dependencies:
 
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. Build the extension:
    ```bash
-   pnpm compile
+   npm run compile
    ```
 
 ## Development
@@ -33,19 +32,19 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 ### Common Commands
 
 ```bash
-pnpm install          # Install dependencies
-pnpm compile          # Build for development (esbuild + type checking)
-pnpm compile:test     # Compile tests only
-pnpm watch            # Build and watch for changes
-pnpm lint             # Run ESLint
-pnpm prettier         # Format code with Prettier
-pnpm test             # Run tests
+npm install           # Install dependencies
+npm run compile       # Build for development (esbuild + type checking)
+npm run compile:test  # Compile tests only
+npm run watch         # Build and watch for changes
+npm run lint          # Run ESLint
+npm run prettier      # Format code with Prettier
+npm test              # Run tests
 ```
 
 ### Running the Extension
 
 1. Open this repository in VS Code
-2. Run `pnpm compile` to build
+2. Run `npm run compile` to build
 3. Press `F5` or go to Debug sidebar → "Run Extension"
 4. A new VS Code window will open with the extension loaded
 
@@ -61,7 +60,7 @@ Tests run inside a VS Code instance and use the `test-fixtures/` workspace.
 **Desktop Tests (Via CLI):**
 
 ```bash
-pnpm test
+npm test
 ```
 
 > **Note:** No VS Code instance can be running when using the CLI, or tests won't start.
@@ -69,15 +68,15 @@ pnpm test
 **Web Extension Tests:**
 
 ```bash
-pnpm test:web
+npm run test:web
 ```
 
 This runs the extension in a headless Chromium browser to verify the web extension works correctly.
 
 ## Code Style
 
-- Code is formatted with Prettier (run `pnpm prettier` before committing)
-- Linting is enforced with ESLint (run `pnpm lint` to check)
+- Code is formatted with Prettier (run `npm run prettier` before committing)
+- Linting is enforced with ESLint (run `npm run lint` to check)
 - Pre-commit hooks automatically format and lint staged files
 
 ## Architecture Overview
@@ -96,8 +95,8 @@ Key components:
 ## Submitting Changes
 
 1. Fork the repository and create a branch for your changes
-2. Make your changes and ensure tests pass (`pnpm test`)
-3. Run `pnpm lint` and `pnpm prettier` to ensure code style compliance
+2. Make your changes and ensure tests pass (`npm test`)
+3. Run `npm run lint` and `npm run prettier` to ensure code style compliance
 4. Submit a pull request with a clear description of your changes
 
 For bug fixes, please include a test case that demonstrates the fix when possible.

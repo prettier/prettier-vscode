@@ -3,8 +3,8 @@
     "allow": [
       "WebFetch(domain:prettier.io)",
       "WebFetch(domain:code.visualstudio.com)",
-      "Bash(pnpm prettier:*)",
-      "Bash(pnpm lint:*)",
+      "Bash(npm run prettier:*)",
+      "Bash(npm run lint:*)",
       "mcp__ide__getDiagnostics"
     ],
     "deny": [],

@@ -20,7 +20,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "npm install",
 
   // Run as the node user for better security.
   "remoteUser": "node"

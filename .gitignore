@@ -8,5 +8,7 @@ node_modules
 *.log
 test-results.xml
 
-# Generated pnpm lockfiles in test fixtures (npm lockfiles are tracked)
+# Generated lockfiles in test fixtures
+test-fixtures/**/package-lock.json
 test-fixtures/**/pnpm-lock.yaml
+test-fixtures/**/yarn.lock

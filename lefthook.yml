@@ -3,9 +3,9 @@ pre-commit:
   commands:
     prettier:
       glob: "**/*.{ts,json,md,yml,hbs,js,mjs}"
-      run: pnpm prettier --write {staged_files}
+      run: npm run prettier -- --write {staged_files}
       stage_fixed: true
     lint:
       stage_fixed: true
       glob: "src/**/*.ts"
-      run: pnpm lint
+      run: npm run lint

@@ -18,7 +18,7 @@ tsconfig.scripts.json
 eslint.config.mjs
 lefthook.yml
 esbuild.mjs
-pnpm-lock.yaml
+package-lock.json
 dist/*.map
 
 node_modules/
