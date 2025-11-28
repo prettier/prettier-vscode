@@ -1,6 +1,7 @@
 name: "Main"
 
-on: [push, pull_request]
+on:
+  push:
 
 jobs:
   lint:
@@ -64,6 +65,7 @@ jobs:
           node-version-file: ".nvmrc"
       - uses: pnpm/action-setup@v4
       - run: pnpm install
+      - run: pnpm compile
       - run: npx @vscode/vsce package --no-dependencies
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
@@ -91,6 +93,7 @@ jobs:
             echo "is_prerelease=false" >> $GITHUB_OUTPUT
           fi
       - run: pnpm install
+      - run: pnpm compile
       - run: npx @vscode/vsce package --no-dependencies ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV

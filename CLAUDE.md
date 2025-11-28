@@ -13,16 +13,13 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 pnpm install
 
 # Build for development
-pnpm webpack
+pnpm compile
 
 # Build for production
-pnpm vscode:prepublish
+pnpm package
 
-# Watch mode (TypeScript only, without webpack)
+# Watch mode (esbuild + TypeScript type checking)
 pnpm watch
-
-# Watch mode (webpack)
-pnpm webpack-dev
 
 # Run linting
 pnpm lint
@@ -97,12 +94,14 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 
 ### Bundling
 
-Webpack produces two bundles:
+esbuild produces two bundles:
 
 - Node bundle (`dist/extension.js`) for desktop VS Code
 - Web bundle (`dist/web-extension.js`) for vscode.dev/browser
 
 The browser build uses path aliasing to swap `ModuleResolver` → `BrowserModuleResolver`.
+
+Build configuration is in `esbuild.js`.
 
 ## Test Fixtures
 

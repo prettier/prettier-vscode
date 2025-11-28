@@ -33,20 +33,24 @@ const minPrettierVersion = "1.13.0";
 
 export type PrettierNodeModule = typeof prettier;
 
+// Workaround for https://github.com/prettier/prettier-vscode/issues/3020
+// Use require() to get a mutable fs module reference and override statSync
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mutableFs: Record<string, unknown> = require("fs");
 const origFsStatSync = fs.statSync;
 const fsStatSyncWorkaround = (
-  path: fs.PathLike,
+  filePath: fs.PathLike,
   options: fs.StatSyncOptions,
 ) => {
   if (
     options?.throwIfNoEntry === true ||
     options?.throwIfNoEntry === undefined
   ) {
-    return origFsStatSync(path, options);
+    return origFsStatSync(filePath, options);
   }
   options.throwIfNoEntry = true;
   try {
-    return origFsStatSync(path, options);
+    return origFsStatSync(filePath, options);
   } catch (error: any) {
     if (error.code === "ENOENT") {
       return undefined;
@@ -54,8 +58,7 @@ const fsStatSyncWorkaround = (
     throw error;
   }
 };
-// @ts-expect-error Workaround for https://github.com/prettier/prettier-vscode/issues/3020
-fs.statSync = fsStatSyncWorkaround;
+mutableFs.statSync = fsStatSyncWorkaround;
 
 const globalPaths: {
   [key: string]: { cache: string | undefined; get(): string | undefined };

@@ -1,4 +1,5 @@
 autoInstallPeers: true
+
 minimumReleaseAge: 10080
 
 minimumReleaseAgeExclude:
@@ -7,4 +8,5 @@ minimumReleaseAgeExclude:
 onlyBuiltDependencies:
   - "@playwright/browser-chromium"
   - "@vscode/vsce-sign"
+  - esbuild
   - keytar

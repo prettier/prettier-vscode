@@ -1,29 +1,20 @@
 // Web extension test suite entry point
-// This file is bundled by webpack for browser execution
+// This file is bundled by esbuild for browser execution
 
 // Import mocha for browser
 import "mocha/mocha";
 
-declare function require(module: string): unknown;
+export async function run(): Promise<void> {
+  // Setup mocha before importing tests so suite/test are defined
+  mocha.setup({
+    ui: "tdd",
+    reporter: undefined,
+  });
 
-export function run(): Promise<void> {
+  // Import test files dynamically after mocha.setup()
+  await import("./smoke.test");
+
   return new Promise((resolve, reject) => {
-    // Setup mocha for browser
-    mocha.setup({
-      ui: "tdd",
-      reporter: undefined,
-    });
-
-    // Import all test files
-    // These are bundled by webpack at build time
-    importAll(
-      (require as unknown as { context: RequireContext }).context(
-        ".",
-        true,
-        /\.test\.ts$/,
-      ),
-    );
-
     try {
       mocha.run((failures) => {
         if (failures > 0) {
@@ -38,20 +29,4 @@ export function run(): Promise<void> {
       reject(err);
     }
   });
-}
-
-// Webpack require.context types
-interface RequireContext {
-  (
-    path: string,
-    deep?: boolean,
-    filter?: RegExp,
-  ): {
-    keys(): string[];
-    <T>(id: string): T;
-  };
-}
-
-function importAll(r: ReturnType<RequireContext>) {
-  r.keys().forEach(r);
 }
