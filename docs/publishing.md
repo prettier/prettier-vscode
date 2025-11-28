@@ -16,51 +16,60 @@ Publishing is automated via GitHub Actions. When you push a tag starting with `v
 - Write access to the repository
 - `MARKETPLACE_TOKEN` secret configured in GitHub (for automated publishing)
 
+## Release Commands
+
+All releases are handled through the `pnpm release` command:
+
+```bash
+# Patch release (bug fixes): 11.0.0 → 11.0.1
+pnpm release patch
+
+# Minor release (new features): 11.0.0 → 11.1.0
+pnpm release minor
+
+# Major release (breaking changes): 11.0.0 → 12.0.0
+pnpm release major
+
+# Preview release: 11.0.0 → 11.1.0-preview.1
+pnpm release preview
+```
+
 ## Version Types
 
-| Type       | Example             | When to Use                       |
-| ---------- | ------------------- | --------------------------------- |
-| Major      | `11.0.0` → `12.0.0` | Breaking changes                  |
-| Minor      | `11.0.0` → `11.1.0` | New features, backward compatible |
-| Patch      | `11.0.0` → `11.0.1` | Bug fixes                         |
-| Prerelease | `12.0.0-preview.1`  | Testing before stable release     |
+| Type    | Command                | Example                       |
+| ------- | ---------------------- | ----------------------------- |
+| Major   | `pnpm release major`   | `11.0.0` → `12.0.0`           |
+| Minor   | `pnpm release minor`   | `11.0.0` → `11.1.0`           |
+| Patch   | `pnpm release patch`   | `11.0.0` → `11.0.1`           |
+| Preview | `pnpm release preview` | `11.0.0` → `11.1.0-preview.1` |
 
 ## Publishing a Stable Release
 
 ### 1. Update the Changelog
 
-Add your changes under the `[unreleased]` section in `CHANGELOG.md` as you make changes:
+Add your changes under the `[Unreleased]` section in `CHANGELOG.md` as you make changes:
 
 ```markdown
-## [unreleased]
+## [Unreleased]
 
 - Added new feature X
 - Fixed bug Y
 ```
 
-### 2. Bump the Version
-
-Run one of these commands depending on the release type:
+### 2. Run the Release Command
 
 ```bash
-# Patch release (bug fixes): 11.0.0 → 11.0.1
-npm version patch
-
-# Minor release (new features): 11.0.0 → 11.1.0
-npm version minor
-
-# Major release (breaking changes): 11.0.0 → 12.0.0
-npm version major
+pnpm release patch   # or minor, major
 ```
 
 This automatically:
 
-1. Updates `version` in `package.json`
-2. Runs the `version` script which updates `CHANGELOG.md` (converts `[unreleased]` to the new version number)
-3. Stages both `package.json` and `CHANGELOG.md`
+1. Calculates the new version number
+2. Updates `version` in `package.json`
+3. Updates `CHANGELOG.md` (converts `[Unreleased]` to the new version)
 4. Creates a git commit with message `v<version>`
 5. Creates a git tag `v<version>`
-6. Pushes the commit and tag to origin (via `postversion` script)
+6. Pushes the commit and tag to origin
 
 The GitHub Actions workflow will then automatically:
 
@@ -68,46 +77,36 @@ The GitHub Actions workflow will then automatically:
 - Create a GitHub Release with auto-generated notes
 - Publish to the VS Code Marketplace
 
-## Publishing a Prerelease
+## Publishing a Preview Release
 
-Prereleases allow testing new features before a stable release. VS Code users can opt-in to receive prerelease versions.
+Preview releases allow testing new features before a stable release. VS Code users can opt-in to receive preview versions.
 
-### 1. Bump to a Prerelease Version
+### Creating a Preview
 
 ```bash
-# First prerelease for a new major version: 11.0.0 → 12.0.0-preview.0
-npm version premajor
+# First preview (from stable): 11.0.0 → 11.1.0-preview.1
+pnpm release preview
 
-# First prerelease for a new minor version: 11.0.0 → 11.1.0-preview.0
-npm version preminor
-
-# First prerelease for a patch: 11.0.0 → 11.0.1-preview.0
-npm version prepatch
-
-# Increment existing prerelease: 12.0.0-preview.0 → 12.0.0-preview.1
-npm version prerelease
+# Subsequent previews: 11.1.0-preview.1 → 11.1.0-preview.2
+pnpm release preview
 ```
 
-> The `.npmrc` file configures `preview` as the default prerelease identifier.
-
-> **Note:** The version script automatically skips changelog updates for prereleases. The `[unreleased]` section is preserved until the final stable release.
-
-The commit and tag are automatically pushed. The workflow detects prerelease tags (containing `-preview`, `-beta`, `-alpha`, or `-rc`) and:
+The workflow detects preview tags and:
 
 - Packages with `vsce package --pre-release`
 - Creates a GitHub Release marked as prerelease
 - Publishes to Marketplace with `vsce publish --pre-release`
 
-### 2. Promote to Stable
+### Promoting to Stable
 
 When ready to release the stable version:
 
 ```bash
-# Release the stable version: 12.0.0-preview.3 → 12.0.0
-npm version major   # or minor/patch depending on what changed
+# From preview to stable: 11.1.0-preview.3 → 11.1.0
+pnpm release minor
 ```
 
-This will update the changelog, moving all `[unreleased]` entries to the new stable version, and push automatically.
+This will update the changelog (moving all `[Unreleased]` entries to the new stable version) and push automatically.
 
 ## Manual Publishing (Emergency)
 
@@ -149,6 +148,6 @@ If `package.json` version doesn't match the tag:
 git tag -d v12.0.0
 git push origin :refs/tags/v12.0.0
 
-# Fix version and re-tag (will push automatically)
-npm version 12.0.0
+# Re-run the release
+pnpm release minor  # or appropriate type
 ```

@@ -5,6 +5,15 @@ import path from "path";
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
 
+// Clean output directories (skip in watch mode)
+if (!watch) {
+  for (const dir of ["dist", "out"]) {
+    if (fs.existsSync(dir)) {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+}
+
 const extensionPackage = JSON.parse(
   fs.readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
 );
