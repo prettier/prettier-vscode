@@ -1,7 +1,19 @@
 import * as path from "path";
 import { PrettierOptions } from "../types";
 
-function resolveNodeModule(moduleName: string, options?: { paths: string[] }) {
+// Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
+export function loadNodeModule<T>(moduleName: string): T | undefined {
+  try {
+    return require(moduleName);
+  } catch {
+    throw new Error(`Error loading node module '${moduleName}'`);
+  }
+}
+
+export function resolveNodeModule(
+  moduleName: string,
+  options?: { paths: string[] },
+) {
   try {
     return require.resolve(moduleName, options);
   } catch {

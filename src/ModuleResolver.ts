@@ -33,9 +33,8 @@ import {
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { resolveConfigPlugins } from "./utils/resolve-config-plugins";
+import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
 import { isAboveV3 } from "./utils/versions";
-import { loadNodeModule } from "./ModuleLoader";
 
 const minPrettierVersion = "1.13.0";
 
