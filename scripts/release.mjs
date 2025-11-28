@@ -109,7 +109,7 @@ async function main() {
 
   if (!releaseType || !RELEASE_TYPES.includes(releaseType)) {
     console.error(
-      "Usage: npm run release <major|minor|patch> [version] [-- --pre]",
+      "Usage: npm run release <major|minor|patch> [version] [--pre]",
     );
     console.error("");
     console.error("Examples:");
