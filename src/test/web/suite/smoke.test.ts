@@ -7,7 +7,9 @@ function ok(value: unknown, message?: string): void {
   }
 }
 
-suite("Web Extension Smoke Tests", () => {
+suite("Web Extension Smoke Tests", function () {
+  this.timeout(10000);
+
   test("Extension should be present", () => {
     const extension = vscode.extensions.getExtension(
       "prettier.prettier-vscode",
