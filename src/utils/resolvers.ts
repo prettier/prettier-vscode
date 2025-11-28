@@ -34,7 +34,8 @@ export function resolveConfigPlugins(
       if (
         typeof plugin === "string" &&
         !plugin.startsWith(".") &&
-        !path.isAbsolute(plugin)
+        !path.isAbsolute(plugin) &&
+        !plugin.startsWith("file://")
       ) {
         return resolveNodeModule(plugin, { paths: [fileName] }) || plugin;
       }
