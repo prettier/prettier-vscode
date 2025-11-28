@@ -17,7 +17,7 @@ export function resolveNodeModule(
   try {
     return require.resolve(moduleName, options);
   } catch {
-    throw new Error(`Error resolve node module '${moduleName}'`);
+    throw new Error(`Error resolving node module '${moduleName}'`);
   }
 }
 
