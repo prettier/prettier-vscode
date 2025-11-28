@@ -34,7 +34,7 @@ pnpm test
 pnpm test:web
 
 # Compile tests only
-pnpm test-compile
+pnpm compile:test
 ```
 
 ## Running Tests

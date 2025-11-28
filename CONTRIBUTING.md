@@ -35,11 +35,11 @@ Thank you for your interest in contributing to the Prettier VS Code extension! F
 ```bash
 pnpm install          # Install dependencies
 pnpm compile          # Build for development (esbuild + type checking)
+pnpm compile:test     # Compile tests only
 pnpm watch            # Build and watch for changes
 pnpm lint             # Run ESLint
 pnpm prettier         # Format code with Prettier
 pnpm test             # Run tests
-pnpm test-compile     # Compile tests only
 ```
 
 ### Running the Extension

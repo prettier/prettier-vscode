@@ -38,7 +38,7 @@
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "npm: test-compile"
+      "preLaunchTask": "npm: compile:test"
     },
     {
       "name": "Run Web Extension",
