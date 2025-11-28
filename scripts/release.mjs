@@ -6,7 +6,8 @@
  *   pnpm release major   - Bump major version (11.0.0 -> 12.0.0)
  *   pnpm release minor   - Bump minor version (11.0.0 -> 11.1.0)
  *   pnpm release patch   - Bump patch version (11.0.0 -> 11.0.1)
- *   pnpm release preview - Create preview release (11.0.0 -> 11.1.0-preview.1)
+ *   pnpm release preview - Create preview release (11.0.0 -> 11.0.0-preview.1)
+ *   pnpm release preview 12.0.0-preview.1 - Create preview with specific version
  */
 import fs from "fs/promises";
 import { execSync } from "child_process";
@@ -45,9 +46,9 @@ function formatVersion({ major, minor, patch, prerelease, prereleaseNum }) {
   return version;
 }
 
-async function updateChangelog(version) {
+async function updateChangelog(version, releaseType) {
   const CHANGELOG = "CHANGELOG.md";
-  const isPrerelease = version.includes("-");
+  const isPrerelease = releaseType === "preview" || version.includes("-");
 
   if (isPrerelease) {
     console.log(`Skipping changelog update for prerelease version ${version}`);
@@ -126,11 +127,11 @@ function calculateNewVersion(currentVersion, releaseType) {
           prereleaseNum: v.prereleaseNum + 1,
         });
       }
-      // Otherwise, bump minor and start preview.1
+      // Otherwise, keep the same version and add preview.1
       return formatVersion({
         major: v.major,
-        minor: v.minor + 1,
-        patch: 0,
+        minor: v.minor,
+        patch: v.patch,
         prerelease: "preview",
         prereleaseNum: 1,
       });
@@ -142,16 +143,40 @@ function calculateNewVersion(currentVersion, releaseType) {
 
 async function main() {
   const releaseType = process.argv[2];
+  const manualVersion = process.argv[3];
 
   if (!releaseType || !RELEASE_TYPES.includes(releaseType)) {
-    console.error("Usage: pnpm release <major|minor|patch|preview>");
+    console.error("Usage: pnpm release <major|minor|patch|preview> [version]");
     console.error("");
     console.error("Examples:");
     console.error("  pnpm release major   - 11.0.0 -> 12.0.0");
     console.error("  pnpm release minor   - 11.0.0 -> 11.1.0");
     console.error("  pnpm release patch   - 11.0.0 -> 11.0.1");
-    console.error("  pnpm release preview - 11.0.0 -> 11.1.0-preview.1");
+    console.error("  pnpm release preview - 11.0.0 -> 11.0.0-preview.1");
+    console.error(
+      "  pnpm release preview 12.0.0-preview.1 - Use specific version",
+    );
     process.exit(1);
+  }
+
+  // Validate manual version if provided
+  if (manualVersion) {
+    if (releaseType !== "preview") {
+      console.error(
+        "Error: Manual version can only be specified with 'preview' release type.",
+      );
+      process.exit(1);
+    }
+    // Validate format
+    try {
+      parseVersion(manualVersion);
+    } catch {
+      console.error(`Error: Invalid version format: ${manualVersion}`);
+      console.error(
+        "Expected format: X.Y.Z or X.Y.Z-prerelease.N (e.g., 12.0.0-preview.1)",
+      );
+      process.exit(1);
+    }
   }
 
   // Check for uncommitted changes
@@ -177,7 +202,8 @@ async function main() {
   // Read current version
   const packageJson = JSON.parse(await fs.readFile("package.json", "utf8"));
   const currentVersion = packageJson.version;
-  const newVersion = calculateNewVersion(currentVersion, releaseType);
+  const newVersion =
+    manualVersion || calculateNewVersion(currentVersion, releaseType);
 
   console.log(`\nRelease: ${releaseType}`);
   console.log(`Current version: ${currentVersion}`);
@@ -192,7 +218,7 @@ async function main() {
   console.log("Updated package.json");
 
   // Update changelog (skip for prereleases)
-  await updateChangelog(newVersion);
+  await updateChangelog(newVersion, releaseType);
 
   // Stage changes
   exec("git add package.json CHANGELOG.md");
