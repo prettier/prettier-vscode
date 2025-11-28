@@ -58,15 +58,15 @@ jobs:
                     issue_number: issue.number,
                     body: `## Issue Locked
 
-This issue has been automatically locked because it has been closed for more than 90 days with no activity.
+            This issue has been automatically locked because it has been closed for more than 90 days with no activity.
 
-### Have a related problem?
-Please [open a new issue](https://github.com/prettier/prettier-vscode/issues/new/choose) with:
-- A link to this issue for context
-- Your specific problem or question
-- A reproduction repository if applicable
+            ### Have a related problem?
+            Please [open a new issue](https://github.com/prettier/prettier-vscode/issues/new/choose) with:
+            - A link to this issue for context
+            - Your specific problem or question
+            - A reproduction repository if applicable
 
-This helps us track issues properly and ensures your problem gets the attention it needs.`
+            This helps us track issues properly and ensures your problem gets the attention it needs.`
                   });
 
                   locked++;

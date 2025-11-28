@@ -9,7 +9,8 @@ const testFixturesDir = path.join(__dirname, "..", "test-fixtures");
  */
 function getInstallCommand(packageManager) {
   if (!packageManager) {
-    return "pnpm install --no-frozen-lockfile";
+    // Use --ignore-workspace to prevent root workspace settings from affecting fixtures
+    return "pnpm install --ignore-workspace";
   }
   if (packageManager.startsWith("yarn")) {
     return "yarn install";
@@ -18,9 +19,10 @@ function getInstallCommand(packageManager) {
     return "npm install";
   }
   if (packageManager.startsWith("pnpm")) {
-    return "pnpm install --no-frozen-lockfile";
+    // Use --ignore-workspace to prevent root workspace settings from affecting fixtures
+    return "pnpm install --ignore-workspace";
   }
-  return "pnpm install --no-frozen-lockfile";
+  return "pnpm install --ignore-workspace";
 }
 
 /**
