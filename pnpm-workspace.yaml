@@ -1,6 +1,3 @@
-packages:
-  - "!test-fixtures/**"
-
 autoInstallPeers: true
 minimumReleaseAge: 10080
 
