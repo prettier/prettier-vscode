@@ -11,18 +11,19 @@ import {
 import * as prettierStandalone from "prettier/standalone";
 
 // Prettier 3 moved parsers from prettier/parser-* to prettier/plugins/*
+import * as acornPlugin from "prettier/plugins/acorn";
 import * as angularPlugin from "prettier/plugins/angular";
 import * as babelPlugin from "prettier/plugins/babel";
+import * as estreePlugin from "prettier/plugins/estree";
+import * as flowPlugin from "prettier/plugins/flow";
 import * as glimmerPlugin from "prettier/plugins/glimmer";
 import * as graphqlPlugin from "prettier/plugins/graphql";
 import * as htmlPlugin from "prettier/plugins/html";
 import * as markdownPlugin from "prettier/plugins/markdown";
-import * as estreePlugin from "prettier/plugins/estree";
-import * as typescriptPlugin from "prettier/plugins/typescript";
-import * as yamlPlugin from "prettier/plugins/yaml";
 import * as meriyahPlugin from "prettier/plugins/meriyah";
-
-// Note: postcss and flow are not imported due to CSP restrictions
+import * as typescriptPlugin from "prettier/plugins/typescript";
+import * as postcssPlugin from "prettier/plugins/postcss";
+import * as yamlPlugin from "prettier/plugins/yaml";
 
 import { TextDocument, Uri } from "vscode";
 import { LoggingService } from "./LoggingService";
@@ -30,16 +31,19 @@ import { getWorkspaceRelativePath } from "./utils/workspace";
 import { ResolveConfigOptions, Options } from "prettier";
 
 const plugins = [
+  acornPlugin,
   angularPlugin,
   babelPlugin,
   estreePlugin,
+  flowPlugin,
   glimmerPlugin,
   graphqlPlugin,
   htmlPlugin,
   markdownPlugin,
+  meriyahPlugin,
+  postcssPlugin,
   typescriptPlugin,
   yamlPlugin,
-  meriyahPlugin,
 ];
 
 export class ModuleResolver implements ModuleResolverInterface {
