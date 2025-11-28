@@ -3,7 +3,7 @@
   "packageManager": "pnpm@10.24.0",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "12.0.0",
+  "version": "12.0.0-preview.1",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
