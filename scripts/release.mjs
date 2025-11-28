@@ -3,16 +3,17 @@
  * Automated release script for prettier-vscode
  *
  * Usage:
- *   pnpm release major   - Bump major version (11.0.0 -> 12.0.0)
- *   pnpm release minor   - Bump minor version (11.0.0 -> 11.1.0)
- *   pnpm release patch   - Bump patch version (11.0.0 -> 11.0.1)
- *   pnpm release preview - Create preview release (11.0.0 -> 11.0.0-preview.1)
- *   pnpm release preview 12.0.0-preview.1 - Create preview with specific version
+ *   pnpm release major              - Bump major version (11.0.0 -> 12.0.0)
+ *   pnpm release minor              - Bump minor version (11.0.0 -> 11.1.0)
+ *   pnpm release patch              - Bump patch version (11.0.0 -> 11.0.1)
+ *   pnpm release patch --pre        - Patch as prerelease (tag: v11.0.1-pre)
+ *   pnpm release minor 12.1.0       - Use specific version
+ *   pnpm release patch 12.0.1 --pre - Specific version as prerelease
  */
 import fs from "fs/promises";
 import { execSync } from "child_process";
 
-const RELEASE_TYPES = ["major", "minor", "patch", "preview"];
+const RELEASE_TYPES = ["major", "minor", "patch"];
 
 function exec(cmd, options = {}) {
   console.log(`$ ${cmd}`);
@@ -24,8 +25,7 @@ function execQuiet(cmd) {
 }
 
 function parseVersion(version) {
-  // Handle prerelease versions like "11.1.0-preview.1"
-  const match = version.match(/^(\d+)\.(\d+)\.(\d+)(?:-([a-z]+)\.(\d+))?$/i);
+  const match = version.match(/^(\d+)\.(\d+)\.(\d+)$/);
   if (!match) {
     throw new Error(`Invalid version format: ${version}`);
   }
@@ -33,25 +33,18 @@ function parseVersion(version) {
     major: parseInt(match[1], 10),
     minor: parseInt(match[2], 10),
     patch: parseInt(match[3], 10),
-    prerelease: match[4] || null,
-    prereleaseNum: match[5] ? parseInt(match[5], 10) : null,
   };
 }
 
-function formatVersion({ major, minor, patch, prerelease, prereleaseNum }) {
-  let version = `${major}.${minor}.${patch}`;
-  if (prerelease) {
-    version += `-${prerelease}.${prereleaseNum}`;
-  }
-  return version;
+function formatVersion({ major, minor, patch }) {
+  return `${major}.${minor}.${patch}`;
 }
 
-async function updateChangelog(version, releaseType) {
+async function updateChangelog(version, isPrerelease) {
   const CHANGELOG = "CHANGELOG.md";
-  const isPrerelease = releaseType === "preview" || version.includes("-");
 
   if (isPrerelease) {
-    console.log(`Skipping changelog update for prerelease version ${version}`);
+    console.log(`Skipping changelog update for prerelease`);
     return;
   }
 
@@ -71,69 +64,27 @@ async function updateChangelog(version, releaseType) {
 
 function calculateNewVersion(currentVersion, releaseType) {
   const v = parseVersion(currentVersion);
-  const isCurrentPrerelease = v.prerelease !== null;
 
   switch (releaseType) {
     case "major":
-      // If current is prerelease of this major, just drop prerelease suffix
-      // e.g., 12.0.0-preview.1 -> 12.0.0
-      if (isCurrentPrerelease && v.minor === 0 && v.patch === 0) {
-        return formatVersion({ ...v, prerelease: null, prereleaseNum: null });
-      }
-      // Otherwise bump major
       return formatVersion({
         major: v.major + 1,
         minor: 0,
         patch: 0,
-        prerelease: null,
-        prereleaseNum: null,
       });
 
     case "minor":
-      // If current is prerelease of this minor, just drop prerelease suffix
-      // e.g., 11.1.0-preview.1 -> 11.1.0
-      if (isCurrentPrerelease && v.patch === 0) {
-        return formatVersion({ ...v, prerelease: null, prereleaseNum: null });
-      }
-      // Otherwise bump minor
       return formatVersion({
         major: v.major,
         minor: v.minor + 1,
         patch: 0,
-        prerelease: null,
-        prereleaseNum: null,
       });
 
     case "patch":
-      // If current is prerelease of this patch, just drop prerelease suffix
-      // e.g., 11.0.1-preview.1 -> 11.0.1
-      if (isCurrentPrerelease) {
-        return formatVersion({ ...v, prerelease: null, prereleaseNum: null });
-      }
-      // Otherwise bump patch
       return formatVersion({
         major: v.major,
         minor: v.minor,
         patch: v.patch + 1,
-        prerelease: null,
-        prereleaseNum: null,
-      });
-
-    case "preview":
-      // If already a preview, increment the preview number
-      if (isCurrentPrerelease && v.prerelease === "preview") {
-        return formatVersion({
-          ...v,
-          prereleaseNum: v.prereleaseNum + 1,
-        });
-      }
-      // Otherwise, keep the same version and add preview.1
-      return formatVersion({
-        major: v.major,
-        minor: v.minor,
-        patch: v.patch,
-        prerelease: "preview",
-        prereleaseNum: 1,
       });
 
     default:
@@ -141,40 +92,45 @@ function calculateNewVersion(currentVersion, releaseType) {
   }
 }
 
+function parseArgs(argv) {
+  const args = argv.slice(2);
+  const isPrerelease = args.includes("--pre");
+  const positional = args.filter((arg) => !arg.startsWith("--"));
+
+  return {
+    releaseType: positional[0],
+    manualVersion: positional[1],
+    isPrerelease,
+  };
+}
+
 async function main() {
-  const releaseType = process.argv[2];
-  const manualVersion = process.argv[3];
+  const { releaseType, manualVersion, isPrerelease } = parseArgs(process.argv);
 
   if (!releaseType || !RELEASE_TYPES.includes(releaseType)) {
-    console.error("Usage: pnpm release <major|minor|patch|preview> [version]");
+    console.error("Usage: pnpm release <major|minor|patch> [version] [--pre]");
     console.error("");
     console.error("Examples:");
-    console.error("  pnpm release major   - 11.0.0 -> 12.0.0");
-    console.error("  pnpm release minor   - 11.0.0 -> 11.1.0");
-    console.error("  pnpm release patch   - 11.0.0 -> 11.0.1");
-    console.error("  pnpm release preview - 11.0.0 -> 11.0.0-preview.1");
+    console.error("  pnpm release major              - 11.0.0 -> 12.0.0");
+    console.error("  pnpm release minor              - 11.0.0 -> 11.1.0");
+    console.error("  pnpm release patch              - 11.0.0 -> 11.0.1");
     console.error(
-      "  pnpm release preview 12.0.0-preview.1 - Use specific version",
+      "  pnpm release patch --pre        - 11.0.0 -> 11.0.1 (tag: v11.0.1-pre)",
+    );
+    console.error("  pnpm release minor 12.1.0       - Use specific version");
+    console.error(
+      "  pnpm release patch 12.0.1 --pre - Specific version as prerelease",
     );
     process.exit(1);
   }
 
   // Validate manual version if provided
   if (manualVersion) {
-    if (releaseType !== "preview") {
-      console.error(
-        "Error: Manual version can only be specified with 'preview' release type.",
-      );
-      process.exit(1);
-    }
-    // Validate format
     try {
       parseVersion(manualVersion);
     } catch {
       console.error(`Error: Invalid version format: ${manualVersion}`);
-      console.error(
-        "Expected format: X.Y.Z or X.Y.Z-prerelease.N (e.g., 12.0.0-preview.1)",
-      );
+      console.error("Expected format: X.Y.Z (e.g., 12.0.1)");
       process.exit(1);
     }
   }
@@ -189,13 +145,11 @@ async function main() {
 
   // Stable releases must be on main branch
   const currentBranch = execQuiet("git rev-parse --abbrev-ref HEAD");
-  if (releaseType !== "preview" && currentBranch !== "main") {
-    console.error(
-      `Error: ${releaseType} releases must be run from the main branch.`,
-    );
+  if (!isPrerelease && currentBranch !== "main") {
+    console.error(`Error: Stable releases must be run from the main branch.`);
     console.error(`Current branch: ${currentBranch}`);
-    console.error("\nTo release a preview from this branch, use:");
-    console.error("  pnpm release preview");
+    console.error("\nTo release a prerelease from this branch, use:");
+    console.error("  pnpm release <major|minor|patch> --pre");
     process.exit(1);
   }
 
@@ -205,9 +159,14 @@ async function main() {
   const newVersion =
     manualVersion || calculateNewVersion(currentVersion, releaseType);
 
-  console.log(`\nRelease: ${releaseType}`);
+  const tagName = isPrerelease ? `v${newVersion}-pre` : `v${newVersion}`;
+
+  console.log(
+    `\nRelease: ${releaseType}${isPrerelease ? " (prerelease)" : ""}`,
+  );
   console.log(`Current version: ${currentVersion}`);
-  console.log(`New version: ${newVersion}\n`);
+  console.log(`New version: ${newVersion}`);
+  console.log(`Tag: ${tagName}\n`);
 
   // Update package.json
   packageJson.version = newVersion;
@@ -218,13 +177,12 @@ async function main() {
   console.log("Updated package.json");
 
   // Update changelog (skip for prereleases)
-  await updateChangelog(newVersion, releaseType);
+  await updateChangelog(newVersion, isPrerelease);
 
   // Stage changes
   exec("git add package.json CHANGELOG.md");
 
   // Create commit and tag
-  const tagName = `v${newVersion}`;
   exec(`git commit -m "${tagName}"`);
   exec(`git tag ${tagName}`);
 
