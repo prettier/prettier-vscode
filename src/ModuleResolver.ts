@@ -327,7 +327,17 @@ export class ModuleResolver implements ModuleResolverInterface {
           
           // Search upward from the file's directory to the workspace root
           let currentDir = fileDir;
-          while (currentDir.startsWith(workspaceRoot)) {
+          while (true) {
+            // Check if currentDir is within or at the workspace root
+            const relative = path.relative(workspaceRoot, currentDir);
+            const isWithinWorkspace =
+              relative === "" ||
+              (!relative.startsWith("..") && !path.isAbsolute(relative));
+            
+            if (!isWithinWorkspace) {
+              break;
+            }
+            
             const candidatePath = path.join(currentDir, ignorePath);
             if (
               await fs.promises.stat(candidatePath).then(
@@ -345,12 +355,7 @@ export class ModuleResolver implements ModuleResolverInterface {
             }
             
             // Move up one directory
-            const parentDir = path.dirname(currentDir);
-            // Stop if we can't go up further (shouldn't happen due to above check)
-            if (parentDir === currentDir) {
-              break;
-            }
-            currentDir = parentDir;
+            currentDir = path.dirname(currentDir);
           }
         }
       }
