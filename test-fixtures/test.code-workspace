@@ -56,6 +56,9 @@
     },
     {
       "path": "ts-config"
+    },
+    {
+      "path": "monorepo-ignore"
     }
   ],
   "settings": {

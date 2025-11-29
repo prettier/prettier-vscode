@@ -307,35 +307,91 @@ export class ModuleResolver implements ModuleResolverInterface {
     // cache resolvedIgnorePath because resolving it checks the file system
     let resolvedIgnorePath = this.ignorePathCache.get(cacheKey);
     if (!resolvedIgnorePath) {
-      resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
-      // if multiple different workspace folders contain this same file, we
-      // may have chosen one that doesn't actually contain .prettierignore
+      // First, try to find the ignore file by searching upward from the file's directory
+      // This supports monorepos where .prettierignore files exist in subdirectories
+      const fileDir = path.dirname(fileName);
+      
       if (workspace.workspaceFolders) {
-        // all workspace folders that contain the file
-        const folders = workspace.workspaceFolders
-          .map((folder) => folder.uri.fsPath)
-          .filter((folder) => {
-            // https://stackoverflow.com/a/45242825
-            const relative = path.relative(folder, fileName);
-            return (
-              relative &&
-              !relative.startsWith("..") &&
-              !path.isAbsolute(relative)
-            );
-          })
-          // sort folders innermost to outermost
-          .sort((a, b) => b.length - a.length);
-        for (const folder of folders) {
-          const p = path.join(folder, ignorePath);
-          if (
-            // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
-            await fs.promises.stat(p).then(
-              () => true,
-              () => false,
-            )
-          ) {
-            resolvedIgnorePath = p;
-            break;
+        // Find the workspace folder that contains this file
+        const workspaceFolder = workspace.workspaceFolders.find((folder) => {
+          const relative = path.relative(folder.uri.fsPath, fileName);
+          return (
+            relative &&
+            !relative.startsWith("..") &&
+            !path.isAbsolute(relative)
+          );
+        });
+
+        if (workspaceFolder) {
+          const workspaceRoot = workspaceFolder.uri.fsPath;
+          
+          // Search upward from the file's directory to the workspace root
+          let currentDir = fileDir;
+          while (true) {
+            // Check if currentDir is within or at the workspace root
+            const relative = path.relative(workspaceRoot, currentDir);
+            const isWithinWorkspace =
+              relative === "" ||
+              (!relative.startsWith("..") && !path.isAbsolute(relative));
+            
+            if (!isWithinWorkspace) {
+              break;
+            }
+            
+            const candidatePath = path.join(currentDir, ignorePath);
+            if (
+              await fs.promises.stat(candidatePath).then(
+                () => true,
+                () => false,
+              )
+            ) {
+              resolvedIgnorePath = candidatePath;
+              break;
+            }
+            
+            // Stop if we've reached the workspace root
+            if (currentDir === workspaceRoot) {
+              break;
+            }
+            
+            // Move up one directory
+            currentDir = path.dirname(currentDir);
+          }
+        }
+      }
+      
+      // Fall back to the original behavior if not found
+      if (!resolvedIgnorePath) {
+        resolvedIgnorePath = getWorkspaceRelativePath(fileName, ignorePath);
+        // if multiple different workspace folders contain this same file, we
+        // may have chosen one that doesn't actually contain .prettierignore
+        if (workspace.workspaceFolders) {
+          // all workspace folders that contain the file
+          const folders = workspace.workspaceFolders
+            .map((folder) => folder.uri.fsPath)
+            .filter((folder) => {
+              // https://stackoverflow.com/a/45242825
+              const relative = path.relative(folder, fileName);
+              return (
+                relative &&
+                !relative.startsWith("..") &&
+                !path.isAbsolute(relative)
+              );
+            })
+            // sort folders innermost to outermost
+            .sort((a, b) => b.length - a.length);
+          for (const folder of folders) {
+            const p = path.join(folder, ignorePath);
+            if (
+              // https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists#comment121041700_57708635
+              await fs.promises.stat(p).then(
+                () => true,
+                () => false,
+              )
+            ) {
+              resolvedIgnorePath = p;
+              break;
+            }
           }
         }
       }
