@@ -401,6 +401,12 @@
           "default": "end",
           "markdownDescription": "%ext.config.experimentalOperatorPosition%",
           "scope": "language-overridable"
+        },
+        "prettier.timeout": {
+          "type": "number",
+          "default": 30000,
+          "markdownDescription": "%ext.config.timeout%",
+          "scope": "resource"
         }
       }
     },

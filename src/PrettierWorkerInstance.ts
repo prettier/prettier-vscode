@@ -13,6 +13,7 @@ import {
   PrettierInstanceConstructor,
 } from "./PrettierInstance";
 import { ResolveConfigOptions, Options } from "prettier";
+import { withTimeout } from "./utils/timeout";
 
 let currentCallId = 0;
 
@@ -32,6 +33,7 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
   > = new Map();
 
   public version: string | null = null;
+  private timeoutMs: number = 30000; // Default 30 seconds
 
   constructor(private modulePath: string) {
     worker.on("message", ({ type, id, payload }) => {
@@ -70,11 +72,18 @@ export const PrettierWorkerInstance: PrettierInstanceConstructor = class Prettie
     return promise as Promise<string>;
   }
 
+  public setTimeoutMs(timeoutMs: number): void {
+    this.timeoutMs = timeoutMs;
+  }
+
   public async format(
     source: string,
     options?: PrettierOptions,
   ): Promise<string> {
-    const result = await this.callMethod("format", [source, options]);
+    const result = await withTimeout(
+      this.callMethod("format", [source, options]),
+      this.timeoutMs,
+    );
     return result;
   }
 

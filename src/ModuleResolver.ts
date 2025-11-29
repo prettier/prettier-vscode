@@ -292,6 +292,11 @@ export class ModuleResolver implements ModuleResolverInterface {
       } else {
         this.loggingService.logDebug(`Using prettier version ${version}`);
       }
+
+      // Set timeout from configuration
+      const { timeout } = getWorkspaceConfig(Uri.file(fileName));
+      moduleInstance.setTimeoutMs(timeout);
+
       return moduleInstance;
     } else {
       this.loggingService.logDebug(USING_BUNDLED_PRETTIER);
