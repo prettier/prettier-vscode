@@ -372,13 +372,13 @@ export default class PrettierEditService implements Disposable {
     }
     const duration = new Date().getTime() - startTime;
     this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
-    
+
     // If the formatted result is identical to the current document, return no edits
     // This prevents VS Code from triggering additional formatting actions
     if (result === document.getText()) {
       return [];
     }
-    
+
     const edit = this.minimalEdit(document, result);
     return [edit];
   };

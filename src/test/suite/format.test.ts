@@ -152,24 +152,27 @@ describe("Test format Document", () => {
   it("formats Markdown idempotently (no extra newlines added)", async () => {
     // This test checks that formatting a markdown file multiple times
     // doesn't keep adding empty lines to the end
-    const { actual: firstFormat } = await format("project", "formatTest/test.md");
-    
+    const { actual: firstFormat } = await format(
+      "project",
+      "formatTest/test.md",
+    );
+
     // Format again without closing the document
     await vscode.commands.executeCommand("editor.action.formatDocument");
     const editor = vscode.window.activeTextEditor;
     const secondFormat = editor?.document.getText();
-    
+
     assert.equal(
       firstFormat,
       secondFormat,
-      "Second format should produce identical output to first format"
+      "Second format should produce identical output to first format",
     );
-    
+
     // Count trailing newlines in the formatted output
     const trailingNewlines = (firstFormat.match(/\n*$/)?.[0] || "").length;
     assert.ok(
       trailingNewlines <= 1,
-      `Should have at most 1 trailing newline, but found ${trailingNewlines}`
+      `Should have at most 1 trailing newline, but found ${trailingNewlines}`,
     );
   });
 });
