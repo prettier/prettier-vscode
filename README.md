@@ -116,6 +116,33 @@ Additionally, you can disable format on save for specific languages if you don't
 }
 ```
 
+### Format Using Code Actions
+
+This extension provides a code action for formatting with Prettier that can be used with VS Code's `editor.codeActionsOnSave` setting. This is useful when you want to run Prettier before other formatters or linters, such as ESLint.
+
+To format with Prettier on save using code actions, add the following to your VS Code settings:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit"
+  }
+}
+```
+
+You can also run Prettier after ESLint's auto-fix:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.prettier": "explicit"
+  }
+}
+```
+
+**Note:** Using `editor.formatOnSave` is still the recommended way to format on save. The code action is provided for advanced use cases where you need more control over the order of formatting operations.
+
 ### Prettier Resolution
 
 This extension will use prettier from your project's local dependencies (recommended). When the `prettier.resolveGlobalModules` is set to `true` the extension can also attempt to resolve global modules. Should prettier not be installed locally with your project's dependencies or globally on the machine, the version of prettier that is bundled with the extension will be used.
