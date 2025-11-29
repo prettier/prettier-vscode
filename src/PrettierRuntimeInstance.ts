@@ -1,4 +1,5 @@
 import { spawn, ChildProcess } from "child_process";
+import * as path from "path";
 import { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
 import { PrettierInstance } from "./PrettierInstance";
 import {
@@ -50,7 +51,22 @@ export class PrettierRuntimeInstance implements PrettierInstance {
   constructor(
     private modulePath: string,
     private runtimeExecutable: string,
-  ) {}
+  ) {
+    // Validate paths to prevent injection attacks
+    // modulePath should be an absolute path to a module directory
+    if (!path.isAbsolute(this.modulePath)) {
+      throw new Error(`modulePath must be absolute: ${this.modulePath}`);
+    }
+    // runtimeExecutable should not contain shell metacharacters
+    if (
+      this.runtimeExecutable.includes(";") ||
+      this.runtimeExecutable.includes("&")
+    ) {
+      throw new Error(
+        `Invalid runtime executable path: ${this.runtimeExecutable}`,
+      );
+    }
+  }
 
   private async ensureProcess(): Promise<void> {
     if (this.process) {
@@ -60,6 +76,7 @@ export class PrettierRuntimeInstance implements PrettierInstance {
     // Create a wrapper script that acts as an RPC server
     // Note: This uses CommonJS require() which works with Node.js and Bun.
     // Deno users would need to enable --allow-read and CommonJS compatibility.
+    // The modulePath is already validated in the constructor and sanitized via JSON.stringify
     const workerCode = `
 const prettier = require(${JSON.stringify(this.modulePath)});
 
@@ -72,7 +89,8 @@ process.stdin.on('data', (chunk) => {
       const message = JSON.parse(line);
       handleMessage(message);
     } catch (error) {
-      console.error('Failed to parse message:', error);
+      // Parsing errors are written to stderr to avoid interfering with stdout JSON-RPC
+      process.stderr.write('Failed to parse RPC message: ' + line.substring(0, 100) + '\\n');
     }
   });
 });
@@ -233,11 +251,15 @@ process.stdin.resume();
   private async sendMessage(message: RPCRequest): Promise<unknown> {
     await this.ensureProcess();
 
+    if (!this.process || !this.process.stdin) {
+      throw new Error("Runtime process is not available");
+    }
+
     const promise = new Promise((resolve, reject) => {
       this.messageResolvers.set(message.id, { resolve, reject });
     });
 
-    this.process!.stdin!.write(JSON.stringify(message) + "\n");
+    this.process.stdin.write(JSON.stringify(message) + "\n");
 
     return promise;
   }
