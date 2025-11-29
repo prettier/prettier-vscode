@@ -40,6 +40,7 @@ export function getWorkspaceConfig(
     const newConfig = {
       ...config,
       prettierPath: undefined,
+      prettierExecutable: undefined,
       configPath: undefined,
       ignorePath: ".prettierignore",
       documentSelectors: [],

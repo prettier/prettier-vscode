@@ -1,0 +1,3 @@
+{
+  "prettier.prettierExecutable": ["node", "node_modules/prettier/bin/prettier.cjs"]
+}

@@ -66,6 +66,10 @@ interface IExtensionConfig {
    */
   prettierPath: string | undefined;
   /**
+   * Array specifying an external executable to use for Prettier formatting.
+   */
+  prettierExecutable: string[] | undefined;
+  /**
    * Path to prettier configuration file.
    */
   configPath: string | undefined;
