@@ -97,6 +97,10 @@ interface IExtensionConfig {
    * If true, enabled debug logs
    */
   enableDebugLogs: boolean;
+  /**
+   * Timeout in milliseconds for Prettier formatting operations
+   */
+  timeout: number;
 }
 /**
  * Configuration for prettier-vscode

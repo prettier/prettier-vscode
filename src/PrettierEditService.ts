@@ -1,4 +1,5 @@
 import {
+  CancellationToken,
   Disposable,
   DocumentFilter,
   languages,
@@ -363,9 +364,16 @@ export default class PrettierEditService implements Disposable {
   private provideEdits = async (
     document: TextDocument,
     options: ExtensionFormattingOptions,
+    token?: CancellationToken,
   ): Promise<TextEdit[]> => {
+    // Check if already cancelled before starting
+    if (token?.isCancellationRequested) {
+      this.loggingService.logInfo("Formatting cancelled before starting.");
+      return [];
+    }
+
     const startTime = new Date().getTime();
-    const result = await this.format(document.getText(), document, options);
+    const result = await this.format(document.getText(), document, options, token);
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
@@ -413,6 +421,7 @@ export default class PrettierEditService implements Disposable {
     text: string,
     doc: TextDocument,
     options: ExtensionFormattingOptions,
+    token?: CancellationToken,
   ): Promise<string | undefined> {
     const { fileName, uri, languageId } = doc;
 
@@ -523,12 +532,25 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
+    // Check for cancellation before formatting
+    if (token?.isCancellationRequested) {
+      this.loggingService.logInfo("Formatting cancelled before prettierInstance.format.");
+      return;
+    }
+
     try {
       // Since Prettier v3, `format` returns Promise.
       const formattedText = await prettierInstance.format(
         text,
         prettierOptions,
       );
+
+      // Check for cancellation after formatting
+      if (token?.isCancellationRequested) {
+        this.loggingService.logInfo("Formatting cancelled after prettierInstance.format.");
+        return;
+      }
+
       this.statusBar.update(FormatterStatus.Success);
 
       return formattedText;

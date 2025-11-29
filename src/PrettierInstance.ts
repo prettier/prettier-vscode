@@ -28,6 +28,7 @@ export interface PrettierInstance {
     fileName: string,
     options?: ResolveConfigOptions,
   ): Promise<PrettierOptions | null>;
+  setTimeoutMs(timeoutMs: number): void;
 }
 
 export interface PrettierInstanceConstructor {
