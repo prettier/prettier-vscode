@@ -56,6 +56,9 @@
     },
     {
       "path": "ts-config"
+    },
+    {
+      "path": "v3-config-reload"
     }
   ],
   "settings": {

@@ -222,6 +222,10 @@ export class ModuleResolver implements ModuleResolverInterface {
     return null;
   }
 
+  async clearConfigCache() {
+    // nothing to do for browser
+  }
+
   dispose() {
     // nothing to do
   }
