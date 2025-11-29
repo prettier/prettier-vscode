@@ -13,6 +13,7 @@ import {
 import { getParserFromLanguageId } from "./utils/get-parser-from-language";
 import { LoggingService } from "./LoggingService";
 import { RESTART_TO_ENABLE } from "./message";
+import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider";
 import { PrettierEditProvider } from "./PrettierEditProvider";
 import { PrettierInstance } from "./PrettierInstance";
 import { FormatterStatus, StatusBar } from "./StatusBar";
@@ -63,6 +64,7 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private codeActionHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
   private allLanguages: string[] = [];
@@ -243,8 +245,10 @@ export default class PrettierEditService implements Disposable {
     this.moduleResolver.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
+    this.codeActionHandler?.dispose();
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
+    this.codeActionHandler = undefined;
   };
 
   private registerDocumentFormatEditorProviders({
@@ -261,6 +265,15 @@ export default class PrettierEditService implements Disposable {
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
       editProvider,
+    );
+    const codeActionProvider = new PrettierCodeActionProvider(editProvider);
+    this.codeActionHandler = languages.registerCodeActionsProvider(
+      languageSelector,
+      codeActionProvider,
+      {
+        providedCodeActionKinds:
+          PrettierCodeActionProvider.providedCodeActionKinds,
+      },
     );
   }
 

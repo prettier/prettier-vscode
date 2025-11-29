@@ -55,7 +55,7 @@
 </p>
 
 > [!IMPORTANT]
-> **Extension Migration:** This extension is being moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new for now as it is a major change. Once it is stable, we will publish v12 to both extensions and deprecate the `esbenp.prettier-vscode` extension. **Version 12.x is currently not stable, use with caution in production environments.** 
+> **Extension Migration:** This extension is being moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new for now as it is a major change. Once it is stable, we will publish v12 to both extensions and deprecate the `esbenp.prettier-vscode` extension. **Version 12.x is currently not stable, use with caution in production environments.**
 
 ## Installation
 
@@ -115,6 +115,33 @@ Additionally, you can disable format on save for specific languages if you don't
   }
 }
 ```
+
+### Format Using Code Actions
+
+This extension provides a code action for formatting with Prettier that can be used with VS Code's `editor.codeActionsOnSave` setting. This is useful when you want to run Prettier before other formatters or linters, such as ESLint.
+
+To format with Prettier on save using code actions, add the following to your VS Code settings:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit"
+  }
+}
+```
+
+You can also run Prettier after ESLint's auto-fix:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.prettier": "explicit"
+  }
+}
+```
+
+**Note:** Using `editor.formatOnSave` is still the recommended way to format on save. The code action is provided for advanced use cases where you need more control over the order of formatting operations.
 
 ### Prettier Resolution
 
