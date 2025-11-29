@@ -285,6 +285,38 @@ Supply a custom path to the prettier module. This path should be to the module f
 
 **Disabled on untrusted workspaces**
 
+#### prettier.prettierRuntimeExecutable
+
+Path to a JavaScript runtime executable (e.g., `bun`, `deno`, `/usr/local/bin/bun`) to use for running Prettier instead of Node.js. This is useful when you need to run Prettier with a non-Node.js runtime in environments where Node.js is not available.
+
+When this setting is configured, the extension will spawn a child process with the specified runtime to execute Prettier, instead of loading it directly with Node.js's `require()`.
+
+**Example use cases:**
+
+- Using Bun in a development environment where Node.js is not installed
+- Running Prettier with Deno for better security sandboxing
+- Working in a Nix environment that only provides alternative runtimes
+
+**Example configuration:**
+
+```json
+{
+  "prettier.prettierRuntimeExecutable": "bun"
+}
+```
+
+Or with an absolute path:
+
+```json
+{
+  "prettier.prettierRuntimeExecutable": "/usr/local/bin/bun"
+}
+```
+
+**Note:** Leave this setting empty (default) to use the standard Node.js runtime that comes with VS Code.
+
+**Disabled on untrusted workspaces**
+
 #### prettier.resolveGlobalModules (default: `false`)
 
 When enabled, this extension will attempt to use global npm or yarn modules if local modules cannot be resolved.
