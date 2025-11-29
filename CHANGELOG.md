@@ -6,6 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [unreleased]
 
+- Support configuration file with imported plugins
 - [BREAKING CHANGE] Bundled Prettier upgraded from v2.8.8 to v3.x
 - [BREAKING CHANGE] Updated `trailingComma` default from `"es5"` to `"all"` to match Prettier 3
 - Maintained backward compatibility with projects using Prettier v2.x (projects with explicit Prettier v2 dependencies will continue to use their local version)

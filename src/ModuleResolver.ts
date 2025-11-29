@@ -31,10 +31,8 @@ import {
   getWorkspaceRelativePath,
 } from "./utils/workspace";
 import { PrettierInstance } from "./PrettierInstance";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
 import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
-import { isAboveV3 } from "./utils/versions";
 
 const minPrettierVersion = "1.13.0";
 
@@ -246,16 +244,8 @@ export class ModuleResolver implements ModuleResolverInterface {
         return moduleInstance;
       } else {
         try {
-          const prettierVersion =
-            this.loadPrettierVersionFromPackageJson(modulePath);
+          moduleInstance = new PrettierMainThreadInstance(modulePath);
 
-          const isAboveVersion3 = isAboveV3(prettierVersion);
-
-          if (isAboveVersion3) {
-            moduleInstance = new PrettierWorkerInstance(modulePath);
-          } else {
-            moduleInstance = new PrettierMainThreadInstance(modulePath);
-          }
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
           }
