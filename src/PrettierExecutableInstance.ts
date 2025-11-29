@@ -1,5 +1,7 @@
 import { execFile, spawn } from "child_process";
+import * as path from "path";
 import { promisify } from "util";
+import { workspace } from "vscode";
 import { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
 import {
   PrettierInstance,
@@ -20,10 +22,12 @@ function execWithStdin(
   executable: string,
   args: string[],
   input: string,
+  cwd?: string,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const process = spawn(executable, args, {
       stdio: ["pipe", "pipe", "pipe"],
+      cwd,
     });
 
     let stdout = "";
@@ -190,8 +194,29 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
         }
       }
 
+      // Determine working directory from the file being formatted
+      // This allows relative paths in prettierExecutable to work correctly
+      let cwd: string | undefined;
+      if (options?.filepath) {
+        // Try to find the workspace folder for this file
+        const workspaceFolder = workspace.workspaceFolders?.find((folder) =>
+          options.filepath!.startsWith(folder.uri.fsPath),
+        );
+        if (workspaceFolder) {
+          cwd = workspaceFolder.uri.fsPath;
+        } else {
+          // Fall back to the file's directory
+          cwd = path.dirname(options.filepath);
+        }
+      }
+
       try {
-        const formattedText = await execWithStdin(this.executable, args, source);
+        const formattedText = await execWithStdin(
+          this.executable,
+          args,
+          source,
+          cwd,
+        );
         return formattedText;
       } catch (error: any) {
         // If prettier exits with error, the stderr will contain the error message
