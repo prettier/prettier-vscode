@@ -461,18 +461,26 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   /**
+   * Clears the config cache for all prettier instances
+   */
+  public async clearConfigCache() {
+    await prettier.clearConfigCache();
+    const clearPromises: Promise<void>[] = [];
+    this.path2Module.forEach((module) => {
+      clearPromises.push(
+        module.clearConfigCache().catch((error) => {
+          this.loggingService.logError("Error clearing config cache.", error);
+        }),
+      );
+    });
+    await Promise.all(clearPromises);
+  }
+
+  /**
    * Clears the module and config cache
    */
   public async dispose() {
-    await prettier.clearConfigCache();
-    this.path2Module.forEach((module) => {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        module.clearConfigCache();
-      } catch (error) {
-        this.loggingService.logError("Error clearing module cache.", error);
-      }
-    });
+    await this.clearConfigCache();
     this.path2Module.clear();
   }
 
