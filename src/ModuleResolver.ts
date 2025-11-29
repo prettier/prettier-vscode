@@ -339,10 +339,15 @@ export class ModuleResolver implements ModuleResolverInterface {
               break;
             }
             
+            // Stop if we've reached the workspace root
+            if (currentDir === workspaceRoot) {
+              break;
+            }
+            
             // Move up one directory
             const parentDir = path.dirname(currentDir);
-            // Stop if we've reached the root or can't go up further
-            if (parentDir === currentDir || !parentDir.startsWith(workspaceRoot)) {
+            // Stop if we can't go up further (shouldn't happen due to above check)
+            if (parentDir === currentDir) {
               break;
             }
             currentDir = parentDir;
