@@ -72,10 +72,17 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
 
     constructor(executablePath: string) {
       // executablePath is a JSON string containing the array of executable + args
-      const executableArray = JSON.parse(executablePath);
+      let executableArray: unknown;
+      try {
+        executableArray = JSON.parse(executablePath);
+      } catch {
+        throw new Error(
+          `Failed to parse prettierExecutable configuration. Expected a JSON array, got: ${executablePath}`,
+        );
+      }
       if (!Array.isArray(executableArray) || executableArray.length === 0) {
         throw new Error(
-          "prettierExecutable must be a non-empty array of strings",
+          "prettierExecutable must be a non-empty array of strings (e.g., ['node', 'prettier'])",
         );
       }
       this.executable = executableArray[0];
@@ -85,10 +92,11 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
     public async import(): Promise<string> {
       // Get version from the executable
       try {
-        const { stdout } = await execFileAsync(this.executable, [
-          ...this.args,
-          "--version",
-        ]);
+        const { stdout } = await execFileAsync(
+          this.executable,
+          [...this.args, "--version"],
+          { timeout: 10000 }, // 10 second timeout
+        );
         this.version = stdout.trim();
         return this.version;
       } catch (error) {
@@ -218,11 +226,11 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
           cwd,
         );
         return formattedText;
-      } catch (error: any) {
+      } catch (error: unknown) {
         // If prettier exits with error, the stderr will contain the error message
-        throw new Error(
-          `Prettier executable error: ${error.message || error}`,
-        );
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        throw new Error(`Prettier executable error: ${errorMessage}`);
       }
     }
 
@@ -240,8 +248,7 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
     }
 
     public async getSupportInfo({
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      plugins,
+      plugins: _plugins,
     }: {
       plugins: (string | PrettierPlugin)[];
     }): Promise<{
@@ -269,8 +276,7 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
     }
 
     public async resolveConfigFile(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      filePath?: string | undefined,
+      _filePath?: string | undefined,
     ): Promise<string | null> {
       // For external executables, we can't easily resolve config files
       // Return null to indicate no config file resolution
@@ -278,10 +284,8 @@ export const PrettierExecutableInstance: PrettierInstanceConstructor =
     }
 
     public async resolveConfig(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      fileName: string,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      options?: ResolveConfigOptions | undefined,
+      _fileName: string,
+      _options?: ResolveConfigOptions | undefined,
     ): Promise<Options | null> {
       // For external executables, we can't easily resolve config
       // The executable will handle config resolution internally
