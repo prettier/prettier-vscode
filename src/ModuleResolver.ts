@@ -32,7 +32,7 @@ import {
 } from "./utils/workspace";
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
+import { resolveConfigPlugins } from "./utils/resolvers";
 
 const minPrettierVersion = "1.13.0";
 
