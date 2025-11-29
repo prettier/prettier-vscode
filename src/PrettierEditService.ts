@@ -373,7 +373,12 @@ export default class PrettierEditService implements Disposable {
     }
 
     const startTime = new Date().getTime();
-    const result = await this.format(document.getText(), document, options, token);
+    const result = await this.format(
+      document.getText(),
+      document,
+      options,
+      token,
+    );
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
@@ -534,7 +539,9 @@ export default class PrettierEditService implements Disposable {
 
     // Check for cancellation before formatting
     if (token?.isCancellationRequested) {
-      this.loggingService.logInfo("Formatting cancelled before prettierInstance.format.");
+      this.loggingService.logInfo(
+        "Formatting cancelled before prettierInstance.format.",
+      );
       return;
     }
 
@@ -547,7 +554,9 @@ export default class PrettierEditService implements Disposable {
 
       // Check for cancellation after formatting
       if (token?.isCancellationRequested) {
-        this.loggingService.logInfo("Formatting cancelled after prettierInstance.format.");
+        this.loggingService.logInfo(
+          "Formatting cancelled after prettierInstance.format.",
+        );
         return;
       }
 

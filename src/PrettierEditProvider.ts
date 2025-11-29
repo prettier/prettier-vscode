@@ -23,7 +23,7 @@ export class PrettierEditProvider
   public async provideDocumentRangeFormattingEdits(
     document: TextDocument,
     range: Range,
-     
+
     options: FormattingOptions,
     token: CancellationToken,
   ): Promise<TextEdit[]> {
@@ -40,7 +40,7 @@ export class PrettierEditProvider
 
   public async provideDocumentFormattingEdits(
     document: TextDocument,
-     
+
     options: FormattingOptions,
     token: CancellationToken,
   ): Promise<TextEdit[]> {

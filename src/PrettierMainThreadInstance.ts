@@ -39,7 +39,10 @@ export const PrettierMainThreadInstance: PrettierInstanceConstructor = class Pre
     if (!this.prettierModule) {
       await this.import();
     }
-    return withTimeout(this.prettierModule!.format(source, options), this.timeoutMs);
+    return withTimeout(
+      this.prettierModule!.format(source, options),
+      this.timeoutMs,
+    );
   }
 
   public async getFileInfo(
