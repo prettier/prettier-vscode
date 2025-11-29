@@ -13,7 +13,6 @@ export default tseslint.config(
       "node_modules/**",
       ".vscode-test/**",
       ".vscode-test-web/**",
-      "src/worker/**",
     ],
   },
 

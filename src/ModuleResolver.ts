@@ -31,10 +31,8 @@ import {
   getWorkspaceRelativePath,
 } from "./utils/workspace";
 import { PrettierInstance } from "./PrettierInstance";
-import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
-import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
-import { isAboveV3 } from "./utils/versions";
+import { resolveConfigPlugins } from "./utils/resolvers";
 
 const minPrettierVersion = "1.13.0";
 
@@ -128,45 +126,6 @@ export class ModuleResolver implements ModuleResolverInterface {
     return prettier;
   }
 
-  private loadPrettierVersionFromPackageJson(modulePath: string): string {
-    let cwd = "";
-    try {
-      fs.readdirSync(modulePath); // checking if dir with readdir will handle directories and symlinks
-      cwd = modulePath;
-    } catch {
-      cwd = path.dirname(modulePath);
-    }
-    const packageJsonPath = findUp.sync(
-      (dir) => {
-        const pkgFilePath = path.join(dir, "package.json");
-        if (fs.existsSync(pkgFilePath)) {
-          return pkgFilePath;
-        }
-      },
-      { cwd },
-    );
-
-    if (!packageJsonPath) {
-      throw new Error("Cannot find Prettier package.json");
-    }
-
-    const prettierPkgJson = loadNodeModule(packageJsonPath) as {
-      version?: string;
-    } | null;
-
-    let version: string | null = null;
-
-    if (prettierPkgJson && typeof prettierPkgJson.version === "string") {
-      version = prettierPkgJson.version;
-    }
-
-    if (!version) {
-      throw new Error("Cannot load Prettier version from package.json");
-    }
-
-    return version;
-  }
-
   /**
    * Returns an instance of the prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
@@ -246,16 +205,8 @@ export class ModuleResolver implements ModuleResolverInterface {
         return moduleInstance;
       } else {
         try {
-          const prettierVersion =
-            this.loadPrettierVersionFromPackageJson(modulePath);
+          moduleInstance = new PrettierMainThreadInstance(modulePath);
 
-          const isAboveVersion3 = isAboveV3(prettierVersion);
-
-          if (isAboveVersion3) {
-            moduleInstance = new PrettierWorkerInstance(modulePath);
-          } else {
-            moduleInstance = new PrettierMainThreadInstance(modulePath);
-          }
           if (moduleInstance) {
             this.path2Module.set(modulePath, moduleInstance);
           }

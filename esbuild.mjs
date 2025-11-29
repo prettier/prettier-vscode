@@ -160,43 +160,12 @@ const webTestConfig = {
   plugins: [esbuildProblemMatcherPlugin],
 };
 
-function copyWorkerFile() {
-  // Copy to dist (for production/esbuild bundle)
-  const distWorkerDir = "dist/worker";
-  if (!fs.existsSync(distWorkerDir)) {
-    fs.mkdirSync(distWorkerDir, { recursive: true });
-  }
-  fs.copyFileSync(
-    "src/worker/prettier-instance-worker.js",
-    "dist/worker/prettier-instance-worker.js",
-  );
-
-  // Copy to out (for tests/tsc output)
-  const outWorkerDir = "out/worker";
-  if (!fs.existsSync(outWorkerDir)) {
-    fs.mkdirSync(outWorkerDir, { recursive: true });
-  }
-  fs.copyFileSync(
-    "src/worker/prettier-instance-worker.js",
-    "out/worker/prettier-instance-worker.js",
-  );
-}
-
 async function main() {
   const nodeCtx = await esbuild.context(nodeConfig);
   const browserCtx = await esbuild.context(browserConfig);
   const webTestCtx = await esbuild.context(webTestConfig);
 
-  // Copy worker file
-  copyWorkerFile();
-
   if (watch) {
-    // Watch the worker file for changes
-    fs.watchFile("src/worker/prettier-instance-worker.js", () => {
-      console.log("[watch] copying worker file");
-      copyWorkerFile();
-    });
-
     await Promise.all([
       nodeCtx.watch(),
       browserCtx.watch(),
