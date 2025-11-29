@@ -21,6 +21,7 @@
   "ext.config.parser": "Override the parser. You shouldn't have to change this setting.",
   "ext.config.parserDeprecationMessage": "This setting is no longer supported. Use a prettier configuration file instead.",
   "ext.config.prettierPath": "Path to the `prettier` module, eg: `./node_modules/prettier`.",
+  "ext.config.prettierExecutable": "Array specifying an external executable to use for Prettier formatting. The first element is the executable path, and subsequent elements are arguments. Example: `[\"docker\", \"compose\", \"exec\", \"app\", \"node_modules/.bin/prettier\"]`. When set, this takes precedence over `prettier.prettierPath`.",
   "ext.config.printWidth": "Fit code within this line limit.",
   "ext.config.proseWrap": "(Markdown) wrap prose over multiple lines.",
   "ext.config.quoteProps": "Change when properties in objects are quoted.\nValid options:\n- `\"as-needed\"` - Only add quotes around object properties where required.\n- `\"consistent\"` - If at least one property in an object requires quotes, quote all properties.\n- `\"preserve\"` - Respect the input use of quotes in object properties.",

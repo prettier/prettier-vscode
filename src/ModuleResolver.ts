@@ -33,6 +33,7 @@ import {
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { PrettierExecutableInstance } from "./PrettierExecutableInstance";
 import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
 import { isAboveV3 } from "./utils/versions";
 
@@ -179,9 +180,37 @@ export class ModuleResolver implements ModuleResolverInterface {
       return prettier;
     }
 
-    const { prettierPath, resolveGlobalModules } = getWorkspaceConfig(
-      Uri.file(fileName),
-    );
+    const { prettierPath, prettierExecutable, resolveGlobalModules } =
+      getWorkspaceConfig(Uri.file(fileName));
+
+    // If prettierExecutable is configured, use that instead of module resolution
+    if (prettierExecutable && Array.isArray(prettierExecutable)) {
+      this.loggingService.logDebug(
+        `Using Prettier executable: ${prettierExecutable.join(" ")}`,
+      );
+      // Use JSON string as cache key since executablePath needs to be a string
+      const cacheKey = JSON.stringify(prettierExecutable);
+      let moduleInstance = this.path2Module.get(cacheKey);
+      if (moduleInstance) {
+        return moduleInstance;
+      }
+
+      try {
+        moduleInstance = new PrettierExecutableInstance(cacheKey);
+        const version = await moduleInstance.import();
+        this.loggingService.logDebug(
+          `Using prettier executable version ${version}`,
+        );
+        this.path2Module.set(cacheKey, moduleInstance);
+        return moduleInstance;
+      } catch (error) {
+        this.loggingService.logError(
+          "Failed to load Prettier executable",
+          error,
+        );
+        return undefined;
+      }
+    }
 
     // Look for local module
     let modulePath: string | undefined = undefined;
