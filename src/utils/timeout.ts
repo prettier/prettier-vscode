@@ -1,21 +1,4 @@
 /**
- * Creates a promise that rejects after a specified timeout
- * @param ms Timeout in milliseconds
- * @returns A promise that rejects with a timeout error
- */
-function createTimeoutPromise(ms: number): Promise<never> {
-  return new Promise((_, reject) => {
-    setTimeout(() => {
-      reject(
-        new Error(
-          `Prettier formatting timed out after ${ms}ms. This may indicate an issue with Prettier or a plugin.`,
-        ),
-      );
-    }, ms);
-  });
-}
-
-/**
  * Wraps a promise with a timeout
  * @param promise The promise to wrap
  * @param ms Timeout in milliseconds (0 or negative means no timeout)
@@ -30,5 +13,24 @@ export async function withTimeout<T>(
     return promise;
   }
 
-  return Promise.race([promise, createTimeoutPromise(ms)]);
+  let timeoutId: NodeJS.Timeout | undefined;
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(
+        new Error(
+          `Prettier formatting timed out after ${ms}ms. This may indicate an issue with Prettier or a plugin.`,
+        ),
+      );
+    }, ms);
+  });
+
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    // Clean up the timeout to prevent memory leaks
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+  }
 }
