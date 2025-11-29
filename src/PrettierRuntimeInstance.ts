@@ -185,9 +185,13 @@ process.stdin.resume();
     // Handle process exit
     this.process.on("exit", (code) => {
       this.process = null;
-      // Reject all pending promises
+      // Reject all pending promises with detailed error message
+      let errorMessage = `Runtime process exited with code ${code}`;
+      if (stderrBuffer.trim()) {
+        errorMessage += `\nStderr: ${stderrBuffer.trim()}`;
+      }
       for (const resolver of this.messageResolvers.values()) {
-        resolver.reject(new Error(`Runtime process exited with code ${code}`));
+        resolver.reject(new Error(errorMessage));
       }
       this.messageResolvers.clear();
     });
