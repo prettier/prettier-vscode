@@ -126,45 +126,6 @@ export class ModuleResolver implements ModuleResolverInterface {
     return prettier;
   }
 
-  private loadPrettierVersionFromPackageJson(modulePath: string): string {
-    let cwd = "";
-    try {
-      fs.readdirSync(modulePath); // checking if dir with readdir will handle directories and symlinks
-      cwd = modulePath;
-    } catch {
-      cwd = path.dirname(modulePath);
-    }
-    const packageJsonPath = findUp.sync(
-      (dir) => {
-        const pkgFilePath = path.join(dir, "package.json");
-        if (fs.existsSync(pkgFilePath)) {
-          return pkgFilePath;
-        }
-      },
-      { cwd },
-    );
-
-    if (!packageJsonPath) {
-      throw new Error("Cannot find Prettier package.json");
-    }
-
-    const prettierPkgJson = loadNodeModule(packageJsonPath) as {
-      version?: string;
-    } | null;
-
-    let version: string | null = null;
-
-    if (prettierPkgJson && typeof prettierPkgJson.version === "string") {
-      version = prettierPkgJson.version;
-    }
-
-    if (!version) {
-      throw new Error("Cannot load Prettier version from package.json");
-    }
-
-    return version;
-  }
-
   /**
    * Returns an instance of the prettier module.
    * @param fileName The path of the file to use as the starting point. If none provided, the bundled prettier will be used.
