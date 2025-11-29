@@ -58,6 +58,8 @@ export class PrettierRuntimeInstance implements PrettierInstance {
     }
 
     // Create a wrapper script that acts as an RPC server
+    // Note: This uses CommonJS require() which works with Node.js and Bun.
+    // Deno users would need to enable --allow-read and CommonJS compatibility.
     const workerCode = `
 const prettier = require(${JSON.stringify(this.modulePath)});
 
@@ -162,14 +164,22 @@ process.stdin.resume();
           const response: RPCResponse = JSON.parse(line);
           this.handleResponse(response);
         } catch {
-          // Ignore malformed responses - they may be partial JSON
+          // Ignore malformed responses - they may be partial JSON that will
+          // be completed in the next chunk. If they represent a real error,
+          // the process will exit and pending promises will be rejected.
         }
       }
     });
 
-    // Handle stderr - ignore as it's used by the runtime for diagnostics
-    this.process.stderr!.on("data", () => {
-      // Runtime stderr output is ignored
+    // Capture stderr for potential error diagnostics
+    // Most runtimes use stderr for their own diagnostics
+    let stderrBuffer = "";
+    this.process.stderr!.on("data", (chunk) => {
+      stderrBuffer += chunk.toString();
+      // Keep only last 1000 chars to avoid memory issues
+      if (stderrBuffer.length > 1000) {
+        stderrBuffer = stderrBuffer.slice(-1000);
+      }
     });
 
     // Handle process exit
@@ -333,10 +343,15 @@ process.stdin.resume();
   }
 
   public dispose(): void {
+    // Reject all pending promises before cleanup
+    for (const resolver of this.messageResolvers.values()) {
+      resolver.reject(new Error("PrettierRuntimeInstance disposed"));
+    }
+    this.messageResolvers.clear();
+
     if (this.process) {
       this.process.kill();
       this.process = null;
     }
-    this.messageResolvers.clear();
   }
 }
