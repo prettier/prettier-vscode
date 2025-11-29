@@ -138,6 +138,22 @@ This extension bundles Prettier 3.x by default. If your project has a local inst
 
 This extension supports [Prettier plugins](https://prettier.io/docs/en/plugins.html) when you are using a locally or globally resolved version of prettier. If you have Prettier and a plugin registered in your `package.json`, this extension will attempt to register the language and provide automatic code formatting for the built-in and plugin languages.
 
+### Docker and Custom Environments
+
+If you use Docker or other containerized development environments, you can configure the extension to run Prettier inside the container using the [`prettier.prettierExecutable`](#prettierprettierexecutable) setting. This allows you to use the specific version of Prettier and its dependencies that are installed in your container.
+
+Example configuration for Docker Compose:
+
+```json
+{
+  "prettier.prettierExecutable": ["docker", "compose", "exec", "-T", "app", "node_modules/.bin/prettier"]
+}
+```
+
+**Note:** The `-T` flag for `docker compose exec` disables pseudo-TTY allocation, which is required for stdin/stdout handling.
+
+Alternatively, consider using [VS Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) to develop directly inside the Docker container, which allows the extension to work normally with the containerized Prettier installation.
+
 ## Configuration
 
 There are multiple options for configuring Prettier with this extension. You can use [VS Code settings](#prettier-settings), [prettier configuration files](https://prettier.io/docs/en/configuration.html), or an `.editorconfig` file. The VS Code settings are meant to be used as a fallback and are generally intended only for use on non-project files. **It is recommended that you always include a prettier configuration file in your project specifying all settings for your project.** This will ensure that no matter how you run prettier - from this extension, from the CLI, or from another IDE with Prettier, the same settings will get applied.
@@ -282,6 +298,32 @@ Supply a custom path to the prettier configuration file.
 #### prettier.prettierPath
 
 Supply a custom path to the prettier module. This path should be to the module folder, not the bin/script path. i.e. `./node_modules/prettier`, not `./bin/prettier`.
+
+**Disabled on untrusted workspaces**
+
+#### prettier.prettierExecutable
+
+Supply an external executable to run Prettier instead of loading it as a module. This is useful for scenarios like Docker where Prettier needs to run in a different environment.
+
+The value should be an array where the first element is the executable path and subsequent elements are arguments. For example:
+
+```json
+{
+  "prettier.prettierExecutable": ["docker", "compose", "exec", "app", "node_modules/.bin/prettier"]
+}
+```
+
+Or for a simple wrapper script:
+
+```json
+{
+  "prettier.prettierExecutable": ["node", "scripts/prettier-wrapper.js"]
+}
+```
+
+When this setting is configured, it takes precedence over `prettier.prettierPath` and module resolution.
+
+**Note:** The executable must support standard Prettier CLI options (e.g., `--parser`, `--stdin-filepath`, etc.) and must accept input via stdin.
 
 **Disabled on untrusted workspaces**
 
