@@ -66,6 +66,10 @@ interface IExtensionConfig {
    */
   prettierPath: string | undefined;
   /**
+   * Path to a JavaScript runtime executable to use for running Prettier.
+   */
+  prettierRuntimeExecutable: string | undefined;
+  /**
    * Path to prettier configuration file.
    */
   configPath: string | undefined;
