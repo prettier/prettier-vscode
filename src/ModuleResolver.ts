@@ -33,6 +33,7 @@ import {
 import { PrettierInstance } from "./PrettierInstance";
 import { PrettierWorkerInstance } from "./PrettierWorkerInstance";
 import { PrettierMainThreadInstance } from "./PrettierMainThreadInstance";
+import { PrettierRuntimeInstance } from "./PrettierRuntimeInstance";
 import { loadNodeModule, resolveConfigPlugins } from "./utils/resolvers";
 import { isAboveV3 } from "./utils/versions";
 
@@ -179,9 +180,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       return prettier;
     }
 
-    const { prettierPath, resolveGlobalModules } = getWorkspaceConfig(
-      Uri.file(fileName),
-    );
+    const { prettierPath, resolveGlobalModules, prettierRuntimeExecutable } =
+      getWorkspaceConfig(Uri.file(fileName));
 
     // Look for local module
     let modulePath: string | undefined = undefined;
@@ -241,7 +241,10 @@ export class ModuleResolver implements ModuleResolverInterface {
     if (modulePath !== undefined) {
       this.loggingService.logDebug(`Local prettier module path: ${modulePath}`);
       // First check module cache
-      moduleInstance = this.path2Module.get(modulePath);
+      const cacheKey = prettierRuntimeExecutable
+        ? `${modulePath}:${prettierRuntimeExecutable}`
+        : modulePath;
+      moduleInstance = this.path2Module.get(cacheKey);
       if (moduleInstance) {
         return moduleInstance;
       } else {
@@ -249,15 +252,26 @@ export class ModuleResolver implements ModuleResolverInterface {
           const prettierVersion =
             this.loadPrettierVersionFromPackageJson(modulePath);
 
-          const isAboveVersion3 = isAboveV3(prettierVersion);
-
-          if (isAboveVersion3) {
-            moduleInstance = new PrettierWorkerInstance(modulePath);
+          // If a custom runtime is specified, use PrettierRuntimeInstance
+          if (prettierRuntimeExecutable) {
+            this.loggingService.logInfo(
+              `Using custom runtime: ${prettierRuntimeExecutable}`,
+            );
+            moduleInstance = new PrettierRuntimeInstance(
+              modulePath,
+              prettierRuntimeExecutable,
+            );
           } else {
-            moduleInstance = new PrettierMainThreadInstance(modulePath);
+            const isAboveVersion3 = isAboveV3(prettierVersion);
+
+            if (isAboveVersion3) {
+              moduleInstance = new PrettierWorkerInstance(modulePath);
+            } else {
+              moduleInstance = new PrettierMainThreadInstance(modulePath);
+            }
           }
           if (moduleInstance) {
-            this.path2Module.set(modulePath, moduleInstance);
+            this.path2Module.set(cacheKey, moduleInstance);
           }
         } catch (error) {
           this.loggingService.logInfo(
