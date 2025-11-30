@@ -1,0 +1,4 @@
+{
+    // JSON5 supports comments
+    tabWidth: 5,
+}
