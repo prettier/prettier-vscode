@@ -1,0 +1,10 @@
+{
+  "name": "prettier-config-mts-test",
+  "version": "1.0.0",
+  "description": "Test folder for prettier.config.mts config",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.5.0"
+  }
+}

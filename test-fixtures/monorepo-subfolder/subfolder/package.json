@@ -1,0 +1,15 @@
+{
+  "name": "monorepo-subfolder-test",
+  "packageManager": "npm@10.9.2",
+  "version": "1.0.0",
+  "description": "Test folder for monorepo subfolder plugin resolution (issue #18353)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@prettier/plugin-xml": "^3.4.1",
+    "prettier": "^3.7.0"
+  }
+}
