@@ -111,6 +111,9 @@ const browserShimsPlugin = {
     build.onResolve({ filter: /^url$/ }, () => {
       return { path: "url", namespace: "browser-shim" };
     });
+    build.onResolve({ filter: /^module$/ }, () => {
+      return { path: "module", namespace: "browser-shim" };
+    });
     build.onLoad({ filter: /.*/, namespace: "browser-shim" }, (args) => {
       if (args.path === "os") {
         return {
@@ -140,6 +143,17 @@ const browserShimsPlugin = {
           contents: `
             export function pathToFileURL(path) {
               return new URL("file://" + path);
+            }
+          `,
+          loader: "js",
+        };
+      }
+      if (args.path === "module") {
+        // Provide a minimal module shim - createRequire won't be called in browser
+        return {
+          contents: `
+            export function createRequire() {
+              return { resolve: () => { throw new Error("Not available in browser"); } };
             }
           `,
           loader: "js",

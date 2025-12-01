@@ -85,7 +85,7 @@ async function loadPlugins(
     if (pluginPath) {
       try {
         // Resolve to actual entry file since ESM doesn't support directory imports
-        const entryPath = await resolveModuleEntry(pluginPath);
+        const entryPath = resolveModuleEntry(pluginPath);
         const moduleUrl = pathToFileURL(entryPath).href;
         const imported = await import(moduleUrl);
         // Handle both ESM and CJS modules

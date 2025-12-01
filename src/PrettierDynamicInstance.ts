@@ -22,7 +22,7 @@ export const PrettierDynamicInstance: PrettierInstanceConstructor = class Pretti
 
   public async import(): Promise</* version of imported prettier */ string> {
     // Resolve to actual entry file since ESM doesn't support directory imports
-    const entryPath = await resolveModuleEntry(this.modulePath);
+    const entryPath = resolveModuleEntry(this.modulePath);
     const moduleUrl = pathToFileURL(entryPath).href;
     const imported = await import(moduleUrl);
     // Handle both ESM (Prettier v3+) and CJS (Prettier v2) modules
