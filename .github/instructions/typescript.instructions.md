@@ -11,6 +11,7 @@ This is a VS Code extension. Follow these patterns:
 - Import VS Code API from `vscode` module: `import { commands, workspace, window } from "vscode"`
 - Use named imports, not namespace imports
 - Group imports: vscode first, then node modules, then local modules
+- **ESM**: Always use `.js` extension for local imports (e.g., `import { foo } from "./utils.js"`)
 
 ## VS Code Extension Patterns
 
@@ -22,13 +23,13 @@ This is a VS Code extension. Follow these patterns:
 ## Class Patterns
 
 - Services follow dependency injection pattern (pass dependencies via constructor)
-- Key services: `LoggingService`, `ModuleResolver`, `PrettierEditService`, `StatusBar`
+- Key services: `LoggingService`, `ModuleResolver` (from `ModuleResolverNode.ts`/`ModuleResolverWeb.ts`), `PrettierEditService`, `StatusBar`
 - Use `Disposable` interface for cleanup
 
 ## Prettier Integration
 
-- Support both Prettier v2 and v3+ via `PrettierInstance` interface
-- `PrettierMainThreadInstance` loads directly, `PrettierWorkerInstance` uses worker thread
+- Support both Prettier v2 and v3+ via `PrettierInstance` interface (defined in `src/types.ts`)
+- `PrettierDynamicInstance` loads Prettier using dynamic ESM `import()` for lazy loading
 - Module resolution: local install → global install → bundled Prettier
 - Handle `.prettierrc`, `.prettierignore`, and `package.json` prettier config
 

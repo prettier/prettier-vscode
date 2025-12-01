@@ -1,12 +1,16 @@
 import * as path from "path";
+import { fileURLToPath } from "url";
 import { runTests } from "@vscode/test-web";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function main() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, "../../../");
     const extensionTestsPath = path.resolve(
       __dirname,
-      "../../../dist/web/test/suite/index.js",
+      "../../../dist/web/test/suite/index.cjs",
     );
 
     await runTests({

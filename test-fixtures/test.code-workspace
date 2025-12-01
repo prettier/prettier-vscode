@@ -55,6 +55,9 @@
       "path": "esm-config"
     },
     {
+      "path": "esm-plugin-import"
+    },
+    {
       "path": "monorepo-subfolder/subfolder"
     },
     {

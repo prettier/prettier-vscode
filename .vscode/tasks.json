@@ -49,9 +49,18 @@
       }
     },
     {
-      "label": "compile",
+      "label": "npm: compile",
       "type": "npm",
       "script": "compile",
+      "problemMatcher": "$tsc",
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "npm: compile:test",
+      "type": "npm",
+      "script": "compile:test",
       "problemMatcher": "$tsc",
       "presentation": {
         "reveal": "silent"

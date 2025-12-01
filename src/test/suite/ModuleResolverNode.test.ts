@@ -1,14 +1,15 @@
-import * as assert from "node:assert";
-import * as path from "node:path";
+import * as assert from "assert";
+import * as path from "path";
 import * as prettier from "prettier";
 
-import { getWorkspaceFolderUri } from "./format.test";
-import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolver";
-import { LoggingService } from "../../LoggingService";
+import { getWorkspaceFolderUri } from "./formatTestUtils.js";
+import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolverNode.js";
+import { LoggingService } from "../../LoggingService.js";
 import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   USING_BUNDLED_PRETTIER,
-} from "../../message";
+} from "../../message.js";
+import { ensureExtensionActivated } from "./testUtils.js";
 
 interface MockFn {
   (...args: unknown[]): void;
@@ -29,6 +30,10 @@ describe("Test ModuleResolver", () => {
   let logErrorMock: MockFn;
   let logDebugMock: MockFn;
 
+  before(async () => {
+    await ensureExtensionActivated();
+  });
+
   beforeEach(() => {
     const loggingService = new LoggingService();
     logErrorMock = createMockFn();
@@ -47,7 +52,13 @@ describe("Test ModuleResolver", () => {
       const prettierInstance =
         await moduleResolver.getPrettierInstance(fileName);
 
-      assert.strictEqual(prettierInstance, prettier);
+      // Compare version to bundled prettier since module references may differ
+      // due to different import methods (static vs dynamic)
+      assert.ok(prettierInstance, "Prettier instance should be defined");
+      assert.strictEqual(
+        (prettierInstance as PrettierNodeModule).version,
+        prettier.version,
+      );
       assert.ok(
         logDebugMock.calls.some((args) => args[0] === USING_BUNDLED_PRETTIER),
       );

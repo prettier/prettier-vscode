@@ -1,5 +1,8 @@
 import { Uri } from "vscode";
-import { PrettierBuiltInParserName, PrettierSupportLanguage } from "../types";
+import {
+  PrettierBuiltInParserName,
+  PrettierSupportLanguage,
+} from "../types.js";
 
 export function getParserFromLanguageId(
   languages: PrettierSupportLanguage[],

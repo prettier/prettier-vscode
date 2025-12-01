@@ -12,7 +12,7 @@ export async function run(): Promise<void> {
   });
 
   // Import test files dynamically after mocha.setup()
-  await import("./smoke.test");
+  await import("./smoke.test.js");
 
   return new Promise((resolve, reject) => {
     try {
@@ -25,6 +25,7 @@ export async function run(): Promise<void> {
       });
     } catch (err) {
       console.error(err);
+      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
       reject(err);
     }
   });

@@ -7,7 +7,7 @@ import {
   TextDocument,
   TextEdit,
 } from "vscode";
-import { ExtensionFormattingOptions } from "./types";
+import { ExtensionFormattingOptions } from "./types.js";
 
 export class PrettierEditProvider
   implements DocumentRangeFormattingEditProvider, DocumentFormattingEditProvider

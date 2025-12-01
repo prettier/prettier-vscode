@@ -1,7 +1,12 @@
-import * as assert from "node:assert";
-import { format } from "./format.test";
+import * as assert from "assert";
+import { format } from "./formatTestUtils.js";
+import { ensureExtensionActivated } from "./testUtils.js";
 
 describe("Test ignore", () => {
+  before(async () => {
+    await ensureExtensionActivated();
+  });
+
   it("it does not format file", async () => {
     const { actual, source } = await format("project", "fileToIgnore.js");
     assert.equal(actual, source);
