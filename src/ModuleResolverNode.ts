@@ -402,6 +402,18 @@ export class ModuleResolver implements ModuleResolverInterface {
       return "error";
     }
 
+    // Log what config file was found (if any)
+    if (configPath) {
+      this.loggingService.logInfo(`Using config file at ${configPath}`);
+    }
+
+    // Log if editorconfig will be considered
+    if (vscodeConfig.useEditorConfig) {
+      this.loggingService.logInfo(
+        "EditorConfig support is enabled, checking for .editorconfig files",
+      );
+    }
+
     let resolvedConfig: PrettierOptions | null;
     try {
       const resolveConfigOptions: PrettierResolveConfigOptions = {
@@ -417,6 +429,24 @@ export class ModuleResolver implements ModuleResolverInterface {
     } catch (error) {
       this.loggingService.logError(INVALID_PRETTIER_CONFIG, error);
       return "error";
+    }
+
+    // Log what configuration was resolved
+    if (resolvedConfig) {
+      this.loggingService.logInfo("Resolved config:", resolvedConfig);
+    }
+
+    // Determine config source for better user feedback
+    if (!configPath && resolvedConfig && vscodeConfig.useEditorConfig) {
+      // Config was resolved but no Prettier config file was found
+      // This means settings came from .editorconfig
+      this.loggingService.logInfo(
+        "No Prettier config file found, but settings were loaded from .editorconfig",
+      );
+    } else if (!configPath && !resolvedConfig) {
+      this.loggingService.logInfo(
+        "No local configuration (i.e. .prettierrc or .editorconfig) detected, will fall back to VS Code configuration",
+      );
     }
 
     if (!vscodeConfig.requireConfig) {

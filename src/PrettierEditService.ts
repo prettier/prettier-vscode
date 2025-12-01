@@ -661,8 +661,8 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(
       fallbackToVSCodeConfig
-        ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
-        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used",
+        ? "Using VS Code configuration"
+        : "Using local configuration (VS Code configuration will not be used)",
     );
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;
