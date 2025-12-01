@@ -209,7 +209,9 @@ export default class PrettierEditService implements Disposable {
         return;
       }
       if (edits.length > 1) {
-        this.loggingService.logWarning(`Unexpected multiple edits (${edits.length}), expected 0 or 1`);
+        this.loggingService.logWarning(
+          `Unexpected multiple edits (${edits.length}), expected 0 or 1`,
+        );
         return;
       }
 
@@ -468,20 +470,25 @@ export default class PrettierEditService implements Disposable {
     const edit = this.minimalEdit(document, result);
     if (!edit) {
       // Document is already formatted, no changes needed
-      this.loggingService.logDebug("Document is already formatted, no changes needed.");
+      this.loggingService.logDebug(
+        "Document is already formatted, no changes needed.",
+      );
       return [];
     }
     return [edit];
   };
 
-  private minimalEdit(document: TextDocument, string1: string): TextEdit | null {
+  private minimalEdit(
+    document: TextDocument,
+    string1: string,
+  ): TextEdit | null {
     const string0 = document.getText();
-    
+
     // Quick check: if strings are identical, no edit needed
     if (string0 === string1) {
       return null;
     }
-    
+
     // length of common prefix
     let i = 0;
     while (

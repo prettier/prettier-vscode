@@ -4,7 +4,6 @@ import { ensureExtensionActivated } from "./testUtils.js";
 
 describe("Test Prettier Code Actions", () => {
   const unformattedCode = `const  x   =  {  a: 1, b: 2  }`;
-  const expectedFormatted = `const x = { a: 1, b: 2 };\n`;
 
   before(async () => {
     await ensureExtensionActivated();
@@ -70,9 +69,13 @@ describe("Test Prettier Code Actions", () => {
     const formattedText = doc.getText();
 
     // Verify the document was formatted correctly
+    // Normalize line endings for cross-platform compatibility
+    const normalizedFormatted = formattedText.replace(/\r\n/g, "\n");
+    const expectedNormalized = `const x = { a: 1, b: 2 };\n`;
+
     assert.equal(
-      formattedText,
-      expectedFormatted,
+      normalizedFormatted,
+      expectedNormalized,
       "Document should be formatted correctly after applying code action",
     );
   });
