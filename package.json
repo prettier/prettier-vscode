@@ -479,7 +479,7 @@
         ],
         "severity": "error",
         "pattern": {
-          "regexp": "\\[(error)\\] (.+?): (.+) \\((\\d+?):(\\d+?)\\)",
+          "regexp": "\\[(error)\\] ([^:]+): (.+) \\((\\d+):(\\d+)\\)",
           "kind": "location",
           "severity": 1,
           "file": 2,
@@ -504,7 +504,7 @@
         "label": "Prettier check warning problems (prettier file-level warnings)",
         "severity": "warning",
         "pattern": {
-          "regexp": "\\[warn\\] ([^\\s]+\\.\\w+)",
+          "regexp": "\\[warn\\] ([^\\s]+\\.[a-zA-Z0-9.-]+)",
           "kind": "file",
           "file": 1
         }
