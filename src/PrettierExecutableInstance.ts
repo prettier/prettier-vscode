@@ -60,14 +60,14 @@ export class PrettierExecutableInstance implements PrettierInstance {
         await this.import();
       }
 
-      const args = ["--file-info", filePath];
+      const args = ["--file-info", this.escapeArg(filePath)];
 
       if (fileInfoOptions?.ignorePath) {
         const ignorePath =
           typeof fileInfoOptions.ignorePath === "string"
             ? fileInfoOptions.ignorePath
             : fileInfoOptions.ignorePath.toString();
-        args.push("--ignore-path", ignorePath);
+        args.push("--ignore-path", this.escapeArg(ignorePath));
       }
 
       if (fileInfoOptions?.withNodeModules) {
@@ -77,7 +77,7 @@ export class PrettierExecutableInstance implements PrettierInstance {
       if (fileInfoOptions?.plugins) {
         for (const plugin of fileInfoOptions.plugins) {
           if (typeof plugin === "string") {
-            args.push("--plugin", plugin);
+            args.push("--plugin", this.escapeArg(plugin));
           }
         }
       }
@@ -107,7 +107,7 @@ export class PrettierExecutableInstance implements PrettierInstance {
 
       for (const plugin of plugins) {
         if (typeof plugin === "string") {
-          args.push("--plugin", plugin);
+          args.push("--plugin", this.escapeArg(plugin));
         }
       }
 
@@ -136,7 +136,7 @@ export class PrettierExecutableInstance implements PrettierInstance {
 
       const args = ["--find-config-path"];
       if (filePath) {
-        args.push(filePath);
+        args.push(this.escapeArg(filePath));
       }
 
       const command = this.buildCommand(args.join(" "), "");
@@ -158,14 +158,14 @@ export class PrettierExecutableInstance implements PrettierInstance {
         await this.import();
       }
 
-      const args = ["--resolve-config", fileName];
+      const args = ["--resolve-config", this.escapeArg(fileName)];
 
       if (options?.config) {
         const config =
           typeof options.config === "string"
             ? options.config
             : options.config.toString();
-        args.unshift("--config", config);
+        args.unshift("--config", this.escapeArg(config));
       }
 
       if (options?.editorconfig === false) {
