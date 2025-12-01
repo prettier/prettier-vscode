@@ -34,70 +34,59 @@ import { findUp, pathExists, FIND_UP_STOP } from "./utils/find-up.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
 /**
- * Resolve and load plugins as module objects.
- * This is necessary because when Prettier is loaded dynamically from the extension,
- * it can't resolve plugin names relative to the project directory.
- * We pre-load the plugins and pass them as objects to Prettier.
+ * Resolve plugin paths to file:// URLs that Prettier can import.
+ * Prettier passes plugin strings directly to import(), so we just need to
+ * resolve the paths relative to the file being formatted.
  */
-async function loadPlugins(
+async function resolvePluginPaths(
   plugins: (string | PrettierPlugin)[] | undefined,
   fileName: string,
-): Promise<PrettierPlugin[]> {
+): Promise<(string | PrettierPlugin)[]> {
   if (!plugins) {
     return [];
   }
 
   const dir = path.dirname(fileName);
-  const loadedPlugins: PrettierPlugin[] = [];
+  const resolvedPlugins: (string | PrettierPlugin)[] = [];
 
   for (const plugin of plugins) {
     // If it's already an object, use it directly
     if (typeof plugin !== "string") {
-      loadedPlugins.push(plugin);
+      resolvedPlugins.push(plugin);
       continue;
     }
 
-    let pluginPath: string | undefined;
-
-    // If it's already an absolute path, use it directly
+    // If it's already an absolute path, convert to file:// URL
     if (path.isAbsolute(plugin)) {
-      pluginPath = plugin;
-    } else {
-      // Try to find the plugin in node_modules starting from the file's directory
-      pluginPath = await findUp(
-        async (d: string) => {
-          const nodeModulesPath = path.join(d, "node_modules", plugin);
-          if (await pathExists(nodeModulesPath)) {
-            return nodeModulesPath;
-          }
-          // Stop at marker file
-          if (
-            await pathExists(path.join(d, ".do-not-use-prettier-vscode-root"))
-          ) {
-            return FIND_UP_STOP;
-          }
-          return undefined;
-        },
-        { cwd: dir },
-      );
+      resolvedPlugins.push(pathToFileURL(resolveModuleEntry(plugin)).href);
+      continue;
     }
 
+    // Find the plugin in node_modules starting from the file's directory
+    const pluginPath = await findUp(
+      async (d: string) => {
+        const nodeModulesPath = path.join(d, "node_modules", plugin);
+        if (await pathExists(nodeModulesPath)) {
+          return nodeModulesPath;
+        }
+        // Stop at marker file
+        if (
+          await pathExists(path.join(d, ".do-not-use-prettier-vscode-root"))
+        ) {
+          return FIND_UP_STOP;
+        }
+        return undefined;
+      },
+      { cwd: dir },
+    );
+
     if (pluginPath) {
-      try {
-        // Resolve to actual entry file since ESM doesn't support directory imports
-        const entryPath = resolveModuleEntry(pluginPath);
-        const moduleUrl = pathToFileURL(entryPath).href;
-        const imported = await import(moduleUrl);
-        // Handle both ESM and CJS modules
-        const pluginModule = imported.default || imported;
-        loadedPlugins.push(pluginModule as PrettierPlugin);
-      } catch {
-        // If we can't load the plugin, skip it - Prettier will report the error
-      }
+      // Resolve to entry file and convert to file:// URL for Prettier to import
+      resolvedPlugins.push(pathToFileURL(resolveModuleEntry(pluginPath)).href);
     }
   }
 
-  return loadedPlugins;
+  return resolvedPlugins;
 }
 
 interface ISelectors {
@@ -342,10 +331,10 @@ export default class PrettierEditService implements Disposable {
     documentUri?: Uri,
     workspaceFolderUri?: Uri,
   ): Promise<ISelectors> => {
-    let loadedPlugins: PrettierPlugin[] = [];
+    let plugins: (string | PrettierPlugin)[] = [];
 
     // Prettier v3 does not load plugins automatically
-    // So need to resolve config to get plugins info, then load them as modules.
+    // So need to resolve config to get plugin paths for Prettier to import.
     if (
       documentUri &&
       "resolveConfig" in prettierInstance &&
@@ -361,8 +350,8 @@ export default class PrettierEditService implements Disposable {
       } else if (resolvedConfig === "disabled") {
         this.statusBar.update(FormatterStatus.Disabled);
       } else if (resolvedConfig?.plugins) {
-        // Load plugins as modules so getSupportInfo can discover their languages
-        loadedPlugins = await loadPlugins(
+        // Resolve plugin paths so getSupportInfo can discover their languages
+        plugins = await resolvePluginPaths(
           resolvedConfig.plugins,
           documentUri.fsPath,
         );
@@ -370,7 +359,7 @@ export default class PrettierEditService implements Disposable {
     }
 
     const { languages } = await prettierInstance.getSupportInfo({
-      plugins: loadedPlugins,
+      plugins,
     });
 
     languages.forEach((lang) => {
@@ -531,15 +520,12 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
-    // Load plugins as module objects so Prettier can use them directly
-    // This is necessary because Prettier can't resolve plugin paths from the extension context
-    const loadedPlugins = await loadPlugins(resolvedConfig?.plugins, fileName);
-    this.loggingService.logInfo(
-      "Loaded plugins:",
-      loadedPlugins.map((p) =>
-        typeof p === "object" && "name" in p ? (p as { name: string }).name : p,
-      ),
+    // Resolve plugin paths to file:// URLs for Prettier to import
+    const resolvedPlugins = await resolvePluginPaths(
+      resolvedConfig?.plugins,
+      fileName,
     );
+    this.loggingService.logInfo("Resolved plugins:", resolvedPlugins);
 
     let fileInfo: PrettierFileInfoResult | undefined;
     // Only call getFileInfo for actual files (not untitled documents)
@@ -552,7 +538,7 @@ export default class PrettierEditService implements Disposable {
       // context, which fails when running from the extension directory.
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
-        plugins: loadedPlugins,
+        plugins: resolvedPlugins,
         resolveConfig: false,
         withNodeModules: vscodeConfig.withNodeModules,
       });
@@ -580,7 +566,7 @@ export default class PrettierEditService implements Disposable {
         `Parser not inferred, trying VS Code language.`,
       );
       const { languages } = await prettierInstance.getSupportInfo({
-        plugins: loadedPlugins,
+        plugins: resolvedPlugins,
       });
       parser = getParserFromLanguageId(languages, uri, languageId);
     }
@@ -599,7 +585,7 @@ export default class PrettierEditService implements Disposable {
       vscodeConfig,
       resolvedConfig,
       options,
-      loadedPlugins,
+      resolvedPlugins,
     );
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
@@ -626,7 +612,7 @@ export default class PrettierEditService implements Disposable {
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
     extensionFormattingOptions: ExtensionFormattingOptions,
-    loadedPlugins: PrettierPlugin[],
+    resolvedPlugins: (string | PrettierPlugin)[],
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -685,9 +671,8 @@ export default class PrettierEditService implements Disposable {
       },
       ...(rangeFormattingOptions || {}),
       ...(configOptions || {}),
-      // Override plugins with pre-loaded plugin modules so Prettier can use them directly
-      // when running from the extension context
-      ...(loadedPlugins.length > 0 ? { plugins: loadedPlugins } : {}),
+      // Pass resolved plugin paths for Prettier to import
+      ...(resolvedPlugins.length > 0 ? { plugins: resolvedPlugins } : {}),
     };
 
     if (extensionFormattingOptions.force && options.requirePragma === true) {

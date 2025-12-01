@@ -1,39 +1,38 @@
 #!/usr/bin/env node
 /**
- * Script to update the static configuration in BrowserModuleResolver.ts
+ * Script to update the static configuration in ModuleResolverWeb.ts
  * Run this after updating Prettier to pick up any changes to languages/parsers.
  *
  * Usage: node scripts/update-browser-languages.mjs
  */
 
 import * as prettier from "prettier";
+import { createRequire } from "node:module";
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const browserResolverPath = join(__dirname, "../src/BrowserModuleResolver.ts");
+const browserResolverPath = join(__dirname, "../src/ModuleResolverWeb.ts");
 
 /**
- * Plugin names that ship with Prettier and are available in the browser.
+ * Get plugin names that ship with Prettier from its package.json exports.
  * These correspond to prettier/plugins/* modules.
  */
-const BROWSER_AVAILABLE_PLUGINS = [
-  "acorn",
-  "angular",
-  "babel",
-  "estree",
-  "flow",
-  "glimmer",
-  "graphql",
-  "html",
-  "markdown",
-  "meriyah",
-  "postcss",
-  "typescript",
-  "yaml",
-];
+function getBrowserAvailablePlugins() {
+  const require = createRequire(import.meta.url);
+  const prettierPkgPath = require.resolve("prettier/package.json");
+  const pkg = JSON.parse(readFileSync(prettierPkgPath, "utf8"));
+  const exports = pkg.exports || {};
+
+  return Object.keys(exports)
+    .filter((k) => k.startsWith("./plugins/"))
+    .map((k) => k.replace("./plugins/", ""))
+    .sort();
+}
+
+const BROWSER_AVAILABLE_PLUGINS = getBrowserAvailablePlugins();
 
 /**
  * Map Prettier language names to VS Code language IDs.
@@ -132,7 +131,7 @@ async function main() {
   if (newContent !== currentContent) {
     console.log("Writing updated content...");
     writeFileSync(browserResolverPath, newContent);
-    console.log("Updated BrowserModuleResolver.ts successfully!");
+    console.log("Updated ModuleResolverWeb.ts successfully!");
     console.log("\nLanguages included:");
     languages.forEach((lang) => {
       console.log(
