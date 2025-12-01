@@ -128,7 +128,6 @@
         "prettier.resolveGlobalModules",
         "prettier.ignorePath",
         "prettier.prettierPath",
-        "prettier.prettierRuntimeExecutable",
         "prettier.configPath",
         "prettier.useEditorConfig",
         "prettier.resolveGlobalModules",
@@ -209,11 +208,6 @@
         "prettier.prettierPath": {
           "type": "string",
           "markdownDescription": "%ext.config.prettierPath%",
-          "scope": "resource"
-        },
-        "prettier.prettierRuntimeExecutable": {
-          "type": "string",
-          "markdownDescription": "%ext.config.prettierRuntimeExecutable%",
           "scope": "resource"
         },
         "prettier.configPath": {

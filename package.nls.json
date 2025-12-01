@@ -21,7 +21,6 @@
   "ext.config.parser": "Override the parser. You shouldn't have to change this setting.",
   "ext.config.parserDeprecationMessage": "This setting is no longer supported. Use a prettier configuration file instead.",
   "ext.config.prettierPath": "Path to the `prettier` module, eg: `./node_modules/prettier`.",
-  "ext.config.prettierRuntimeExecutable": "Path to a JavaScript runtime executable (e.g., `bun`, `deno`, `/usr/local/bin/bun`) to use for running Prettier instead of Node.js. This is useful when you need to run Prettier with a non-Node.js runtime in environments where Node.js is not available. When set, the extension will spawn a child process with this runtime to execute Prettier. Leave empty to use the default Node.js runtime.",
   "ext.config.printWidth": "Fit code within this line limit.",
   "ext.config.proseWrap": "(Markdown) wrap prose over multiple lines.",
   "ext.config.quoteProps": "Change when properties in objects are quoted.\nValid options:\n- `\"as-needed\"` - Only add quotes around object properties where required.\n- `\"consistent\"` - If at least one property in an object requires quotes, quote all properties.\n- `\"preserve\"` - Respect the input use of quotes in object properties.",
