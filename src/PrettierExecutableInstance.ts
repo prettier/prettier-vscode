@@ -190,12 +190,8 @@ export class PrettierExecutableInstance implements PrettierInstance {
       stdin?: string,
     ): Promise<string> {
       return new Promise((resolve, reject) => {
-        // Parse the command and arguments
-        const parts = command.split(" ");
-        const cmd = parts[0];
-        const args = parts.slice(1);
-
-        const child = spawn(cmd, args, {
+        // Execute the full command through shell
+        const child = spawn(command, {
           shell: true,
         });
 
