@@ -158,14 +158,14 @@ export class PrettierExecutableInstance implements PrettierInstance {
         await this.import();
       }
 
-      const args = ["--config", "--resolve-config", fileName];
+      const args = ["--resolve-config", fileName];
 
       if (options?.config) {
         const config =
           typeof options.config === "string"
             ? options.config
             : options.config.toString();
-        args.push("--config", config);
+        args.unshift("--config", config);
       }
 
       if (options?.editorconfig === false) {
@@ -236,21 +236,25 @@ export class PrettierExecutableInstance implements PrettierInstance {
       // ${file} = file to format (if applicable)
       let command = this.customExecutable;
 
+      // Escape prettierPath to prevent command injection
+      const escapedPrettierPath = this.escapeArg(this.prettierPath);
+
       // If no ${prettier} placeholder exists, append it to the command
       if (!command.includes("${prettier}")) {
-        command = `${command} ${this.prettierPath}`;
+        command = `${command} ${escapedPrettierPath}`;
       } else {
-        command = command.replace(/\$\{prettier\}/g, this.prettierPath);
+        command = command.replace(/\$\{prettier\}/g, escapedPrettierPath);
       }
 
-      // Add arguments
+      // Add arguments (these are already escaped in buildOptionsArgs)
       if (args) {
         command = `${command} ${args}`;
       }
 
       // Replace ${file} placeholder if present
       if (filePath) {
-        command = command.replace(/\$\{file\}/g, filePath);
+        const escapedFilePath = this.escapeArg(filePath);
+        command = command.replace(/\$\{file\}/g, escapedFilePath);
       }
 
       return command;
@@ -357,11 +361,10 @@ export class PrettierExecutableInstance implements PrettierInstance {
     }
 
     private escapeArg(arg: string): string {
-      // Escape arguments for shell execution
-      // Handle spaces and special characters
-      if (arg.includes(" ") || arg.includes('"') || arg.includes("'")) {
-        return `"${arg.replace(/"/g, '\\"')}"`;
-      }
-      return arg;
+      // Escape arguments for shell execution to prevent command injection
+      // Use single quotes for maximum safety, and escape any single quotes in the arg
+      // This prevents shell interpretation of special characters
+      // Replace single quotes with '\'' (end quote, escaped quote, start quote)
+      return `'${arg.replace(/'/g, "'\\''")}'`;
     }
 }
