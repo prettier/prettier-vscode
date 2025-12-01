@@ -70,23 +70,25 @@ async function resolvePluginPaths(
 
     // Absolute paths
     if (path.isAbsolute(plugin)) {
-      resolvedPlugins.push(
-        useFileUrls ? pathToFileURL(plugin).href : plugin,
-      );
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(plugin).href : plugin);
       continue;
     }
 
     // Relative paths (./foo or ../foo) → resolve relative to file
     if (plugin.startsWith(".")) {
       const resolved = path.resolve(dir, plugin);
-      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(resolved).href : resolved,
+      );
       continue;
     }
 
     // Package names → resolve from file's directory using createRequire
     try {
       const resolved = resolveModuleEntry(dir, plugin);
-      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(resolved).href : resolved,
+      );
     } catch {
       // If resolution fails, pass through and let Prettier handle/report the error
       resolvedPlugins.push(plugin);

@@ -4,3 +4,5 @@ dist/
 test-fixtures/
 node_modules/
 package-lock.json
+.vscode-test/
+.vscode-test-web/
