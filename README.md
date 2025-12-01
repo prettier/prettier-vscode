@@ -262,6 +262,17 @@ Controls whether prettier is enabled or not. You must restart VS Code when you c
 
 Require a prettier configuration file to format files. Untitled files will still be formatted using the VS Code Prettier configuration even with this option set to `true`.
 
+#### prettier.usePrettierDefaults (default: `false`)
+
+When enabled, this extension will use Prettier's default formatting options instead of VS Code settings when no Prettier configuration file is found. This ensures formatting matches the Prettier CLI behavior.
+
+This is particularly useful for projects that:
+- Use Prettier with its default settings and don't declare an explicit config file
+- Want to ensure consistency between the VS Code extension and Prettier CLI
+- Need to support Prettier version changes (e.g., Prettier 3's `trailingComma: "all"` default)
+
+When this option is `false` (default), the extension falls back to VS Code settings if no config file is found.
+
 #### prettier.ignorePath (default: `.prettierignore`)
 
 Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
