@@ -416,10 +416,19 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     let resolvedConfig: PrettierOptions | null;
     try {
+      const customConfigPath = vscodeConfig.configPath
+        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+        : undefined;
+      
+      // Log if a custom config path is specified in VS Code settings
+      if (customConfigPath) {
+        this.loggingService.logInfo(
+          `Using custom config path from settings: ${customConfigPath}`,
+        );
+      }
+
       const resolveConfigOptions: PrettierResolveConfigOptions = {
-        config: vscodeConfig.configPath
-          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-          : configPath,
+        config: customConfigPath ?? configPath,
         editorconfig: vscodeConfig.useEditorConfig,
       };
       resolvedConfig = await prettierInstance.resolveConfig(
