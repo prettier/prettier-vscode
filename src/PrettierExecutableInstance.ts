@@ -191,6 +191,9 @@ export class PrettierExecutableInstance implements PrettierInstance {
     ): Promise<string> {
       return new Promise((resolve, reject) => {
         // Execute the full command through shell
+        // Note: Using shell:true is intentional to support shell features
+        // The customExecutable is from user VS Code settings (trusted configuration)
+        // All dynamic arguments (file paths, options) are escaped
         const child = spawn(command, {
           shell: true,
         });
@@ -358,6 +361,8 @@ export class PrettierExecutableInstance implements PrettierInstance {
       // Use single quotes for maximum safety, and escape any single quotes in the arg
       // This prevents shell interpretation of special characters
       // Replace single quotes with '\'' (end quote, escaped quote, start quote)
+      // Note: This approach works well on Unix-like systems (Linux, macOS)
+      // Windows support is best-effort - users should test their custom executables
       return `'${arg.replace(/'/g, "'\\''")}'`;
     }
 }
