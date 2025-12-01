@@ -45,11 +45,11 @@ const esbuildProblemMatcherPlugin = {
 const browserAliasPlugin = {
   name: "browser-alias",
   setup(build) {
-    // Replace ModuleResolver imports with BrowserModuleResolver for browser build
-    // Match both ./ModuleResolver and ./ModuleResolver.js patterns
-    build.onResolve({ filter: /\.\/ModuleResolver(\.js)?$/ }, (args) => {
+    // Replace ModuleResolverNode imports with ModuleResolverWeb for browser build
+    // Match both ./ModuleResolverNode and ./ModuleResolverNode.js patterns
+    build.onResolve({ filter: /\.\/ModuleResolverNode(\.js)?$/ }, (args) => {
       return {
-        path: path.join(args.resolveDir, "BrowserModuleResolver.ts"),
+        path: path.join(args.resolveDir, "ModuleResolverWeb.ts"),
       };
     });
   },

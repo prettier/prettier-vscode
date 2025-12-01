@@ -3,7 +3,7 @@ import * as path from "path";
 import * as prettier from "prettier";
 
 import { getWorkspaceFolderUri } from "./formatTestUtils.js";
-import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolver.js";
+import { ModuleResolver, PrettierNodeModule } from "../../ModuleResolverNode.js";
 import { LoggingService } from "../../LoggingService.js";
 import {
   OUTDATED_PRETTIER_VERSION_MESSAGE,

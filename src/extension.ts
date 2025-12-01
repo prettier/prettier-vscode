@@ -1,7 +1,7 @@
 import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands.js";
 import { LoggingService } from "./LoggingService.js";
-import { ModuleResolver } from "./ModuleResolver.js";
+import { ModuleResolver } from "./ModuleResolverNode.js";
 import PrettierEditService from "./PrettierEditService.js";
 import { StatusBar } from "./StatusBar.js";
 import { TemplateService } from "./TemplateService.js";

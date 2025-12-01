@@ -63,7 +63,7 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 ### Entry Points
 
 - **Desktop**: `src/extension.ts` → bundled to `dist/extension.js`
-- **Browser**: Same entry, bundled to `dist/web-extension.js` (uses `BrowserModuleResolver` instead of `ModuleResolver`)
+- **Browser**: Same entry, bundled to `dist/web-extension.cjs` (esbuild swaps `ModuleResolverNode.ts` → `ModuleResolverWeb.ts`)
 
 ### Core Components
 
@@ -79,12 +79,10 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 - Watches for config file changes (`.prettierrc`, `package.json`, etc.)
 - Builds language selectors based on Prettier's supported languages + plugins
 
-**ModuleResolver** (`src/ModuleResolver.ts`):
+**ModuleResolver** (`src/ModuleResolverNode.ts` for desktop, `src/ModuleResolverWeb.ts` for browser):
 
-- Resolves local/global Prettier installations
-- Falls back to bundled Prettier if none found
-- Caches resolved modules and configurations
-- Handles Workspace Trust restrictions
+- **Desktop (ModuleResolverNode.ts)**: Resolves local/global Prettier installations, falls back to bundled Prettier, caches resolved modules, handles Workspace Trust
+- **Browser (ModuleResolverWeb.ts)**: Uses bundled Prettier standalone with all built-in plugins
 
 **Prettier Instance** (`src/PrettierDynamicInstance.ts`):
 
@@ -97,9 +95,9 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 esbuild produces two bundles:
 
 - Node bundle (`dist/extension.js`) for desktop VS Code
-- Web bundle (`dist/web-extension.js`) for vscode.dev/browser
+- Web bundle (`dist/web-extension.cjs`) for vscode.dev/browser
 
-The browser build uses path aliasing to swap `ModuleResolver` → `BrowserModuleResolver`.
+The browser build uses path aliasing to swap `ModuleResolverNode.ts` → `ModuleResolverWeb.ts`.
 
 Build configuration is in `esbuild.mjs`.
 

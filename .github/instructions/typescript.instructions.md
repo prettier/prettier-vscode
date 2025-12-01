@@ -23,7 +23,7 @@ This is a VS Code extension. Follow these patterns:
 ## Class Patterns
 
 - Services follow dependency injection pattern (pass dependencies via constructor)
-- Key services: `LoggingService`, `ModuleResolver`, `PrettierEditService`, `StatusBar`
+- Key services: `LoggingService`, `ModuleResolver` (from `ModuleResolverNode.ts`/`ModuleResolverWeb.ts`), `PrettierEditService`, `StatusBar`
 - Use `Disposable` interface for cleanup
 
 ## Prettier Integration

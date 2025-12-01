@@ -7,7 +7,7 @@ import type {
   PrettierInstance,
   PrettierInstanceConstructor,
 } from "./types.js";
-import type { PrettierNodeModule } from "./ModuleResolver.js";
+import type { PrettierNodeModule } from "./ModuleResolverNode.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
 /**
