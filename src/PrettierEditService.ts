@@ -204,7 +204,7 @@ export default class PrettierEditService implements Disposable {
         this.loggingService.logInfo("Document is already formatted.");
         return;
       }
-      if (edits.length !== 1) {
+      if (edits.length > 1) {
         this.loggingService.logWarning(`Expected 1 edit, got ${edits.length}`);
         return;
       }

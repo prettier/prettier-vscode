@@ -63,7 +63,8 @@ describe("Test format Document", () => {
       let count = 0;
       for (let i = str.length - 1; i >= 0; i--) {
         if (str[i] === '\n') count++;
-        else if (str[i] !== '\r') break;
+        else if (str[i] === '\r') continue; // Skip \r in CRLF
+        else break;
       }
       return count;
     };
