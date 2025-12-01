@@ -504,10 +504,9 @@
         "label": "Prettier check warning problems (prettier file-level warnings)",
         "severity": "warning",
         "pattern": {
-          "regexp": "\\[warn\\] (.+)",
+          "regexp": "\\[warn\\] ([^\\s]+\\.\\w+)",
           "kind": "file",
-          "file": 1,
-          "message": 1
+          "file": 1
         }
       },
       {
