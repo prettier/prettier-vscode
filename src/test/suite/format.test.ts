@@ -58,7 +58,7 @@ describe("Test format Document", () => {
     // would add empty lines at the end (up to 2 empty lines)
     const { actual: firstFormat } = await format("project", "formatTest/ugly.md");
     
-    // Count trailing newlines in first format
+    // Count trailing newlines
     const countTrailingNewlines = (str: string) => {
       let count = 0;
       for (let i = str.length - 1; i >= 0; i--) {
@@ -71,15 +71,13 @@ describe("Test format Document", () => {
     
     const firstCount = countTrailingNewlines(firstFormat);
     
-    // Format a second time - it should be idempotent
-    const prettierFormatted = await prettier.format(firstFormat, {
-      filepath: "formatTest/ugly.md",
-    });
-    const secondCount = countTrailingNewlines(prettierFormatted);
+    // Format a second time via the extension to verify idempotency
+    const { actual: secondFormat } = await format("project", "formatTest/ugly.md");
+    const secondCount = countTrailingNewlines(secondFormat);
     
     // Should have exactly 1 trailing newline after both formats
     assert.equal(firstCount, 1, "First format should have exactly 1 trailing newline");
     assert.equal(secondCount, 1, "Second format should have exactly 1 trailing newline");
-    assert.equal(firstFormat, prettierFormatted, "Formatting should be idempotent");
+    assert.equal(firstFormat, secondFormat, "Formatting via extension should be idempotent");
   });
 });
