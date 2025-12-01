@@ -451,6 +451,7 @@ export default class PrettierEditService implements Disposable {
     const edit = this.minimalEdit(document, result);
     if (!edit) {
       // Document is already formatted, no changes needed
+      this.loggingService.logDebug("Document is already formatted, no changes needed.");
       return [];
     }
     return [edit];
