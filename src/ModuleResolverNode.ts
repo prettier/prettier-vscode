@@ -31,6 +31,7 @@ import {
   getWorkspaceRelativePath,
 } from "./utils/workspace.js";
 import { PrettierDynamicInstance } from "./PrettierDynamicInstance.js";
+import { PrettierExecutableInstance } from "./PrettierExecutableInstance.js";
 
 const minPrettierVersion = "1.13.0";
 
@@ -100,9 +101,17 @@ export class ModuleResolver implements ModuleResolverInterface {
       return getBundledPrettier();
     }
 
-    const { prettierPath, resolveGlobalModules } = getWorkspaceConfig(
-      Uri.file(fileName),
-    );
+    const { prettierPath, customExecutable, resolveGlobalModules } =
+      getWorkspaceConfig(Uri.file(fileName));
+
+    // If custom executable is specified, use it with highest priority
+    if (customExecutable) {
+      return this.getCustomExecutableInstance(
+        fileName,
+        customExecutable,
+        prettierPath,
+      );
+    }
 
     // Look for local module
     let modulePath: string | undefined;
@@ -156,6 +165,67 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     this.path2Module.set(modulePath, prettierInstance);
+
+    return prettierInstance;
+  }
+
+  private async getCustomExecutableInstance(
+    fileName: string,
+    customExecutable: string,
+    prettierPath: string | undefined,
+  ): Promise<PrettierInstance | undefined> {
+    // Determine the prettier path for the custom executable
+    let resolvedPrettierPath: string;
+
+    if (prettierPath) {
+      // Use the explicitly provided prettierPath
+      const absolutePath = path.isAbsolute(prettierPath)
+        ? prettierPath
+        : path.join(
+            workspace.getWorkspaceFolder(Uri.file(fileName))?.uri.fsPath ?? "",
+            prettierPath,
+          );
+      resolvedPrettierPath = absolutePath;
+    } else {
+      // Try to find prettier module automatically
+      const foundPath = await this.findPrettierModule(fileName);
+      if (foundPath) {
+        resolvedPrettierPath = foundPath;
+      } else {
+        // Fall back to just "prettier" and let the custom executable resolve it
+        resolvedPrettierPath = "prettier";
+      }
+    }
+
+    const cacheKey = `custom:${customExecutable}:${resolvedPrettierPath}`;
+
+    // Check cache
+    let prettierInstance = this.path2Module.get(cacheKey);
+    if (prettierInstance) {
+      return prettierInstance;
+    }
+
+    // Create new instance using PrettierExecutableInstance
+    prettierInstance = new PrettierExecutableInstance(
+      customExecutable,
+      resolvedPrettierPath,
+    );
+
+    // Import/validate the executable
+    try {
+      await prettierInstance.import();
+      this.loggingService.logInfo(
+        `Using custom executable: ${customExecutable} with prettier at ${resolvedPrettierPath}`,
+      );
+    } catch (error) {
+      this.loggingService.logError(
+        `Failed to initialize custom executable: ${customExecutable}`,
+        error,
+      );
+      return undefined;
+    }
+
+    this.path2Module.set(cacheKey, prettierInstance);
 
     return prettierInstance;
   }
