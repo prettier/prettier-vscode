@@ -3,15 +3,16 @@ import * as vscode from "vscode";
 import { ensureExtensionActivated } from "./testUtils.js";
 
 describe("Test Prettier Code Actions", () => {
+  const unformattedCode = `const  x   =  {  a: 1, b: 2  }`;
+  const expectedFormatted = `const x = { a: 1, b: 2 };\n`;
+
   before(async () => {
     await ensureExtensionActivated();
   });
 
   it("provides source.fixAll.prettier code action", async () => {
-    const input = `const  x   =  {  a:1,b:2  }`;
-
     const doc = await vscode.workspace.openTextDocument({
-      content: input,
+      content: unformattedCode,
       language: "javascript",
     });
     await vscode.window.showTextDocument(doc);
@@ -39,11 +40,8 @@ describe("Test Prettier Code Actions", () => {
   });
 
   it("formats document using code action", async () => {
-    const input = `const  x   =  {  a:1,b:2  }`;
-    const expected = `const x = { a: 1, b: 2 };\n`;
-
     const doc = await vscode.workspace.openTextDocument({
-      content: input,
+      content: unformattedCode,
       language: "javascript",
     });
     await vscode.window.showTextDocument(doc);
@@ -74,7 +72,7 @@ describe("Test Prettier Code Actions", () => {
     // Verify the document was formatted correctly
     assert.equal(
       formattedText,
-      expected,
+      expectedFormatted,
       "Document should be formatted correctly after applying code action",
     );
   });
