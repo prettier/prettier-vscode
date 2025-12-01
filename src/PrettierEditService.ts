@@ -30,13 +30,15 @@ import {
 } from "./types.js";
 import { getWorkspaceConfig } from "./utils/workspace.js";
 import { isAboveV3 } from "./utils/versions.js";
-import { findUp, pathExists, FIND_UP_STOP } from "./utils/find-up.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
 /**
  * Resolve plugin paths to file:// URLs that Prettier can import.
- * Prettier passes plugin strings directly to import(), so we just need to
- * resolve the paths relative to the file being formatted.
+ * Matches Prettier CLI behavior:
+ * - URLs pass through
+ * - Absolute paths → file:// URL
+ * - Relative paths (./plugin.js) → resolved relative to file, file:// URL
+ * - Package names → resolved from file's directory via createRequire
  */
 async function resolvePluginPaths(
   plugins: (string | PrettierPlugin)[] | undefined,
@@ -50,39 +52,37 @@ async function resolvePluginPaths(
   const resolvedPlugins: (string | PrettierPlugin)[] = [];
 
   for (const plugin of plugins) {
-    // If it's already an object, use it directly
+    // Plugin objects pass through
     if (typeof plugin !== "string") {
       resolvedPlugins.push(plugin);
       continue;
     }
 
-    // If it's already an absolute path, convert to file:// URL
-    if (path.isAbsolute(plugin)) {
-      resolvedPlugins.push(pathToFileURL(resolveModuleEntry(plugin)).href);
+    // URLs pass through
+    if (plugin.startsWith("file://") || plugin.startsWith("data:")) {
+      resolvedPlugins.push(plugin);
       continue;
     }
 
-    // Find the plugin in node_modules starting from the file's directory
-    const pluginPath = await findUp(
-      async (d: string) => {
-        const nodeModulesPath = path.join(d, "node_modules", plugin);
-        if (await pathExists(nodeModulesPath)) {
-          return nodeModulesPath;
-        }
-        // Stop at marker file
-        if (
-          await pathExists(path.join(d, ".do-not-use-prettier-vscode-root"))
-        ) {
-          return FIND_UP_STOP;
-        }
-        return undefined;
-      },
-      { cwd: dir },
-    );
+    // Absolute paths → file:// URL
+    if (path.isAbsolute(plugin)) {
+      resolvedPlugins.push(pathToFileURL(plugin).href);
+      continue;
+    }
 
-    if (pluginPath) {
-      // Resolve to entry file and convert to file:// URL for Prettier to import
-      resolvedPlugins.push(pathToFileURL(resolveModuleEntry(pluginPath)).href);
+    // Relative paths (./foo or ../foo) → resolve relative to file
+    if (plugin.startsWith(".")) {
+      resolvedPlugins.push(pathToFileURL(path.resolve(dir, plugin)).href);
+      continue;
+    }
+
+    // Package names → resolve from file's directory using createRequire
+    try {
+      const resolved = resolveModuleEntry(dir, plugin);
+      resolvedPlugins.push(pathToFileURL(resolved).href);
+    } catch {
+      // If resolution fails, pass through and let Prettier handle/report the error
+      resolvedPlugins.push(plugin);
     }
   }
 
