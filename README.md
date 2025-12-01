@@ -286,9 +286,14 @@ Supply a custom path to the prettier module. This path should be to the module f
 
 #### prettier.customExecutable
 
-Use a custom executable to run Prettier. This is useful for Docker-centric workspaces where Prettier runs inside a container. Specify the full command including any arguments. The command will be executed with Prettier arguments appended.
+Use a custom executable to run Prettier. This is useful for Docker-centric workspaces where Prettier runs inside a container. Specify the full command including any arguments. Prettier CLI arguments (like `--stdin-filepath`, `--parser`, etc.) will be automatically appended to your command.
 
-Example for Docker:
+**How it works:**
+- The extension runs your command with Prettier arguments appended
+- Code is sent via stdin and formatted output is read from stdout
+- Optionally use `${prettier}` as a placeholder for the Prettier path (defaults to the value in `prettier.prettierPath` or auto-detected path)
+
+**Example for Docker:**
 
 ```json
 {
@@ -296,7 +301,12 @@ Example for Docker:
 }
 ```
 
-Example with a wrapper script:
+This will execute commands like:
+```bash
+docker compose exec -T app node_modules/.bin/prettier --stdin-filepath file.js --parser babel
+```
+
+**Example with a wrapper script:**
 
 ```json
 {
@@ -304,7 +314,16 @@ Example with a wrapper script:
 }
 ```
 
-When `prettier.customExecutable` is specified, it takes precedence over `prettier.prettierPath`. If you need to specify where Prettier is located for the custom executable, you can also set `prettier.prettierPath` and it will be used by the custom executable.
+**Example with placeholder:**
+
+```json
+{
+  "prettier.customExecutable": "docker exec my-container ${prettier}",
+  "prettier.prettierPath": "/app/node_modules/.bin/prettier"
+}
+```
+
+When `prettier.customExecutable` is specified, it takes precedence over `prettier.prettierPath`. If you need to specify where Prettier is located, you can set `prettier.prettierPath` to provide the path for the `${prettier}` placeholder or for auto-detection.
 
 **Note:** The custom executable must accept Prettier CLI arguments and behave like the Prettier CLI. Input is provided via stdin and output is expected on stdout.
 

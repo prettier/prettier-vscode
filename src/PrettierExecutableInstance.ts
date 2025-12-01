@@ -230,10 +230,9 @@ export class PrettierExecutableInstance implements PrettierInstance {
       });
     }
 
-    private buildCommand(args: string, filePath: string): string {
+    private buildCommand(args: string, _filePath: string): string {
       // Replace placeholders in the custom executable command
-      // ${prettier} = path to prettier
-      // ${file} = file to format (if applicable)
+      // ${prettier} = path to prettier (optional placeholder)
       let command = this.customExecutable;
 
       // Escape prettierPath to prevent command injection
@@ -246,15 +245,9 @@ export class PrettierExecutableInstance implements PrettierInstance {
         command = command.replace(/\$\{prettier\}/g, escapedPrettierPath);
       }
 
-      // Add arguments (these are already escaped in buildOptionsArgs)
+      // Add arguments (these are already escaped in buildOptionsArgs or other methods)
       if (args) {
         command = `${command} ${args}`;
-      }
-
-      // Replace ${file} placeholder if present
-      if (filePath) {
-        const escapedFilePath = this.escapeArg(filePath);
-        command = command.replace(/\$\{file\}/g, escapedFilePath);
       }
 
       return command;

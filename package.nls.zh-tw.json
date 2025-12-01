@@ -21,7 +21,7 @@
   "ext.config.parser": "覆寫解析器。你不應變更這個設定。",
   "ext.config.parserDeprecationMessage": "這個設定已不再支援。請改用 prettier 組態檔。",
   "ext.config.prettierPath": "`prettier` 模組的路徑，如 `./node_modules/prettier`。",
-  "ext.config.customExecutable": "使用自訂可執行檔來執行 Prettier。指定完整命令及其參數，命令將附加 Prettier 參數執行。例如：`docker compose exec -T app node_modules/.bin/prettier`。當指定時，優先於 `prettier.prettierPath`。",
+  "ext.config.customExecutable": "使用自訂可執行檔來執行 Prettier。指定完整命令及其參數。Prettier CLI 參數將自動附加。可選使用 `${prettier}` 作為 Prettier 路徑的佔位符。例如：`docker compose exec -T app node_modules/.bin/prettier`。當指定時，優先於 `prettier.prettierPath`。",
   "ext.config.printWidth": "讓程式碼的每一列符合這個寬度限制。",
   "ext.config.proseWrap": "（ Markdown ） 把文句換行成多列。",
   "ext.config.quoteProps": "變更物件屬性何時加上引號。\n可用的選項：\n- `\"as-needed\"` - 只在需要時加上引號。\n- `\"consistent\"` - 如果至少有一個屬性需要引號，則對所有屬性加上引號。\n- `\"preserve\"` - 保留輸入中屬性引號的使用方式。",

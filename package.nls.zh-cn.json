@@ -21,7 +21,7 @@
   "ext.config.parser": "覆盖解析器。通常不需要更改此设置。",
   "ext.config.parserDeprecationMessage": "此设置已不再支持。请改用 Prettier 配置文件。",
   "ext.config.prettierPath": "`prettier` 包路径，如 `./node_modules/prettier`。",
-  "ext.config.customExecutable": "使用自定义可执行文件运行 Prettier。指定完整命令及其参数，命令将附加 Prettier 参数执行。例如：`docker compose exec -T app node_modules/.bin/prettier`。当指定时，优先于 `prettier.prettierPath`。",
+  "ext.config.customExecutable": "使用自定义可执行文件运行 Prettier。指定完整命令及其参数。Prettier CLI 参数将自动附加。可选使用 `${prettier}` 作为 Prettier 路径的占位符。例如：`docker compose exec -T app node_modules/.bin/prettier`。当指定时，优先于 `prettier.prettierPath`。",
   "ext.config.printWidth": "每行代码的长度限制。",
   "ext.config.proseWrap": "（ Markdown ） 文本换行。",
   "ext.config.quoteProps": "指定对象字面量中的属性名引号添加方式。\n可选项： \n- `as-needed` - 只在需要的情况下加引号。\n- `consistent` - 有一个需要引号就给其他都统一加上。\n - `preserve` - 保留用户输入的引号。",
