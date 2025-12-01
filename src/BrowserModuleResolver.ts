@@ -6,11 +6,17 @@ import {
   PrettierOptions,
   ModuleResolverInterface,
   PrettierVSCodeConfig,
-} from "./types";
+} from "./types.js";
+import { TextDocument } from "vscode";
+import { LoggingService } from "./LoggingService.js";
+import { getWorkspaceRelativePath } from "./utils/workspace.js";
+import type { ResolveConfigOptions, Options, Plugin } from "prettier";
 
+// Prettier
 import * as prettierStandalone from "prettier/standalone";
+import { version as prettierVersion } from "prettier";
 
-// Prettier 3 moved parsers from prettier/parser-* to prettier/plugins/*
+// Plugins
 import * as acornPlugin from "prettier/plugins/acorn";
 import * as angularPlugin from "prettier/plugins/angular";
 import * as babelPlugin from "prettier/plugins/babel";
@@ -25,16 +31,11 @@ import * as typescriptPlugin from "prettier/plugins/typescript";
 import * as postcssPlugin from "prettier/plugins/postcss";
 import * as yamlPlugin from "prettier/plugins/yaml";
 
-import { TextDocument, Uri } from "vscode";
-import { LoggingService } from "./LoggingService";
-import { getWorkspaceRelativePath } from "./utils/workspace";
-import { ResolveConfigOptions, Options } from "prettier";
-
-const plugins = [
+const plugins: Plugin[] = [
   acornPlugin,
   angularPlugin,
   babelPlugin,
-  estreePlugin,
+  estreePlugin as Plugin, // estreePlugin doesn't have proper types
   flowPlugin,
   glimmerPlugin,
   graphqlPlugin,
@@ -62,11 +63,23 @@ export class ModuleResolver implements ModuleResolverInterface {
     return getWorkspaceRelativePath(fileName, ignorePath);
   }
 
-  public getGlobalPrettierInstance(): PrettierModule {
+  public async getGlobalPrettierInstance(): Promise<PrettierModule> {
     this.loggingService.logInfo("Using standalone prettier");
     return {
+      version: prettierVersion,
       format: async (source: string, options: PrettierOptions) => {
         return prettierStandalone.format(source, { ...options, plugins });
+      },
+      resolveConfigFile: async (): Promise<string | null> => {
+        // Config file resolution not supported in browser
+        return null;
+      },
+      resolveConfig: async (): Promise<PrettierOptions | null> => {
+        // Config resolution not supported in browser
+        return null;
+      },
+      clearConfigCache: async (): Promise<void> => {
+        // No cache to clear in browser
       },
       getSupportInfo: async (): Promise<{
         languages: PrettierSupportLanguage[];
@@ -74,92 +87,59 @@ export class ModuleResolver implements ModuleResolverInterface {
         return {
           languages: [
             {
-              name: "JavaScript",
-              vscodeLanguageIds: [
-                "javascript",
-                "javascriptreact",
-                "mongo",
-                "mongodb",
-              ],
-              extensions: [],
-              parsers: [
-                "babel",
-                "espree",
-                "meriyah",
-                "babel-flow",
-                "babel-ts",
-                "flow",
-                "typescript",
-              ],
+              name: "CSS",
+              vscodeLanguageIds: ["css"],
+              extensions: [".css", ".wxss"],
+              parsers: ["css"],
             },
             {
-              name: "TypeScript",
-              vscodeLanguageIds: ["typescript"],
-              extensions: [],
-              parsers: ["typescript", "babel-ts"],
+              name: "PostCSS",
+              vscodeLanguageIds: ["postcss"],
+              extensions: [".pcss", ".postcss"],
+              parsers: ["css"],
             },
             {
-              name: "TSX",
-              vscodeLanguageIds: ["typescriptreact"],
-              extensions: [],
-              parsers: ["typescript", "babel-ts"],
+              name: "Less",
+              vscodeLanguageIds: ["less"],
+              extensions: [".less"],
+              parsers: ["less"],
             },
             {
-              name: "JSON.stringify",
-              vscodeLanguageIds: ["json"],
-              extensions: [],
-              parsers: ["json-stringify"],
-            },
-            {
-              name: "JSON",
-              vscodeLanguageIds: ["json"],
-              extensions: [],
-              parsers: ["json"],
-            },
-            {
-              name: "JSON with Comments",
-              vscodeLanguageIds: ["jsonc"],
-              parsers: ["json"],
-            },
-            {
-              name: "JSON5",
-              vscodeLanguageIds: ["json5"],
-              extensions: [],
-              parsers: ["json5"],
-            },
-            {
-              name: "Handlebars",
-              vscodeLanguageIds: ["handlebars"],
-              extensions: [],
-              parsers: ["glimmer"],
+              name: "SCSS",
+              vscodeLanguageIds: ["scss"],
+              extensions: [".scss"],
+              parsers: ["scss"],
             },
             {
               name: "GraphQL",
               vscodeLanguageIds: ["graphql"],
-              extensions: [],
+              extensions: [".graphql", ".gql", ".graphqls"],
               parsers: ["graphql"],
             },
             {
-              name: "Markdown",
-              vscodeLanguageIds: ["markdown"],
-              parsers: ["markdown"],
-            },
-            {
-              name: "MDX",
-              vscodeLanguageIds: ["mdx"],
-              extensions: [],
-              parsers: ["mdx"],
+              name: "Handlebars",
+              vscodeLanguageIds: ["handlebars"],
+              extensions: [".handlebars", ".hbs"],
+              parsers: ["glimmer"],
             },
             {
               name: "Angular",
               vscodeLanguageIds: ["html"],
-              extensions: [],
+              extensions: [".component.html"],
               parsers: ["angular"],
             },
             {
               name: "HTML",
               vscodeLanguageIds: ["html"],
-              extensions: [],
+              extensions: [
+                ".html",
+                ".hta",
+                ".htm",
+                ".html.hl",
+                ".inc",
+                ".xht",
+                ".xhtml",
+              ],
               parsers: ["html"],
             },
             {
@@ -169,15 +149,198 @@ export class ModuleResolver implements ModuleResolverInterface {
               parsers: ["lwc"],
             },
             {
+              name: "MJML",
+              vscodeLanguageIds: ["mjml"],
+              extensions: [".mjml"],
+              parsers: ["mjml"],
+            },
+            {
               name: "Vue",
               vscodeLanguageIds: ["vue"],
-              extensions: [],
+              extensions: [".vue"],
               parsers: ["vue"],
+            },
+            {
+              name: "JavaScript",
+              vscodeLanguageIds: [
+                "javascript",
+                "javascriptreact",
+                "mongo",
+                "mongodb",
+              ],
+              extensions: [
+                ".js",
+                "._js",
+                ".bones",
+                ".cjs",
+                ".es",
+                ".es6",
+                ".gs",
+                ".jake",
+                ".javascript",
+                ".jsb",
+                ".jscad",
+                ".jsfl",
+                ".jslib",
+                ".jsm",
+                ".jspre",
+                ".jss",
+                ".mjs",
+                ".njs",
+                ".pac",
+                ".sjs",
+                ".ssjs",
+                ".xsjs",
+                ".xsjslib",
+                ".start.frag",
+                ".end.frag",
+                ".wxs",
+              ],
+              parsers: [
+                "babel",
+                "acorn",
+                "espree",
+                "meriyah",
+                "babel-flow",
+                "babel-ts",
+                "flow",
+                "typescript",
+              ],
+            },
+            {
+              name: "Flow",
+              vscodeLanguageIds: ["javascript"],
+              extensions: [".js.flow"],
+              parsers: ["flow", "babel-flow"],
+            },
+            {
+              name: "JSX",
+              vscodeLanguageIds: ["javascriptreact"],
+              extensions: [".jsx"],
+              parsers: [
+                "babel",
+                "babel-flow",
+                "babel-ts",
+                "flow",
+                "typescript",
+                "espree",
+                "meriyah",
+              ],
+            },
+            {
+              name: "TypeScript",
+              vscodeLanguageIds: ["typescript"],
+              extensions: [".ts", ".cts", ".mts"],
+              parsers: ["typescript", "babel-ts"],
+            },
+            {
+              name: "TSX",
+              vscodeLanguageIds: ["typescriptreact"],
+              extensions: [".tsx"],
+              parsers: ["typescript", "babel-ts"],
+            },
+            {
+              name: "JSON.stringify",
+              vscodeLanguageIds: ["json"],
+              extensions: [".importmap"],
+              parsers: ["json-stringify"],
+            },
+            {
+              name: "JSON",
+              vscodeLanguageIds: ["json"],
+              extensions: [
+                ".json",
+                ".4DForm",
+                ".4DProject",
+                ".avsc",
+                ".geojson",
+                ".gltf",
+                ".har",
+                ".ice",
+                ".JSON-tmLanguage",
+                ".json.example",
+                ".mcmeta",
+                ".sarif",
+                ".tact",
+                ".tfstate",
+                ".tfstate.backup",
+                ".topojson",
+                ".webapp",
+                ".webmanifest",
+                ".yy",
+                ".yyp",
+              ],
+              parsers: ["json"],
+            },
+            {
+              name: "JSON with Comments",
+              vscodeLanguageIds: ["jsonc"],
+              extensions: [
+                ".jsonc",
+                ".code-snippets",
+                ".code-workspace",
+                ".sublime-build",
+                ".sublime-color-scheme",
+                ".sublime-commands",
+                ".sublime-completions",
+                ".sublime-keymap",
+                ".sublime-macro",
+                ".sublime-menu",
+                ".sublime-mousemap",
+                ".sublime-project",
+                ".sublime-settings",
+                ".sublime-theme",
+                ".sublime-workspace",
+                ".sublime_metrics",
+                ".sublime_session",
+              ],
+              parsers: ["jsonc"],
+            },
+            {
+              name: "JSON5",
+              vscodeLanguageIds: ["json5"],
+              extensions: [".json5"],
+              parsers: ["json5"],
+            },
+            {
+              name: "Markdown",
+              vscodeLanguageIds: ["markdown"],
+              extensions: [
+                ".md",
+                ".livemd",
+                ".markdown",
+                ".mdown",
+                ".mdwn",
+                ".mkd",
+                ".mkdn",
+                ".mkdown",
+                ".ronn",
+                ".scd",
+                ".workbook",
+              ],
+              parsers: ["markdown"],
+            },
+            {
+              name: "MDX",
+              vscodeLanguageIds: ["mdx"],
+              extensions: [".mdx"],
+              parsers: ["mdx"],
             },
             {
               name: "YAML",
               vscodeLanguageIds: ["yaml", "ansible", "home-assistant"],
-              extensions: [],
+              extensions: [
+                ".yml",
+                ".mir",
+                ".reek",
+                ".rviz",
+                ".sublime-syntax",
+                ".syntax",
+                ".yaml",
+                ".yaml-tmlanguage",
+                ".yaml.sed",
+                ".yml.mysql",
+              ],
               parsers: ["yaml"],
             },
           ],
@@ -196,20 +359,15 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   async resolveConfig(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    prettierInstance: {
+    _prettierInstance: {
       resolveConfigFile(filePath?: string | undefined): Promise<string | null>;
       resolveConfig(
         fileName: string,
         options?: ResolveConfigOptions | undefined,
       ): Promise<Options | null>;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    uri: Uri,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fileName: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    vscodeConfig: PrettierVSCodeConfig,
+    _fileName: string,
+    _vscodeConfig: PrettierVSCodeConfig,
   ): Promise<Options | "error" | "disabled" | null> {
     return null;
   }

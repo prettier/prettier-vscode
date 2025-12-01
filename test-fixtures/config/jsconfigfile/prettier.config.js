@@ -1,3 +1,3 @@
-module.exports = {
-   tabWidth: 3
+export default {
+  tabWidth: 3,
 };

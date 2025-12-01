@@ -1,32 +1,31 @@
-import * as assert from "node:assert";
+import * as assert from "assert";
 import {
   format,
   getText,
   moveRootPrettierRC,
   putBackPrettierRC,
-} from "./format.test";
+} from "./formatTestUtils.js";
+import { ensureExtensionActivated } from "./testUtils.js";
 
-const testConfig = (
-  testPath: string,
-  resultPath: string,
-  shouldRetry = false,
-) => {
+const testConfig = (testPath: string, resultPath: string) => {
   return async () => {
-    const { actual } = await format("config", testPath, shouldRetry);
+    const { actual } = await format("config", testPath);
     const expected = await getText("config", resultPath);
     assert.equal(actual, expected);
   };
 };
 
 describe("Test configurations", () => {
-  before(() => moveRootPrettierRC());
+  before(async () => {
+    await ensureExtensionActivated();
+    await moveRootPrettierRC();
+  });
   after(() => putBackPrettierRC());
 
   // .prettierrc (JSON without extension)
   it(
     "it uses config from .prettierrc file and does not inherit VS Code settings ",
-    // Use retry for first test as extension may need time after root .prettierrc is moved
-    testConfig("rcfile/test.js", "rcfile/test.result.js", true),
+    testConfig("rcfile/test.js", "rcfile/test.result.js"),
   );
 
   // .prettierrc.json

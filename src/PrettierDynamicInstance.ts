@@ -1,24 +1,35 @@
-import { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
-import {
-  PrettierInstance,
-  PrettierInstanceConstructor,
-} from "./PrettierInstance";
-import {
+import { pathToFileURL } from "url";
+import type { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
+import type {
   PrettierFileInfoResult,
   PrettierPlugin,
   PrettierSupportLanguage,
-} from "./types";
-import { PrettierNodeModule } from "./ModuleResolver";
-import { loadNodeModule } from "./utils/resolvers";
+  PrettierInstance,
+  PrettierInstanceConstructor,
+} from "./types.js";
+import type { PrettierNodeModule } from "./ModuleResolver.js";
+import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
-export const PrettierMainThreadInstance: PrettierInstanceConstructor = class PrettierMainThreadInstance implements PrettierInstance {
+/**
+ * Unified Prettier instance that uses native ESM dynamic import().
+ * Works with both Prettier v2 and v3+ since we're now an ESM module.
+ */
+export const PrettierDynamicInstance: PrettierInstanceConstructor = class PrettierDynamicInstance implements PrettierInstance {
   public version: string | null = null;
   private prettierModule: PrettierNodeModule | undefined;
 
   constructor(private modulePath: string) {}
 
   public async import(): Promise</* version of imported prettier */ string> {
-    this.prettierModule = loadNodeModule(this.modulePath);
+    // Resolve to actual entry file since ESM doesn't support directory imports
+    const entryPath = await resolveModuleEntry(this.modulePath);
+    const moduleUrl = pathToFileURL(entryPath).href;
+    const imported = await import(moduleUrl);
+    // Handle both ESM (Prettier v3+) and CJS (Prettier v2) modules
+    // CJS modules imported via ESM have their exports on the default property
+    this.prettierModule = (
+      imported.default?.version ? imported.default : imported
+    ) as PrettierNodeModule;
     this.version = this.prettierModule?.version ?? null;
     if (this.version == null) {
       throw new Error(`Failed to load Prettier instance: ${this.modulePath}`);

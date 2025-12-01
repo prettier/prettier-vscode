@@ -1,5 +1,5 @@
-module.exports = {
-    singleQuote: false,
-    useTabs: false,
-    tabWidth: 3
-}
+export default {
+  singleQuote: false,
+  useTabs: false,
+  tabWidth: 3,
+};

@@ -1,18 +1,45 @@
 import * as prettier from "prettier";
-import { TextDocument, Uri } from "vscode";
-import { PrettierInstance } from "./PrettierInstance";
+import { TextDocument } from "vscode";
 
 // Re-export Prettier types for convenience
-type PrettierSupportLanguage = prettier.SupportLanguage;
-type PrettierFileInfoResult = prettier.FileInfoResult;
-type PrettierBuiltInParserName = prettier.BuiltInParserName;
-type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
-type PrettierOptions = prettier.Options;
-type PrettierFileInfoOptions = prettier.FileInfoOptions;
+export type PrettierSupportLanguage = prettier.SupportLanguage;
+export type PrettierFileInfoResult = prettier.FileInfoResult;
+export type PrettierBuiltInParserName = prettier.BuiltInParserName;
+export type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
+export type PrettierOptions = prettier.Options;
+export type PrettierFileInfoOptions = prettier.FileInfoOptions;
 
-type PrettierPlugin = prettier.Plugin<any> | string | URL;
+export type PrettierPlugin = prettier.Plugin<any> | string | URL;
 
-type PrettierModule = {
+export interface PrettierInstance {
+  version: string | null;
+  import(): Promise<string>;
+  format(source: string, options?: PrettierOptions): Promise<string>;
+  getFileInfo(
+    filePath: string,
+    fileInfoOptions?: PrettierFileInfoOptions,
+  ): Promise<PrettierFileInfoResult>;
+  getSupportInfo({
+    plugins,
+  }: {
+    plugins: (string | PrettierPlugin)[];
+  }): Promise<{
+    languages: PrettierSupportLanguage[];
+  }>;
+  clearConfigCache(): Promise<void>;
+  resolveConfigFile(filePath?: string): Promise<string | null>;
+  resolveConfig(
+    fileName: string,
+    options?: prettier.ResolveConfigOptions,
+  ): Promise<PrettierOptions | null>;
+}
+
+export interface PrettierInstanceConstructor {
+  new (modulePath: string): PrettierInstance;
+}
+
+export type PrettierModule = {
+  version: string;
   format(source: string, options?: PrettierOptions): Promise<string>;
   getSupportInfo(options?: {
     plugins?: Array<string | PrettierPlugin>;
@@ -21,6 +48,12 @@ type PrettierModule = {
     filePath: string,
     options?: PrettierFileInfoOptions,
   ): Promise<PrettierFileInfoResult>;
+  resolveConfigFile(filePath?: string): Promise<string | null>;
+  resolveConfig(
+    fileName: string,
+    options?: PrettierResolveConfigOptions,
+  ): Promise<PrettierOptions | null>;
+  clearConfigCache(): Promise<void>;
 };
 
 export type ModuleResolverInterface = {
@@ -31,7 +64,7 @@ export type ModuleResolverInterface = {
     fileName: string,
     ignorePath: string,
   ): Promise<string | undefined>;
-  getGlobalPrettierInstance(): PrettierModule;
+  getGlobalPrettierInstance(): Promise<PrettierModule>;
   getResolvedConfig(
     doc: TextDocument,
     vscodeConfig: PrettierVSCodeConfig,
@@ -45,7 +78,6 @@ export type ModuleResolverInterface = {
         options?: PrettierResolveConfigOptions,
       ): Promise<PrettierOptions | null>;
     },
-    uri: Uri,
     fileName: string,
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
@@ -56,7 +88,7 @@ export type PackageManagers = "npm" | "yarn" | "pnpm";
 /**
  * prettier-vscode specific configuration
  */
-interface IExtensionConfig {
+export interface IExtensionConfig {
   /**
    * Path to '.prettierignore' or similar.
    */

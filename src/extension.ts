@@ -1,18 +1,18 @@
 import { commands, ExtensionContext, workspace } from "vscode";
-import { createConfigFile } from "./commands";
-import { LoggingService } from "./LoggingService";
-import { ModuleResolver } from "./ModuleResolver";
-import PrettierEditService from "./PrettierEditService";
-import { StatusBar } from "./StatusBar";
-import { TemplateService } from "./TemplateService";
-import { getWorkspaceConfig } from "./utils/workspace";
-import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message";
+import { createConfigFile } from "./commands.js";
+import { LoggingService } from "./LoggingService.js";
+import { ModuleResolver } from "./ModuleResolver.js";
+import PrettierEditService from "./PrettierEditService.js";
+import { StatusBar } from "./StatusBar.js";
+import { TemplateService } from "./TemplateService.js";
+import { getWorkspaceConfig } from "./utils/workspace.js";
+import { RESTART_TO_ENABLE, EXTENSION_DISABLED } from "./message.js";
 
 // the application insights key (also known as instrumentation key)
 const extensionName = process.env.EXTENSION_NAME || "dev.prettier-vscode";
 const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext) {
   const loggingService = new LoggingService();
 
   loggingService.logInfo(`Extension Name: ${extensionName}.`);
@@ -38,10 +38,11 @@ export function activate(context: ExtensionContext) {
 
   const moduleResolver = new ModuleResolver(loggingService);
 
-  const templateService = new TemplateService(
-    loggingService,
-    moduleResolver.getGlobalPrettierInstance(),
-  );
+  // Get the global prettier instance promise - needed for TemplateService
+  // and editService registration
+  const prettierPromise = moduleResolver.getGlobalPrettierInstance();
+
+  const templateService = new TemplateService(loggingService, prettierPromise);
 
   const statusBar = new StatusBar();
 
@@ -50,35 +51,33 @@ export function activate(context: ExtensionContext) {
     loggingService,
     statusBar,
   );
-  editService
-    .registerGlobal()
-    .then(() => {
-      const createConfigFileFunc = createConfigFile(templateService);
-      const createConfigFileCommand = commands.registerCommand(
-        "prettier.createConfigFile",
-        createConfigFileFunc,
-      );
-      const openOutputCommand = commands.registerCommand(
-        "prettier.openOutput",
-        () => {
-          loggingService.show();
-        },
-      );
-      const forceFormatDocumentCommand = commands.registerCommand(
-        "prettier.forceFormatDocument",
-        editService.forceFormatDocument,
-      );
 
-      context.subscriptions.push(
-        statusBar,
-        editService,
-        createConfigFileCommand,
-        openOutputCommand,
-        forceFormatDocumentCommand,
-        ...editService.registerDisposables(),
-      );
-    })
-    .catch((err) => {
-      loggingService.logError("Error registering extension", err);
-    });
+  // Register formatters before completing activation
+  // This ensures formatters are ready when extension.isActive becomes true
+  await editService.registerGlobal();
+
+  const createConfigFileFunc = createConfigFile(templateService);
+  const createConfigFileCommand = commands.registerCommand(
+    "prettier.createConfigFile",
+    createConfigFileFunc,
+  );
+  const openOutputCommand = commands.registerCommand(
+    "prettier.openOutput",
+    () => {
+      loggingService.show();
+    },
+  );
+  const forceFormatDocumentCommand = commands.registerCommand(
+    "prettier.forceFormatDocument",
+    editService.forceFormatDocument,
+  );
+
+  context.subscriptions.push(
+    statusBar,
+    editService,
+    createConfigFileCommand,
+    openOutputCommand,
+    forceFormatDocumentCommand,
+    ...editService.registerDisposables(),
+  );
 }

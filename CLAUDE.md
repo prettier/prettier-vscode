@@ -86,11 +86,10 @@ Web tests are located in `src/test/web/suite/` and test the extension's browser 
 - Caches resolved modules and configurations
 - Handles Workspace Trust restrictions
 
-**Prettier Instance** (`PrettierInstance.ts`, `PrettierMainThreadInstance.ts`, `PrettierWorkerInstance.ts`):
+**Prettier Instance** (`src/PrettierDynamicInstance.ts`):
 
-- `PrettierInstance` is an interface with two implementations
-- `PrettierMainThreadInstance` loads Prettier directly via `require()`
-- `PrettierWorkerInstance` loads Prettier in a worker thread to avoid blocking
+- Implements the `PrettierInstance` interface (defined in `src/types.ts`)
+- Loads Prettier dynamically using ESM `import()` for lazy loading
 - Works with both Prettier v2 and v3+
 
 ### Bundling

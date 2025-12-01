@@ -20,10 +20,11 @@ Entry points:
 
 Core components:
 
-- `src/extension.ts` - Extension activation, creates ModuleResolver, PrettierEditService, and StatusBar
+- `src/extension.ts` - Extension activation (async), creates ModuleResolver, PrettierEditService, and StatusBar
 - `src/PrettierEditService.ts` - Registers VS Code document formatting providers, handles format requests
 - `src/ModuleResolver.ts` - Resolves local/global Prettier installations, falls back to bundled Prettier
-- `src/PrettierInstance.ts` - Interface for Prettier loading, with `PrettierMainThreadInstance` and `PrettierWorkerInstance` implementations
+- `src/PrettierDynamicInstance.ts` - Implements `PrettierInstance` interface, loads Prettier dynamically using ESM `import()`
+- `src/types.ts` - TypeScript types including `PrettierInstance` interface
 
 esbuild produces two bundles:
 
@@ -69,7 +70,7 @@ When reviewing pull requests, focus on:
 ### Performance
 
 - Avoid blocking the extension host main thread
-- `PrettierWorkerInstance` runs Prettier in a worker thread to avoid blocking
+- Prettier is loaded lazily using dynamic `import()` to minimize startup time
 - Module and config resolution results are cached appropriately
 
 ### Browser Compatibility

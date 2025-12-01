@@ -1,5 +1,6 @@
 import * as assert from "node:assert";
-import { format, getText } from "./format.test";
+import { format, getText } from "./formatTestUtils.js";
+import { ensureExtensionActivated } from "./testUtils.js";
 
 /**
  * Test for GitHub issue https://github.com/prettier/prettier/issues/18353
@@ -12,12 +13,15 @@ import { format, getText } from "./format.test";
  * "Cannot find package 'prettier-plugin-xxx' imported from /path/to/root/noop.js"
  */
 describe("Test monorepo subfolder plugin resolution (issue #18353)", () => {
+  before(async () => {
+    await ensureExtensionActivated();
+  });
+
   // This test verifies the subfolder works when opened as its own workspace
   it("formats with plugins in a monorepo subfolder (opened directly)", async () => {
     const { actual } = await format(
       "subfolder",
       "index.xml",
-      /* shouldRetry */ true,
     );
     const expected = await getText("subfolder", "index.result.xml");
     assert.equal(actual, expected);
@@ -29,7 +33,6 @@ describe("Test monorepo subfolder plugin resolution (issue #18353)", () => {
     const { actual } = await format(
       "monorepo-subfolder",
       "subfolder/index.xml",
-      /* shouldRetry */ true,
     );
     const expected = await getText(
       "monorepo-subfolder",

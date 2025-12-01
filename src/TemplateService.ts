@@ -1,12 +1,12 @@
 import { TextEncoder } from "util";
 import { Uri, workspace } from "vscode";
-import { LoggingService } from "./LoggingService";
-import { PrettierModule, PrettierOptions } from "./types";
+import { LoggingService } from "./LoggingService.js";
+import { PrettierModule, PrettierOptions } from "./types.js";
 
 export class TemplateService {
   constructor(
     private loggingService: LoggingService,
-    private prettierModule: PrettierModule,
+    private prettierModulePromise: Promise<PrettierModule>,
   ) {}
   public async writeConfigFile(folderPath: Uri) {
     const settings = { tabWidth: 2, useTabs: false };
@@ -20,7 +20,8 @@ export class TemplateService {
       useTabs: settings.useTabs,
     };
 
-    const templateSource = await this.prettierModule.format(
+    const prettierModule = await this.prettierModulePromise;
+    const templateSource = await prettierModule.format(
       JSON.stringify(settings, null, 2),
       formatterOptions,
     );

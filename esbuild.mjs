@@ -46,7 +46,8 @@ const browserAliasPlugin = {
   name: "browser-alias",
   setup(build) {
     // Replace ModuleResolver imports with BrowserModuleResolver for browser build
-    build.onResolve({ filter: /\.\/ModuleResolver$/ }, (args) => {
+    // Match both ./ModuleResolver and ./ModuleResolver.js patterns
+    build.onResolve({ filter: /\.\/ModuleResolver(\.js)?$/ }, (args) => {
       return {
         path: path.join(args.resolveDir, "BrowserModuleResolver.ts"),
       };
@@ -56,18 +57,34 @@ const browserAliasPlugin = {
 
 /**
  * Node extension configuration
+ * Uses ESM format for native ES module support, following the pattern from
+ * https://github.com/microsoft/vscode-github-issue-notebooks
  * @type {import('esbuild').BuildOptions}
  */
 const nodeConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
-  format: "cjs",
+  format: "esm",
   minify: production,
-  sourcemap: !production,
-  sourcesContent: false,
-  platform: "node",
+  sourcemap: true,
+  platform: "neutral",
+  target: ["node22"],
   outfile: "dist/extension.js",
-  external: ["vscode", "prettier"],
+  // Keep vscode external - provided by the VS Code extension host
+  // Keep prettier external - loaded dynamically at runtime
+  // Keep Node.js built-ins external - available in the extension host runtime
+  external: [
+    "vscode",
+    "prettier",
+    "fs",
+    "fs/promises",
+    "path",
+    "os",
+    "url",
+    "util",
+    "module",
+    "child_process",
+  ],
   define: {
     "process.env.EXTENSION_NAME": JSON.stringify(
       `${extensionPackage.publisher}.${extensionPackage.name}`,
@@ -88,10 +105,43 @@ const browserShimsPlugin = {
     build.onResolve({ filter: /^os$/ }, () => {
       return { path: "os", namespace: "browser-shim" };
     });
+    build.onResolve({ filter: /^fs$/ }, () => {
+      return { path: "fs", namespace: "browser-shim" };
+    });
+    build.onResolve({ filter: /^url$/ }, () => {
+      return { path: "url", namespace: "browser-shim" };
+    });
     build.onLoad({ filter: /.*/, namespace: "browser-shim" }, (args) => {
       if (args.path === "os") {
         return {
           contents: `export function homedir() { return ""; }`,
+          loader: "js",
+        };
+      }
+      if (args.path === "fs") {
+        // Provide a minimal fs shim - these functions won't be called in browser
+        // but need to exist to satisfy imports
+        return {
+          contents: `
+            export const promises = {
+              access: async () => { throw new Error("Not available in browser"); },
+              lstat: async () => { throw new Error("Not available in browser"); },
+              readdir: async () => [],
+              readFile: async () => { throw new Error("Not available in browser"); },
+            };
+            export default { promises };
+          `,
+          loader: "js",
+        };
+      }
+      if (args.path === "url") {
+        // Provide a minimal url shim for browser
+        return {
+          contents: `
+            export function pathToFileURL(path) {
+              return new URL("file://" + path);
+            }
+          `,
           loader: "js",
         };
       }
@@ -100,7 +150,7 @@ const browserShimsPlugin = {
 };
 
 /**
- * Browser/web extension configurationn
+ * Browser/web extension configuration (CJS required for web extension host)
  * @type {import('esbuild').BuildOptions}
  */
 const browserConfig = {
@@ -111,7 +161,8 @@ const browserConfig = {
   sourcemap: !production,
   sourcesContent: false,
   platform: "browser",
-  outfile: "dist/web-extension.js",
+  target: "es2020",
+  outfile: "dist/web-extension.cjs",
   external: ["vscode"],
   define: {
     "process.env.EXTENSION_NAME": JSON.stringify(
@@ -136,7 +187,28 @@ const browserConfig = {
 };
 
 /**
+ * Desktop test bundle configuration
+ * Uses CJS format with .cjs extension so tests work with "type": "module" in package.json
+ * @type {import('esbuild').BuildOptions}
+ */
+const desktopTestConfig = {
+  entryPoints: ["src/test/suite/*.test.ts"],
+  bundle: true, // Bundle each test file separately
+  format: "cjs",
+  minify: false,
+  sourcemap: true,
+  platform: "node",
+  target: "node20",
+  outdir: "out/test/suite",
+  outExtension: { ".js": ".cjs" },
+  external: ["vscode", "mocha", "prettier"],
+  logLevel: "silent",
+  plugins: [esbuildProblemMatcherPlugin],
+};
+
+/**
  * Web test bundle configuration
+ * Uses CJS format with .cjs extension since package.json has "type": "module"
  * @type {import('esbuild').BuildOptions}
  */
 const webTestConfig = {
@@ -147,7 +219,7 @@ const webTestConfig = {
   sourcemap: true,
   sourcesContent: false,
   platform: "browser",
-  outfile: "dist/web/test/suite/index.js",
+  outfile: "dist/web/test/suite/index.cjs",
   external: ["vscode"],
   define: {
     "process.env.BROWSER_ENV": JSON.stringify("true"),
@@ -160,57 +232,30 @@ const webTestConfig = {
   plugins: [esbuildProblemMatcherPlugin],
 };
 
-function copyWorkerFile() {
-  // Copy to dist (for production/esbuild bundle)
-  const distWorkerDir = "dist/worker";
-  if (!fs.existsSync(distWorkerDir)) {
-    fs.mkdirSync(distWorkerDir, { recursive: true });
-  }
-  fs.copyFileSync(
-    "src/worker/prettier-instance-worker.js",
-    "dist/worker/prettier-instance-worker.js",
-  );
-
-  // Copy to out (for tests/tsc output)
-  const outWorkerDir = "out/worker";
-  if (!fs.existsSync(outWorkerDir)) {
-    fs.mkdirSync(outWorkerDir, { recursive: true });
-  }
-  fs.copyFileSync(
-    "src/worker/prettier-instance-worker.js",
-    "out/worker/prettier-instance-worker.js",
-  );
-}
-
 async function main() {
   const nodeCtx = await esbuild.context(nodeConfig);
   const browserCtx = await esbuild.context(browserConfig);
+  const desktopTestCtx = await esbuild.context(desktopTestConfig);
   const webTestCtx = await esbuild.context(webTestConfig);
 
-  // Copy worker file
-  copyWorkerFile();
-
   if (watch) {
-    // Watch the worker file for changes
-    fs.watchFile("src/worker/prettier-instance-worker.js", () => {
-      console.log("[watch] copying worker file");
-      copyWorkerFile();
-    });
-
     await Promise.all([
       nodeCtx.watch(),
       browserCtx.watch(),
+      desktopTestCtx.watch(),
       webTestCtx.watch(),
     ]);
   } else {
     await Promise.all([
       nodeCtx.rebuild(),
       browserCtx.rebuild(),
+      desktopTestCtx.rebuild(),
       webTestCtx.rebuild(),
     ]);
     await Promise.all([
       nodeCtx.dispose(),
       browserCtx.dispose(),
+      desktopTestCtx.dispose(),
       webTestCtx.dispose(),
     ]);
   }

@@ -12,17 +12,8 @@
     "lib": ["ES2022"],
     "sourceMap": true,
     "rootDir": "src",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
-  "exclude": [
-    "node_modules",
-    ".vscode-test",
-    "test-fixtures",
-    "src/test/suite"
-  ],
-  "include": [
-    "src/**/*.ts",
-    "./node_modules/vscode/vscode.d.ts",
-    "./node_modules/vscode/lib/*"
-  ]
+  "include": ["src/test/**/*.ts"]
 }
