@@ -74,6 +74,10 @@ interface IExtensionConfig {
    */
   requireConfig: boolean;
   /**
+   * If true, use Prettier's default options instead of VS Code settings when no config file is found.
+   */
+  usePrettierDefaults: boolean;
+  /**
    * If true, take into account the .editorconfig file when resolving configuration.
    */
   useEditorConfig: boolean;

@@ -169,6 +169,12 @@
           "markdownDescription": "%ext.config.requireConfig%",
           "scope": "resource"
         },
+        "prettier.usePrettierDefaults": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.usePrettierDefaults%",
+          "scope": "resource"
+        },
         "prettier.resolveGlobalModules": {
           "type": "boolean",
           "default": false,

@@ -547,7 +547,8 @@ export default class PrettierEditService implements Disposable {
     configOptions: PrettierOptions | null,
     extensionFormattingOptions: ExtensionFormattingOptions,
   ): Partial<PrettierOptions> {
-    const fallbackToVSCodeConfig = configOptions === null;
+    const fallbackToVSCodeConfig =
+      configOptions === null && !vsCodeConfig.usePrettierDefaults;
 
     const vsOpts: PrettierOptions = {};
     if (fallbackToVSCodeConfig) {
@@ -579,9 +580,11 @@ export default class PrettierEditService implements Disposable {
     }
 
     this.loggingService.logInfo(
-      fallbackToVSCodeConfig
-        ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
-        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used",
+      configOptions !== null
+        ? "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used"
+        : vsCodeConfig.usePrettierDefaults
+          ? "No local configuration detected and usePrettierDefaults is enabled, using Prettier's default options"
+          : "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration",
     );
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;

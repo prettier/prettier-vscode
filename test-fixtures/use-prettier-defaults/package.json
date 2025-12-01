@@ -1,0 +1,14 @@
+{
+  "name": "test-use-prettier-defaults",
+  "version": "1.0.0",
+  "description": "Test folder for usePrettierDefaults option",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.7.1"
+  }
+}
