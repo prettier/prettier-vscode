@@ -205,7 +205,7 @@ export default class PrettierEditService implements Disposable {
         return;
       }
       if (edits.length > 1) {
-        this.loggingService.logWarning(`Expected 1 edit, got ${edits.length}`);
+        this.loggingService.logWarning(`Unexpected multiple edits (${edits.length}), expected 0 or 1`);
         return;
       }
 
