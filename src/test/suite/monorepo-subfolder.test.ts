@@ -19,10 +19,7 @@ describe("Test monorepo subfolder plugin resolution (issue #18353)", () => {
 
   // This test verifies the subfolder works when opened as its own workspace
   it("formats with plugins in a monorepo subfolder (opened directly)", async () => {
-    const { actual } = await format(
-      "subfolder",
-      "index.xml",
-    );
+    const { actual } = await format("subfolder", "index.xml");
     const expected = await getText("subfolder", "index.result.xml");
     assert.equal(actual, expected);
   });

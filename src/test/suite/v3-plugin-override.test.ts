@@ -9,10 +9,7 @@ describe("Test v3 + plugin override", function () {
 
   this.timeout(20000);
   it("it formats with v3 + plugin override", async () => {
-    const { actual } = await format(
-      "v3-plugin-override",
-      "index.js",
-    );
+    const { actual } = await format("v3-plugin-override", "index.js");
     const expected = await getText("v3-plugin-override", "index.result.js");
     assert.equal(actual, expected);
     assert.equal(actual, "fake format\n");
