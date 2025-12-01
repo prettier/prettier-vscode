@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "12.0.4",
+  "version": "12.0.5",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
