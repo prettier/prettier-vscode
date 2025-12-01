@@ -16,6 +16,7 @@ import { getParserFromLanguageId } from "./utils/get-parser-from-language.js";
 import { LoggingService } from "./LoggingService.js";
 import { RESTART_TO_ENABLE } from "./message.js";
 import { PrettierEditProvider } from "./PrettierEditProvider.js";
+import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider.js";
 import { FormatterStatus, StatusBar } from "./StatusBar.js";
 import {
   ExtensionFormattingOptions,
@@ -70,23 +71,25 @@ async function resolvePluginPaths(
 
     // Absolute paths
     if (path.isAbsolute(plugin)) {
-      resolvedPlugins.push(
-        useFileUrls ? pathToFileURL(plugin).href : plugin,
-      );
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(plugin).href : plugin);
       continue;
     }
 
     // Relative paths (./foo or ../foo) → resolve relative to file
     if (plugin.startsWith(".")) {
       const resolved = path.resolve(dir, plugin);
-      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(resolved).href : resolved,
+      );
       continue;
     }
 
     // Package names → resolve from file's directory using createRequire
     try {
       const resolved = resolveModuleEntry(dir, plugin);
-      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(resolved).href : resolved,
+      );
     } catch {
       // If resolution fails, pass through and let Prettier handle/report the error
       resolvedPlugins.push(plugin);
@@ -130,6 +133,7 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private codeActionHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
   private allLanguages: string[] = [];
@@ -309,8 +313,10 @@ export default class PrettierEditService implements Disposable {
     this.moduleResolver.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
+    this.codeActionHandler?.dispose();
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
+    this.codeActionHandler = undefined;
   };
 
   private registerDocumentFormatEditorProviders({
@@ -319,6 +325,9 @@ export default class PrettierEditService implements Disposable {
   }: ISelectors) {
     this.dispose();
     const editProvider = new PrettierEditProvider(this.provideEdits);
+    const codeActionProvider = new PrettierCodeActionProvider(
+      this.provideEdits,
+    );
     this.rangeFormatterHandler =
       languages.registerDocumentRangeFormattingEditProvider(
         rangeLanguageSelector,
@@ -327,6 +336,14 @@ export default class PrettierEditService implements Disposable {
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
       editProvider,
+    );
+    this.codeActionHandler = languages.registerCodeActionsProvider(
+      languageSelector,
+      codeActionProvider,
+      {
+        providedCodeActionKinds:
+          PrettierCodeActionProvider.providedCodeActionKinds,
+      },
     );
   }
 
