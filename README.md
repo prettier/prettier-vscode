@@ -211,6 +211,31 @@ If you would like to format a document that is configured to be ignored by Prett
 
 The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refer to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
+### Using Code Actions on Save
+
+You can use VS Code's `editor.codeActionsOnSave` to run Prettier before other formatters like ESLint. This is useful when you want to format with Prettier first and then apply ESLint fixes.
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+  },
+}
+```
+
+You can also combine Prettier with ESLint:
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit",
+  },
+}
+```
+
 ## Workspace Trust
 
 This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.
