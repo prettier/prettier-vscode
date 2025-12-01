@@ -4,6 +4,10 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [11.0.1]
+
+- This extension is being moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). While in beta, version 12+ is only published to the new location. Once it is stable, we will publish v12 to both locations and deprecate the `esbenp.prettier-vscode` extension. **Version 12.x is currently in beta, use with caution and report any bugs.**
+
 ## [11.0.0]
 
 - [BREAKING CHANGE] Prevent `.editorconfig` from satisfying the `requireConfig` setting (#2708) - Thanks to [@redoPop](https://github.com/redoPop)
