@@ -274,6 +274,31 @@ prettier.objectWrap
 prettier.experimentalOperatorPosition
 ```
 
+#### Language-Specific Formatting
+
+All Prettier options above support language-specific overrides. This allows you to set different formatting rules for different file types directly in your VS Code settings, which are easily synchronized across machines and environments.
+
+To configure language-specific settings, use the `[language]` syntax in your VS Code `settings.json`:
+
+```json
+{
+  "[html]": {
+    "prettier.printWidth": 180
+  },
+  "[typescript]": {
+    "prettier.printWidth": 120,
+    "prettier.tabWidth": 4,
+    "prettier.semi": false
+  },
+  "[json]": {
+    "prettier.printWidth": 80,
+    "prettier.tabWidth": 2
+  }
+}
+```
+
+This feature is particularly useful when working in multi-language projects or when different languages have different formatting conventions. Language-specific settings will override the global Prettier settings when formatting files of that language type.
+
 ### Extension Settings
 
 These settings are specific to VS Code and need to be set in the VS Code settings file. See the [documentation](https://code.visualstudio.com/docs/getstarted/settings) for how to do that.
