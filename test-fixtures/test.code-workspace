@@ -62,6 +62,9 @@
     },
     {
       "path": "monorepo-subfolder"
+    },
+    {
+      "path": "custom-executable"
     }
   ],
   "settings": {

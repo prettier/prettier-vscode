@@ -284,6 +284,32 @@ Supply a custom path to the prettier module. This path should be to the module f
 
 **Disabled on untrusted workspaces**
 
+#### prettier.customExecutable
+
+Use a custom executable to run Prettier. This is useful for Docker-centric workspaces where Prettier runs inside a container. Specify the full command including any arguments. The command will be executed with Prettier arguments appended.
+
+Example for Docker:
+
+```json
+{
+  "prettier.customExecutable": "docker compose exec -T app node_modules/.bin/prettier"
+}
+```
+
+Example with a wrapper script:
+
+```json
+{
+  "prettier.customExecutable": "./scripts/prettier-wrapper.sh"
+}
+```
+
+When `prettier.customExecutable` is specified, it takes precedence over `prettier.prettierPath`. If you need to specify where Prettier is located for the custom executable, you can also set `prettier.prettierPath` and it will be used by the custom executable.
+
+**Note:** The custom executable must accept Prettier CLI arguments and behave like the Prettier CLI. Input is provided via stdin and output is expected on stdout.
+
+**Disabled on untrusted workspaces**
+
 #### prettier.resolveGlobalModules (default: `false`)
 
 When enabled, this extension will attempt to use global npm or yarn modules if local modules cannot be resolved.
