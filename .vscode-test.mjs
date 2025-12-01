@@ -1,7 +1,7 @@
 import { defineConfig } from "@vscode/test-cli";
 
 export default defineConfig({
-  files: "out/test/suite/**/*.test.js",
+  files: "out/test/suite/**/*.test.cjs",
   mocha: {
     ui: "bdd",
     timeout: 10000,

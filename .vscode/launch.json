@@ -15,7 +15,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "npm: webpack"
+      "preLaunchTask": "npm: compile"
     },
     {
       "name": "Run Extension (With Other Extensions)",
@@ -24,25 +24,19 @@
       "runtimeExecutable": "${execPath}",
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "npm: webpack"
+      "preLaunchTask": "npm: compile"
     },
     {
       "name": "Extension Tests",
       "type": "extensionHost",
       "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "${workspaceFolder}/test-fixtures/test.code-workspace",
-        "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-      ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+      "testConfiguration": "${workspaceFolder}/.vscode-test.mjs",
+      "outFiles": ["${workspaceFolder}/out/test/**/*.cjs"],
       "preLaunchTask": "npm: compile:test"
     },
     {
       "name": "Run Web Extension",
-      "type": "pwa-extensionHost",
+      "type": "extensionHost",
       "debugWebWorkerHost": true,
       "request": "launch",
       "args": [
@@ -50,7 +44,7 @@
         "--extensionDevelopmentKind=web"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "npm: webpack"
+      "preLaunchTask": "npm: compile"
     }
   ]
 }

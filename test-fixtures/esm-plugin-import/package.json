@@ -1,0 +1,16 @@
+{
+  "name": "esm-plugin-import",
+  "packageManager": "npm@10.9.2",
+  "version": "1.0.0",
+  "description": "Test folder for ESM config with plugin import statements",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@prettier/plugin-oxc": "^0.1.2",
+    "prettier": "^3.5.0"
+  }
+}

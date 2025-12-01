@@ -1,3 +1,5 @@
+import * as path from "path";
+import { pathToFileURL } from "url";
 import {
   Disposable,
   DocumentFilter,
@@ -10,25 +12,89 @@ import {
   window,
   workspace,
 } from "vscode";
-import { getParserFromLanguageId } from "./utils/get-parser-from-language";
-import { LoggingService } from "./LoggingService";
-import { RESTART_TO_ENABLE } from "./message";
-import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider";
-import { PrettierEditProvider } from "./PrettierEditProvider";
-import { PrettierInstance } from "./PrettierInstance";
-import { FormatterStatus, StatusBar } from "./StatusBar";
+import { getParserFromLanguageId } from "./utils/get-parser-from-language.js";
+import { LoggingService } from "./LoggingService.js";
+import { RESTART_TO_ENABLE } from "./message.js";
+import { PrettierEditProvider } from "./PrettierEditProvider.js";
+import { FormatterStatus, StatusBar } from "./StatusBar.js";
 import {
   ExtensionFormattingOptions,
   ModuleResolverInterface,
   PrettierBuiltInParserName,
   PrettierFileInfoResult,
+  PrettierInstance,
   PrettierModule,
   PrettierOptions,
   PrettierPlugin,
   RangeFormattingOptions,
-} from "./types";
-import { getWorkspaceConfig } from "./utils/workspace";
-import { isAboveV3 } from "./utils/versions";
+} from "./types.js";
+import { getWorkspaceConfig } from "./utils/workspace.js";
+import { isAboveV3 } from "./utils/versions.js";
+import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
+
+/**
+ * Resolve plugin paths for Prettier.
+ * Matches Prettier CLI behavior:
+ * - URLs pass through
+ * - Absolute paths → kept as-is or converted to file:// URL (for v3)
+ * - Relative paths (./plugin.js) → resolved relative to file
+ * - Package names → resolved from file's directory via createRequire
+ *
+ * @param useFileUrls - If true, converts paths to file:// URLs (needed for Prettier v3+ ESM import)
+ *                     If false, returns absolute paths (for Prettier v2 require())
+ */
+async function resolvePluginPaths(
+  plugins: (string | PrettierPlugin)[] | undefined,
+  fileName: string,
+  useFileUrls: boolean,
+): Promise<(string | PrettierPlugin)[]> {
+  if (!plugins) {
+    return [];
+  }
+
+  const dir = path.dirname(fileName);
+  const resolvedPlugins: (string | PrettierPlugin)[] = [];
+
+  for (const plugin of plugins) {
+    // Plugin objects pass through
+    if (typeof plugin !== "string") {
+      resolvedPlugins.push(plugin);
+      continue;
+    }
+
+    // URLs pass through
+    if (plugin.startsWith("file://") || plugin.startsWith("data:")) {
+      resolvedPlugins.push(plugin);
+      continue;
+    }
+
+    // Absolute paths
+    if (path.isAbsolute(plugin)) {
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(plugin).href : plugin,
+      );
+      continue;
+    }
+
+    // Relative paths (./foo or ../foo) → resolve relative to file
+    if (plugin.startsWith(".")) {
+      const resolved = path.resolve(dir, plugin);
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+      continue;
+    }
+
+    // Package names → resolve from file's directory using createRequire
+    try {
+      const resolved = resolveModuleEntry(dir, plugin);
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
+    } catch {
+      // If resolution fails, pass through and let Prettier handle/report the error
+      resolvedPlugins.push(plugin);
+    }
+  }
+
+  return resolvedPlugins;
+}
 
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
@@ -234,9 +300,8 @@ export default class PrettierEditService implements Disposable {
   };
 
   public async registerGlobal() {
-    const selectors = await this.getSelectors(
-      this.moduleResolver.getGlobalPrettierInstance(),
-    );
+    const instance = await this.moduleResolver.getGlobalPrettierInstance();
+    const selectors = await this.getSelectors(instance);
     this.registerDocumentFormatEditorProviders(selectors);
     this.loggingService.logDebug("Enabling Prettier globally", selectors);
   }
@@ -285,10 +350,10 @@ export default class PrettierEditService implements Disposable {
     documentUri?: Uri,
     workspaceFolderUri?: Uri,
   ): Promise<ISelectors> => {
-    const plugins: (string | PrettierPlugin)[] = [];
+    let plugins: (string | PrettierPlugin)[] = [];
 
     // Prettier v3 does not load plugins automatically
-    // So need to resolve config to get plugins info.
+    // So need to resolve config to get plugin paths for Prettier to import.
     if (
       documentUri &&
       "resolveConfig" in prettierInstance &&
@@ -296,7 +361,6 @@ export default class PrettierEditService implements Disposable {
     ) {
       const resolvedConfig = await this.moduleResolver.resolveConfig(
         prettierInstance,
-        documentUri,
         documentUri.fsPath,
         getWorkspaceConfig(documentUri),
       );
@@ -305,7 +369,13 @@ export default class PrettierEditService implements Disposable {
       } else if (resolvedConfig === "disabled") {
         this.statusBar.update(FormatterStatus.Disabled);
       } else if (resolvedConfig?.plugins) {
-        plugins.push(...resolvedConfig.plugins);
+        // Resolve plugin paths so getSupportInfo can discover their languages
+        // We're inside isAboveV3 check, so use file:// URLs for ESM import
+        plugins = await resolvePluginPaths(
+          resolvedConfig.plugins,
+          documentUri.fsPath,
+          true, // Use file:// URLs for Prettier v3+
+        );
       }
     }
 
@@ -471,17 +541,28 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
+    // Resolve plugin paths for Prettier
+    // For v3+, use file:// URLs (ESM import); for v2, use absolute paths (require)
+    const useFileUrls = isAboveV3(prettierInstance.version);
+    const resolvedPlugins = await resolvePluginPaths(
+      resolvedConfig?.plugins,
+      fileName,
+      useFileUrls,
+    );
+    this.loggingService.logInfo("Resolved plugins:", resolvedPlugins);
+
     let fileInfo: PrettierFileInfoResult | undefined;
-    if (fileName) {
+    // Only call getFileInfo for actual files (not untitled documents)
+    // Untitled documents have uri.scheme === 'untitled' and their fileName
+    // is just a display name like 'Untitled-1', not a real path
+    if (uri.scheme === "file") {
       // We set resolveConfig: false because we've already resolved the config
-      // ourselves with absolute plugin paths. If we set it to true, Prettier v3
+      // ourselves with pre-loaded plugins. If we set it to true, Prettier v3
       // would try to resolve the config again and import plugins from its own
       // context, which fails when running from the extension directory.
       fileInfo = await prettierInstance.getFileInfo(fileName, {
         ignorePath: resolvedIgnorePath,
-        plugins: resolvedConfig?.plugins?.filter(
-          (item): item is string => typeof item === "string",
-        ),
+        plugins: resolvedPlugins,
         resolveConfig: false,
         withNodeModules: vscodeConfig.withNodeModules,
       });
@@ -508,12 +589,8 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`,
       );
-      const pluginPaths =
-        resolvedConfig?.plugins?.filter(
-          (item): item is string => typeof item === "string",
-        ) || [];
       const { languages } = await prettierInstance.getSupportInfo({
-        plugins: pluginPaths,
+        plugins: resolvedPlugins,
       });
       parser = getParserFromLanguageId(languages, uri, languageId);
     }
@@ -532,12 +609,12 @@ export default class PrettierEditService implements Disposable {
       vscodeConfig,
       resolvedConfig,
       options,
+      resolvedPlugins,
     );
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
     try {
-      // Since Prettier v3, `format` returns Promise.
       const formattedText = await prettierInstance.format(
         text,
         prettierOptions,
@@ -559,6 +636,7 @@ export default class PrettierEditService implements Disposable {
     vsCodeConfig: PrettierOptions,
     configOptions: PrettierOptions | null,
     extensionFormattingOptions: ExtensionFormattingOptions,
+    resolvedPlugins: (string | PrettierPlugin)[],
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -617,6 +695,8 @@ export default class PrettierEditService implements Disposable {
       },
       ...(rangeFormattingOptions || {}),
       ...(configOptions || {}),
+      // Pass resolved plugin paths for Prettier to import
+      ...(resolvedPlugins.length > 0 ? { plugins: resolvedPlugins } : {}),
     };
 
     if (extensionFormattingOptions.force && options.requirePragma === true) {

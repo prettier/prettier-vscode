@@ -1,5 +1,5 @@
 import { window } from "vscode";
-import { TemplateService } from "./TemplateService";
+import { TemplateService } from "./TemplateService.js";
 
 export type createConfigFileFunction = () => Promise<void>;
 
