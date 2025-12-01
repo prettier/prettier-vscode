@@ -1,8 +1,6 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { format, getWorkspaceFolderUri } from "./formatTestUtils.js";
 import { ensureExtensionActivated } from "./testUtils.js";
-import * as path from "path";
 
 describe("Test Prettier Code Actions", () => {
   before(async () => {
@@ -10,10 +8,12 @@ describe("Test Prettier Code Actions", () => {
   });
 
   it("provides source.fixAll.prettier code action", async () => {
-    const base = getWorkspaceFolderUri("project");
-    const testFile = "formatTest/ugly.js";
-    const absPath = path.join(base.fsPath, testFile);
-    const doc = await vscode.workspace.openTextDocument(absPath);
+    const input = `const  x   =  {  a:1,b:2  }`;
+
+    const doc = await vscode.workspace.openTextDocument({
+      content: input,
+      language: "javascript",
+    });
     await vscode.window.showTextDocument(doc);
 
     // Get code actions for the document
@@ -39,11 +39,13 @@ describe("Test Prettier Code Actions", () => {
   });
 
   it("formats document using code action", async () => {
-    const base = getWorkspaceFolderUri("project");
-    const testFile = "formatTest/ugly.js";
-    const absPath = path.join(base.fsPath, testFile);
-    const doc = await vscode.workspace.openTextDocument(absPath);
-    const originalText = doc.getText();
+    const input = `const  x   =  {  a:1,b:2  }`;
+    const expected = `const x = { a: 1, b: 2 };\n`;
+
+    const doc = await vscode.workspace.openTextDocument({
+      content: input,
+      language: "javascript",
+    });
     await vscode.window.showTextDocument(doc);
 
     // Get code actions for the document
@@ -69,19 +71,11 @@ describe("Test Prettier Code Actions", () => {
 
     const formattedText = doc.getText();
 
-    // Verify the document was formatted
-    assert.notEqual(
-      formattedText,
-      originalText,
-      "Document should be formatted after applying code action",
-    );
-
-    // Compare with regular formatting to ensure consistency
-    const { actual } = await format("project", testFile);
+    // Verify the document was formatted correctly
     assert.equal(
       formattedText,
-      actual,
-      "Code action formatting should match regular formatting",
+      expected,
+      "Document should be formatted correctly after applying code action",
     );
   });
 });
