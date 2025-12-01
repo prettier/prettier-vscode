@@ -211,6 +211,51 @@ If you would like to format a document that is configured to be ignored by Prett
 
 The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refer to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
+## Problem Matchers
+
+This extension provides problem matchers for use with VS Code tasks that run `prettier --check`. Problem matchers scan task output and create entries in VS Code's Problems panel for any issues found.
+
+### Available Problem Matchers
+
+- **`$prettier`** - Matches Prettier syntax errors with line and column information
+- **`$prettier-watch`** - Same as `$prettier` but for watch mode tasks (e.g., with `onchange`)
+- **`$prettier-warn`** - Matches file-level warnings for unformatted files
+- **`$prettier-warn-watch`** - Same as `$prettier-warn` but for watch mode tasks
+
+### Usage
+
+To use these problem matchers, add them to your task configuration in `.vscode/tasks.json`:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Prettier Check",
+      "type": "shell",
+      "command": "npx prettier --check .",
+      "problemMatcher": ["$prettier", "$prettier-warn"]
+    }
+  ]
+}
+```
+
+For watch mode with a tool like `onchange`:
+
+```json
+{
+  "label": "Prettier Check (Watch)",
+  "type": "shell",
+  "command": "npx onchange '**/*.js' -- prettier --check {{changed}}",
+  "problemMatcher": ["$prettier-watch", "$prettier-warn-watch"],
+  "isBackground": true
+}
+```
+
+The problem matchers will parse Prettier's output and display:
+- Syntax errors with file, line, column, and error message
+- Warnings for files that need formatting
+
 ## Workspace Trust
 
 This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.

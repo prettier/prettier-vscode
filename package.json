@@ -465,6 +465,61 @@
         "title": "%ext.command.forceFormatDocument.title%",
         "when": "editorFocus"
       }
+    ],
+    "problemMatchers": [
+      {
+        "name": "prettier",
+        "label": "Prettier check problems",
+        "owner": "prettier",
+        "source": "prettier style check",
+        "applyTo": "closedDocuments",
+        "fileLocation": [
+          "relative",
+          "${workspaceRoot}"
+        ],
+        "severity": "error",
+        "pattern": {
+          "regexp": "\\[(error)\\] (.+?): (.+) \\((\\d+?):(\\d+?)\\)",
+          "kind": "location",
+          "severity": 1,
+          "file": 2,
+          "message": 3,
+          "line": 4,
+          "column": 5
+        }
+      },
+      {
+        "base": "$prettier",
+        "name": "prettier-watch",
+        "label": "Prettier check watch problems (prettier + onchange watch mode)",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Checking formatting",
+          "endsPattern": "(\\[warn\\] Code style issues found in the above file\\(s\\))|(All matched files use Prettier code style!)"
+        }
+      },
+      {
+        "base": "$prettier",
+        "name": "prettier-warn",
+        "label": "Prettier check warning problems (prettier file-level warnings)",
+        "severity": "warning",
+        "pattern": {
+          "regexp": "\\[warn\\] (.+)",
+          "kind": "file",
+          "file": 1,
+          "message": 1
+        }
+      },
+      {
+        "base": "$prettier-warn",
+        "name": "prettier-warn-watch",
+        "label": "Prettier check warning watch problems (prettier file-level warnings + onchange watch mode)",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Checking formatting",
+          "endsPattern": "(\\[warn\\] Code style issues found in the above file\\(s\\))|(All matched files use Prettier code style!)"
+        }
+      }
     ]
   },
   "__metadata": {
