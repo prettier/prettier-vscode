@@ -16,6 +16,7 @@ import { getParserFromLanguageId } from "./utils/get-parser-from-language.js";
 import { LoggingService } from "./LoggingService.js";
 import { RESTART_TO_ENABLE } from "./message.js";
 import { PrettierEditProvider } from "./PrettierEditProvider.js";
+import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider.js";
 import { FormatterStatus, StatusBar } from "./StatusBar.js";
 import {
   ExtensionFormattingOptions,
@@ -132,6 +133,7 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private codeActionHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
   private allLanguages: string[] = [];
@@ -202,7 +204,14 @@ export default class PrettierEditService implements Disposable {
       );
 
       const edits = await this.provideEdits(editor.document, { force: true });
-      if (edits.length !== 1) {
+      if (edits.length === 0) {
+        this.loggingService.logInfo("Document is already formatted.");
+        return;
+      }
+      if (edits.length > 1) {
+        this.loggingService.logWarning(
+          `Unexpected multiple edits (${edits.length}), expected 0 or 1`,
+        );
         return;
       }
 
@@ -311,8 +320,10 @@ export default class PrettierEditService implements Disposable {
     this.moduleResolver.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
+    this.codeActionHandler?.dispose();
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
+    this.codeActionHandler = undefined;
   };
 
   private registerDocumentFormatEditorProviders({
@@ -321,6 +332,9 @@ export default class PrettierEditService implements Disposable {
   }: ISelectors) {
     this.dispose();
     const editProvider = new PrettierEditProvider(this.provideEdits);
+    const codeActionProvider = new PrettierCodeActionProvider(
+      this.provideEdits,
+    );
     this.rangeFormatterHandler =
       languages.registerDocumentRangeFormattingEditProvider(
         rangeLanguageSelector,
@@ -329,6 +343,14 @@ export default class PrettierEditService implements Disposable {
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
       editProvider,
+    );
+    this.codeActionHandler = languages.registerCodeActionsProvider(
+      languageSelector,
+      codeActionProvider,
+      {
+        providedCodeActionKinds:
+          PrettierCodeActionProvider.providedCodeActionKinds,
+      },
     );
   }
 
@@ -446,11 +468,27 @@ export default class PrettierEditService implements Disposable {
     const duration = new Date().getTime() - startTime;
     this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
     const edit = this.minimalEdit(document, result);
+    if (!edit) {
+      // Document is already formatted, no changes needed
+      this.loggingService.logDebug(
+        "Document is already formatted, no changes needed.",
+      );
+      return [];
+    }
     return [edit];
   };
 
-  private minimalEdit(document: TextDocument, string1: string) {
+  private minimalEdit(
+    document: TextDocument,
+    string1: string,
+  ): TextEdit | null {
     const string0 = document.getText();
+
+    // Quick check: if strings are identical, no edit needed
+    if (string0 === string1) {
+      return null;
+    }
+
     // length of common prefix
     let i = 0;
     while (
@@ -661,8 +699,8 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(
       fallbackToVSCodeConfig
-        ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
-        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used",
+        ? "Using VS Code configuration"
+        : "Using local configuration (VS Code configuration will not be used)",
     );
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;

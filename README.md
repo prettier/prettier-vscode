@@ -256,6 +256,31 @@ The problem matchers will parse Prettier's output and display:
 - Syntax errors with file, line, column, and error message
 - Warnings for files that need formatting
 
+### Using Code Actions on Save
+
+You can use VS Code's `editor.codeActionsOnSave` to run Prettier before other formatters like ESLint. This is useful when you want to format with Prettier first and then apply ESLint fixes.
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+  },
+}
+```
+
+You can also combine Prettier with ESLint:
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit",
+  },
+}
+```
+
 ## Workspace Trust
 
 This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.

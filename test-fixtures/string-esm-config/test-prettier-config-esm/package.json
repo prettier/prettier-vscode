@@ -1,0 +1,12 @@
+{
+  "name": "test-prettier-config-esm",
+  "version": "1.0.0",
+  "description": "ESM Prettier config package for testing",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "author": "Prettier",
+  "license": "MIT"
+}
