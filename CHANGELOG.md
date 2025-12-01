@@ -14,6 +14,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Fixed parser detection fallback when using plugins with Prettier v3
 - Added new Prettier v3 options: `objectWrap`, `experimentalOperatorPosition`
 - Added support for TypeScript config files (`.prettierrc.ts`, `.prettierrc.cts`, `.prettierrc.mts`, `prettier.config.ts`, etc.) introduced in Prettier 3.5.0 - Thanks to [@dr2009](https://github.com/dr2009)
+- Fixed issue where unnecessary TextEdits were applied when document was already formatted, which could cause spurious changes or cursor positioning issues (#3232)
 
 ## [11.0.0]
 
