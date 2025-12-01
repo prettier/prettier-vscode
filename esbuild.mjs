@@ -132,7 +132,8 @@ const browserShimsPlugin = {
               readdir: async () => [],
               readFile: async () => { throw new Error("Not available in browser"); },
             };
-            export default { promises };
+            export function readFileSync() { throw new Error("Not available in browser"); }
+            export default { promises, readFileSync };
           `,
           loader: "js",
         };
