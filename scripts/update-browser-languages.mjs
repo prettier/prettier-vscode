@@ -135,7 +135,9 @@ async function main() {
     console.log("\nLanguages included:");
     languages.forEach((lang) => {
       console.log(
-        `  - ${lang.name}: ${lang.vscodeLanguageIds.join(", ")} [${lang.parsers.join(", ")}]`,
+        `  - ${lang.name}: ${lang.vscodeLanguageIds.join(
+          ", ",
+        )} [${lang.parsers.join(", ")}]`,
       );
     });
   } else {
