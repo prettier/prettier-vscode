@@ -33,16 +33,20 @@ import { isAboveV3 } from "./utils/versions.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
 /**
- * Resolve plugin paths to file:// URLs that Prettier can import.
+ * Resolve plugin paths for Prettier.
  * Matches Prettier CLI behavior:
  * - URLs pass through
- * - Absolute paths → file:// URL
- * - Relative paths (./plugin.js) → resolved relative to file, file:// URL
+ * - Absolute paths → kept as-is or converted to file:// URL (for v3)
+ * - Relative paths (./plugin.js) → resolved relative to file
  * - Package names → resolved from file's directory via createRequire
+ *
+ * @param useFileUrls - If true, converts paths to file:// URLs (needed for Prettier v3+ ESM import)
+ *                     If false, returns absolute paths (for Prettier v2 require())
  */
 async function resolvePluginPaths(
   plugins: (string | PrettierPlugin)[] | undefined,
   fileName: string,
+  useFileUrls: boolean,
 ): Promise<(string | PrettierPlugin)[]> {
   if (!plugins) {
     return [];
@@ -64,22 +68,25 @@ async function resolvePluginPaths(
       continue;
     }
 
-    // Absolute paths → file:// URL
+    // Absolute paths
     if (path.isAbsolute(plugin)) {
-      resolvedPlugins.push(pathToFileURL(plugin).href);
+      resolvedPlugins.push(
+        useFileUrls ? pathToFileURL(plugin).href : plugin,
+      );
       continue;
     }
 
     // Relative paths (./foo or ../foo) → resolve relative to file
     if (plugin.startsWith(".")) {
-      resolvedPlugins.push(pathToFileURL(path.resolve(dir, plugin)).href);
+      const resolved = path.resolve(dir, plugin);
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
       continue;
     }
 
     // Package names → resolve from file's directory using createRequire
     try {
       const resolved = resolveModuleEntry(dir, plugin);
-      resolvedPlugins.push(pathToFileURL(resolved).href);
+      resolvedPlugins.push(useFileUrls ? pathToFileURL(resolved).href : resolved);
     } catch {
       // If resolution fails, pass through and let Prettier handle/report the error
       resolvedPlugins.push(plugin);
@@ -351,9 +358,11 @@ export default class PrettierEditService implements Disposable {
         this.statusBar.update(FormatterStatus.Disabled);
       } else if (resolvedConfig?.plugins) {
         // Resolve plugin paths so getSupportInfo can discover their languages
+        // We're inside isAboveV3 check, so use file:// URLs for ESM import
         plugins = await resolvePluginPaths(
           resolvedConfig.plugins,
           documentUri.fsPath,
+          true, // Use file:// URLs for Prettier v3+
         );
       }
     }
@@ -520,10 +529,13 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
-    // Resolve plugin paths to file:// URLs for Prettier to import
+    // Resolve plugin paths for Prettier
+    // For v3+, use file:// URLs (ESM import); for v2, use absolute paths (require)
+    const useFileUrls = isAboveV3(prettierInstance.version);
     const resolvedPlugins = await resolvePluginPaths(
       resolvedConfig?.plugins,
       fileName,
+      useFileUrls,
     );
     this.loggingService.logInfo("Resolved plugins:", resolvedPlugins);
 

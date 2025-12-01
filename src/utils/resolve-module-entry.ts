@@ -13,8 +13,9 @@ export function resolveModuleEntry(
   fromDirectory: string,
   moduleName: string,
 ): string {
-  // Create require from a fake file in the directory to resolve the module
-  const fakeModuleFile = path.join(fromDirectory, "noop.js");
-  const require = createRequire(pathToFileURL(fakeModuleFile).href);
+  // Create a require function rooted in the target directory
+  // We use a fake file path since createRequire needs a file, not a directory
+  const fakeFile = path.join(fromDirectory, "noop.js");
+  const require = createRequire(pathToFileURL(fakeFile).href);
   return require.resolve(moduleName);
 }
