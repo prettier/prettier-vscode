@@ -1,0 +1,6 @@
+{
+    "name": "pkgjson-config-test",
+    "prettier": {
+        "tabWidth": 5
+    }
+}

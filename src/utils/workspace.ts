@@ -1,7 +1,7 @@
 import * as os from "os";
 import * as path from "path";
 import { Uri, workspace, type TextDocument } from "vscode";
-import { PrettierVSCodeConfig } from "../types";
+import { PrettierVSCodeConfig } from "../types.js";
 
 export function getWorkspaceRelativePath(
   filePath: string,

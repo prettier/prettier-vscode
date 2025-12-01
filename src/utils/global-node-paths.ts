@@ -2,47 +2,33 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * COPIED FROM: https://github.com/microsoft/vscode-languageserver-node/blob/master/server/src/files.ts
+ * Modified to use async execution
  * ------------------------------------------------------------------------------------------ */
 
-import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
 import * as path from "path";
+import { execAsync } from "./exec.js";
 
 function isWindows(): boolean {
   return process.platform === "win32";
 }
 
+/** Default timeout for shell commands (5 seconds) */
+const SHELL_TIMEOUT = 5000;
+
 /**
- * Resolve the global npm package path.
+ * Resolve the global npm package path asynchronously.
  * @param tracer the tracer to use
  */
-export function resolveGlobalNodePath(
+export async function resolveGlobalNodePath(
   tracer?: (message: string) => void,
-): string | undefined {
-  let npmCommand = "npm";
-  const options: SpawnSyncOptionsWithStringEncoding = {
-    encoding: "utf8",
-  };
-  if (isWindows()) {
-    npmCommand = "npm.cmd";
-    options.shell = true;
-  }
+): Promise<string | undefined> {
+  const npmCommand = isWindows() ? "npm.cmd" : "npm";
 
-  const handler = () => {};
   try {
-    process.on("SIGPIPE", handler);
-    const stdout = spawnSync(
-      npmCommand,
-      ["config", "get", "prefix"],
-      options,
-    ).stdout;
+    const prefix = await execAsync(npmCommand, ["config", "get", "prefix"], {
+      timeout: SHELL_TIMEOUT,
+    });
 
-    if (!stdout) {
-      if (tracer) {
-        tracer(`'npm config get prefix' didn't return a value.`);
-      }
-      return undefined;
-    }
-    const prefix = stdout.trim();
     if (tracer) {
       tracer(`'npm config get prefix' value is: ${prefix}`);
     }
@@ -55,10 +41,11 @@ export function resolveGlobalNodePath(
       }
     }
     return undefined;
-  } catch {
+  } catch (error) {
+    if (tracer) {
+      tracer(`'npm config get prefix' failed: ${error}`);
+    }
     return undefined;
-  } finally {
-    process.removeListener("SIGPIPE", handler);
   }
 }
 
@@ -67,44 +54,20 @@ interface YarnJsonFormat {
   data: string;
 }
 
-/*
- * Resolve the global yarn package path.
- * @deprecated Since this depends on the used package manager and their version the best is that servers
- * implement this themselves since they know best what kind of package managers to support.
+/**
+ * Resolve the global yarn package path asynchronously.
  * @param tracer the tracer to use
  */
-export function resolveGlobalYarnPath(
+export async function resolveGlobalYarnPath(
   tracer?: (message: string) => void,
-): string | undefined {
-  let yarnCommand = "yarn";
-  const options: SpawnSyncOptionsWithStringEncoding = {
-    encoding: "utf8",
-  };
+): Promise<string | undefined> {
+  const yarnCommand = isWindows() ? "yarn.cmd" : "yarn";
 
-  if (isWindows()) {
-    yarnCommand = "yarn.cmd";
-    options.shell = true;
-  }
-
-  const handler = () => {};
   try {
-    process.on("SIGPIPE", handler);
-    const results = spawnSync(
-      yarnCommand,
-      ["global", "dir", "--json"],
-      options,
-    );
+    const stdout = await execAsync(yarnCommand, ["global", "dir", "--json"], {
+      timeout: SHELL_TIMEOUT,
+    });
 
-    const stdout = results.stdout;
-    if (!stdout) {
-      if (tracer) {
-        tracer(`'yarn global dir' didn't return a value.`);
-        if (results.stderr) {
-          tracer(results.stderr);
-        }
-      }
-      return undefined;
-    }
     const lines = stdout.trim().split(/\r?\n/);
     for (const line of lines) {
       try {
@@ -117,9 +80,37 @@ export function resolveGlobalYarnPath(
       }
     }
     return undefined;
-  } catch {
+  } catch (error) {
+    if (tracer) {
+      tracer(`'yarn global dir' failed: ${error}`);
+    }
     return undefined;
-  } finally {
-    process.removeListener("SIGPIPE", handler);
+  }
+}
+
+/**
+ * Resolve the global pnpm package path asynchronously.
+ * @param tracer the tracer to use
+ */
+export async function resolveGlobalPnpmPath(
+  tracer?: (message: string) => void,
+): Promise<string | undefined> {
+  const pnpmCommand = isWindows() ? "pnpm.cmd" : "pnpm";
+
+  try {
+    const pnpmPath = await execAsync(pnpmCommand, ["root", "-g"], {
+      timeout: SHELL_TIMEOUT,
+    });
+
+    if (tracer) {
+      tracer(`'pnpm root -g' value is: ${pnpmPath}`);
+    }
+
+    return pnpmPath;
+  } catch (error) {
+    if (tracer) {
+      tracer(`'pnpm root -g' failed: ${error}`);
+    }
+    return undefined;
   }
 }

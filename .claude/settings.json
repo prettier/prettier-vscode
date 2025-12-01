@@ -1,11 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:prettier.io)",
-      "WebFetch(domain:code.visualstudio.com)",
-      "Bash(npm run prettier:*)",
+      "Bash(npm run check-types:*)",
+      "Bash(npm run compile:*)",
       "Bash(npm run lint:*)",
-      "mcp__ide__getDiagnostics"
+      "Bash(npm run prettier:*)",
+      "Bash(npm test:*)",
+      "mcp__ide__getDiagnostics",
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:prettier.io)"
     ],
     "deny": [],
     "ask": []

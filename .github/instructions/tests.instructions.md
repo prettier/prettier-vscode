@@ -8,9 +8,10 @@ Tests run inside a VS Code Extension Development Host using Mocha.
 
 ## Test Structure
 
-- Use Mocha's `suite()` and `test()` functions
+- Use Mocha's `describe()` and `it()` functions (BDD style)
 - Import assertions from `assert` module
 - Tests interact with real VS Code APIs
+- Use `.js` extension for local imports (ESM compatibility)
 
 ## Test Fixtures
 
@@ -28,8 +29,6 @@ Tests run inside a VS Code Extension Development Host using Mocha.
 ## Async Patterns
 
 - Tests are async - use `async/await`
-- Use `wait()` helper when needing delays
-- Prettier v3 formatting is async, may need retries for timing
 
 ## Test File Naming
 

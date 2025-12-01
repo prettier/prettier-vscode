@@ -55,7 +55,13 @@
       "path": "esm-config"
     },
     {
-      "path": "ts-config"
+      "path": "esm-plugin-import"
+    },
+    {
+      "path": "monorepo-subfolder/subfolder"
+    },
+    {
+      "path": "monorepo-subfolder"
     }
   ],
   "settings": {

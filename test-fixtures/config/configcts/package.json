@@ -1,0 +1,9 @@
+{
+  "name": "prettier-config-cts-test",
+  "version": "1.0.0",
+  "description": "Test folder for prettier.config.cts config",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.5.0"
+  }
+}

@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "12.0.4",
+  "version": "12.0.5",
   "publisher": "prettier",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -18,6 +18,7 @@
     "url": "https://github.com/prettier/prettier-vscode.git"
   },
   "license": "MIT",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/prettier/prettier-vscode/issues"
   },
@@ -65,8 +66,11 @@
     "onStartupFinished"
   ],
   "icon": "icon.png",
-  "main": "./dist/extension",
-  "browser": "./dist/web-extension",
+  "main": "./dist/extension.js",
+  "browser": "./dist/web-extension.cjs",
+  "extensionKind": [
+    "workspace"
+  ],
   "scripts": {
     "compile:test": "tsc -p ./ && node esbuild.mjs",
     "check-types": "tsc --noEmit",
@@ -88,7 +92,6 @@
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.7",
     "@types/node": "^22",
-    "@types/resolve": "^1.20.3",
     "@types/semver": "^7.5.8",
     "@types/tmp": "^0.2.6",
     "@types/vscode": "^1.101.0",
@@ -112,14 +115,15 @@
     "util": "^0.12.4"
   },
   "dependencies": {
-    "find-up": "5.0.0",
     "prettier": "3.7.1",
-    "resolve": "1.22.11",
     "semver": "7.7.3",
     "vscode-nls": "5.2.0"
   },
   "capabilities": {
-    "virtualWorkspaces": true,
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "Formatting works with bundled Prettier and VS Code settings. Local config files (.prettierrc), ignore files, and plugins are not available in virtual workspaces."
+    },
     "untrustedWorkspaces": {
       "supported": "limited",
       "description": "%ext.capabilities.untrustedWorkspaces.description%",

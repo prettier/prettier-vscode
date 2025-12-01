@@ -20,9 +20,10 @@ export default tseslint.config(
   // Base ESLint recommended rules
   eslint.configs.recommended,
 
-  // TypeScript files
+  // TypeScript source files (excluding tests)
   {
     files: ["src/**/*.ts"],
+    ignores: ["src/test/**/*.ts"],
     extends: [...tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
@@ -57,11 +58,30 @@ export default tseslint.config(
     },
   },
 
-  // Test files - relax rules for test code
+  // Test files - use separate tsconfig and relax rules
   {
     files: ["src/test/**/*.ts"],
+    extends: [...tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.test.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
       "no-console": "off",
     },
   },

@@ -45,37 +45,34 @@ When writing tests, you will:
 
 For this VS Code extension project:
 
-- Tests live alongside source in a test directory structure
+- Tests live in `src/test/suite/` directory
 - Test fixtures are in `test-fixtures/` with their own package.json files
-- Tests run via `yarn test` or the VS Code Debug launcher "Launch Tests"
-- The extension uses webpack bundling, but tests run against unbundled source
-- Key components to test: `PrettierEditService`, `ModuleResolver`, formatting providers
+- Tests run via `npm test` or the VS Code Debug launcher "Launch Tests"
+- The extension uses esbuild bundling with ESM modules
+- Key components to test: `PrettierEditService`, `ModuleResolver`, `PrettierDynamicInstance`
+- Use `ensureExtensionActivated()` from `testUtils.js` to ensure extension is ready before tests
 
 ## Test File Structure
 
 ```typescript
 import * as assert from "assert";
 import * as vscode from "vscode";
-import * as sinon from "sinon";
+import { ensureExtensionActivated } from "./testUtils.js"; // Note: .js extension for ESM
 
-suite("ComponentName Test Suite", () => {
-  let sandbox: sinon.SinonSandbox;
-
-  setup(() => {
-    sandbox = sinon.createSandbox();
+describe("ComponentName Test Suite", () => {
+  before(async () => {
+    await ensureExtensionActivated();
   });
 
-  teardown(() => {
-    sandbox.restore();
-  });
-
-  test("should describe expected behavior", async () => {
+  it("should describe expected behavior", async () => {
     // Arrange
     // Act
     // Assert
   });
 });
 ```
+
+**Note**: This project uses ESM modules. Always use `.js` extension for local imports.
 
 ## Quality Standards
 

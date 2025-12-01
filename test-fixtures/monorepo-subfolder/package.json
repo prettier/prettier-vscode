@@ -1,0 +1,8 @@
+{
+  "name": "monorepo-root",
+  "private": true,
+  "description": "This root has Prettier but NO plugin - plugin is only in subfolder",
+  "devDependencies": {
+    "prettier": "^3.7.0"
+  }
+}

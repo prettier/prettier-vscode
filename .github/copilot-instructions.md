@@ -16,14 +16,16 @@ This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It
 Entry points:
 
 - Desktop: `src/extension.ts` → bundled to `dist/extension.js`
-- Browser: Same entry, bundled to `dist/web-extension.js` (uses `BrowserModuleResolver` instead of `ModuleResolver`)
+- Browser: Same entry, bundled to `dist/web-extension.cjs` (esbuild swaps `ModuleResolverNode.ts` → `ModuleResolverWeb.ts`)
 
 Core components:
 
-- `src/extension.ts` - Extension activation, creates ModuleResolver, PrettierEditService, and StatusBar
+- `src/extension.ts` - Extension activation (async), creates ModuleResolver, PrettierEditService, and StatusBar
 - `src/PrettierEditService.ts` - Registers VS Code document formatting providers, handles format requests
-- `src/ModuleResolver.ts` - Resolves local/global Prettier installations, falls back to bundled Prettier
-- `src/PrettierInstance.ts` - Interface for Prettier loading, with `PrettierMainThreadInstance` and `PrettierWorkerInstance` implementations
+- `src/ModuleResolverNode.ts` - Resolves local/global Prettier installations, falls back to bundled Prettier (desktop)
+- `src/ModuleResolverWeb.ts` - Uses bundled standalone Prettier for browser (web)
+- `src/PrettierDynamicInstance.ts` - Implements `PrettierInstance` interface, loads Prettier dynamically using ESM `import()`
+- `src/types.ts` - TypeScript types including `PrettierInstance` interface
 
 esbuild produces two bundles:
 
@@ -69,11 +71,11 @@ When reviewing pull requests, focus on:
 ### Performance
 
 - Avoid blocking the extension host main thread
-- `PrettierWorkerInstance` runs Prettier in a worker thread to avoid blocking
+- Prettier is loaded lazily using dynamic `import()` to minimize startup time
 - Module and config resolution results are cached appropriately
 
 ### Browser Compatibility
 
 - Code in the main bundle should work in both Node.js and browser contexts
-- Browser-specific code uses `BrowserModuleResolver`
+- Browser build swaps `ModuleResolverNode.ts` → `ModuleResolverWeb.ts` via esbuild aliasing
 - No Node.js-only APIs in shared code paths

@@ -1,23 +1,21 @@
+import { createRequire } from "module";
 import * as path from "path";
-import { PrettierOptions } from "../types";
+import { PrettierOptions } from "../types.js";
 
-// Source: https://github.com/microsoft/vscode-eslint/blob/master/server/src/eslintServer.ts
-export function loadNodeModule<T>(moduleName: string): T | undefined {
-  try {
-    return require(moduleName);
-  } catch {
-    throw new Error(`Error loading node module '${moduleName}'`);
-  }
-}
-
-export function resolveNodeModule(
+/**
+ * Resolve a module path using Node's resolution algorithm.
+ * Uses createRequire with the parent path to properly resolve relative to the file.
+ */
+function resolveNodeModule(
   moduleName: string,
-  options?: { paths: string[] },
-) {
+  parent: string,
+): string | undefined {
   try {
-    return require.resolve(moduleName, options);
+    // Create a require function rooted at the parent directory
+    const require = createRequire(parent);
+    return require.resolve(moduleName);
   } catch {
-    throw new Error(`Error resolving node module '${moduleName}'`);
+    return undefined;
   }
 }
 
@@ -37,7 +35,7 @@ export function resolveConfigPlugins(
         !path.isAbsolute(plugin) &&
         !plugin.startsWith("file://")
       ) {
-        return resolveNodeModule(plugin, { paths: [fileName] }) || plugin;
+        return resolveNodeModule(plugin, fileName) || plugin;
       }
       return plugin;
     });

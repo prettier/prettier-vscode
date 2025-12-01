@@ -90,7 +90,6 @@ Key components:
 
 - `PrettierEditService.ts` - Handles document formatting
 - `ModuleResolver.ts` - Resolves Prettier installations (local, global, or bundled)
-- `PrettierInstance.ts` - Interface for Prettier, with `PrettierMainThreadInstance` and `PrettierWorkerInstance` implementations
 
 ## Submitting Changes
 
