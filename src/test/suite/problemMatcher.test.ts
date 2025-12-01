@@ -1,34 +1,44 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 
-describe("Problem Matchers", () => {
-  it("should have prettier problem matcher registered", async () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
-    assert.ok(extension, "Extension should be available");
+const EXTENSION_ID = "prettier.prettier-vscode";
 
-    // Activate the extension if not already activated
-    if (!extension.isActive) {
+/**
+ * Helper to get problem matchers from extension
+ */
+function getProblemMatchers() {
+  const extension = vscode.extensions.getExtension(EXTENSION_ID);
+  assert.ok(extension, "Extension should be available");
+  return extension.packageJSON.contributes.problemMatchers;
+}
+
+/**
+ * Helper to get a specific problem matcher by name
+ */
+function getMatcher(name: string) {
+  const matchers = getProblemMatchers();
+  const matcher = matchers.find((m: { name: string }) => m.name === name);
+  assert.ok(matcher, `Should have '${name}' problem matcher`);
+  return matcher;
+}
+
+describe("Problem Matchers", () => {
+  before(async () => {
+    // Ensure extension is activated before tests
+    const extension = vscode.extensions.getExtension(EXTENSION_ID);
+    if (extension && !extension.isActive) {
       await extension.activate();
     }
+  });
 
-    // Problem matchers are contributions, so we verify they exist in package.json
-    const packageJson = extension.packageJSON;
-    assert.ok(
-      packageJson.contributes?.problemMatchers,
-      "Extension should contribute problem matchers",
-    );
-
-    const matchers = packageJson.contributes.problemMatchers;
+  it("should have problem matchers registered", () => {
+    const matchers = getProblemMatchers();
     assert.ok(Array.isArray(matchers), "Problem matchers should be an array");
     assert.ok(matchers.length > 0, "Should have at least one problem matcher");
+  });
 
-    // Verify the main prettier problem matcher
-    const prettierMatcher = matchers.find(
-      (m: { name: string }) => m.name === "prettier",
-    );
-    assert.ok(prettierMatcher, "Should have 'prettier' problem matcher");
+  it("should have prettier problem matcher registered", () => {
+    const prettierMatcher = getMatcher("prettier");
     assert.strictEqual(
       prettierMatcher.owner,
       "prettier",
@@ -38,19 +48,8 @@ describe("Problem Matchers", () => {
     assert.ok(prettierMatcher.pattern.regexp, "Pattern should have a regexp");
   });
 
-  it("should have prettier-warn problem matcher registered", async () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
-    assert.ok(extension);
-
-    const packageJson = extension.packageJSON;
-    const matchers = packageJson.contributes.problemMatchers;
-
-    const warnMatcher = matchers.find(
-      (m: { name: string }) => m.name === "prettier-warn",
-    );
-    assert.ok(warnMatcher, "Should have 'prettier-warn' problem matcher");
+  it("should have prettier-warn problem matcher registered", () => {
+    const warnMatcher = getMatcher("prettier-warn");
     assert.strictEqual(
       warnMatcher.severity,
       "warning",
@@ -59,41 +58,16 @@ describe("Problem Matchers", () => {
     assert.ok(warnMatcher.pattern, "Should have a pattern");
   });
 
-  it("should have prettier-watch problem matcher registered", async () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
-    assert.ok(extension);
-
-    const packageJson = extension.packageJSON;
-    const matchers = packageJson.contributes.problemMatchers;
-
-    const watchMatcher = matchers.find(
-      (m: { name: string }) => m.name === "prettier-watch",
-    );
-    assert.ok(watchMatcher, "Should have 'prettier-watch' problem matcher");
+  it("should have prettier-watch problem matcher registered", () => {
+    const watchMatcher = getMatcher("prettier-watch");
     assert.ok(
       watchMatcher.background,
       "Watch matcher should have background mode",
     );
   });
 
-  it("should have prettier-warn-watch problem matcher registered", async () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
-    assert.ok(extension);
-
-    const packageJson = extension.packageJSON;
-    const matchers = packageJson.contributes.problemMatchers;
-
-    const warnWatchMatcher = matchers.find(
-      (m: { name: string }) => m.name === "prettier-warn-watch",
-    );
-    assert.ok(
-      warnWatchMatcher,
-      "Should have 'prettier-warn-watch' problem matcher",
-    );
+  it("should have prettier-warn-watch problem matcher registered", () => {
+    const warnWatchMatcher = getMatcher("prettier-warn-watch");
     assert.ok(
       warnWatchMatcher.background,
       "Watch matcher should have background mode",
@@ -102,17 +76,7 @@ describe("Problem Matchers", () => {
 
   describe("Pattern matching", () => {
     it("prettier pattern should match error output with line and column", () => {
-      const extension = vscode.extensions.getExtension(
-        "prettier.prettier-vscode",
-      );
-      assert.ok(extension);
-
-      const packageJson = extension.packageJSON;
-      const matchers = packageJson.contributes.problemMatchers;
-      const prettierMatcher = matchers.find(
-        (m: { name: string }) => m.name === "prettier",
-      );
-
+      const prettierMatcher = getMatcher("prettier");
       const pattern = new RegExp(prettierMatcher.pattern.regexp);
 
       // Test cases from actual prettier output
@@ -172,17 +136,7 @@ describe("Problem Matchers", () => {
     });
 
     it("prettier-warn pattern should match warning output", () => {
-      const extension = vscode.extensions.getExtension(
-        "prettier.prettier-vscode",
-      );
-      assert.ok(extension);
-
-      const packageJson = extension.packageJSON;
-      const matchers = packageJson.contributes.problemMatchers;
-      const warnMatcher = matchers.find(
-        (m: { name: string }) => m.name === "prettier-warn",
-      );
-
+      const warnMatcher = getMatcher("prettier-warn");
       const pattern = new RegExp(warnMatcher.pattern.regexp);
 
       // Test cases from actual prettier output
@@ -218,17 +172,7 @@ describe("Problem Matchers", () => {
     });
 
     it("background patterns should match start and end markers", () => {
-      const extension = vscode.extensions.getExtension(
-        "prettier.prettier-vscode",
-      );
-      assert.ok(extension);
-
-      const packageJson = extension.packageJSON;
-      const matchers = packageJson.contributes.problemMatchers;
-      const watchMatcher = matchers.find(
-        (m: { name: string }) => m.name === "prettier-watch",
-      );
-
+      const watchMatcher = getMatcher("prettier-watch");
       const beginsPattern = new RegExp(watchMatcher.background.beginsPattern);
       const endsPattern = new RegExp(watchMatcher.background.endsPattern);
 
