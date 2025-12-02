@@ -16,6 +16,7 @@ import { getParserFromLanguageId } from "./utils/get-parser-from-language.js";
 import { LoggingService } from "./LoggingService.js";
 import { RESTART_TO_ENABLE } from "./message.js";
 import { PrettierEditProvider } from "./PrettierEditProvider.js";
+import { PrettierOnTypeFormattingEditProvider } from "./PrettierOnTypeFormattingEditProvider.js";
 import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider.js";
 import { FormatterStatus, StatusBar } from "./StatusBar.js";
 import {
@@ -133,6 +134,7 @@ const PRETTIER_CONFIG_FILES = [
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private onTypeFormatterHandler: undefined | Disposable;
   private codeActionHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
@@ -320,9 +322,11 @@ export default class PrettierEditService implements Disposable {
     this.moduleResolver.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
+    this.onTypeFormatterHandler?.dispose();
     this.codeActionHandler?.dispose();
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
+    this.onTypeFormatterHandler = undefined;
     this.codeActionHandler = undefined;
   };
 
@@ -332,6 +336,9 @@ export default class PrettierEditService implements Disposable {
   }: ISelectors) {
     this.dispose();
     const editProvider = new PrettierEditProvider(this.provideEdits);
+    const onTypeEditProvider = new PrettierOnTypeFormattingEditProvider(
+      this.provideEdits,
+    );
     const codeActionProvider = new PrettierCodeActionProvider(
       this.provideEdits,
     );
@@ -344,6 +351,13 @@ export default class PrettierEditService implements Disposable {
       languageSelector,
       editProvider,
     );
+    this.onTypeFormatterHandler =
+      languages.registerOnTypeFormattingEditProvider(
+        languageSelector,
+        onTypeEditProvider,
+        ";",
+        "}",
+      );
     this.codeActionHandler = languages.registerCodeActionsProvider(
       languageSelector,
       codeActionProvider,
