@@ -210,6 +210,33 @@ export class ModuleResolver implements ModuleResolverInterface {
   }
 
   /**
+   * Helper method to check if a directory contains a prettier package.json
+   */
+  private async isPrettierModule(
+    moduleDir: string,
+  ): Promise<boolean> {
+    const packageJsonPath = path.join(moduleDir, "package.json");
+    if (!(await pathExists(packageJsonPath))) {
+      return false;
+    }
+
+    try {
+      const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
+        encoding: "utf8",
+      });
+      const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
+      return pkgJson.name === "prettier";
+    } catch (error) {
+      // Invalid or unreadable package.json
+      this.loggingService.logDebug(
+        `Failed to read or parse package.json at ${packageJsonPath}`,
+        error,
+      );
+      return false;
+    }
+  }
+
+  /**
    * Attempts to resolve a binary/executable path to the prettier module directory.
    * Handles symlinks and binary files in bin directories.
    */
@@ -227,24 +254,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       // If in a 'bin' directory, parent directory might be the module
       if (basename === "bin") {
         const moduleDir = path.dirname(dirname);
-        // Verify this is actually a prettier module by checking for package.json
-        const packageJsonPath = path.join(moduleDir, "package.json");
-        if (await pathExists(packageJsonPath)) {
-          try {
-            const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
-              encoding: "utf8",
-            });
-            const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
-            if (pkgJson.name === "prettier") {
-              return moduleDir;
-            }
-          } catch (parseError) {
-            // Invalid package.json, skip this candidate
-            this.loggingService.logDebug(
-              `Failed to parse package.json at ${packageJsonPath}`,
-              parseError,
-            );
-          }
+        if (await this.isPrettierModule(moduleDir)) {
+          return moduleDir;
         }
       }
 
@@ -252,25 +263,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       if (basename === ".bin") {
         // Look for prettier in ../prettier
         const possibleModuleDir = path.join(path.dirname(dirname), "prettier");
-        if (await pathExists(possibleModuleDir)) {
-          const packageJsonPath = path.join(possibleModuleDir, "package.json");
-          if (await pathExists(packageJsonPath)) {
-            try {
-              const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
-                encoding: "utf8",
-              });
-              const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
-              if (pkgJson.name === "prettier") {
-                return possibleModuleDir;
-              }
-            } catch (parseError) {
-              // Invalid package.json, skip this candidate
-              this.loggingService.logDebug(
-                `Failed to parse package.json at ${packageJsonPath}`,
-                parseError,
-              );
-            }
-          }
+        if (await this.isPrettierModule(possibleModuleDir)) {
+          return possibleModuleDir;
         }
       }
     } catch (error) {
