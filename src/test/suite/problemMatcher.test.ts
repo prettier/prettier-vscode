@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
+import { ensureExtensionActivated } from "./testUtils.js";
 
 const EXTENSION_ID = "prettier.prettier-vscode";
 
@@ -24,11 +25,7 @@ function getMatcher(name: string) {
 
 describe("Problem Matchers", () => {
   before(async () => {
-    // Ensure extension is activated before tests
-    const extension = vscode.extensions.getExtension(EXTENSION_ID);
-    if (extension && !extension.isActive) {
-      await extension.activate();
-    }
+    await ensureExtensionActivated();
   });
 
   it("should have problem matchers registered", () => {
@@ -146,6 +143,28 @@ describe("Problem Matchers", () => {
         { input: "[warn] file.test.tsx", expected: "file.test.tsx" },
         { input: "[warn] component.d.ts", expected: "component.d.ts" },
         { input: "[warn] styles.module.css", expected: "styles.module.css" },
+        // Edge cases: directories with dots
+        { input: "[warn] src/v2.0/file.js", expected: "src/v2.0/file.js" },
+        {
+          input: "[warn] dist/1.2.3/bundle.js",
+          expected: "dist/1.2.3/bundle.js",
+        },
+        // Edge cases: multiple dots in filename
+        {
+          input: "[warn] component.test.d.ts",
+          expected: "component.test.d.ts",
+        },
+        { input: "[warn] api.v2.spec.ts", expected: "api.v2.spec.ts" },
+        // Edge cases: underscores and hyphens
+        { input: "[warn] my-component_v2.js", expected: "my-component_v2.js" },
+        {
+          input: "[warn] user_profile-api.ts",
+          expected: "user_profile-api.ts",
+        },
+        {
+          input: "[warn] test_file-name.spec.js",
+          expected: "test_file-name.spec.js",
+        },
       ];
 
       shouldMatch.forEach((testCase) => {
