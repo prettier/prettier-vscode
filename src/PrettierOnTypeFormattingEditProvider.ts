@@ -36,7 +36,6 @@ export class PrettierOnTypeFormattingEditProvider
 
     // Only format if the trigger character was typed at the end of meaningful content
     // (not in the middle of a line being edited)
-    const textBeforeCursor = lineText.substring(0, position.character);
     const textAfterCursor = lineText.substring(position.character);
 
     // If there's non-whitespace content after the cursor, don't format
@@ -45,8 +44,13 @@ export class PrettierOnTypeFormattingEditProvider
       return [];
     }
 
-    // Verify the trigger character is present at or near the cursor
-    if (!textBeforeCursor.includes(ch)) {
+    // Verify the trigger character is at the cursor position
+    // The character is already inserted, so check position.character - 1
+    if (position.character === 0) {
+      return [];
+    }
+    const charBeforeCursor = lineText.charAt(position.character - 1);
+    if (charBeforeCursor !== ch) {
       return [];
     }
 

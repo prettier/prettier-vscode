@@ -2,6 +2,12 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 import { ensureExtensionActivated } from "./testUtils.js";
 
+// Helper to wait for formatting to complete
+const FORMATTING_TIMEOUT_MS = 500;
+async function waitForFormatting(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, FORMATTING_TIMEOUT_MS));
+}
+
 describe("Test On-Type Formatting", () => {
   before(async () => {
     await ensureExtensionActivated();
@@ -51,8 +57,8 @@ describe("Test On-Type Formatting", () => {
     // Type closing brace to trigger on-type formatting
     await vscode.commands.executeCommand("type", { text: "}" });
 
-    // Wait a bit for formatting to complete
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Wait for formatting to complete
+    await waitForFormatting();
 
     const output = doc.getText();
     assert.equal(output, expected);
@@ -76,8 +82,8 @@ describe("Test On-Type Formatting", () => {
     // Type semicolon to trigger on-type formatting
     await vscode.commands.executeCommand("type", { text: ";" });
 
-    // Wait a bit for formatting to complete
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Wait for formatting to complete
+    await waitForFormatting();
 
     const output = doc.getText();
     assert.equal(output, expected);
@@ -85,7 +91,8 @@ describe("Test On-Type Formatting", () => {
 
   it("does not format when typing in the middle of a line", async () => {
     const input = `let x = 1; let y = 2`;
-    const expected = `let x = 1; let y = 2`;
+    // When typing in the middle, the semicolon is inserted but no formatting occurs
+    const expectedAfterTyping = `let x = 1;; let y = 2`;
 
     const doc = await vscode.workspace.openTextDocument({
       content: input,
@@ -94,19 +101,19 @@ describe("Test On-Type Formatting", () => {
 
     const editor = await vscode.window.showTextDocument(doc);
 
-    // Move cursor to the middle of the line
+    // Move cursor to the middle of the line (after first semicolon)
     const midPosition = new vscode.Position(0, 10);
     editor.selection = new vscode.Selection(midPosition, midPosition);
 
     // Type semicolon in the middle
     await vscode.commands.executeCommand("type", { text: ";" });
 
-    // Wait a bit
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Wait for potential formatting
+    await waitForFormatting();
 
     const output = doc.getText();
     // Should not have formatted because we're in the middle of the line
-    assert.equal(output, expected + ";");
+    assert.equal(output, expectedAfterTyping);
   });
 
   it("formats CSS on semicolon", async () => {
@@ -127,8 +134,8 @@ describe("Test On-Type Formatting", () => {
     // Type semicolon to trigger on-type formatting
     await vscode.commands.executeCommand("type", { text: ";" });
 
-    // Wait a bit for formatting to complete
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Wait for formatting to complete
+    await waitForFormatting();
 
     // Type closing brace
     const newEndPosition = new vscode.Position(
@@ -138,8 +145,8 @@ describe("Test On-Type Formatting", () => {
     editor.selection = new vscode.Selection(newEndPosition, newEndPosition);
     await vscode.commands.executeCommand("type", { text: "}" });
 
-    // Wait a bit for formatting to complete
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Wait for formatting to complete
+    await waitForFormatting();
 
     const output = doc.getText();
     assert.equal(output, expected);
