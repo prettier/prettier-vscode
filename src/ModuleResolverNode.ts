@@ -14,6 +14,7 @@ import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
+  INVALID_PRETTIER_PATH_BINARY_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
@@ -193,7 +194,7 @@ export class ModuleResolver implements ModuleResolverInterface {
           return resolvedPath;
         }
         this.loggingService.logError(
-          `${INVALID_PRETTIER_PATH_MESSAGE}: Path points to a file instead of a module directory. Please provide the path to the prettier module directory (e.g., /path/to/node_modules/prettier) instead of the binary executable.`,
+          `${INVALID_PRETTIER_PATH_MESSAGE}: ${INVALID_PRETTIER_PATH_BINARY_MESSAGE}`,
         );
         return undefined;
       }
@@ -229,12 +230,20 @@ export class ModuleResolver implements ModuleResolverInterface {
         // Verify this is actually a prettier module by checking for package.json
         const packageJsonPath = path.join(moduleDir, "package.json");
         if (await pathExists(packageJsonPath)) {
-          const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
-            encoding: "utf8",
-          });
-          const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
-          if (pkgJson.name === "prettier") {
-            return moduleDir;
+          try {
+            const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
+              encoding: "utf8",
+            });
+            const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
+            if (pkgJson.name === "prettier") {
+              return moduleDir;
+            }
+          } catch (parseError) {
+            // Invalid package.json, skip this candidate
+            this.loggingService.logDebug(
+              `Failed to parse package.json at ${packageJsonPath}`,
+              parseError,
+            );
           }
         }
       }
@@ -246,12 +255,20 @@ export class ModuleResolver implements ModuleResolverInterface {
         if (await pathExists(possibleModuleDir)) {
           const packageJsonPath = path.join(possibleModuleDir, "package.json");
           if (await pathExists(packageJsonPath)) {
-            const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
-              encoding: "utf8",
-            });
-            const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
-            if (pkgJson.name === "prettier") {
-              return possibleModuleDir;
+            try {
+              const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
+                encoding: "utf8",
+              });
+              const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
+              if (pkgJson.name === "prettier") {
+                return possibleModuleDir;
+              }
+            } catch (parseError) {
+              // Invalid package.json, skip this candidate
+              this.loggingService.logDebug(
+                `Failed to parse package.json at ${packageJsonPath}`,
+                parseError,
+              );
             }
           }
         }
