@@ -15,6 +15,7 @@ export class PrettierOnTypeFormattingEditProvider
     private provideEdits: (
       document: TextDocument,
       options: ExtensionFormattingOptions,
+      token?: CancellationToken,
     ) => Promise<TextEdit[]>,
   ) {}
 
@@ -22,11 +23,13 @@ export class PrettierOnTypeFormattingEditProvider
     document: TextDocument,
     position: Position,
     ch: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattingOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     token: CancellationToken,
   ): Promise<TextEdit[]> {
+    // Check if cancellation was requested before starting
+    if (token.isCancellationRequested) {
+      return [];
+    }
     // Get the line where the trigger character was typed
     const line = document.lineAt(position.line);
     const lineText = line.text;
@@ -50,8 +53,12 @@ export class PrettierOnTypeFormattingEditProvider
     // For on-type formatting, format the entire document
     // This ensures consistent formatting and matches user expectations
     // Prettier doesn't support formatting single lines in isolation
-    return this.provideEdits(document, {
-      force: false,
-    });
+    return this.provideEdits(
+      document,
+      {
+        force: false,
+      },
+      token,
+    );
   }
 }

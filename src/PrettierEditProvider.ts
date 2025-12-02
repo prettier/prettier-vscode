@@ -16,33 +16,48 @@ export class PrettierEditProvider
     private provideEdits: (
       document: TextDocument,
       options: ExtensionFormattingOptions,
+      token?: CancellationToken,
     ) => Promise<TextEdit[]>,
   ) {}
 
   public async provideDocumentRangeFormattingEdits(
     document: TextDocument,
     range: Range,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattingOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     token: CancellationToken,
   ): Promise<TextEdit[]> {
-    return this.provideEdits(document, {
-      rangeEnd: document.offsetAt(range.end),
-      rangeStart: document.offsetAt(range.start),
-      force: false,
-    });
+    // Check if cancellation was requested before starting
+    if (token.isCancellationRequested) {
+      return [];
+    }
+
+    return this.provideEdits(
+      document,
+      {
+        rangeEnd: document.offsetAt(range.end),
+        rangeStart: document.offsetAt(range.start),
+        force: false,
+      },
+      token,
+    );
   }
 
   public async provideDocumentFormattingEdits(
     document: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattingOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     token: CancellationToken,
   ): Promise<TextEdit[]> {
-    return this.provideEdits(document, {
-      force: false,
-    });
+    // Check if cancellation was requested before starting
+    if (token.isCancellationRequested) {
+      return [];
+    }
+
+    return this.provideEdits(
+      document,
+      {
+        force: false,
+      },
+      token,
+    );
   }
 }

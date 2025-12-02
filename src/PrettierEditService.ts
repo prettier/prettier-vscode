@@ -1,6 +1,7 @@
 import * as path from "path";
 import { pathToFileURL } from "url";
 import {
+  CancellationToken,
   Disposable,
   DocumentFilter,
   languages,
@@ -472,9 +473,21 @@ export default class PrettierEditService implements Disposable {
   private provideEdits = async (
     document: TextDocument,
     options: ExtensionFormattingOptions,
+    token?: CancellationToken,
   ): Promise<TextEdit[]> => {
+    // Check for cancellation before starting
+    if (token?.isCancellationRequested) {
+      return [];
+    }
+
     const startTime = new Date().getTime();
     const result = await this.format(document.getText(), document, options);
+
+    // Check for cancellation after formatting
+    if (token?.isCancellationRequested) {
+      return [];
+    }
+
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
