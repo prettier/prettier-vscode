@@ -225,7 +225,12 @@ export class ModuleResolver implements ModuleResolverInterface {
         encoding: "utf8",
       });
       const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
-      return pkgJson.name === "prettier";
+      // Only check the name property to avoid prototype pollution issues
+      // Use hasOwnProperty to ensure we're not checking inherited properties
+      return (
+        Object.prototype.hasOwnProperty.call(pkgJson, "name") &&
+        pkgJson.name === "prettier"
+      );
     } catch (error) {
       // Invalid or unreadable package.json
       this.loggingService.logDebug(
@@ -246,6 +251,18 @@ export class ModuleResolver implements ModuleResolverInterface {
     try {
       // First, try to resolve symlink
       const realPath = await fs.promises.realpath(binaryPath);
+
+      // Security: Validate that the resolved path contains "node_modules" or "prettier"
+      // to prevent potential symlink attacks that could resolve to arbitrary locations
+      if (
+        !realPath.includes("node_modules") &&
+        !realPath.includes("prettier")
+      ) {
+        this.loggingService.logDebug(
+          `Resolved path does not appear to be a valid prettier installation: ${realPath}`,
+        );
+        return undefined;
+      }
 
       // Check if this is in a bin directory (e.g., node_modules/.bin/prettier or node_modules/prettier/bin/prettier.cjs)
       const dirname = path.dirname(realPath);
