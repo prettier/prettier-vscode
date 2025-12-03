@@ -113,3 +113,4 @@ jobs:
           ---
           See the full [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
       - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx ovsx publish "${{ env.VSIX_PATH }}" -p ${{ secrets.OPENVSX_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
