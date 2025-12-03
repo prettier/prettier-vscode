@@ -14,6 +14,7 @@ import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
+  INVALID_PRETTIER_PATH_BINARY_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
   UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
@@ -171,11 +172,126 @@ export class ModuleResolver implements ModuleResolverInterface {
           prettierPath,
         );
 
-    if (await pathExists(absolutePrettierPath)) {
-      return absolutePrettierPath;
+    if (!(await pathExists(absolutePrettierPath))) {
+      this.loggingService.logError(
+        `${INVALID_PRETTIER_PATH_MESSAGE}: Path does not exist: ${absolutePrettierPath}`,
+      );
+      return undefined;
     }
 
-    this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
+    // Check if the path points to a file (binary/executable) instead of a directory
+    try {
+      const stat = await fs.promises.stat(absolutePrettierPath);
+      if (stat.isFile()) {
+        // This might be a binary executable or symlink
+        // Try to resolve to the actual module directory
+        const resolvedPath =
+          await this.resolveBinaryToModule(absolutePrettierPath);
+        if (resolvedPath) {
+          this.loggingService.logInfo(
+            `Resolved binary path ${absolutePrettierPath} to module directory ${resolvedPath}`,
+          );
+          return resolvedPath;
+        }
+        this.loggingService.logError(
+          `${INVALID_PRETTIER_PATH_MESSAGE}: ${INVALID_PRETTIER_PATH_BINARY_MESSAGE}`,
+        );
+        return undefined;
+      }
+    } catch (error) {
+      this.loggingService.logError(
+        `Failed to stat prettier path: ${absolutePrettierPath}`,
+        error,
+      );
+      return undefined;
+    }
+
+    return absolutePrettierPath;
+  }
+
+  /**
+   * Helper method to check if a directory contains a prettier package.json
+   */
+  private async isPrettierModule(
+    moduleDir: string,
+  ): Promise<boolean> {
+    const packageJsonPath = path.join(moduleDir, "package.json");
+    if (!(await pathExists(packageJsonPath))) {
+      return false;
+    }
+
+    try {
+      const rawPkgJson = await fs.promises.readFile(packageJsonPath, {
+        encoding: "utf8",
+      });
+      const pkgJson = JSON.parse(rawPkgJson) as { name?: string };
+      // Only check the name property to avoid prototype pollution issues
+      // Use hasOwnProperty to ensure we're not checking inherited properties
+      return (
+        Object.prototype.hasOwnProperty.call(pkgJson, "name") &&
+        pkgJson.name === "prettier"
+      );
+    } catch (error) {
+      // Invalid or unreadable package.json
+      this.loggingService.logDebug(
+        `Failed to read or parse package.json at ${packageJsonPath}`,
+        error,
+      );
+      return false;
+    }
+  }
+
+  /**
+   * Attempts to resolve a binary/executable path to the prettier module directory.
+   * Handles symlinks and binary files in bin directories.
+   */
+  private async resolveBinaryToModule(
+    binaryPath: string,
+  ): Promise<string | undefined> {
+    try {
+      // First, try to resolve symlink
+      const realPath = await fs.promises.realpath(binaryPath);
+
+      // Security: Validate that the resolved path contains "node_modules" or "prettier"
+      // to prevent potential symlink attacks that could resolve to arbitrary locations
+      if (
+        !realPath.includes("node_modules") &&
+        !realPath.includes("prettier")
+      ) {
+        this.loggingService.logDebug(
+          `Resolved path does not appear to be a valid prettier installation: ${realPath}`,
+        );
+        return undefined;
+      }
+
+      // Check if this is in a bin directory (e.g., node_modules/.bin/prettier or node_modules/prettier/bin/prettier.cjs)
+      const dirname = path.dirname(realPath);
+      const basename = path.basename(dirname);
+
+      // If in a 'bin' directory, parent directory might be the module
+      if (basename === "bin") {
+        const moduleDir = path.dirname(dirname);
+        if (await this.isPrettierModule(moduleDir)) {
+          return moduleDir;
+        }
+      }
+
+      // Also check if it's in .bin directory (global or local node_modules/.bin)
+      if (basename === ".bin") {
+        // Look for prettier in ../prettier
+        const possibleModuleDir = path.join(path.dirname(dirname), "prettier");
+        if (await this.isPrettierModule(possibleModuleDir)) {
+          return possibleModuleDir;
+        }
+      }
+    } catch (error) {
+      // If we can't resolve, return undefined and let the caller handle it
+      this.loggingService.logDebug(
+        `Failed to resolve binary to module: ${binaryPath}`,
+        error,
+      );
+    }
+
     return undefined;
   }
 
