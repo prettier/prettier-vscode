@@ -2,7 +2,7 @@
   "name": "prettier-vscode",
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
@@ -79,8 +79,7 @@
     "watch": "tsc --watch -p ./",
     "webpack-dev": "webpack --mode development --watch",
     "webpack": "webpack --mode development",
-    "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "prepare": "husky"
+    "chrome": "yarn webpack && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "lint-staged": {
     "**/*.{ts,json,md,yml,hbs,js}": [

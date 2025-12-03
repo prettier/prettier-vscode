@@ -82,3 +82,4 @@ jobs:
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
       - run: vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
+      - run: npx ovsx publish "${{ env.VSIX_PATH }}" -p ${{ secrets.OPENVSX_TOKEN }}
