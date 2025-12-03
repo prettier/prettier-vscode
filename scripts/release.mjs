@@ -3,17 +3,33 @@
  * Automated release script for prettier-vscode
  *
  * Usage:
- *   npm run release major              - Bump major version (11.0.0 -> 12.0.0)
- *   npm run release minor              - Bump minor version (11.0.0 -> 11.1.0)
- *   npm run release patch              - Bump patch version (11.0.0 -> 11.0.1)
- *   npm run release patch -- --pre     - Patch as prerelease (tag: v11.0.1-pre)
- *   npm run release minor 12.1.0       - Use specific version
- *   npm run release patch 12.0.1 --pre - Specific version as prerelease
+ *   npm run release major                - Bump major version (11.0.0 -> 12.0.0)
+ *   npm run release minor                - Bump minor version (11.0.0 -> 11.1.0)
+ *   npm run release patch                - Bump patch version (11.0.0 -> 11.0.1)
+ *   npm run release patch -- --pre       - Patch as prerelease (11.0.1 -> 11.0.2, tag: v11.0.2-pre)
+ *   npm run release version              - Use specific version
+ *   npm run release version 12.0.1 --pre - Specific version as prerelease
+ *
+ *
+ * The script performs the following steps:
+ *
+ * 1. Validates the input arguments.
+ * 2. Checks for uncommitted changes in the working directory. The script should fail if there are any.
+ * 3. Ensures that stable releases are made from the `main` branch.
+ * 4. Reads the current version from `package.json`.
+ * 5. Calculates the new version based on the release type or uses the provided version.
+ * 6. Updates `package.json` with the new version.
+ * 7. Runs `npm install` to update `package-lock.json`.
+ * 8. Updates `CHANGELOG.md` to reflect the new version (skipped for prereleases).
+ * 9. Stages the changes to `package.json`, `package-lock.json`, and `CHANGELOG.md`.
+ * 10. Creates a git commit and tag for the new version.
+ * 11. Pushes the commit and tag to the remote repository.
+ *
  */
 import fs from "fs/promises";
 import { execSync } from "child_process";
 
-const RELEASE_TYPES = ["major", "minor", "patch"];
+const RELEASE_TYPES = ["major", "minor", "patch", "version"];
 
 function exec(cmd, options = {}) {
   console.log(`$ ${cmd}`);
@@ -109,22 +125,29 @@ async function main() {
 
   if (!releaseType || !RELEASE_TYPES.includes(releaseType)) {
     console.error(
-      "Usage: npm run release <major|minor|patch> [version] [--pre]",
+      "Usage: npm run release <major|minor|patch|version> [version] [--pre]",
     );
     console.error("");
     console.error("Examples:");
-    console.error("  npm run release major              - 11.0.0 -> 12.0.0");
-    console.error("  npm run release minor              - 11.0.0 -> 11.1.0");
-    console.error("  npm run release patch              - 11.0.0 -> 11.0.1");
+    console.error("  npm run release major                - 11.0.0 -> 12.0.0");
+    console.error("  npm run release minor                - 11.0.0 -> 11.1.0");
+    console.error("  npm run release patch                - 11.0.0 -> 11.0.1");
     console.error(
-      "  npm run release patch -- --pre     - 11.0.0 -> 11.0.1 (tag: v11.0.1-pre)",
+      "  npm run release patch -- --pre       - 11.0.1 -> 11.0.2 (tag: v11.0.2-pre)",
     );
     console.error(
-      "  npm run release minor 12.1.0       - Use specific version",
+      "  npm run release version 12.0.1       - Use specific version",
     );
     console.error(
-      "  npm run release patch 12.0.1 --pre - Specific version as prerelease",
+      "  npm run release version 12.0.1 --pre - Specific version as prerelease",
     );
+    process.exit(1);
+  }
+
+  // "version" type requires a version number
+  if (releaseType === "version" && !manualVersion) {
+    console.error("Error: 'version' release type requires a version number.");
+    console.error("Usage: npm run release version <X.Y.Z> [--pre]");
     process.exit(1);
   }
 
@@ -153,7 +176,9 @@ async function main() {
     console.error(`Error: Stable releases must be run from the main branch.`);
     console.error(`Current branch: ${currentBranch}`);
     console.error("\nTo release a prerelease from this branch, use:");
-    console.error("  npm run release <major|minor|patch> -- --pre");
+    console.error(
+      "  npm run release <major|minor|patch|version> [version] -- --pre",
+    );
     process.exit(1);
   }
 
@@ -180,14 +205,17 @@ async function main() {
   );
   console.log("Updated package.json");
 
+  // Run npm install to update package-lock.json
+  exec("npm install");
+
   // Update changelog (skip for prereleases)
   await updateChangelog(newVersion, isPrerelease);
 
   // Stage changes
-  exec("git add package.json CHANGELOG.md");
+  exec("git add package.json package-lock.json CHANGELOG.md");
 
   // Create commit and tag
-  exec(`git commit -m "${tagName}"`);
+  exec(`git commit -m "Version ${newVersion}"`);
   exec(`git tag ${tagName}`);
 
   console.log(`\nCreated commit and tag: ${tagName}`);
