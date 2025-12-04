@@ -9,6 +9,7 @@ import {
 } from "./types.js";
 import { TextDocument } from "vscode";
 import { LoggingService } from "./LoggingService.js";
+import { NotificationService } from "./NotificationService.js";
 import { getWorkspaceRelativePath } from "./utils/workspace.js";
 import type { ResolveConfigOptions, Options, Plugin } from "prettier";
 
@@ -48,7 +49,12 @@ const plugins: Plugin[] = [
 ];
 
 export class ModuleResolver implements ModuleResolverInterface {
-  constructor(private loggingService: LoggingService) {}
+  constructor(
+    private loggingService: LoggingService,
+    // NotificationService is not used in web mode (always uses bundled prettier)
+    // but is required for interface consistency
+    _notificationService: NotificationService,
+  ) {}
 
   public async getPrettierInstance(
     _fileName: string,
