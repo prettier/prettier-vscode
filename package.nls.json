@@ -39,6 +39,7 @@
   "ext.config.embeddedLanguageFormatting": "Control whether Prettier formats quoted code embedded in the file.",
   "ext.config.enable": "Controls whether Prettier is enabled or not. Reload required.",
   "ext.config.enableDebugLogs": "Enable debug logs for troubleshooting.",
+  "ext.config.enableErrorNotifications": "Show error notifications when Prettier encounters fatal errors (e.g., module loading failures, invalid configuration files). When disabled, errors will only be logged to the output channel.",
   "ext.config.experimentalTernaries": "Try prettier's [new ternary formatting](https://github.com/prettier/prettier/pull/13183) before it becomes the default behavior.",
   "ext.config.objectWrap": "Controls how object literals are wrapped.\nValid options:\n- `preserve` - Preserve the original wrapping of object literals.\n- `collapse` - Collapse object literals to fit on one line when possible.",
   "ext.config.experimentalOperatorPosition": "Controls where to break lines around binary operators.\nValid options:\n- `end` - Break lines after operators.\n- `start` - Break lines before operators.",

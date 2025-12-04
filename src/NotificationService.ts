@@ -11,6 +11,14 @@ export class NotificationService {
   private shownErrors = new Set<string>();
 
   /**
+   * Check if error notifications are enabled in settings
+   */
+  private isNotificationEnabled(): boolean {
+    const config = workspace.getConfiguration("prettier");
+    return config.get<boolean>("enableErrorNotifications", true);
+  }
+
+  /**
    * Check if prettier is listed in package.json dependencies
    */
   private async isPrettierInPackageJson(
@@ -58,6 +66,10 @@ export class NotificationService {
    * Show error notification when prettier module cannot be loaded
    */
   public async showPrettierLoadFailedError(fileName: string): Promise<void> {
+    if (!this.isNotificationEnabled()) {
+      return;
+    }
+
     const errorKey = `load-failed:${fileName}`;
     if (this.shownErrors.has(errorKey)) {
       return;
@@ -85,6 +97,10 @@ export class NotificationService {
    * Show error notification for invalid prettier path configuration
    */
   public async showInvalidPrettierPathError(): Promise<void> {
+    if (!this.isNotificationEnabled()) {
+      return;
+    }
+
     const errorKey = "invalid-prettier-path";
     if (this.shownErrors.has(errorKey)) {
       return;
@@ -112,6 +128,10 @@ export class NotificationService {
    * Show error notification for invalid prettier configuration file
    */
   public async showInvalidConfigError(): Promise<void> {
+    if (!this.isNotificationEnabled()) {
+      return;
+    }
+
     const errorKey = "invalid-config";
     if (this.shownErrors.has(errorKey)) {
       return;
@@ -133,6 +153,10 @@ export class NotificationService {
    * Show error notification for config resolution failures
    */
   public async showConfigResolutionError(): Promise<void> {
+    if (!this.isNotificationEnabled()) {
+      return;
+    }
+
     const errorKey = "config-resolution";
     if (this.shownErrors.has(errorKey)) {
       return;
