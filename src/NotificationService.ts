@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { commands, Uri, window, workspace } from "vscode";
+import { pathExists } from "./utils/find-up.js";
 
 /**
  * Service for showing user-facing notifications for fatal errors
@@ -26,7 +27,7 @@ export class NotificationService {
         "package.json",
       );
 
-      if (!(await fs.promises.stat(packageJsonPath).catch(() => null))) {
+      if (!(await pathExists(packageJsonPath))) {
         return undefined;
       }
 
@@ -44,6 +45,16 @@ export class NotificationService {
   }
 
   /**
+   * Helper to show an error message with optional action buttons
+   */
+  private async showErrorWithActions(
+    message: string,
+    ...actions: string[]
+  ): Promise<string | undefined> {
+    return window.showErrorMessage(message, ...actions);
+  }
+
+  /**
    * Show error notification when prettier module cannot be loaded
    */
   public async showPrettierLoadFailedError(fileName: string): Promise<void> {
@@ -55,26 +66,18 @@ export class NotificationService {
 
     const isInPackageJson = await this.isPrettierInPackageJson(fileName);
 
-    if (isInPackageJson) {
-      const selection = await window.showErrorMessage(
-        "Prettier: Failed to load module. Prettier is listed in package.json but could not be loaded. Please run npm install (or yarn/pnpm install).",
-        "View Output",
-        "Dismiss",
-      );
+    const message = isInPackageJson
+      ? "Prettier: Failed to load module. Prettier is listed in package.json but could not be loaded. Please run npm install (or yarn/pnpm install)."
+      : "Prettier: Failed to load module. See output for more details.";
 
-      if (selection === "View Output") {
-        void commands.executeCommand("prettier.openOutput");
-      }
-    } else {
-      const selection = await window.showErrorMessage(
-        "Prettier: Failed to load module. See output for more details.",
-        "View Output",
-        "Dismiss",
-      );
+    const selection = await this.showErrorWithActions(
+      message,
+      "View Output",
+      "Dismiss",
+    );
 
-      if (selection === "View Output") {
-        void commands.executeCommand("prettier.openOutput");
-      }
+    if (selection === "View Output") {
+      void commands.executeCommand("prettier.openOutput");
     }
   }
 
@@ -88,7 +91,7 @@ export class NotificationService {
     }
     this.shownErrors.add(errorKey);
 
-    const selection = await window.showErrorMessage(
+    const selection = await this.showErrorWithActions(
       "Prettier: The 'prettierPath' setting does not reference a valid Prettier installation. Please check your settings.",
       "Open Settings",
       "View Output",
@@ -115,7 +118,7 @@ export class NotificationService {
     }
     this.shownErrors.add(errorKey);
 
-    const selection = await window.showErrorMessage(
+    const selection = await this.showErrorWithActions(
       "Prettier: Invalid configuration file detected. Please check your Prettier config files (.prettierrc, prettier.config.js, etc.).",
       "View Output",
       "Dismiss",
@@ -136,7 +139,7 @@ export class NotificationService {
     }
     this.shownErrors.add(errorKey);
 
-    const selection = await window.showErrorMessage(
+    const selection = await this.showErrorWithActions(
       "Prettier: Failed to resolve configuration file. See output for details.",
       "View Output",
       "Dismiss",
