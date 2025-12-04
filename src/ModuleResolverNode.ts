@@ -218,6 +218,29 @@ export class ModuleResolver implements ModuleResolverInterface {
     return;
   }
 
+  /**
+   * Determines if a document is an untitled (unsaved) document.
+   * Untitled documents have a scheme other than "file" (e.g., "untitled").
+   */
+  private isUntitledDocument(doc: TextDocument): boolean {
+    return doc.uri.scheme !== "file";
+  }
+
+  /**
+   * Gets the appropriate base path for config file searches.
+   * For untitled documents, uses the workspace folder path.
+   * For regular files, uses the file path itself.
+   */
+  private getConfigSearchPath(doc: TextDocument): string {
+    if (this.isUntitledDocument(doc)) {
+      const workspaceFolder = workspace.getWorkspaceFolder(doc.uri);
+      if (workspaceFolder) {
+        return workspaceFolder.uri.fsPath;
+      }
+    }
+    return doc.fileName;
+  }
+
   public async getResolvedConfig(
     doc: TextDocument,
     vscodeConfig: PrettierVSCodeConfig,
@@ -229,13 +252,7 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     // For untitled documents (unsaved files), use workspace folder as base for config search
     // This allows untitled documents to use workspace prettier configs when requireConfig is enabled
-    let configSearchPath = fileName;
-    if (doc.uri.scheme !== "file") {
-      const workspaceFolder = workspace.getWorkspaceFolder(doc.uri);
-      if (workspaceFolder) {
-        configSearchPath = workspaceFolder.uri.fsPath;
-      }
-    }
+    const configSearchPath = this.getConfigSearchPath(doc);
 
     return this.resolveConfig(prettier, configSearchPath, vscodeConfig);
   }
