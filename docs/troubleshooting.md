@@ -21,7 +21,7 @@ This guide covers common issues with the Prettier VS Code extension and how to r
 2. Open Command Palette (`Cmd/Ctrl + Shift + P`)
 3. Run "Format Document With..."
 4. Select "Configure Default Formatter..."
-5. Choose "Prettier - Code formatter"
+5. Choose "Prettier - Code formatter (Next)"
 
 Or add to your `settings.json`:
 
