@@ -47,7 +47,7 @@ The package.nls.json file structure:
 
 ```json
 {
-  "extension.displayName": "Prettier - Code formatter",
+  "extension.displayName": "Prettier - Code formatter (Next)",
   "extension.description": "Code formatter using prettier",
   "config.enable": "Enable/disable Prettier"
 }
