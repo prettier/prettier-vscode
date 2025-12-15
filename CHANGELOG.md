@@ -16,7 +16,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Added support for TypeScript config files (`.prettierrc.ts`, `.prettierrc.cts`, `.prettierrc.mts`, `prettier.config.ts`, etc.) introduced in Prettier 3.5.0 - Thanks to [@dr2009](https://github.com/dr2009)
 - Added `source.fixAll.prettier` code action for use with `editor.codeActionsOnSave` to run Prettier before other formatters like ESLint (#1277)
 - Fixed issue where unnecessary TextEdits were applied when document was already formatted, which could cause spurious changes or cursor positioning issues (#3232)
-- Added the suffix " (Next)" to the extension name to indicate Prettier v3 support
+- Added the suffix " (Next)" to the extension name to indicate Prettier v3 support and mark this extension as Preview
 
 ## [11.0.0]
 
