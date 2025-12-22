@@ -49,9 +49,9 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
     <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/prettier.prettier-vscode"></a>
   <a href="#badge">
-    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
-  <a href="https://twitter.com/PrettierCode">
-    <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
+    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg"></a>
+  <a href="https://x.com/intent/follow?screen_name=PrettierCode">
+    <img alt="Follow Prettier on X" src="https://img.shields.io/badge/%40PrettierCode-9f9f9f?logo=x&labelColor=555"></a>
 </p>
 
 > 🚨🚨🚨 **Extension Migration:** This extension is being moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new for now as it is a major change. Once it is stable, we will publish v12 to both extensions and deprecate the `esbenp.prettier-vscode` extension. **Version 12.x is currently not stable, use with caution and report bugs.**
