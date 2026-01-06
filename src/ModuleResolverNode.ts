@@ -419,7 +419,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       const customConfigPath = vscodeConfig.configPath
         ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
         : undefined;
-      
+
       // Log if a custom config path is specified in VS Code settings
       if (customConfigPath) {
         this.loggingService.logInfo(

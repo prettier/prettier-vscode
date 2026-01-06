@@ -27,7 +27,7 @@ Or add to your `settings.json`:
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
 ```
 
