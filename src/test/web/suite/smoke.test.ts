@@ -11,16 +11,12 @@ suite("Web Extension Smoke Tests", function () {
   this.timeout(10000);
 
   test("Extension should be present", () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
+    const extension = vscode.extensions.getExtension("esbenp.prettier-vscode");
     ok(extension, "Extension should be installed");
   });
 
   test("Extension should activate", async () => {
-    const extension = vscode.extensions.getExtension(
-      "prettier.prettier-vscode",
-    );
+    const extension = vscode.extensions.getExtension("esbenp.prettier-vscode");
     ok(extension, "Extension should be installed");
 
     // Activate the extension if not already active

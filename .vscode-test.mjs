@@ -14,7 +14,7 @@ export default defineConfig({
     "--enable-proposed-api",
   ],
   settings: {
-    "editor.defaultFormatter": "prettier.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.enableDebugLogs": true,
     "security.workspace.trust.enabled": false,
   },

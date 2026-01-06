@@ -1,6 +1,6 @@
 # Copilot Instructions
 
-This is the official Prettier VS Code extension (`prettier.prettier-vscode`). It provides code formatting using Prettier for Visual Studio Code, supporting JavaScript, TypeScript, CSS, HTML, Vue, and many other languages.
+This is the official Prettier VS Code extension (`esbenp.prettier-vscode`). It provides code formatting using Prettier for Visual Studio Code, supporting JavaScript, TypeScript, CSS, HTML, Vue, and many other languages.
 
 ## Development
 

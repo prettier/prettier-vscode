@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-const EXTENSION_ID = "prettier.prettier-vscode";
+const EXTENSION_ID = "esbenp.prettier-vscode";
 const DEFAULT_ACTIVATION_TIMEOUT = 10000; // 10 seconds
 
 /**
