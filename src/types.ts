@@ -129,6 +129,10 @@ export interface IExtensionConfig {
    * If true, enabled debug logs
    */
   enableDebugLogs: boolean;
+  /**
+   * If true, show error notifications for fatal errors
+   */
+  enableErrorNotifications: boolean;
 }
 /**
  * Configuration for prettier-vscode

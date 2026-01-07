@@ -10,6 +10,7 @@ import {
 } from "./utils/global-node-paths.js";
 import { findUp, pathExists, FIND_UP_STOP } from "./utils/find-up.js";
 import { LoggingService } from "./LoggingService.js";
+import { NotificationService } from "./NotificationService.js";
 import {
   FAILED_TO_LOAD_MODULE_MESSAGE,
   INVALID_PRETTIER_CONFIG,
@@ -85,7 +86,10 @@ async function globalPathGet(
 export class ModuleResolver implements ModuleResolverInterface {
   private path2Module = new Map<string, PrettierInstance>();
 
-  constructor(private loggingService: LoggingService) {}
+  constructor(
+    private loggingService: LoggingService,
+    private notificationService: NotificationService,
+  ) {}
 
   public async getGlobalPrettierInstance(): Promise<PrettierNodeModule> {
     return getBundledPrettier();
@@ -152,6 +156,8 @@ export class ModuleResolver implements ModuleResolverInterface {
         `${FAILED_TO_LOAD_MODULE_MESSAGE}: ${modulePath}`,
         error,
       );
+      // Show user-facing notification
+      void this.notificationService.showPrettierLoadFailedError(fileName);
       return undefined;
     }
 
@@ -176,6 +182,8 @@ export class ModuleResolver implements ModuleResolverInterface {
     }
 
     this.loggingService.logError(INVALID_PRETTIER_PATH_MESSAGE);
+    // Show user-facing notification for invalid prettier path
+    void this.notificationService.showInvalidPrettierPathError();
     return undefined;
   }
 
@@ -399,6 +407,8 @@ export class ModuleResolver implements ModuleResolverInterface {
         `Failed to resolve config file for ${fileName}`,
         error,
       );
+      // Show user-facing notification for config resolution error
+      void this.notificationService.showConfigResolutionError();
       return "error";
     }
 
@@ -437,6 +447,8 @@ export class ModuleResolver implements ModuleResolverInterface {
       );
     } catch (error) {
       this.loggingService.logError(INVALID_PRETTIER_CONFIG, error);
+      // Show user-facing notification for invalid config
+      void this.notificationService.showInvalidConfigError();
       return "error";
     }
 

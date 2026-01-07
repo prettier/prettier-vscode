@@ -225,6 +225,12 @@
           "markdownDescription": "%ext.config.enableDebugLogs%",
           "scope": "resource"
         },
+        "prettier.enableErrorNotifications": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%ext.config.enableErrorNotifications%",
+          "scope": "resource"
+        },
         "prettier.printWidth": {
           "type": "integer",
           "default": 80,

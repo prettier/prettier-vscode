@@ -1,6 +1,7 @@
 import { commands, ExtensionContext, workspace } from "vscode";
 import { createConfigFile } from "./commands.js";
 import { LoggingService } from "./LoggingService.js";
+import { NotificationService } from "./NotificationService.js";
 import { ModuleResolver } from "./ModuleResolverNode.js";
 import PrettierEditService from "./PrettierEditService.js";
 import { StatusBar } from "./StatusBar.js";
@@ -14,6 +15,7 @@ const extensionVersion = process.env.EXTENSION_VERSION || "0.0.0";
 
 export async function activate(context: ExtensionContext) {
   const loggingService = new LoggingService();
+  const notificationService = new NotificationService();
 
   loggingService.logInfo(`Extension Name: ${extensionName}.`);
   loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
@@ -36,7 +38,10 @@ export async function activate(context: ExtensionContext) {
     return;
   }
 
-  const moduleResolver = new ModuleResolver(loggingService);
+  const moduleResolver = new ModuleResolver(
+    loggingService,
+    notificationService,
+  );
 
   // Get the global prettier instance promise - needed for TemplateService
   // and editService registration
