@@ -3,7 +3,7 @@
   "displayName": "Prettier - Code formatter",
   "description": "Code formatter using prettier",
   "version": "12.0.7",
-  "publisher": "prettier",
+  "publisher": "esbenp",
   "author": "Prettier <@prettiercode>",
   "galleryBanner": {
     "color": "#ffe04b",
@@ -12,7 +12,7 @@
   "sponsor": {
     "url": "https://opencollective.com/prettier"
   },
-  "homepage": "https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/prettier/prettier-vscode.git"
