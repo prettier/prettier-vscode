@@ -98,6 +98,10 @@ export interface IExtensionConfig {
    */
   prettierPath: string | undefined;
   /**
+   * Custom executable command to run Prettier.
+   */
+  customExecutable: string | undefined;
+  /**
    * Path to prettier configuration file.
    */
   configPath: string | undefined;
