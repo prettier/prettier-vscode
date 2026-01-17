@@ -67,6 +67,9 @@
       "path": "monorepo-subfolder"
     },
     {
+      "path": "require-config"
+    },
+    {
       "path": "yarn-pnp-sdk"
     }
   ],
