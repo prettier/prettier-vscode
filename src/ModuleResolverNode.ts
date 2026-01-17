@@ -218,29 +218,6 @@ export class ModuleResolver implements ModuleResolverInterface {
     return;
   }
 
-  /**
-   * Determines if a document is an untitled (unsaved) document.
-   * Untitled documents have a scheme other than "file" (e.g., "untitled").
-   */
-  private isUntitledDocument(doc: TextDocument): boolean {
-    return doc.uri.scheme !== "file";
-  }
-
-  /**
-   * Gets the appropriate base path for config file searches.
-   * For untitled documents, uses the workspace folder path.
-   * For regular files, uses the file path itself.
-   */
-  private getConfigSearchPath(doc: TextDocument): string {
-    if (this.isUntitledDocument(doc)) {
-      const workspaceFolder = workspace.getWorkspaceFolder(doc.uri);
-      if (workspaceFolder) {
-        return workspaceFolder.uri.fsPath;
-      }
-    }
-    return doc.fileName;
-  }
-
   public async getResolvedConfig(
     doc: TextDocument,
     vscodeConfig: PrettierVSCodeConfig,
@@ -250,11 +227,17 @@ export class ModuleResolver implements ModuleResolverInterface {
       (await this.getPrettierInstance(fileName)) ??
       (await getBundledPrettier());
 
-    // For untitled documents (unsaved files), use workspace folder as base for config search
-    // This allows untitled documents to use workspace prettier configs when requireConfig is enabled
-    const configSearchPath = this.getConfigSearchPath(doc);
+    // Untitled documents (unsaved files) should not use workspace configuration
+    // They should only use the user's global/personal VS Code settings
+    // Return null to indicate that VS Code settings should be used
+    if (doc.uri.scheme !== "file") {
+      this.loggingService.logInfo(
+        "Untitled document detected, using VS Code settings only (no workspace config)",
+      );
+      return null;
+    }
 
-    return this.resolveConfig(prettier, configSearchPath, vscodeConfig);
+    return this.resolveConfig(prettier, fileName, vscodeConfig);
   }
 
   public async clearModuleCache(filePath: string): Promise<void> {
@@ -356,19 +339,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     let modulePackageJsonPath = "";
 
     try {
-      // Check if modulePath is a file or directory
-      // If it's a file (e.g., .yarn/sdks/prettier/index.cjs), look for package.json in parent directory
-      let packageDir = modulePath;
-      try {
-        const stat = await fs.promises.stat(modulePath);
-        if (stat.isFile()) {
-          packageDir = path.dirname(modulePath);
-        }
-      } catch {
-        // If stat fails, assume it's a directory path
-      }
-
-      modulePackageJsonPath = path.join(packageDir, "package.json");
+      modulePackageJsonPath = path.join(modulePath, "package.json");
       const rawPkgJson = await fs.promises.readFile(modulePackageJsonPath, {
         encoding: "utf8",
       });
@@ -458,7 +429,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       const customConfigPath = vscodeConfig.configPath
         ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
         : undefined;
-
+      
       // Log if a custom config path is specified in VS Code settings
       if (customConfigPath) {
         this.loggingService.logInfo(
