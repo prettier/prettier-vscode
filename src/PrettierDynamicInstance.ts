@@ -28,7 +28,7 @@ export const PrettierDynamicInstance: PrettierInstanceConstructor = class Pretti
     let entryPath: string;
     const ext = path.extname(this.modulePath).toLowerCase();
     if (ext === ".js" || ext === ".cjs" || ext === ".mjs") {
-      // modulePath is a file, use it directly
+      // modulePath is a file, use it
       entryPath = this.modulePath;
     } else {
       // Resolve to actual entry file since ESM doesn't support directory imports
