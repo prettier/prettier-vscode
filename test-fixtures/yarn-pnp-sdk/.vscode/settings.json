@@ -1,0 +1,3 @@
+{
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
+}
