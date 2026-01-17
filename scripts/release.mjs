@@ -66,7 +66,7 @@ async function updateChangelog(version, isPrerelease) {
 
   const data = await fs.readFile(CHANGELOG, "utf8");
   const updated = data.replace(
-    /## \[Unreleased\](?!\s*## )/, // Non-empty Unreleased block
+    /## \[Unreleased\](?!\s*## )/i, // Non-empty Unreleased block (case-insensitive)
     `## [Unreleased]\n\n## [${version}]`,
   );
 

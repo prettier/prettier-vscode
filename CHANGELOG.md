@@ -4,7 +4,13 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [unreleased]
+## [Unreleased]
+
+## [12.1.1]
+
+- Fixed module resolution when `prettierPath` points to a file (e.g., `.yarn/sdks/prettier/index.cjs` in Yarn PnP SDK setups)
+
+## [12.1.0]
 
 - [BREAKING CHANGE] Bundled Prettier upgraded from v2.8.8 to v3.x
 - [BREAKING CHANGE] Updated `trailingComma` default from `"es5"` to `"all"` to match Prettier 3

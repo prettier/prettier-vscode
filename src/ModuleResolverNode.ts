@@ -356,7 +356,19 @@ export class ModuleResolver implements ModuleResolverInterface {
     let modulePackageJsonPath = "";
 
     try {
-      modulePackageJsonPath = path.join(modulePath, "package.json");
+      // Check if modulePath is a file or directory
+      // If it's a file (e.g., .yarn/sdks/prettier/index.cjs), look for package.json in parent directory
+      let packageDir = modulePath;
+      try {
+        const stat = await fs.promises.stat(modulePath);
+        if (stat.isFile()) {
+          packageDir = path.dirname(modulePath);
+        }
+      } catch {
+        // If stat fails, assume it's a directory path
+      }
+
+      modulePackageJsonPath = path.join(packageDir, "package.json");
       const rawPkgJson = await fs.promises.readFile(modulePackageJsonPath, {
         encoding: "utf8",
       });
@@ -446,7 +458,7 @@ export class ModuleResolver implements ModuleResolverInterface {
       const customConfigPath = vscodeConfig.configPath
         ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
         : undefined;
-      
+
       // Log if a custom config path is specified in VS Code settings
       if (customConfigPath) {
         this.loggingService.logInfo(
