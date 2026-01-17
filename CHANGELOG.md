@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Fixed module resolution when `prettierPath` points to a file (e.g., `.yarn/sdks/prettier/index.cjs` in Yarn PnP SDK setups)
+
 ## [12.1.0]
 
 - [BREAKING CHANGE] Bundled Prettier upgraded from v2.8.8 to v3.x
