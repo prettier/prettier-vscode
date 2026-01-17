@@ -1,0 +1,7 @@
+{
+  "name": "multi-lang-settings",
+  "version": "1.0.0",
+  "dependencies": {
+    "prettier": "3.4.2"
+  }
+}
