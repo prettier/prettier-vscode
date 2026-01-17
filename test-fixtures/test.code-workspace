@@ -68,9 +68,6 @@
     },
     {
       "path": "yarn-pnp-sdk"
-    },
-    {
-      "path": "multi-lang-settings"
     }
   ],
   "settings": {

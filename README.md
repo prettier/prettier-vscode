@@ -79,6 +79,27 @@ To ensure that this extension is used over other extensions you may have install
 }
 ```
 
+**Note:** VS Code does not support combined language syntax for `editor.defaultFormatter`. You must set the formatter for each language separately:
+
+```json
+// ❌ This will NOT work
+{
+  "[javascript][typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
+// ✅ Use separate blocks instead
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
 If you want to disable Prettier on a particular language you can either create a `.prettierignore` file or you can use VS Code's `editor.defaultFormatter` settings.
 
 The following will use Prettier for all languages except Javascript.
