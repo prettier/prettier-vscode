@@ -36,7 +36,7 @@ export class PrettierCodeActionProvider implements CodeActionProvider {
    */
   private isPrettierDefaultFormatter(document: TextDocument): boolean {
     const config = workspace.getConfiguration("editor", document.uri);
-    
+
     // Check language-specific default formatter first (higher priority)
     const languageConfig = workspace.getConfiguration(
       `[${document.languageId}]`,
@@ -45,11 +45,11 @@ export class PrettierCodeActionProvider implements CodeActionProvider {
     const languageDefaultFormatter = languageConfig.get<string>(
       "editor.defaultFormatter",
     );
-    
+
     if (languageDefaultFormatter !== undefined) {
       return languageDefaultFormatter === EXTENSION_ID;
     }
-    
+
     // Check global default formatter
     const globalDefaultFormatter = config.get<string>("defaultFormatter");
     return globalDefaultFormatter === EXTENSION_ID;
@@ -57,11 +57,9 @@ export class PrettierCodeActionProvider implements CodeActionProvider {
 
   public async provideCodeActions(
     document: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    range: Range,
+    _range: Range,
     context: CodeActionContext,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    token: CancellationToken,
+    _token: CancellationToken,
   ): Promise<CodeAction[]> {
     // Check if source.fixAll.prettier was explicitly requested
     const prettierCodeActionKind =
