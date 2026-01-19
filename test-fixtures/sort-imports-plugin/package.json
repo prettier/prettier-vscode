@@ -1,0 +1,15 @@
+{
+  "name": "sort-imports-plugin",
+  "packageManager": "npm@10.9.2",
+  "version": "1.0.0",
+  "description": "Test fixture for @ianvs/prettier-plugin-sort-imports",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "prettier": "^3.4.2"
+  }
+}

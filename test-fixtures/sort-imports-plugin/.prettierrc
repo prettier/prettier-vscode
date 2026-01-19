@@ -1,0 +1,10 @@
+{
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "semi": false,
+  "importOrder": [
+    "^react$",
+    "^react-dom$",
+    "<THIRD_PARTY_MODULES>",
+    "^[./]"
+  ]
+}

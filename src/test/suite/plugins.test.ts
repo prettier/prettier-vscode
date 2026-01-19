@@ -24,4 +24,39 @@ describe("Test plugins", () => {
     const expected = await getText("plugins-pnpm", "index.result.php");
     assert.equal(actual, expected);
   });
+
+  it("it formats consistently with @ianvs/prettier-plugin-sort-imports", async () => {
+    const { actual: firstFormat } = await format(
+      "sort-imports-plugin",
+      "index.tsx",
+    );
+    const expected = await getText("sort-imports-plugin", "index.result.tsx");
+    assert.equal(
+      firstFormat,
+      expected,
+      "First format should match expected output",
+    );
+
+    // Format again to ensure it's idempotent (doesn't toggle)
+    const { actual: secondFormat } = await format(
+      "sort-imports-plugin",
+      "index.tsx",
+    );
+    assert.equal(
+      secondFormat,
+      expected,
+      "Second format should match expected output (not toggle)",
+    );
+
+    // Format a third time to triple-check consistency
+    const { actual: thirdFormat } = await format(
+      "sort-imports-plugin",
+      "index.tsx",
+    );
+    assert.equal(
+      thirdFormat,
+      expected,
+      "Third format should match expected output (still consistent)",
+    );
+  });
 });

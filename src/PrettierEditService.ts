@@ -642,6 +642,22 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
+    // Clear Prettier's internal config cache to ensure consistent formatting
+    // This prevents issues with plugins like @ianvs/prettier-plugin-sort-imports
+    // where cached config can cause formatting to toggle between different states
+    if ("clearConfigCache" in prettierInstance) {
+      try {
+        await prettierInstance.clearConfigCache();
+        this.loggingService.logDebug("Cleared Prettier config cache");
+      } catch (error) {
+        // Non-fatal - log but continue with formatting
+        this.loggingService.logDebug(
+          "Failed to clear config cache (non-fatal)",
+          error,
+        );
+      }
+    }
+
     try {
       const formattedText = await prettierInstance.format(
         text,

@@ -68,6 +68,9 @@
     },
     {
       "path": "yarn-pnp-sdk"
+    },
+    {
+      "path": "sort-imports-plugin"
     }
   ],
   "settings": {
