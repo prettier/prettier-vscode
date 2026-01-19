@@ -1,8 +1,7 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import ReactDOM from "react-dom"
-import React from "react"
-import { Button } from "./components/Button"
 import axios from "axios"
+import { Button } from "./components/Button"
 
 const App = () => {
   const [count, setCount] = useState(0)
