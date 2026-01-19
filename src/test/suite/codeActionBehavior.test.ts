@@ -4,6 +4,9 @@ import { ensureExtensionActivated } from "./testUtils.js";
 import { getWorkspaceFolderUri } from "./formatTestUtils.js";
 import * as path from "path";
 
+// Different formatter ID used for testing when Prettier is not the default
+const DIFFERENT_FORMATTER_ID = "vscode.typescript-language-features";
+
 /**
  * Tests for code action behavior respecting VS Code settings
  */
@@ -94,7 +97,7 @@ describe("Code Action Provider Behavior", () => {
     const config = vscode.workspace.getConfiguration("editor", doc.uri);
     await config.update(
       "defaultFormatter",
-      "vscode.typescript-language-features",
+      DIFFERENT_FORMATTER_ID,
       vscode.ConfigurationTarget.WorkspaceFolder,
     );
 
@@ -146,7 +149,7 @@ describe("Code Action Provider Behavior", () => {
     const config = vscode.workspace.getConfiguration("editor", doc.uri);
     await config.update(
       "defaultFormatter",
-      "vscode.typescript-language-features",
+      DIFFERENT_FORMATTER_ID,
       vscode.ConfigurationTarget.WorkspaceFolder,
     );
 
