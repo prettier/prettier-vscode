@@ -1,4 +1,6 @@
 import {
+  PrettierCursorOptions,
+  PrettierCursorResult,
   PrettierFileInfoOptions,
   PrettierFileInfoResult,
   PrettierSupportLanguage,
@@ -69,6 +71,15 @@ export class ModuleResolver implements ModuleResolverInterface {
       version: prettierVersion,
       format: async (source: string, options: PrettierOptions) => {
         return prettierStandalone.format(source, { ...options, plugins });
+      },
+      formatWithCursor: async (
+        source: string,
+        options: PrettierCursorOptions,
+      ): Promise<PrettierCursorResult> => {
+        return prettierStandalone.formatWithCursor(source, {
+          ...options,
+          plugins,
+        });
       },
       resolveConfigFile: async (): Promise<string | null> => {
         // Config file resolution not supported in browser
