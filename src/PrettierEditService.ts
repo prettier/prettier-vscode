@@ -159,6 +159,13 @@ export default class PrettierEditService implements Disposable {
       watcher.onDidDelete(this.prettierConfigChanged);
     }
 
+    // Watch .prettierignore for changes to invalidate ignore cache
+    const prettierIgnoreWatcher =
+      workspace.createFileSystemWatcher("**/.prettierignore");
+    prettierIgnoreWatcher.onDidChange(this.prettierConfigChanged);
+    prettierIgnoreWatcher.onDidCreate(this.prettierConfigChanged);
+    prettierIgnoreWatcher.onDidDelete(this.prettierConfigChanged);
+
     const textEditorChange = window.onDidChangeActiveTextEditor(
       this.handleActiveTextEditorChangedSync,
     );
@@ -169,6 +176,7 @@ export default class PrettierEditService implements Disposable {
       packageWatcher,
       configurationWatcher,
       ...prettierConfigWatchers,
+      prettierIgnoreWatcher,
       textEditorChange,
     ];
   }
