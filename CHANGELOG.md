@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+## [12.3.0]
+
 - Watch `.prettierignore` for changes to invalidate cache (#3942)
 
 ## [12.2.0]
