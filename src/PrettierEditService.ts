@@ -5,6 +5,7 @@ import {
   DocumentFilter,
   languages,
   Range,
+  Selection,
   TextDocument,
   TextEdit,
   TextEditor,
@@ -22,6 +23,8 @@ import {
   ExtensionFormattingOptions,
   ModuleResolverInterface,
   PrettierBuiltInParserName,
+  PrettierCursorOptions,
+  PrettierCursorResult,
   PrettierFileInfoResult,
   PrettierInstance,
   PrettierModule,
@@ -102,6 +105,11 @@ async function resolvePluginPaths(
 interface ISelectors {
   rangeLanguageSelector: ReadonlyArray<DocumentFilter>;
   languageSelector: ReadonlyArray<DocumentFilter>;
+}
+
+interface FormatResult {
+  formatted: string;
+  cursorOffset: number;
 }
 
 export default class PrettierEditService implements Disposable {
@@ -448,14 +456,30 @@ export default class PrettierEditService implements Disposable {
     options: ExtensionFormattingOptions,
   ): Promise<TextEdit[]> => {
     const startTime = new Date().getTime();
-    const result = await this.format(document.getText(), document, options);
+
+    // Get cursor offset from active editor if available and not doing range formatting
+    const editor = window.activeTextEditor;
+    const isRangeFormatting =
+      options.rangeStart !== undefined && options.rangeEnd !== undefined;
+    let cursorOffset: number | undefined;
+
+    if (editor && editor.document === document && !isRangeFormatting) {
+      cursorOffset = document.offsetAt(editor.selection.active);
+    }
+
+    const result = await this.format(
+      document.getText(),
+      document,
+      options,
+      cursorOffset,
+    );
     if (!result) {
       // No edits happened, return never so VS Code can try other formatters
       return [];
     }
     const duration = new Date().getTime() - startTime;
     this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
-    const edit = this.minimalEdit(document, result);
+    const edit = this.minimalEdit(document, result.formatted);
     if (!edit) {
       // Document is already formatted, no changes needed
       this.loggingService.logDebug(
@@ -463,6 +487,27 @@ export default class PrettierEditService implements Disposable {
       );
       return [];
     }
+
+    // Schedule cursor repositioning after VS Code applies the edit
+    // We use setImmediate to run after the current event loop completes
+    if (
+      editor &&
+      editor.document === document &&
+      !isRangeFormatting &&
+      result.cursorOffset >= 0
+    ) {
+      setImmediate(() => {
+        // Verify the editor is still active and document hasn't changed
+        if (
+          window.activeTextEditor === editor &&
+          editor.document === document
+        ) {
+          const newPosition = document.positionAt(result.cursorOffset);
+          editor.selection = new Selection(newPosition, newPosition);
+        }
+      });
+    }
+
     return [edit];
   };
 
@@ -505,14 +550,17 @@ export default class PrettierEditService implements Disposable {
   /**
    * Format the given text with user's configuration.
    * @param text Text to format
-   * @param path formatting file's path
-   * @returns {string} formatted text
+   * @param doc TextDocument being formatted
+   * @param options Formatting options
+   * @param cursorOffset Optional cursor offset for cursor preservation
+   * @returns FormatResult with formatted text and new cursor offset, or undefined if formatting failed
    */
   private async format(
     text: string,
     doc: TextDocument,
     options: ExtensionFormattingOptions,
-  ): Promise<string | undefined> {
+    cursorOffset?: number,
+  ): Promise<FormatResult | undefined> {
     const { fileName, uri, languageId } = doc;
 
     this.loggingService.logInfo(`Formatting ${uri}`);
@@ -631,18 +679,44 @@ export default class PrettierEditService implements Disposable {
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
 
     try {
+      // Use formatWithCursor if we have a cursor offset to preserve cursor position
+      if (cursorOffset !== undefined) {
+        const cursorOptions: PrettierCursorOptions = {
+          ...prettierOptions,
+          cursorOffset,
+        };
+
+        // Check if formatWithCursor is available (it should be for all modern Prettier versions)
+        if ("formatWithCursor" in prettierInstance) {
+          const result: PrettierCursorResult =
+            await prettierInstance.formatWithCursor(text, cursorOptions);
+          this.statusBar.update(FormatterStatus.Success);
+          return {
+            formatted: result.formatted,
+            cursorOffset: result.cursorOffset,
+          };
+        }
+      }
+
+      // Fallback to regular format() if no cursor offset or formatWithCursor not available
       const formattedText = await prettierInstance.format(
         text,
         prettierOptions,
       );
       this.statusBar.update(FormatterStatus.Success);
 
-      return formattedText;
+      return {
+        formatted: formattedText,
+        cursorOffset: -1, // Indicate that cursor position is unknown
+      };
     } catch (error) {
       this.loggingService.logError("Error formatting document.", error);
       this.statusBar.update(FormatterStatus.Error);
 
-      return text;
+      return {
+        formatted: text,
+        cursorOffset: cursorOffset ?? -1,
+      };
     }
   }
 

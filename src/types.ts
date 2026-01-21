@@ -8,6 +8,8 @@ export type PrettierBuiltInParserName = prettier.BuiltInParserName;
 export type PrettierResolveConfigOptions = prettier.ResolveConfigOptions;
 export type PrettierOptions = prettier.Options;
 export type PrettierFileInfoOptions = prettier.FileInfoOptions;
+export type PrettierCursorOptions = prettier.CursorOptions;
+export type PrettierCursorResult = prettier.CursorResult;
 
 export type PrettierPlugin = prettier.Plugin<any> | string | URL;
 
@@ -15,6 +17,10 @@ export interface PrettierInstance {
   version: string | null;
   import(): Promise<string>;
   format(source: string, options?: PrettierOptions): Promise<string>;
+  formatWithCursor(
+    source: string,
+    options: PrettierCursorOptions,
+  ): Promise<PrettierCursorResult>;
   getFileInfo(
     filePath: string,
     fileInfoOptions?: PrettierFileInfoOptions,
@@ -41,6 +47,10 @@ export interface PrettierInstanceConstructor {
 export type PrettierModule = {
   version: string;
   format(source: string, options?: PrettierOptions): Promise<string>;
+  formatWithCursor(
+    source: string,
+    options: PrettierCursorOptions,
+  ): Promise<PrettierCursorResult>;
   getSupportInfo(options?: {
     plugins?: Array<string | PrettierPlugin>;
   }): Promise<{ languages: PrettierSupportLanguage[] }>;

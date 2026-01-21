@@ -1,6 +1,12 @@
 import * as path from "path";
 import { pathToFileURL } from "url";
-import type { FileInfoOptions, Options, ResolveConfigOptions } from "prettier";
+import type {
+  CursorOptions,
+  CursorResult,
+  FileInfoOptions,
+  Options,
+  ResolveConfigOptions,
+} from "prettier";
 import type {
   PrettierFileInfoResult,
   PrettierPlugin,
@@ -60,6 +66,16 @@ export const PrettierDynamicInstance: PrettierInstanceConstructor = class Pretti
       await this.import();
     }
     return this.prettierModule!.format(source, options);
+  }
+
+  public async formatWithCursor(
+    source: string,
+    options: CursorOptions,
+  ): Promise<CursorResult> {
+    if (!this.prettierModule) {
+      await this.import();
+    }
+    return this.prettierModule!.formatWithCursor(source, options);
   }
 
   public async getFileInfo(
