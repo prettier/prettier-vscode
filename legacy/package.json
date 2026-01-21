@@ -30,7 +30,6 @@
     "Formatters"
   ],
   "icon": "icon.png",
-  "main": "./extension.js",
   "contributes": {},
   "deprecated": true
 }
