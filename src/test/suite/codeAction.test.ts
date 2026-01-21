@@ -3,6 +3,13 @@ import * as vscode from "vscode";
 import { ensureExtensionActivated } from "./testUtils.js";
 import { getWorkspaceFolderUri } from "./formatTestUtils.js";
 
+/**
+ * Helper to wait for a specified number of milliseconds
+ */
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 describe("Test Prettier Code Actions", () => {
   const unformattedCode = `const  x   =  {  a: 1, b: 2  }`;
 
@@ -81,13 +88,19 @@ describe("Test Prettier Code Actions", () => {
     );
   });
 
-  it("does NOT provide code action when defaultFormatter is not prettier", async () => {
+  it("does NOT provide code action when defaultFormatter is not prettier", async function () {
+    // Increase timeout for this test as it involves workspace folder switching
+    this.timeout(10000);
+
     // The 'workspace' folder has editor.defaultFormatter set to
     // vscode.typescript-language-features for JavaScript files
     const base = getWorkspaceFolderUri("workspace");
     const testFilePath = vscode.Uri.joinPath(base, "test.js");
     const doc = await vscode.workspace.openTextDocument(testFilePath);
     await vscode.window.showTextDocument(doc);
+
+    // Wait for formatter registration to complete
+    await delay(1000);
 
     // Get code actions for the document
     const codeActions = await vscode.commands.executeCommand<
@@ -109,7 +122,10 @@ describe("Test Prettier Code Actions", () => {
     );
   });
 
-  it("provides code action when source.fixAll.prettier is explicitly enabled", async () => {
+  it("provides code action when source.fixAll.prettier is explicitly enabled", async function () {
+    // Increase timeout for this test as it involves workspace folder switching
+    this.timeout(10000);
+
     // The 'workspace-explicit-prettier' folder has:
     // - editor.defaultFormatter set to a different formatter
     // - BUT source.fixAll.prettier is explicitly set to "always"
@@ -117,6 +133,9 @@ describe("Test Prettier Code Actions", () => {
     const testFilePath = vscode.Uri.joinPath(base, "test.js");
     const doc = await vscode.workspace.openTextDocument(testFilePath);
     await vscode.window.showTextDocument(doc);
+
+    // Wait for formatter registration to complete
+    await delay(1000);
 
     // Get code actions for the document
     const codeActions = await vscode.commands.executeCommand<
