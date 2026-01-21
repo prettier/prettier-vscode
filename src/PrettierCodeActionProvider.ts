@@ -24,21 +24,28 @@ export class PrettierCodeActionProvider implements CodeActionProvider {
     private provideEdits: (
       document: TextDocument,
       options: ExtensionFormattingOptions,
+      token?: CancellationToken,
     ) => Promise<TextEdit[]>,
   ) {}
 
   public async provideCodeActions(
     document: TextDocument,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     range: Range,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     context: CodeActionContext,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     token: CancellationToken,
   ): Promise<CodeAction[]> {
-    const edits = await this.provideEdits(document, {
-      force: false,
-    });
+    // Check if cancellation was requested before starting
+    if (token.isCancellationRequested) {
+      return [];
+    }
+
+    const edits = await this.provideEdits(
+      document,
+      {
+        force: false,
+      },
+      token,
+    );
 
     if (edits.length === 0) {
       return [];
