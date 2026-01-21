@@ -2,6 +2,12 @@ name: "Publish Legacy Extension"
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to publish from"
+        required: true
+        default: "main"
+        type: string
 
 jobs:
   publish:
@@ -9,6 +15,8 @@ jobs:
     name: Publish Legacy Extension
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.branch }}
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
