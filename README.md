@@ -255,6 +255,8 @@ You can also combine Prettier with ESLint:
 }
 ```
 
+> **Note:** The `source.fixAll.prettier` code action respects your `editor.defaultFormatter` setting. If you have set a different default formatter (e.g., ESLint with Prettier plugin), the Prettier code action will not run unless you explicitly enable it with `"source.fixAll.prettier": "explicit"` or `"source.fixAll.prettier": "always"`. This prevents double-formatting when using setups like `eslint-plugin-prettier`.
+
 ## Workspace Trust
 
 This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.
