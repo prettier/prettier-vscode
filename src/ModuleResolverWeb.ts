@@ -380,6 +380,10 @@ export class ModuleResolver implements ModuleResolverInterface {
     return null;
   }
 
+  async clearModuleCache(_filePath: string): Promise<void> {
+    // No cache to clear in browser
+  }
+
   dispose() {
     // nothing to do
   }

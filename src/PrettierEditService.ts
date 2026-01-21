@@ -207,7 +207,11 @@ export default class PrettierEditService implements Disposable {
     }
   };
 
-  private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
+  private prettierConfigChanged = async (uri: Uri) => {
+    // Clear Prettier's internal config cache so it re-reads the config file
+    await this.moduleResolver.clearModuleCache(uri.fsPath);
+    this.resetFormatters(uri);
+  };
 
   private resetFormatters = (uri?: Uri) => {
     if (uri) {
