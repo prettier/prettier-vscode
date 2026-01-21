@@ -1,6 +1,6 @@
 {
   "name": "prettier-vscode",
-  "displayName": "Prettier - Code formatter",
+  "displayName": "Prettier Formatter (Deprecated)",
   "description": "DEPRECATED: Please use esbenp.prettier-vscode instead.",
   "version": "12.2.0",
   "publisher": "prettier",
