@@ -6,6 +6,7 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Allow formatting untitled files with VS Code settings when `requireConfig` is enabled (#3885)
 - Watch `.prettierignore` for changes to invalidate cache (#3942)
 
 ## [12.2.0]
