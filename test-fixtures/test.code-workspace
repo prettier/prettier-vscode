@@ -68,6 +68,9 @@
     },
     {
       "path": "yarn-pnp-sdk"
+    },
+    {
+      "path": "workspace-explicit-prettier"
     }
   ],
   "settings": {
