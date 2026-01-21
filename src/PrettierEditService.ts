@@ -104,32 +104,6 @@ interface ISelectors {
   languageSelector: ReadonlyArray<DocumentFilter>;
 }
 
-/**
- * Prettier reads configuration from files
- */
-const PRETTIER_CONFIG_FILES = [
-  ".prettierrc",
-  ".prettierrc.json",
-  ".prettierrc.json5",
-  ".prettierrc.yaml",
-  ".prettierrc.yml",
-  ".prettierrc.toml",
-  ".prettierrc.js",
-  ".prettierrc.cjs",
-  ".prettierrc.mjs",
-  ".prettierrc.ts",
-  ".prettierrc.cts",
-  ".prettierrc.mts",
-  "package.json",
-  "prettier.config.js",
-  "prettier.config.cjs",
-  "prettier.config.mjs",
-  "prettier.config.ts",
-  "prettier.config.cts",
-  "prettier.config.mts",
-  ".editorconfig",
-];
-
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
@@ -168,12 +142,22 @@ export default class PrettierEditService implements Disposable {
       }
     });
 
-    const prettierConfigWatcher = workspace.createFileSystemWatcher(
-      `**/{${PRETTIER_CONFIG_FILES.join(",")}}`,
-    );
-    prettierConfigWatcher.onDidChange(this.prettierConfigChanged);
-    prettierConfigWatcher.onDidCreate(this.prettierConfigChanged);
-    prettierConfigWatcher.onDidDelete(this.prettierConfigChanged);
+    // Create individual watchers for different config file patterns
+    // Using multiple watchers instead of brace expansion because VS Code's
+    // createFileSystemWatcher doesn't reliably support complex {a,b,c} patterns
+    // across all platforms (especially Windows). See: https://github.com/microsoft/vscode/issues/177617
+    const prettierConfigWatchers = [
+      workspace.createFileSystemWatcher("**/.prettierrc"),
+      workspace.createFileSystemWatcher("**/.prettierrc.*"),
+      workspace.createFileSystemWatcher("**/prettier.config.*"),
+      workspace.createFileSystemWatcher("**/.editorconfig"),
+    ];
+
+    for (const watcher of prettierConfigWatchers) {
+      watcher.onDidChange(this.prettierConfigChanged);
+      watcher.onDidCreate(this.prettierConfigChanged);
+      watcher.onDidDelete(this.prettierConfigChanged);
+    }
 
     const textEditorChange = window.onDidChangeActiveTextEditor(
       this.handleActiveTextEditorChangedSync,
@@ -184,7 +168,7 @@ export default class PrettierEditService implements Disposable {
     return [
       packageWatcher,
       configurationWatcher,
-      prettierConfigWatcher,
+      ...prettierConfigWatchers,
       textEditorChange,
     ];
   }
@@ -223,7 +207,11 @@ export default class PrettierEditService implements Disposable {
     }
   };
 
-  private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
+  private prettierConfigChanged = async (uri: Uri) => {
+    // Clear Prettier's internal config cache so it re-reads the config file
+    await this.moduleResolver.clearModuleCache(uri.fsPath);
+    this.resetFormatters(uri);
+  };
 
   private resetFormatters = (uri?: Uri) => {
     if (uri) {

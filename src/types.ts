@@ -69,6 +69,7 @@ export type ModuleResolverInterface = {
     doc: TextDocument,
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null>;
+  clearModuleCache(filePath: string): Promise<void>;
   dispose(): void;
   resolveConfig(
     prettierInstance: {
