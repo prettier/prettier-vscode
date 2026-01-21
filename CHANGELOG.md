@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Allow formatting untitled files with VS Code settings when `requireConfig` is enabled (#3885)
+
 ## [12.2.0]
 
 - Fixed `source.fixAll.prettier` code action running even when `editor.defaultFormatter` was set to a different extension (#3908). The code action now respects the user's formatter choice and only runs when Prettier is the default formatter or when `source.fixAll.prettier` is explicitly enabled.

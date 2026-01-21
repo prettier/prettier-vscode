@@ -223,11 +223,13 @@ export class ModuleResolver implements ModuleResolverInterface {
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     const fileName = doc.fileName;
+    const isUntitled = doc.uri.scheme === "untitled";
+
     const prettier =
       (await this.getPrettierInstance(fileName)) ??
       (await getBundledPrettier());
 
-    return this.resolveConfig(prettier, fileName, vscodeConfig);
+    return this.resolveConfig(prettier, fileName, vscodeConfig, isUntitled);
   }
 
   public async clearModuleCache(filePath: string): Promise<void> {
@@ -401,6 +403,7 @@ export class ModuleResolver implements ModuleResolverInterface {
     },
     fileName: string,
     vscodeConfig: PrettierVSCodeConfig,
+    isUntitled: boolean = false,
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
     let configPath: string | undefined;
     try {
@@ -476,6 +479,15 @@ export class ModuleResolver implements ModuleResolverInterface {
 
     if (resolvedConfig) {
       return resolvedConfig;
+    }
+
+    // For untitled files, don't require a config - use VS Code settings instead.
+    // Untitled files are not part of any workspace, so requireConfig doesn't apply.
+    if (isUntitled) {
+      this.loggingService.logInfo(
+        "Untitled file detected, using VS Code settings (requireConfig does not apply).",
+      );
+      return null;
     }
 
     if (!configPath) {
