@@ -112,15 +112,6 @@ export default class PrettierEditService implements Disposable {
 
   private allLanguages: string[] = [];
   private allExtensions: string[] = [];
-  private allRangeLanguages: string[] = [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "jsonc",
-    "graphql",
-  ];
 
   constructor(
     private moduleResolver: ModuleResolverInterface,
@@ -444,7 +435,7 @@ export default class PrettierEditService implements Disposable {
     ];
 
     const rangeLanguageSelector: DocumentFilter[] = [
-      ...this.allRangeLanguages.map((language) => ({
+      ...this.allLanguages.map((language) => ({
         language,
       })),
     ];
