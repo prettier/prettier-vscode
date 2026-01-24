@@ -57,34 +57,18 @@ const browserAliasPlugin = {
 
 /**
  * Node extension configuration
- * Uses ESM format for native ES module support, following the pattern from
- * https://github.com/microsoft/vscode-github-issue-notebooks
  * @type {import('esbuild').BuildOptions}
  */
 const nodeConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
-  format: "esm",
+  format: "cjs",
   minify: production,
-  sourcemap: true,
-  platform: "neutral",
-  target: ["node22"],
+  sourcemap: !production,
+  sourcesContent: false,
+  platform: "node",
   outfile: "dist/extension.js",
-  // Keep vscode external - provided by the VS Code extension host
-  // Keep prettier external - loaded dynamically at runtime
-  // Keep Node.js built-ins external - available in the extension host runtime
-  external: [
-    "vscode",
-    "prettier",
-    "fs",
-    "fs/promises",
-    "path",
-    "os",
-    "url",
-    "util",
-    "module",
-    "child_process",
-  ],
+  external: ["vscode", "prettier"],
   define: {
     "process.env.EXTENSION_NAME": JSON.stringify(
       `${extensionPackage.publisher}.${extensionPackage.name}`,
