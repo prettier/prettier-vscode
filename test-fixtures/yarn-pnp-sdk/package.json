@@ -1,0 +1,9 @@
+{
+  "name": "yarn-pnp-sdk",
+  "version": "1.0.0",
+  "description": "Test folder for Yarn PnP SDK with prettierPath pointing to a .cjs file",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

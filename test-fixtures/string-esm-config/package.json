@@ -1,0 +1,16 @@
+{
+  "name": "string-esm-config",
+  "version": "1.0.0",
+  "description": "Test folder for .prettierrc with string reference to ESM config package",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prettier",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "test-prettier-config-esm": "file:./test-prettier-config-esm"
+  }
+}

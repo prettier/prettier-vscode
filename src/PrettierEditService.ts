@@ -16,6 +16,7 @@ import { getParserFromLanguageId } from "./utils/get-parser-from-language.js";
 import { LoggingService } from "./LoggingService.js";
 import { RESTART_TO_ENABLE } from "./message.js";
 import { PrettierEditProvider } from "./PrettierEditProvider.js";
+import { PrettierCodeActionProvider } from "./PrettierCodeActionProvider.js";
 import { FormatterStatus, StatusBar } from "./StatusBar.js";
 import {
   ExtensionFormattingOptions,
@@ -103,35 +104,10 @@ interface ISelectors {
   languageSelector: ReadonlyArray<DocumentFilter>;
 }
 
-/**
- * Prettier reads configuration from files
- */
-const PRETTIER_CONFIG_FILES = [
-  ".prettierrc",
-  ".prettierrc.json",
-  ".prettierrc.json5",
-  ".prettierrc.yaml",
-  ".prettierrc.yml",
-  ".prettierrc.toml",
-  ".prettierrc.js",
-  ".prettierrc.cjs",
-  ".prettierrc.mjs",
-  ".prettierrc.ts",
-  ".prettierrc.cts",
-  ".prettierrc.mts",
-  "package.json",
-  "prettier.config.js",
-  "prettier.config.cjs",
-  "prettier.config.mjs",
-  "prettier.config.ts",
-  "prettier.config.cts",
-  "prettier.config.mts",
-  ".editorconfig",
-];
-
 export default class PrettierEditService implements Disposable {
   private formatterHandler: undefined | Disposable;
   private rangeFormatterHandler: undefined | Disposable;
+  private codeActionHandler: undefined | Disposable;
   private registeredWorkspaces = new Set<string>();
 
   private allLanguages: string[] = [];
@@ -166,12 +142,29 @@ export default class PrettierEditService implements Disposable {
       }
     });
 
-    const prettierConfigWatcher = workspace.createFileSystemWatcher(
-      `**/{${PRETTIER_CONFIG_FILES.join(",")}}`,
-    );
-    prettierConfigWatcher.onDidChange(this.prettierConfigChanged);
-    prettierConfigWatcher.onDidCreate(this.prettierConfigChanged);
-    prettierConfigWatcher.onDidDelete(this.prettierConfigChanged);
+    // Create individual watchers for different config file patterns
+    // Using multiple watchers instead of brace expansion because VS Code's
+    // createFileSystemWatcher doesn't reliably support complex {a,b,c} patterns
+    // across all platforms (especially Windows). See: https://github.com/microsoft/vscode/issues/177617
+    const prettierConfigWatchers = [
+      workspace.createFileSystemWatcher("**/.prettierrc"),
+      workspace.createFileSystemWatcher("**/.prettierrc.*"),
+      workspace.createFileSystemWatcher("**/prettier.config.*"),
+      workspace.createFileSystemWatcher("**/.editorconfig"),
+    ];
+
+    for (const watcher of prettierConfigWatchers) {
+      watcher.onDidChange(this.prettierConfigChanged);
+      watcher.onDidCreate(this.prettierConfigChanged);
+      watcher.onDidDelete(this.prettierConfigChanged);
+    }
+
+    // Watch .prettierignore for changes to invalidate ignore cache
+    const prettierIgnoreWatcher =
+      workspace.createFileSystemWatcher("**/.prettierignore");
+    prettierIgnoreWatcher.onDidChange(this.prettierConfigChanged);
+    prettierIgnoreWatcher.onDidCreate(this.prettierConfigChanged);
+    prettierIgnoreWatcher.onDidDelete(this.prettierConfigChanged);
 
     const textEditorChange = window.onDidChangeActiveTextEditor(
       this.handleActiveTextEditorChangedSync,
@@ -182,7 +175,8 @@ export default class PrettierEditService implements Disposable {
     return [
       packageWatcher,
       configurationWatcher,
-      prettierConfigWatcher,
+      ...prettierConfigWatchers,
+      prettierIgnoreWatcher,
       textEditorChange,
     ];
   }
@@ -202,7 +196,14 @@ export default class PrettierEditService implements Disposable {
       );
 
       const edits = await this.provideEdits(editor.document, { force: true });
-      if (edits.length !== 1) {
+      if (edits.length === 0) {
+        this.loggingService.logInfo("Document is already formatted.");
+        return;
+      }
+      if (edits.length > 1) {
+        this.loggingService.logWarning(
+          `Unexpected multiple edits (${edits.length}), expected 0 or 1`,
+        );
         return;
       }
 
@@ -214,7 +215,11 @@ export default class PrettierEditService implements Disposable {
     }
   };
 
-  private prettierConfigChanged = async (uri: Uri) => this.resetFormatters(uri);
+  private prettierConfigChanged = async (uri: Uri) => {
+    // Clear Prettier's internal config cache so it re-reads the config file
+    await this.moduleResolver.clearModuleCache(uri.fsPath);
+    this.resetFormatters(uri);
+  };
 
   private resetFormatters = (uri?: Uri) => {
     if (uri) {
@@ -311,8 +316,10 @@ export default class PrettierEditService implements Disposable {
     this.moduleResolver.dispose();
     this.formatterHandler?.dispose();
     this.rangeFormatterHandler?.dispose();
+    this.codeActionHandler?.dispose();
     this.formatterHandler = undefined;
     this.rangeFormatterHandler = undefined;
+    this.codeActionHandler = undefined;
   };
 
   private registerDocumentFormatEditorProviders({
@@ -321,6 +328,9 @@ export default class PrettierEditService implements Disposable {
   }: ISelectors) {
     this.dispose();
     const editProvider = new PrettierEditProvider(this.provideEdits);
+    const codeActionProvider = new PrettierCodeActionProvider(
+      this.provideEdits,
+    );
     this.rangeFormatterHandler =
       languages.registerDocumentRangeFormattingEditProvider(
         rangeLanguageSelector,
@@ -329,6 +339,14 @@ export default class PrettierEditService implements Disposable {
     this.formatterHandler = languages.registerDocumentFormattingEditProvider(
       languageSelector,
       editProvider,
+    );
+    this.codeActionHandler = languages.registerCodeActionsProvider(
+      languageSelector,
+      codeActionProvider,
+      {
+        providedCodeActionKinds:
+          PrettierCodeActionProvider.providedCodeActionKinds,
+      },
     );
   }
 
@@ -446,11 +464,27 @@ export default class PrettierEditService implements Disposable {
     const duration = new Date().getTime() - startTime;
     this.loggingService.logInfo(`Formatting completed in ${duration}ms.`);
     const edit = this.minimalEdit(document, result);
+    if (!edit) {
+      // Document is already formatted, no changes needed
+      this.loggingService.logDebug(
+        "Document is already formatted, no changes needed.",
+      );
+      return [];
+    }
     return [edit];
   };
 
-  private minimalEdit(document: TextDocument, string1: string) {
+  private minimalEdit(
+    document: TextDocument,
+    string1: string,
+  ): TextEdit | null {
     const string0 = document.getText();
+
+    // Quick check: if strings are identical, no edit needed
+    if (string0 === string1) {
+      return null;
+    }
+
     // length of common prefix
     let i = 0;
     while (
@@ -661,8 +695,8 @@ export default class PrettierEditService implements Disposable {
 
     this.loggingService.logInfo(
       fallbackToVSCodeConfig
-        ? "No local configuration (i.e. .prettierrc or .editorconfig) detected, falling back to VS Code configuration"
-        : "Detected local configuration (i.e. .prettierrc or .editorconfig), VS Code configuration will not be used",
+        ? "Using VS Code configuration"
+        : "Using local configuration (VS Code configuration will not be used)",
     );
 
     let rangeFormattingOptions: RangeFormattingOptions | undefined;

@@ -1,0 +1,28 @@
+name: "Publish Legacy Extension"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to publish from"
+        required: true
+        default: "main"
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish Legacy Extension
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Package and publish
+        working-directory: ./legacy
+        run: |
+          npx @vscode/vsce package
+          npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }}
+          npx ovsx publish "$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" -p ${{ secrets.OPENVSX_TOKEN }}

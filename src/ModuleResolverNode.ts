@@ -329,7 +329,19 @@ export class ModuleResolver implements ModuleResolverInterface {
     let modulePackageJsonPath = "";
 
     try {
-      modulePackageJsonPath = path.join(modulePath, "package.json");
+      // Check if modulePath is a file or directory
+      // If it's a file (e.g., .yarn/sdks/prettier/index.cjs), look for package.json in parent directory
+      let packageDir = modulePath;
+      try {
+        const stat = await fs.promises.stat(modulePath);
+        if (stat.isFile()) {
+          packageDir = path.dirname(modulePath);
+        }
+      } catch {
+        // If stat fails, assume it's a directory path
+      }
+
+      modulePackageJsonPath = path.join(packageDir, "package.json");
       const rawPkgJson = await fs.promises.readFile(modulePackageJsonPath, {
         encoding: "utf8",
       });
@@ -402,12 +414,33 @@ export class ModuleResolver implements ModuleResolverInterface {
       return "error";
     }
 
+    // Log what config file was found (if any)
+    if (configPath) {
+      this.loggingService.logInfo(`Using config file at ${configPath}`);
+    }
+
+    // Log if editorconfig will be considered
+    if (vscodeConfig.useEditorConfig) {
+      this.loggingService.logInfo(
+        "EditorConfig support is enabled, checking for .editorconfig files",
+      );
+    }
+
     let resolvedConfig: PrettierOptions | null;
     try {
+      const customConfigPath = vscodeConfig.configPath
+        ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
+        : undefined;
+
+      // Log if a custom config path is specified in VS Code settings
+      if (customConfigPath) {
+        this.loggingService.logInfo(
+          `Using custom config path from settings: ${customConfigPath}`,
+        );
+      }
+
       const resolveConfigOptions: PrettierResolveConfigOptions = {
-        config: vscodeConfig.configPath
-          ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
-          : configPath,
+        config: customConfigPath ?? configPath,
         editorconfig: vscodeConfig.useEditorConfig,
       };
       resolvedConfig = await prettierInstance.resolveConfig(
@@ -417,6 +450,24 @@ export class ModuleResolver implements ModuleResolverInterface {
     } catch (error) {
       this.loggingService.logError(INVALID_PRETTIER_CONFIG, error);
       return "error";
+    }
+
+    // Log what configuration was resolved
+    if (resolvedConfig) {
+      this.loggingService.logInfo("Resolved config:", resolvedConfig);
+    }
+
+    // Determine config source for better user feedback
+    if (!configPath && resolvedConfig && vscodeConfig.useEditorConfig) {
+      // Config was resolved but no Prettier config file was found
+      // This means settings came from .editorconfig
+      this.loggingService.logInfo(
+        "No Prettier config file found, but settings were loaded from .editorconfig",
+      );
+    } else if (!configPath && !resolvedConfig) {
+      this.loggingService.logInfo(
+        "No local configuration (i.e. .prettierrc or .editorconfig) detected, will fall back to VS Code configuration",
+      );
     }
 
     if (!vscodeConfig.requireConfig) {

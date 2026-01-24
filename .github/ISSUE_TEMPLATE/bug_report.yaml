@@ -39,8 +39,9 @@ body:
     attributes:
       label: Reproduction Repository
       description: |
-        Link to a **public GitHub repository** that reproduces the issue.
-        This is the most important part - without it, we likely cannot help you.
+        **VERY IMPORTANT:** Link to a **public GitHub repository** that reproduces the issue.
+        This project is maintained by volunteers, so issues without a reproduction repository will likely be closed.
+        We know it's extra work, but this is the single most important thing you can provide to get your issue resolved.
       placeholder: https://github.com/username/repo-name
     validations:
       required: true
@@ -88,10 +89,23 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: vscode-version
+  - type: dropdown
+    id: ide
     attributes:
-      label: VS Code Version
+      label: IDE
+      options:
+        - VSCode
+        - Cursor
+        - Antigravity
+        - AWS Kiro
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: ide-version
+    attributes:
+      label: IDE Version
       description: "Help > About > Copy"
       placeholder: "e.g., 1.85.0"
     validations:

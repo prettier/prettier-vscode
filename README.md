@@ -44,28 +44,26 @@
 <p align="center">
   <a href="https://github.com/prettier/prettier-vscode/actions?query=workflow%3AMain">
     <img alt="Build Status" src="https://github.com/prettier/prettier-vscode/workflows/Main/badge.svg?branch=main"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
-    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/prettier.prettier-vscode"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode">
-    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/prettier.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/esbenp.prettier-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">
+    <img alt="VS Code Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/esbenp.prettier-vscode"></a>
   <a href="#badge">
-    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
-  <a href="https://twitter.com/PrettierCode">
-    <img alt="Follow Prettier on Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square"></a>
+    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg"></a>
+  <a href="https://x.com/intent/follow?screen_name=PrettierCode">
+    <img alt="Follow Prettier on X" src="https://img.shields.io/badge/%40PrettierCode-9f9f9f?logo=x&labelColor=555"></a>
 </p>
-
-> 🚨🚨🚨 **Extension Migration:** This extension is being moved from `esbenp.prettier-vscode` to [`prettier.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode). Version 12+ is only published to the new for now as it is a major change. Once it is stable, we will publish v12 to both extensions and deprecate the `esbenp.prettier-vscode` extension. **Version 12.x is currently not stable, use with caution and report bugs.**
 
 ## Installation
 
 Install through VS Code extensions. Search for `Prettier - Code formatter`
 
-[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=prettier.prettier-vscode)
+[Visual Studio Code Market Place: Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Can also be installed in VS Code: Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
 ```
-ext install prettier.prettier-vscode
+ext install esbenp.prettier-vscode
 ```
 
 ### Default Formatter
@@ -74,9 +72,30 @@ To ensure that this extension is used over other extensions you may have install
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
+**Note:** VS Code does not support combined language syntax for `editor.defaultFormatter`. You must set the formatter for each language separately:
+
+```json
+// ❌ This will NOT work
+{
+  "[javascript][typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
+// ✅ Use separate blocks instead
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 ```
@@ -87,7 +106,7 @@ The following will use Prettier for all languages except Javascript.
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "<another formatter>"
   }
@@ -100,7 +119,7 @@ The following will use Prettier for only Javascript.
 {
   "editor.defaultFormatter": "<another formatter>",
   "[javascript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 ```
@@ -211,6 +230,33 @@ If you would like to format a document that is configured to be ignored by Prett
 
 The recommended way of integrating with linters is to let Prettier do the formatting and configure the linter to not deal with formatting rules. You can find instructions on how to configure each linter on the Prettier docs site. You can then use each of the linting extensions as you normally would. For details refer to the [Prettier documentation](https://prettier.io/docs/en/integrating-with-linters.html).
 
+### Using Code Actions on Save
+
+You can use VS Code's `editor.codeActionsOnSave` to run Prettier before other formatters like ESLint. This is useful when you want to format with Prettier first and then apply ESLint fixes.
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+  },
+}
+```
+
+You can also combine Prettier with ESLint:
+
+```jsonc
+// .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit",
+  },
+}
+```
+
+> **Note:** The `source.fixAll.prettier` code action respects your `editor.defaultFormatter` setting. If you have set a different default formatter (e.g., ESLint with Prettier plugin), the Prettier code action will not run unless you explicitly enable it with `"source.fixAll.prettier": "explicit"` or `"source.fixAll.prettier": "always"`. This prevents double-formatting when using setups like `eslint-plugin-prettier`.
+
 ## Workspace Trust
 
 This extension utilizes VS Code [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust) features. When this extension is run on an untrusted workspace, it will only use the built in version of prettier. No plugins, local, or global modules will be supported. Additionally, certain settings are also restricted - see each setting for details.
@@ -248,6 +294,31 @@ prettier.experimentalTernaries
 prettier.objectWrap
 prettier.experimentalOperatorPosition
 ```
+
+#### Language-Specific Formatting
+
+All Prettier options above support language-specific overrides. This allows you to set different formatting rules for different file types directly in your VS Code settings, which are easily synchronized across machines and environments.
+
+To configure language-specific settings, use the `[language]` syntax in your VS Code `settings.json`:
+
+```json
+{
+  "[html]": {
+    "prettier.printWidth": 180
+  },
+  "[typescript]": {
+    "prettier.printWidth": 120,
+    "prettier.tabWidth": 4,
+    "prettier.semi": false
+  },
+  "[json]": {
+    "prettier.printWidth": 80,
+    "prettier.tabWidth": 2
+  }
+}
+```
+
+This feature is particularly useful when working in multi-language projects or when different languages have different formatting conventions. Language-specific settings will override the global Prettier settings when formatting files of that language type.
 
 ### Extension Settings
 

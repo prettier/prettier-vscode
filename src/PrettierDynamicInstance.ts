@@ -22,12 +22,22 @@ export const PrettierDynamicInstance: PrettierInstanceConstructor = class Pretti
   constructor(private modulePath: string) {}
 
   public async import(): Promise</* version of imported prettier */ string> {
-    // Resolve to actual entry file since ESM doesn't support directory imports
-    // modulePath is like /path/to/node_modules/prettier, resolve "prettier" from there
-    const entryPath = resolveModuleEntry(
-      this.modulePath,
-      path.basename(this.modulePath),
-    );
+    // Check if modulePath is a file or directory
+    // If it's a file (e.g., .yarn/sdks/prettier/index.cjs), use it directly
+    // If it's a directory (e.g., node_modules/prettier), resolve the entry
+    let entryPath: string;
+    const ext = path.extname(this.modulePath).toLowerCase();
+    if (ext === ".js" || ext === ".cjs" || ext === ".mjs") {
+      // modulePath is a file, use it
+      entryPath = this.modulePath;
+    } else {
+      // Resolve to actual entry file since ESM doesn't support directory imports
+      // modulePath is like /path/to/node_modules/prettier, resolve "prettier" from there
+      entryPath = resolveModuleEntry(
+        this.modulePath,
+        path.basename(this.modulePath),
+      );
+    }
     const moduleUrl = pathToFileURL(entryPath).href;
     const imported = await import(moduleUrl);
     // Handle both ESM (Prettier v3+) and CJS (Prettier v2) modules

@@ -4,7 +4,21 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](https://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [unreleased]
+## [Unreleased]
+
+## [12.3.0]
+
+- Watch `.prettierignore` for changes to invalidate cache (#3942)
+
+## [12.2.0]
+
+- Fixed `source.fixAll.prettier` code action running even when `editor.defaultFormatter` was set to a different extension (#3908). The code action now respects the user's formatter choice and only runs when Prettier is the default formatter or when `source.fixAll.prettier` is explicitly enabled.
+
+## [12.1.1]
+
+- Fixed module resolution when `prettierPath` points to a file (e.g., `.yarn/sdks/prettier/index.cjs` in Yarn PnP SDK setups)
+
+## [12.1.0]
 
 - [BREAKING CHANGE] Bundled Prettier upgraded from v2.8.8 to v3.x
 - [BREAKING CHANGE] Updated `trailingComma` default from `"es5"` to `"all"` to match Prettier 3
@@ -14,6 +28,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 - Fixed parser detection fallback when using plugins with Prettier v3
 - Added new Prettier v3 options: `objectWrap`, `experimentalOperatorPosition`
 - Added support for TypeScript config files (`.prettierrc.ts`, `.prettierrc.cts`, `.prettierrc.mts`, `prettier.config.ts`, etc.) introduced in Prettier 3.5.0 - Thanks to [@dr2009](https://github.com/dr2009)
+- Added `source.fixAll.prettier` code action for use with `editor.codeActionsOnSave` to run Prettier before other formatters like ESLint (#1277)
+- Fixed issue where unnecessary TextEdits were applied when document was already formatted, which could cause spurious changes or cursor positioning issues (#3232)
 
 ## [11.0.0]
 

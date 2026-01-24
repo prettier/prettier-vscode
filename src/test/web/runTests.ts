@@ -19,6 +19,7 @@ async function main() {
       extensionTestsPath,
       headless: true,
       verbose: true,
+      quality: "stable",
     });
   } catch (error) {
     console.error("Failed to run web tests");

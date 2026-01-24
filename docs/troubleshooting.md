@@ -27,9 +27,38 @@ Or add to your `settings.json`:
 
 ```json
 {
-  "editor.defaultFormatter": "prettier.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
 ```
+
+### Combined Language Settings Not Working
+
+**Note:** VS Code does **NOT** support combined language settings for `editor.defaultFormatter`. While VS Code 1.63+ supports combining multiple languages for some settings using syntax like `[javascript][typescript]`, this feature does not work for the `editor.defaultFormatter` setting.
+
+❌ **This will NOT work:**
+
+```json
+{
+  "[markdown][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
+✅ **Instead, use separate language blocks:**
+
+```json
+{
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
+This is a VS Code core limitation, not an issue with the Prettier extension. The combined syntax works for other editor settings (like `editor.wordWrap`, `editor.tabSize`, etc.) but not for `editor.defaultFormatter`.
 
 ### Check for Errors in the Output Panel
 
