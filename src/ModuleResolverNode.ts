@@ -15,6 +15,7 @@ import {
   INVALID_PRETTIER_CONFIG,
   INVALID_PRETTIER_PATH_MESSAGE,
   OUTDATED_PRETTIER_VERSION_MESSAGE,
+  UNTRUSTED_WORKSPACE_SKIPPING_CONFIG,
   UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER,
   USING_BUNDLED_PRETTIER,
 } from "./message.js";
@@ -402,6 +403,15 @@ export class ModuleResolver implements ModuleResolverInterface {
     fileName: string,
     vscodeConfig: PrettierVSCodeConfig,
   ): Promise<"error" | "disabled" | PrettierOptions | null> {
+    // In untrusted workspaces, skip config resolution entirely.
+    // Prettier's resolveConfigFile/resolveConfig can execute JS config files
+    // (.prettierrc.js, prettier.config.js, etc.) which would allow arbitrary
+    // code execution.
+    if (!workspace.isTrusted) {
+      this.loggingService.logDebug(UNTRUSTED_WORKSPACE_SKIPPING_CONFIG);
+      return null;
+    }
+
     let configPath: string | undefined;
     try {
       configPath =
