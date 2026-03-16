@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- **Security**: Fixed config resolution in untrusted workspaces to prevent JavaScript config files (`.prettierrc.js`, `prettier.config.js`, etc.) from being executed. Previously, even when workspace trust was enforced for module resolution, Prettier's config resolution could still `require()`/`import()` JS config files, allowing arbitrary code execution. Reported by Hector Ruiz Ruiz.
+
 ## [12.3.0]
 
 - Watch `.prettierignore` for changes to invalidate cache (#3942)
