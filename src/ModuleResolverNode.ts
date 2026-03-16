@@ -409,6 +409,9 @@ export class ModuleResolver implements ModuleResolverInterface {
     // code execution.
     if (!workspace.isTrusted) {
       this.loggingService.logDebug(UNTRUSTED_WORKSPACE_SKIPPING_CONFIG);
+      if (vscodeConfig.requireConfig) {
+        return "disabled";
+      }
       return null;
     }
 
