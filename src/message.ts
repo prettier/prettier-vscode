@@ -13,3 +13,5 @@ export const EXTENSION_DISABLED =
   "Extension is disabled. No formatters will be registered. To enable, change the `prettier.enable` to `true` and restart VS Code.";
 export const UNTRUSTED_WORKSPACE_USING_BUNDLED_PRETTIER =
   "This workspace is not trusted. Using the bundled version of prettier.";
+export const UNTRUSTED_WORKSPACE_SKIPPING_CONFIG =
+  "Skipping Prettier config resolution in untrusted workspace. Config files are not loaded for security.";
