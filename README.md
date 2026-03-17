@@ -280,6 +280,7 @@ prettier.bracketSameLine
 prettier.jsxBracketSameLine
 prettier.jsxSingleQuote
 prettier.printWidth
+prettier.parser
 prettier.proseWrap
 prettier.quoteProps
 prettier.requirePragma
@@ -319,6 +320,16 @@ To configure language-specific settings, use the `[language]` syntax in your VS 
 ```
 
 This feature is particularly useful when working in multi-language projects or when different languages have different formatting conventions. Language-specific settings will override the global Prettier settings when formatting files of that language type.
+
+You can also set `prettier.parser` in language-specific overrides to force a parser, or use `prettier.parser: "vscode"` to derive the parser from the active VS Code language mode. For example:
+
+```json
+{
+  "[git-commit]": {
+    "prettier.parser": "markdown"
+  }
+}
+```
 
 ### Extension Settings
 

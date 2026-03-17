@@ -18,7 +18,7 @@
   "ext.config.jsxSingleQuote": "在 JSX 中使用單引號而不是雙引號。",
   "ext.config.packageManager": "你用於安裝 node modules 的套件管理器。",
   "ext.config.packageManagerDeprecation": "套件管理器目前會經由 VS Code 進行偵測。這個設定已不再使用。",
-  "ext.config.parser": "覆寫解析器。你不應變更這個設定。",
+  "ext.config.parser": "明確指定要使用的 Prettier 解析器。設定為 `vscode` 以根據目前 VS Code 語言模式決定解析器。",
   "ext.config.parserDeprecationMessage": "這個設定已不再支援。請改用 prettier 組態檔。",
   "ext.config.prettierPath": "`prettier` 模組的路徑，如 `./node_modules/prettier`。",
   "ext.config.printWidth": "讓程式碼的每一列符合這個寬度限制。",
