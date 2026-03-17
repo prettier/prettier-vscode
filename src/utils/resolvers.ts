@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import * as path from "path";
+import { pathToFileURL } from "url";
 import { PrettierOptions } from "../types.js";
 
 /**
@@ -12,7 +13,8 @@ function resolveNodeModule(
 ): string | undefined {
   try {
     // Create a require function rooted at the parent directory
-    const require = createRequire(parent);
+    // On Windows, createRequire needs a file:// URL for ESM compatibility
+    const require = createRequire(pathToFileURL(parent).href);
     return require.resolve(moduleName);
   } catch {
     return undefined;
