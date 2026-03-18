@@ -599,24 +599,67 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
+    const parserSetting =
+      typeof vscodeConfig.parser === "string"
+        ? vscodeConfig.parser.trim()
+        : undefined;
+    const parserSettingIsVSCode =
+      parserSetting?.toLowerCase() === "vscode";
+
+    let parserSettingWasExplicit = false;
     let parser: PrettierBuiltInParserName | string | undefined;
-    if (fileInfo && fileInfo.inferredParser) {
-      parser = fileInfo.inferredParser;
-    } else if (resolvedConfig && resolvedConfig.parser) {
-      // Parser specified in config (e.g., via overrides for custom extensions)
-      parser = resolvedConfig.parser as string;
-    } else if (languageId !== "plaintext") {
-      // Don't attempt VS Code language for plaintext because we never have
-      // a formatter for plaintext and most likely the reason for this is
-      // somebody has registered a custom file extension without properly
-      // configuring the parser in their prettier config.
-      this.loggingService.logWarning(
-        `Parser not inferred, trying VS Code language.`,
+
+    let supportInfoLanguages:
+      | Awaited<ReturnType<typeof prettierInstance.getSupportInfo>>["languages"]
+      | undefined;
+    const getSupportInfoLanguages = async () => {
+      if (!supportInfoLanguages) {
+        const { languages } = await prettierInstance.getSupportInfo({
+          plugins: resolvedPlugins,
+        });
+        supportInfoLanguages = languages;
+      }
+      return supportInfoLanguages;
+    };
+
+    if (parserSetting) {
+      parserSettingWasExplicit = true;
+      if (parserSettingIsVSCode) {
+        if (languageId !== "plaintext") {
+          const languages = await getSupportInfoLanguages();
+          parser = getParserFromLanguageId(languages, uri, languageId);
+        } else {
+          this.loggingService.logWarning(
+            "Parser set to 'vscode' but language is plaintext; no parser available.",
+          );
+        }
+      } else {
+        parser = parserSetting;
+      }
+
+      this.loggingService.logInfo(
+        "Using parser from VS Code settings:",
+        parser ?? parserSetting,
       );
-      const { languages } = await prettierInstance.getSupportInfo({
-        plugins: resolvedPlugins,
-      });
-      parser = getParserFromLanguageId(languages, uri, languageId);
+    }
+
+    if (!parser && !parserSettingWasExplicit) {
+      if (fileInfo && fileInfo.inferredParser) {
+        parser = fileInfo.inferredParser;
+      } else if (resolvedConfig && resolvedConfig.parser) {
+        // Parser specified in config (e.g., via overrides for custom extensions)
+        parser = resolvedConfig.parser as string;
+      } else if (languageId !== "plaintext") {
+        // Don't attempt VS Code language for plaintext because we never have
+        // a formatter for plaintext and most likely the reason for this is
+        // somebody has registered a custom file extension without properly
+        // configuring the parser in their prettier config.
+        this.loggingService.logWarning(
+          `Parser not inferred, trying VS Code language.`,
+        );
+        const languages = await getSupportInfoLanguages();
+        parser = getParserFromLanguageId(languages, uri, languageId);
+      }
     }
 
     if (!parser) {
@@ -627,13 +670,22 @@ export default class PrettierEditService implements Disposable {
       return;
     }
 
+    const resolvedConfigForFormatting =
+      parserSettingWasExplicit && resolvedConfig
+        ? (() => {
+            const { parser: _parser, ...rest } = resolvedConfig;
+            return rest;
+          })()
+        : resolvedConfig;
+
     const prettierOptions = this.getPrettierOptions(
       fileName,
       parser as PrettierBuiltInParserName,
       vscodeConfig,
-      resolvedConfig,
+      resolvedConfigForFormatting,
       options,
       resolvedPlugins,
+      parserSettingWasExplicit,
     );
 
     this.loggingService.logInfo("Prettier Options:", prettierOptions);
@@ -661,6 +713,7 @@ export default class PrettierEditService implements Disposable {
     configOptions: PrettierOptions | null,
     extensionFormattingOptions: ExtensionFormattingOptions,
     resolvedPlugins: (string | PrettierPlugin)[],
+    parserSettingWasExplicit: boolean,
   ): Partial<PrettierOptions> {
     const fallbackToVSCodeConfig = configOptions === null;
 
@@ -710,6 +763,14 @@ export default class PrettierEditService implements Disposable {
       };
     }
 
+    const configOptionsToApply =
+      parserSettingWasExplicit && configOptions
+        ? (() => {
+            const { parser: _parser, ...rest } = configOptions;
+            return rest;
+          })()
+        : configOptions;
+
     const options: PrettierOptions = {
       ...(fallbackToVSCodeConfig ? vsOpts : {}),
       ...{
@@ -718,7 +779,7 @@ export default class PrettierEditService implements Disposable {
         parser: parser as PrettierBuiltInParserName,
       },
       ...(rangeFormattingOptions || {}),
-      ...(configOptions || {}),
+      ...(configOptionsToApply || {}),
       // Pass resolved plugin paths for Prettier to import
       ...(resolvedPlugins.length > 0 ? { plugins: resolvedPlugins } : {}),
     };

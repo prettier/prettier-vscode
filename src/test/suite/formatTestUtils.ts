@@ -107,3 +107,46 @@ export async function format(workspaceFolderName: string, testFile: string) {
 
   return { actual, source: text };
 }
+
+export async function formatWithLanguage(
+  workspaceFolderName: string,
+  testFile: string,
+  languageId: string,
+) {
+  const base = getWorkspaceFolderUri(workspaceFolderName);
+  const absPath = path.join(base.fsPath, testFile);
+  let doc = await vscode.workspace.openTextDocument(absPath);
+  doc = await vscode.languages.setTextDocumentLanguage(doc, languageId);
+  const text = doc.getText();
+  try {
+    await vscode.window.showTextDocument(doc);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  console.time(`${testFile}:${languageId}`);
+
+  const maxRetries = 5;
+  const retryDelay = 500;
+  let actual = text;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    await vscode.commands.executeCommand("editor.action.formatDocument");
+    actual = doc.getText();
+
+    if (actual !== text) {
+      break;
+    }
+
+    if (attempt < maxRetries) {
+      console.log(
+        `Format attempt ${attempt} did not change document, retrying in ${retryDelay}ms...`,
+      );
+      await delay(retryDelay);
+    }
+  }
+
+  console.timeEnd(`${testFile}:${languageId}`);
+
+  return { actual, source: text };
+}

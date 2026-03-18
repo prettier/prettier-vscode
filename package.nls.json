@@ -18,7 +18,7 @@
   "ext.config.jsxSingleQuote": "Use single quotes instead of double quotes in JSX.",
   "ext.config.packageManager": "The package manager you use to install node modules.",
   "ext.config.packageManagerDeprecation": "Package manager is now automatically detected by VS Code. This setting is no longer used.",
-  "ext.config.parser": "Override the parser. You shouldn't have to change this setting.",
+  "ext.config.parser": "Explicitly specify the Prettier parser to use. Set to `vscode` to derive the parser from the active VS Code language mode.",
   "ext.config.parserDeprecationMessage": "This setting is no longer supported. Use a prettier configuration file instead.",
   "ext.config.prettierPath": "Path to the `prettier` module, eg: `./node_modules/prettier`.",
   "ext.config.printWidth": "Fit code within this line limit.",

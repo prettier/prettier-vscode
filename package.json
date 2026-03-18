@@ -314,6 +314,11 @@
           "markdownDescription": "%ext.config.proseWrap%",
           "scope": "language-overridable"
         },
+        "prettier.parser": {
+          "type": "string",
+          "markdownDescription": "%ext.config.parser%",
+          "scope": "language-overridable"
+        },
         "prettier.arrowParens": {
           "type": "string",
           "enum": [
