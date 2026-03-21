@@ -27,11 +27,40 @@ import {
   PrettierModule,
   PrettierOptions,
   PrettierPlugin,
+  PrettierSupportLanguage,
   RangeFormattingOptions,
 } from "./types.js";
 import { getWorkspaceConfig } from "./utils/workspace.js";
 import { isAboveV3 } from "./utils/versions.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
+
+/**
+ * Sanitize plugin objects by removing non-serializable properties.
+ * Some plugins (like prettier-plugin-sh) may have functions in their config
+ * which cannot be serialized when passed to workers or across threads.
+ * This function recursively removes functions from nested objects.
+ */
+function sanitizePlugin(plugin: string | PrettierPlugin): string | PrettierPlugin {
+  if (typeof plugin !== "object" || plugin === null) {
+    return plugin;
+  }
+
+  // Create a new object without function properties (deep copy)
+  const sanitized: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(plugin)) {
+    if (typeof value === "function") {
+      // Skip functions
+      continue;
+    } else if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+      // Recursively sanitize nested objects
+      sanitized[key] = sanitizePlugin(value as PrettierPlugin);
+    } else {
+      // Primitives, arrays, and null pass through
+      sanitized[key] = value;
+    }
+  }
+  return sanitized as PrettierPlugin;
+}
 
 /**
  * Resolve plugin paths for Prettier.
@@ -57,9 +86,9 @@ async function resolvePluginPaths(
   const resolvedPlugins: (string | PrettierPlugin)[] = [];
 
   for (const plugin of plugins) {
-    // Plugin objects pass through
+    // Plugin objects pass through (after sanitization)
     if (typeof plugin !== "string") {
-      resolvedPlugins.push(plugin);
+      resolvedPlugins.push(sanitizePlugin(plugin));
       continue;
     }
 
@@ -387,9 +416,20 @@ export default class PrettierEditService implements Disposable {
       }
     }
 
-    const { languages } = await prettierInstance.getSupportInfo({
-      plugins,
-    });
+    let languages: PrettierSupportLanguage[] = [];
+    try {
+      const supportInfo = await prettierInstance.getSupportInfo({
+        plugins,
+      });
+      languages = supportInfo?.languages ?? [];
+    } catch (error) {
+      // Log error but continue with empty languages array
+      // This allows the extension to work even if getSupportInfo fails
+      this.loggingService.logError(
+        "Failed to get support info from Prettier. Continuing with default language support.",
+        error,
+      );
+    }
 
     languages.forEach((lang) => {
       if (lang && lang.vscodeLanguageIds) {
@@ -613,10 +653,18 @@ export default class PrettierEditService implements Disposable {
       this.loggingService.logWarning(
         `Parser not inferred, trying VS Code language.`,
       );
-      const { languages } = await prettierInstance.getSupportInfo({
-        plugins: resolvedPlugins,
-      });
-      parser = getParserFromLanguageId(languages, uri, languageId);
+      try {
+        const supportInfo = await prettierInstance.getSupportInfo({
+          plugins: resolvedPlugins,
+        });
+        const languages = supportInfo?.languages ?? [];
+        parser = getParserFromLanguageId(languages, uri, languageId);
+      } catch (error) {
+        this.loggingService.logError(
+          "Failed to get support info from Prettier while inferring parser.",
+          error,
+        );
+      }
     }
 
     if (!parser) {
