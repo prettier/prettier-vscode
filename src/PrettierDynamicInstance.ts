@@ -12,6 +12,26 @@ import type { PrettierNodeModule } from "./ModuleResolverNode.js";
 import { resolveModuleEntry } from "./utils/resolve-module-entry.js";
 
 /**
+ * Polyfill WebAssembly.instantiateStreaming for Node.js ESM context.
+ * This is needed because some Prettier plugins (e.g., assemblyscript-prettier)
+ * use WebAssembly, and instantiateStreaming is not available in Node.js when
+ * using dynamic import() with file URLs.
+ */
+function polyfillWebAssemblyInstantiateStreaming(): void {
+  const wasm = (globalThis as any).WebAssembly;
+  if (typeof wasm !== "undefined" && !wasm.instantiateStreaming) {
+    wasm.instantiateStreaming = async function (
+      source: Response | Promise<Response>,
+      importObject?: any,
+    ): Promise<any> {
+      const response = await source;
+      const bytes = await response.arrayBuffer();
+      return wasm.instantiate(bytes, importObject);
+    };
+  }
+}
+
+/**
  * Unified Prettier instance that uses native ESM dynamic import().
  * Works with both Prettier v2 and v3+ since we're now an ESM module.
  */
@@ -22,6 +42,9 @@ export const PrettierDynamicInstance: PrettierInstanceConstructor = class Pretti
   constructor(private modulePath: string) {}
 
   public async import(): Promise</* version of imported prettier */ string> {
+    // Polyfill WebAssembly.instantiateStreaming for WASM-based plugins
+    polyfillWebAssemblyInstantiateStreaming();
+
     // Check if modulePath is a file or directory
     // If it's a file (e.g., .yarn/sdks/prettier/index.cjs), use it directly
     // If it's a directory (e.g., node_modules/prettier), resolve the entry
