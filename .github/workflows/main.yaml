@@ -16,7 +16,7 @@ jobs:
     name: Lint
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version-file: ".nvmrc"
       - run: npm ci
@@ -32,7 +32,7 @@ jobs:
     name: Test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version-file: ".nvmrc"
       # pnpm is needed for test fixtures that use packageManager: pnpm
@@ -55,7 +55,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version-file: ".nvmrc"
       - run: npm ci
@@ -68,7 +68,7 @@ jobs:
     name: Package
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version-file: ".nvmrc"
       - run: npm ci
@@ -88,7 +88,7 @@ jobs:
     name: Release
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version-file: ".nvmrc"
       - name: Check if prerelease
