@@ -36,7 +36,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       # pnpm is needed for test fixtures that use packageManager: pnpm
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6.0.3
         with:
           version: 10
 
