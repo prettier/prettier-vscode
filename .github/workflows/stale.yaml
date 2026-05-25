@@ -12,7 +12,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10.2.0
         with:
           stale-issue-label: stale
           any-of-labels: need-more-info
@@ -40,7 +40,7 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10.2.0
         with:
           stale-issue-label: stale
           stale-pr-label: stale
