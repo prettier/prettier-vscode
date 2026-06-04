@@ -2,6 +2,12 @@ import { window } from "vscode";
 
 type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "NONE";
 
+const ansiRegex = /\x1B\[[0-9;]*[a-zA-Z]/g;
+
+function stripAnsiCodes(str: string): string {
+  return str.replace(ansiRegex, "");
+}
+
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
 
@@ -73,13 +79,13 @@ export class LoggingService {
     if (typeof error === "string") {
       // Errors as a string usually only happen with
       // plugins that don't return the expected error.
-      this.outputChannel.appendLine(error);
+      this.outputChannel.appendLine(stripAnsiCodes(error));
     } else if (error instanceof Error) {
       if (error?.message) {
-        this.logMessage(error.message, "ERROR");
+        this.logMessage(stripAnsiCodes(error.message), "ERROR");
       }
       if (error?.stack) {
-        this.outputChannel.appendLine(error.stack);
+        this.outputChannel.appendLine(stripAnsiCodes(error.stack));
       }
     } else if (error) {
       this.logObject(error);
@@ -108,6 +114,8 @@ export class LoggingService {
    */
   private logMessage(message: string, logLevel: LogLevel): void {
     const title = new Date().toLocaleTimeString();
-    this.outputChannel.appendLine(`["${logLevel}" - ${title}] ${message}`);
+    this.outputChannel.appendLine(
+      `["${logLevel}" - ${title}] ${stripAnsiCodes(message)}`,
+    );
   }
 }
