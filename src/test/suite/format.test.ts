@@ -1,7 +1,8 @@
 import * as assert from "assert";
 import * as prettier from "prettier";
+import * as vscode from "vscode";
 import { ensureExtensionActivated } from "./testUtils.js";
-import { format } from "./formatTestUtils.js";
+import { format, formatWithLanguage } from "./formatTestUtils.js";
 
 /**
  * Compare prettier's output (default settings)
@@ -28,6 +29,33 @@ describe("Test format Document", () => {
   before(async () => {
     await ensureExtensionActivated();
   });
+
+  const withParserSetting = async (
+    languageId: string,
+    value: string,
+    run: () => Promise<void>,
+  ) => {
+    const config = vscode.workspace.getConfiguration("prettier", {
+      languageId,
+    });
+    const previous = config.inspect<string>("parser")?.workspaceLanguageValue;
+    await config.update(
+      "parser",
+      value,
+      vscode.ConfigurationTarget.Workspace,
+      true,
+    );
+    try {
+      await run();
+    } finally {
+      await config.update(
+        "parser",
+        previous,
+        vscode.ConfigurationTarget.Workspace,
+        true,
+      );
+    }
+  };
 
   it("formats JavaScript", async () => {
     const { actual, source } = await format("project", "formatTest/ugly.js");
@@ -98,5 +126,36 @@ describe("Test format Document", () => {
       secondFormat,
       "Formatting via extension should be idempotent",
     );
+  });
+
+  it("respects prettier.parser for language overrides", async () => {
+    await withParserSetting("jsonc", "json", async () => {
+      const { actual, source } = await format(
+        "project",
+        "formatTest/override-parser.jsonc",
+      );
+      const jsonFormatted = await prettier.format(source, { parser: "json" });
+      const jsoncFormatted = await prettier.format(source, { parser: "jsonc" });
+      assert.equal(actual, jsonFormatted);
+      assert.notEqual(
+        actual,
+        jsoncFormatted,
+        "Parser override should change the output compared to jsonc",
+      );
+    });
+  });
+
+  it("supports prettier.parser: vscode to use active language mode", async () => {
+    await withParserSetting("markdown", "vscode", async () => {
+      const { actual, source } = await formatWithLanguage(
+        "project",
+        "formatTest/markdown-in-txt.txt",
+        "markdown",
+      );
+      const prettierFormatted = await prettier.format(source, {
+        parser: "markdown",
+      });
+      assert.equal(actual, prettierFormatted);
+    });
   });
 });

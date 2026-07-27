@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 import type * as PrettierTypes from "prettier";
 import * as semver from "semver";
@@ -34,6 +35,19 @@ import {
 import { PrettierDynamicInstance } from "./PrettierDynamicInstance.js";
 
 const minPrettierVersion = "1.13.0";
+let emptyConfigPath: string | undefined;
+
+async function getEmptyConfigPath(): Promise<string> {
+  if (emptyConfigPath) {
+    return emptyConfigPath;
+  }
+  const tempDir = await fs.promises.mkdtemp(
+    path.join(os.tmpdir(), "prettier-vscode-"),
+  );
+  emptyConfigPath = path.join(tempDir, "empty.prettierrc.json");
+  await fs.promises.writeFile(emptyConfigPath, "{}", { encoding: "utf8" });
+  return emptyConfigPath;
+}
 
 export type PrettierNodeModule = typeof PrettierTypes;
 
@@ -415,6 +429,31 @@ export class ModuleResolver implements ModuleResolverInterface {
       return null;
     }
 
+    const configSearchRoot = await findUp(
+      async (dir: string) => {
+        if (
+          await pathExists(
+            path.join(dir, ".do-not-use-prettier-vscode-root"),
+          )
+        ) {
+          return dir;
+        }
+        return undefined;
+      },
+      { cwd: path.dirname(fileName), type: "directory" },
+    );
+
+    const isWithinSearchRoot = (candidatePath: string) => {
+      if (!configSearchRoot) {
+        return true;
+      }
+      const relative = path.relative(configSearchRoot, candidatePath);
+      return (
+        relative === "" ||
+        (!relative.startsWith("..") && !path.isAbsolute(relative))
+      );
+    };
+
     let configPath: string | undefined;
     try {
       configPath =
@@ -445,6 +484,19 @@ export class ModuleResolver implements ModuleResolverInterface {
         ? getWorkspaceRelativePath(fileName, vscodeConfig.configPath)
         : undefined;
 
+      let limitConfigSearch = false;
+      if (!customConfigPath && configSearchRoot) {
+        if (!configPath) {
+          limitConfigSearch = true;
+        } else if (!isWithinSearchRoot(configPath)) {
+          this.loggingService.logInfo(
+            `Ignoring config file outside search root: ${configPath}`,
+          );
+          configPath = undefined;
+          limitConfigSearch = true;
+        }
+      }
+
       // Log if a custom config path is specified in VS Code settings
       if (customConfigPath) {
         this.loggingService.logInfo(
@@ -452,14 +504,55 @@ export class ModuleResolver implements ModuleResolverInterface {
         );
       }
 
-      const resolveConfigOptions: PrettierResolveConfigOptions = {
-        config: customConfigPath ?? configPath,
-        editorconfig: vscodeConfig.useEditorConfig,
-      };
-      resolvedConfig = await prettierInstance.resolveConfig(
-        fileName,
-        resolveConfigOptions,
-      );
+      if (customConfigPath || configPath) {
+        const resolveConfigOptions: PrettierResolveConfigOptions = {
+          config: customConfigPath ?? configPath,
+          editorconfig: vscodeConfig.useEditorConfig,
+        };
+        resolvedConfig = await prettierInstance.resolveConfig(
+          fileName,
+          resolveConfigOptions,
+        );
+      } else if (limitConfigSearch && vscodeConfig.useEditorConfig) {
+        const editorConfigPath = await findUp(
+          async (dir: string) => {
+            const editorConfigCandidate = path.join(dir, ".editorconfig");
+            if (await pathExists(editorConfigCandidate)) {
+              return editorConfigCandidate;
+            }
+            if (
+              await pathExists(
+                path.join(dir, ".do-not-use-prettier-vscode-root"),
+              )
+            ) {
+              return FIND_UP_STOP;
+            }
+            return undefined;
+          },
+          { cwd: path.dirname(fileName) },
+        );
+
+        if (editorConfigPath) {
+          const resolveConfigOptions: PrettierResolveConfigOptions = {
+            config: await getEmptyConfigPath(),
+            editorconfig: true,
+          };
+          resolvedConfig = await prettierInstance.resolveConfig(
+            fileName,
+            resolveConfigOptions,
+          );
+        } else {
+          resolvedConfig = null;
+        }
+      } else {
+        const resolveConfigOptions: PrettierResolveConfigOptions = {
+          editorconfig: vscodeConfig.useEditorConfig,
+        };
+        resolvedConfig = await prettierInstance.resolveConfig(
+          fileName,
+          resolveConfigOptions,
+        );
+      }
     } catch (error) {
       this.loggingService.logError(INVALID_PRETTIER_CONFIG, error);
       return "error";

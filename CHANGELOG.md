@@ -6,6 +6,8 @@ All notable changes to the "prettier-vscode" extension will be documented in thi
 
 ## [Unreleased]
 
+- Added [`parser`](https://prettier.io/docs/options.html#parser) setting. The setting can be used in conjunction with language-specific settings to override the parser for specific VSCode languages. Alternatively, setting `prettier.parser: "vscode"` will derive the parser from the active VSCode language mode.
+
 ## [12.4.0]
 
 - **Security**: Fixed config resolution in untrusted workspaces to prevent JavaScript config files (`.prettierrc.js`, `prettier.config.js`, etc.) from being executed. Previously, even when workspace trust was enforced for module resolution, Prettier's config resolution could still `require()`/`import()` JS config files, allowing arbitrary code execution. Reported by Hector Ruiz Ruiz.
