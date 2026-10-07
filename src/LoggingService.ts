@@ -2,6 +2,17 @@ import { window } from "vscode";
 
 type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "NONE";
 
+// The VS Code Output panel does not interpret ANSI escape sequences, so strip
+// them to keep the log readable (e.g. Prettier's colorized code frames).
+// See https://github.com/prettier/prettier-vscode/issues/4002
+const ansiEscapeSequence =
+  // eslint-disable-next-line no-control-regex
+  /[\x1b\x9b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+
+function stripAnsiCodes(text: string): string {
+  return text.replace(ansiEscapeSequence, "");
+}
+
 export class LoggingService {
   private outputChannel = window.createOutputChannel("Prettier");
 
@@ -73,13 +84,13 @@ export class LoggingService {
     if (typeof error === "string") {
       // Errors as a string usually only happen with
       // plugins that don't return the expected error.
-      this.outputChannel.appendLine(error);
+      this.appendLine(error);
     } else if (error instanceof Error) {
       if (error?.message) {
         this.logMessage(error.message, "ERROR");
       }
       if (error?.stack) {
-        this.outputChannel.appendLine(error.stack);
+        this.appendLine(error.stack);
       }
     } else if (error) {
       this.logObject(error);
@@ -90,6 +101,14 @@ export class LoggingService {
     this.outputChannel.show();
   }
 
+  /**
+   * Append a line to the output channel, stripping ANSI escape sequences
+   * that the Output panel cannot render.
+   */
+  private appendLine(message: string): void {
+    this.outputChannel.appendLine(stripAnsiCodes(message));
+  }
+
   private logObject(data: unknown): void {
     // const message = JSON.parser
     //   .format(JSON.stringify(data, null, 2), {
@@ -98,7 +117,7 @@ export class LoggingService {
     //   .trim();
     const message = JSON.stringify(data, null, 2); // dont use prettier to keep it simple
 
-    this.outputChannel.appendLine(message);
+    this.appendLine(message);
   }
 
   /**
@@ -108,6 +127,6 @@ export class LoggingService {
    */
   private logMessage(message: string, logLevel: LogLevel): void {
     const title = new Date().toLocaleTimeString();
-    this.outputChannel.appendLine(`["${logLevel}" - ${title}] ${message}`);
+    this.appendLine(`["${logLevel}" - ${title}] ${message}`);
   }
 }
