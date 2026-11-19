@@ -129,4 +129,47 @@ describe("Test ModuleResolver", () => {
       assert.strictEqual(prettierInstance.version, "2.0.2");
     });
   });
+
+  describe("getResolvedIgnorePath", () => {
+    it("resolves a single string ignorePath", async () => {
+      const fileName = path.join(
+        getWorkspaceFolderUri("project").fsPath,
+        "index.js",
+      );
+      const resolved = await moduleResolver.getResolvedIgnorePath(
+        fileName,
+        ".prettierignore",
+      );
+      assert.strictEqual(
+        resolved,
+        path.join(getWorkspaceFolderUri("project").fsPath, ".prettierignore"),
+      );
+    });
+
+    it("resolves an array of ignore paths and filters out missing paths", async () => {
+      const fileName = path.join(
+        getWorkspaceFolderUri("project").fsPath,
+        "index.js",
+      );
+      const resolved = await moduleResolver.getResolvedIgnorePath(fileName, [
+        ".prettierignore",
+        "non-existent-ignore-file",
+      ]);
+      assert.deepStrictEqual(resolved, [
+        path.join(getWorkspaceFolderUri("project").fsPath, ".prettierignore"),
+      ]);
+    });
+
+    it("returns undefined when no ignore paths in array exist", async () => {
+      const fileName = path.join(
+        getWorkspaceFolderUri("project").fsPath,
+        "index.js",
+      );
+      const resolved = await moduleResolver.getResolvedIgnorePath(fileName, [
+        "non-existent-1",
+        "non-existent-2",
+      ]);
+      assert.strictEqual(resolved, undefined);
+    });
+  });
 });

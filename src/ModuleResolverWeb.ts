@@ -58,8 +58,14 @@ export class ModuleResolver implements ModuleResolverInterface {
 
   public async getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string,
-  ): Promise<string | undefined> {
+    ignorePath: string | string[],
+  ): Promise<string | string[] | undefined> {
+    if (Array.isArray(ignorePath)) {
+      const resolved = ignorePath
+        .map((p) => getWorkspaceRelativePath(fileName, p))
+        .filter((p): p is string => Boolean(p));
+      return resolved.length > 0 ? resolved : undefined;
+    }
     return getWorkspaceRelativePath(fileName, ignorePath);
   }
 
