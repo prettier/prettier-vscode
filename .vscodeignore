@@ -2,6 +2,10 @@
 .vscode/
 .vscode-test/
 .vscode-test-web/
+.devcontainer/
+.claude/
+docs/
+legacy/
 out/
 scripts/
 src/
@@ -11,15 +15,21 @@ test-fixtures/
 .nvmrc
 .prettierignore
 .prettierrc
+.tool-versions
+.vscode-test.mjs
+CLAUDE.md
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 tsconfig.json
 tsconfig.scripts.json
+tsconfig.test.json
 eslint.config.mjs
 lefthook.yml
 esbuild.mjs
 package-lock.json
-dist/*.map
+zuplo.png
+dist/**/*.map
+dist/web/test/
 
 node_modules/
 !node_modules/prettier/
