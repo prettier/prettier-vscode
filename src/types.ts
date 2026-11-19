@@ -62,8 +62,8 @@ export type ModuleResolverInterface = {
   ): Promise<PrettierModule | PrettierInstance | undefined>;
   getResolvedIgnorePath(
     fileName: string,
-    ignorePath: string,
-  ): Promise<string | undefined>;
+    ignorePath: string | string[],
+  ): Promise<string | string[] | undefined>;
   getGlobalPrettierInstance(): Promise<PrettierModule>;
   getResolvedConfig(
     doc: TextDocument,
@@ -91,9 +91,9 @@ export type PackageManagers = "npm" | "yarn" | "pnpm";
  */
 export interface IExtensionConfig {
   /**
-   * Path to '.prettierignore' or similar.
+   * Path to '.prettierignore' or similar, or an array of file paths.
    */
-  ignorePath: string;
+  ignorePath: string | string[];
   /**
    * Path to prettier module.
    */

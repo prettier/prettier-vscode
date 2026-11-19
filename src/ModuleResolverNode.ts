@@ -182,6 +182,22 @@ export class ModuleResolver implements ModuleResolverInterface {
 
   public async getResolvedIgnorePath(
     fileName: string,
+    ignorePath: string | string[],
+  ): Promise<string | string[] | undefined> {
+    if (Array.isArray(ignorePath)) {
+      const resolvedPaths = await Promise.all(
+        ignorePath.map((path) => this.resolveSingleIgnorePath(fileName, path)),
+      );
+      const filtered = resolvedPaths.filter(
+        (path): path is string => path !== undefined,
+      );
+      return filtered.length > 0 ? filtered : undefined;
+    }
+    return this.resolveSingleIgnorePath(fileName, ignorePath);
+  }
+
+  private async resolveSingleIgnorePath(
+    fileName: string,
     ignorePath: string,
   ): Promise<string | undefined> {
     // First try workspace-relative path

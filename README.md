@@ -334,7 +334,7 @@ Require a prettier configuration file to format files. Untitled files will still
 
 #### prettier.ignorePath (default: `.prettierignore`)
 
-Supply the path to an ignore file such as `.gitignore` or `.prettierignore`.
+Supply the path to an ignore file such as `.gitignore` or `.prettierignore`, or an array of file paths.
 Files which match will not be formatted. Set to `null` to not read ignore files.
 
 **Note, if this is set, this value will always be used and local ignore files will be ignored.**
